@@ -42,6 +42,8 @@ import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import Goals from "layouts/goals/Goals";
+import Evaluations from "layouts/evaluation";
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -72,6 +74,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "הערכה שנתית",
+    key: "evaluation",
+    icon: <Icon fontSize="small">form</Icon>,
+    route: "/evaluation",
+    component: <Evaluations />,
+  },
+  {
+    type: "collapse",
     name: "יעדים",
     key: "goals",
     icon: <Icon fontSize="small">notifications</Icon>,
@@ -90,7 +100,7 @@ const routes = [
     type: "collapse",
     name: "התחברות",
     key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
+    icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
   }
