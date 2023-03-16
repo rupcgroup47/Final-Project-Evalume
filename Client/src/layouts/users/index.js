@@ -38,7 +38,7 @@ const _users = [
   {
     id: 1,
     userId: "a",
-    firstName: "שיר",
+    firstName: "נועה",
     lastName: "זיו",
     // userAvatar: "https://randomuser.me/api/portraits/men/75.jpg",
     userEmail: "svitovid.ostrozkiy@example.com",
