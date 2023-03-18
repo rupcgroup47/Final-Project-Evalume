@@ -110,7 +110,6 @@ function Users() {
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
-
     return () => setDirection(dispatch, "ltr");
   }, []);
 
