@@ -51,11 +51,12 @@ const routes = [
   {
     type: "collapse",
     name: "מסך הבית",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
+    key: "profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile",
+    component: <Profile />,
   },
+  ,
   {
     type: "collapse",
     name: "משתמשים",
@@ -90,11 +91,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "פרופיל",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
+    name: "דוחות וסטטיסטיקות",
+    key: "dashboard",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/dashboard",
+    component: <Dashboard />,
   },
   {
     type: "collapse",
@@ -103,7 +104,7 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
-  }
+  },
 ];
 
 export default routes;
