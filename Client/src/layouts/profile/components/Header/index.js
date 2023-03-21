@@ -36,7 +36,7 @@ import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
 import burceMars from "assets/images/bruce-mars.jpg";
-import backgroundImage from "assets/images/bg-profile.jpeg";
+import backgroundImage from "assets/images/packages.jpg";
 
 function Header({ children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -76,7 +76,7 @@ function Header({ children }) {
           backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
             `${linearGradient(
               rgba(gradients.info.main, 0.6),
-              rgba(gradients.info.state, 0.6)
+              rgba(gradients.info.state, 0)
             )}, url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "50%",
@@ -101,24 +101,13 @@ function Header({ children }) {
               <MDTypography variant="h5" fontWeight="medium">
                 ברוך הבא יהודה אביטן
               </MDTypography>
-              {/* <MDTypography variant="button" color="text" fontWeight="regular">
-                מנהל מערכת
-              </MDTypography> */}
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
             <AppBar position="static">
               <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
                 <Tab
-                  label="App"
-                  icon={
-                    <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      home
-                    </Icon>
-                  }
-                />
-                <Tab
-                  label="Message"
+                  label="הודעות"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
                       email
@@ -126,7 +115,7 @@ function Header({ children }) {
                   }
                 />
                 <Tab
-                  label="Settings"
+                  label="הגדרות"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
                       settings
