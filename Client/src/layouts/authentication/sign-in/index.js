@@ -31,7 +31,7 @@ import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/warehouse.jpg";
 import { useEffect } from "react";
 
 // Material Dashboard 2 React contexts
@@ -69,7 +69,7 @@ function Basic() {
     if (usercheck) {
       console.log("Login successful");
       setMsg("");
-      navigate("layouts/dashboard");
+      navigate("layouts/profile");
     } else {
       console.log("Wrong password or email");
       setMsg("פרטים לא נכונים או משתמש לא קיים");
