@@ -20,8 +20,6 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React examples
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { Container } from "@mui/material";
 
 
@@ -30,16 +28,18 @@ import { Container } from "@mui/material";
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 
-import React, { useState, useEffect, useContext } from 'react';
-import 'survey-core/defaultV2.min.css';
-import { Model } from 'survey-core';
-import { Survey } from 'survey-react-ui';
-import { useCallback } from 'react';
-import { json } from './json'
+import React, { useState, useEffect, useContext } from "react";
+// import "survey-core/defaultV2.min.css";
+// import { Model } from "survey-core";
+// import { Survey } from "survey-react-ui";
+import { useCallback } from "react";
+// import { json } from "./json"
 import { MainStateContext } from "App";
+import CustomizedSteppers from "./components/steper";
+import SurveyForm from "./components/surveyForm";
 
 function QuestionnaireForm() {
-    const survey = new Model(json);
+
     const [, dispatch] = useMaterialUIController();
     const mainState = useContext(MainStateContext)
     const [count, setCount] = useState(0);
@@ -54,7 +54,8 @@ function QuestionnaireForm() {
 
     return (
         <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-
+            <CustomizedSteppers/>
+            <SurveyForm/>
         </Container>
     );
 }

@@ -17,7 +17,7 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import {Button, Typography} from "@mui/material";
+import { Button, Typography } from "@mui/material";
 // import MyTable from "MyTable"
 import { Container } from "@mui/material";
 import { useState } from "react";
@@ -39,17 +39,13 @@ function Goals() {
   }, []);
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <Typography>
-      <Button>היעדים שלי כעובד</Button>
-      <Button>היעדים שלי כמנהל</Button>
+        <Button>היעדים שלי כעובד</Button>
+        <Button>היעדים שלי כמנהל</Button>
       </Typography>
-    <GoalsTable />
-  </Container>
-  </DashboardLayout>
-
+      <GoalsTable />
+    </Container>
   );
 }
 

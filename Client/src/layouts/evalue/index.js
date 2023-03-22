@@ -20,11 +20,8 @@ export default function Evalues() {
   }, []);
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-        כאן תהיה הערכת עובדים{" "}
-      </Container>
-    </DashboardLayout>
+    <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
+      כאן תהיה הערכת עובדים{" "}
+    </Container>
   );
 }

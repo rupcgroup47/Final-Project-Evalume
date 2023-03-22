@@ -54,20 +54,20 @@ function Overview() {
 
   const _alerts = [
     {
-      alertNum:1,
+      alertNum: 1,
       alertSub: "הערכות עובד שיש למלא"
     },
     {
-      alertNum:4,
+      alertNum: 4,
       alertSub: "פגישות ממתינות לקביעה"
     },
     {
-      alertNum:0,
+      alertNum: 0,
       alertSub: "הערכות ממתינות למישוב"
     }
   ]
-  
-const [alerts, setAlerts] =useState(_alerts);
+
+  const [alerts, setAlerts] = useState(_alerts);
   const [, dispatch] = useMaterialUIController();
 
   // Changing the direction to rtl
@@ -77,36 +77,33 @@ const [alerts, setAlerts] =useState(_alerts);
     return () => setDirection(dispatch, "ltr");
   }, []);
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox mb={2} />
-      <Header>
-        <MDBox mt={5} mb={3}>
-          <Grid container spacing={1}>
-             {/* //Profile card */}
-            <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
-              <ProfileInfoCard
-                title="פרטים אישיים"
-                info={{
-                  שם: "יהודה אביטן",
-                  טלפון: "(44) 123 1234 123",
-                  אימייל: "alecthompson@mail.com",
-                  מחלקה: "מחסן",
-                  מנהל: "מנכל"
+    <Header>
+      <MDBox mt={5} mb={3}>
+        <Grid container spacing={1}>
+          {/* //Profile card */}
+          <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
+            <ProfileInfoCard
+              title="פרטים אישיים"
+              info={{
+                שם: "יהודה אביטן",
+                טלפון: "(44) 123 1234 123",
+                אימייל: "alecthompson@mail.com",
+                מחלקה: "מחסן",
+                מנהל: "מנכל"
 
-                }}
-               
-                action={{ route: "", tooltip: "Edit Profile" }}
-                shadow={false}
-              />
-              <Divider orientation="vertical" sx={{ mx: 0 }} />
-            </Grid>
-            <Grid item xs={12} xl={8}>
-              <ProfileAlerts title="conversations" alerts={alerts} />
-            </Grid>
+              }}
+
+              action={{ route: "", tooltip: "Edit Profile" }}
+              shadow={false}
+            />
+            <Divider orientation="vertical" sx={{ mx: 0 }} />
           </Grid>
-        </MDBox>
-        {/* <MDBox pt={2} px={2} lineHeight={1.25}>
+          <Grid item xs={12} xl={8}>
+            <ProfileAlerts title="conversations" alerts={alerts} />
+          </Grid>
+        </Grid>
+      </MDBox>
+      {/* <MDBox pt={2} px={2} lineHeight={1.25}>
           <MDTypography variant="h6" fontWeight="medium">
             Projects
           </MDTypography>
@@ -116,7 +113,7 @@ const [alerts, setAlerts] =useState(_alerts);
             </MDTypography>
           </MDBox>
         </MDBox> */}
-        {/* <MDBox p={2}>
+      {/* <MDBox p={2}>
           <Grid container spacing={6}>
             <Grid item xs={12} md={6} xl={3}>
               <DefaultProjectCard
@@ -200,9 +197,8 @@ const [alerts, setAlerts] =useState(_alerts);
             </Grid>
           </Grid>
         </MDBox> */}
-      </Header>
-      {/* <Footer /> */}
-    </DashboardLayout>
+    </Header>
+    // {/* <Footer /> */ }
   );
 }
 
