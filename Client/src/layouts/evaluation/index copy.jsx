@@ -51,11 +51,36 @@ function QuestionnaireForm() {
         return () => setDirection(dispatch, "ltr");
     }, []);
 
+    // const panels = survey.getAllPanels();
+    // if (panels) {
+    //     // Collapse the panels
+    //     panels.map((panel) => {
+    //         panel.state = 'collapsed';
+    //     });
+
+    //     // const telegram = panel.addNewQuestion('text', 'Telegram');
+    //     // telegram.title = 'Telegram:';
+    // }
+    survey.onComplete.add((sender, options) => {
+        console.log(JSON.stringify(sender.data, null, 3));
+    });
 
     return (
-        <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
+        <DashboardLayout>
+            <DashboardNavbar />
+            <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
+                {mainState.state.user.name}
+                <button onClick={() => setCount(count + 1)}>clicked {count} times</button>
+                <Survey
+                    model={survey}
+                    align="right"
+                    style={{
+                        direction: 'rtl'
+                    }}
+                />
+            </Container>
+        </DashboardLayout>
 
-        </Container>
     );
 }
 
