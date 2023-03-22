@@ -177,7 +177,7 @@ export default function UsersTable({ users, setUsers }) {
           {/* Table Head - Start */}
           <TableHead>
             <TableRow>
-              <TableCell align="right" width={40} />
+              {/* <TableCell align="right" width={40} /> */}
 
               {tableHead.map((item) => {
                 return (

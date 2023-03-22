@@ -114,13 +114,9 @@ function Users() {
   }, []);
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-    <UsersTable users={users} setUsers={setUsers} />
-  </Container>
-  </DashboardLayout>
-
+      <UsersTable users={users} setUsers={setUsers} />
+    </Container>
   );
 }
 

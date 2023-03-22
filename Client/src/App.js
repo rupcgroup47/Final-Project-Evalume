@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, createContext } from "react";
 import { Container } from "@mui/material";
 
 // react-router components
@@ -53,7 +53,10 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
+export const MainStateContext = createContext();
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -70,6 +73,11 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const [mainState, setMainState] = useState({
+    user: {
+      name: 'שמעון',
+    }
+  });
 
   // Cache for the rtl
   useMemo(() => {
@@ -118,7 +126,12 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route exact path={route.route} element={(<DashboardLayout>
+            <DashboardNavbar />
+            {route.component}
+          </DashboardLayout>)} key={route.key} />
+        );
       }
 
       return null;
@@ -147,10 +160,38 @@ export default function App() {
     </MDBox>
   );
 
-  return direction === "rtl" ? (
-    <>
-      <CacheProvider value={rtlCache}>
-        <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+  return (
+    <MainStateContext.Provider value={{
+      state: mainState,
+      setState: setMainState,
+    }}>
+      {direction === "rtl" ? (
+        <CacheProvider value={rtlCache}>
+          <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+            <CssBaseline />
+            {layout === "dashboard" && (
+              <>
+                <Sidenav
+                  color={sidenavColor}
+                  brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                  brandName="פורטל להערכת עובדים"
+                  routes={routes}
+                  onMouseEnter={handleOnMouseEnter}
+                  onMouseLeave={handleOnMouseLeave}
+                />
+                <Configurator />
+                {configsButton}
+              </>
+            )}
+            {layout === "vr" && <Configurator />}
+            <Routes>
+              {getRoutes(routes)}
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            </Routes>
+          </ThemeProvider>
+        </CacheProvider>
+      ) : (
+        <ThemeProvider theme={darkMode ? themeDark : theme}>
           <CssBaseline />
           {layout === "dashboard" && (
             <>
@@ -172,30 +213,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/profile" />} />
           </Routes>
         </ThemeProvider>
-      </CacheProvider>
-    </>
-  ) : (
-    <ThemeProvider theme={darkMode ? themeDark : theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="פורטל להערכת עובדים"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
-        </>
       )}
-      {layout === "vr" && <Configurator />}
-      <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/profile" />} />
-      </Routes>
-    </ThemeProvider>
+    </MainStateContext.Provider>
   );
 }
