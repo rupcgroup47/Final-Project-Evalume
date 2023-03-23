@@ -39,8 +39,8 @@ function Goals() {
   }, []);
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
+    // <DashboardLayout>
+    //   <DashboardNavbar />
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <Typography>
       <Button>היעדים שלי כעובד</Button>
@@ -48,7 +48,7 @@ function Goals() {
       </Typography>
     <GoalsTable />
   </Container>
-  </DashboardLayout>
+  // </DashboardLayout>
 
   );
 }
