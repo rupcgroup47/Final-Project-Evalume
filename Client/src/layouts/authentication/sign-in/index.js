@@ -40,11 +40,11 @@ import { useMaterialUIController, setDirection } from "context";
 const users = [
   {
     email: "admin1",
-    password: "12345678",
+    password: "12345678"
   },
   {
     email: "admin2",
-    password: "012345678",
+    password: "012345678"
   },
 ];
 
@@ -52,21 +52,22 @@ function Basic() {
   const [, dispatch] = useMaterialUIController(); // rtl
   const [validationsMsg, setMsg] = useState("");
   const navigate = useNavigate();
-  const [data, setData] = useState({// User details temp object
+  const [userData, setUserData] = useState({// User details temp object
     email: "",
     password: "",
   });
 
 
   const changeHandler = (e) => {// Catch the values from input
-    setData({ ...data, [e.target.name]: e.target.value });
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   const checkUser = () => {// Checking whether the user details exist and are appropriate, if they are appropriate, the user details go to the dashboard via navigate, if not, an error message pops up and the details must be re-entered
     const usercheck = users.find(
-      (user) => user.email === data.email && user.password === data.password
+      (user) => user.email === userData.email && user.password === userData.password
     );
     if (usercheck) {
+      localStorage.setItem('Current User', JSON.stringify(userData)); // Set user details in local storage
       console.log("Login successful");
       setMsg("");
       navigate("layouts/profile");
@@ -107,7 +108,7 @@ function Basic() {
               <MDInput
                 type="email"
                 name="email"
-                value={data.email}
+                value={userData.email}
                 placeholder="אימייל"
                 onChange={changeHandler}
                 label="אימייל"
@@ -118,7 +119,7 @@ function Basic() {
               <MDInput
                 type="password"
                 name="password"
-                value={data.password}
+                value={userData.password}
                 placeholder="סיסמה"
                 onChange={changeHandler}
                 label="סיסמה"

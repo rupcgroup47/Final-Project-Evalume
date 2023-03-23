@@ -41,6 +41,7 @@ import Users from "layouts/users";
 import Evalues from "layouts/evalue";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
+import SystemInfo from "layouts/info/SystemInfo";
 import SignIn from "layouts/authentication/sign-in";
 import Goals from "layouts/goals/Goals";
 import Evaluations from "layouts/evaluation";
@@ -114,7 +115,7 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
-  },
+  }
 ];
 
 export default routes;

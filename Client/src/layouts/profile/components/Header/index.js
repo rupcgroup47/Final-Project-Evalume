@@ -41,6 +41,14 @@ import backgroundImage from "assets/images/packages.jpg";
 function Header({ children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => { // Get user name from Local Storage
+    const userName = JSON.parse(localStorage.getItem("Current User"));
+    if (userName) {
+      setUserName(userName);
+    }
+  }, []);
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -83,15 +91,7 @@ function Header({ children }) {
           overflow: "hidden",
         }}
       />
-      <Card
-        sx={{
-          position: "relative",
-          mt: -8,
-          mx: 3,
-          py: 2,
-          px: 2,
-        }}
-      >
+      <Card sx={{ position: "relative", mt: -8, mx: 3, py: 2, px: 2 }}>
         <Grid container spacing={3} alignItems="center">
           <Grid item>
             <MDAvatar src={burceMars} alt="profile-image" size="xl" shadow="sm" />
@@ -99,31 +99,10 @@ function Header({ children }) {
           <Grid item>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
               <MDTypography variant="h5" fontWeight="medium">
-                ברוך הבא יהודה אביטן
+              {"ברוך הבא "}
+                {userName.email}
               </MDTypography>
             </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
-            <AppBar position="static">
-              <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
-                <Tab
-                  label="הודעות"
-                  icon={
-                    <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      email
-                    </Icon>
-                  }
-                />
-                <Tab
-                  label="הגדרות"
-                  icon={
-                    <Icon fontSize="small" sx={{ mt: -0.25 }}>
-                      settings
-                    </Icon>
-                  }
-                />
-              </Tabs>
-            </AppBar>
           </Grid>
         </Grid>
         {children}
