@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useEffect } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, Link as LinkDom } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -38,7 +38,7 @@ import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
-
+import SystemInfo from "layouts/info/SystemInfo";
 // Material Dashboard 2 React context
 import {
   useMaterialUIController,
@@ -180,17 +180,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       />
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
-        <MDButton
-          component="a"
-          href="https://www.creative-tim.com/product/material-dashboard-pro-react"
-          target="_blank"
-          rel="noreferrer"
-          variant="gradient"
-          color={sidenavColor}
-          fullWidth
-        >
-          upgrade to pro
-        </MDButton>
+        <LinkDom to="layouts/info/SystemInfo">
+          <MDButton rel="noreferrer" variant="gradient" color={sidenavColor} fullWidth>
+            מידע למשתמש
+          </MDButton>
+        </LinkDom>
       </MDBox>
     </SidenavRoot>
   );

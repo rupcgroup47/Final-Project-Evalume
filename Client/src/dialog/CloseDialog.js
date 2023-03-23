@@ -19,17 +19,11 @@ import {
 
 export default function CloseDialog({ open, setOpen, onClick }) {
   return (
-    <Dialog
-      maxWidth="xs"
-      fullWidth
-      onClose={() => setOpen((e) => !e)}
-      open={open}
-    >
-      <DialogTitle>מחיקת משתמש</DialogTitle>
+    <Dialog maxWidth="xs" fullWidth onClose={() => setOpen((e) => !e)} open={open}>
+      <DialogTitle>מחיקה</DialogTitle>
 
       <DialogContent>
-        <Typography variant="body1">
-האם אתה בטוח שאתה רוצה למחוק את המשתמש?        </Typography>
+        <Typography variant="body1">האם אתה בטוח שאתה רוצה למחוק ? </Typography>
       </DialogContent>
 
       <DialogActions sx={{ m: 2, p: 1, display: "flex", gap: 1 }}>
