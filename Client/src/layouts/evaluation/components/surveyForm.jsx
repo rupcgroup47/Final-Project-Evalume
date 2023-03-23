@@ -63,6 +63,24 @@ const Qustions = [
     }
 ];
 
+// const questionsResp = [{
+//     id: '1',
+//     title: 'שירותיות',
+//     questions: [{
+//         id: '1',
+//         label: '',
+//     }],
+// }];
+
+const questionsResp = [...Array(10).keys()].map(idx => ({
+    id: `id-${idx}`,
+    title: `title - ${idx}`,
+    questions: [...Array(4).keys()].map(index => ({
+        id: `index-${index}`,
+        label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
+    }))
+}));
+
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -100,7 +118,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function surveyForm() {
-    const [expanded, setExpanded] = React.useState("panel1");
+    const [expanded, setExpanded] = React.useState(questionsResp[0].id);
 
     const handleChange = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
@@ -108,13 +126,29 @@ export default function surveyForm() {
 
     // useEffect(() => {
     //     Qustions.map((question)=>{
-            
+
     //     })
     // }, []);
-
+    console.log(questionsResp);
     return (
         <form>
-            <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")} TransitionProps={{ unmountOnExit: true }}>
+            {questionsResp.map(({ id, title, questions }) => (
+                <Accordion key={'q' + id} expanded={expanded === id} onChange={handleChange(id)} TransitionProps={{ unmountOnExit: true }}>
+                    <AccordionSummary id={`${id}-header`}>
+                        <Typography>{title}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {questions.map(({ id: questionId, label }) => (
+                            <Stack key={'q-' + id + '-' + questionId} direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
+                                <Typography >{label}</Typography>
+                                <RadioButtons required />
+                                <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
+                            </Stack>
+                        ))}
+                    </AccordionDetails>
+                </Accordion>
+            ))}
+            {/* <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")} TransitionProps={{ unmountOnExit: true }}>
                 <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
                     <Typography>שירותיות</Typography>
                 </AccordionSummary>
@@ -149,7 +183,7 @@ export default function surveyForm() {
                         <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
                     </Stack>
                 </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
             <button>סיים</button>
             <button>שמור</button>
         </form>
