@@ -85,3 +85,40 @@ function QuestionnaireForm() {
 }
 
 export default QuestionnaireForm;
+
+            {/* <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")} TransitionProps={{ unmountOnExit: true }}>
+                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                    <Typography>שירותיות</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Stack direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
+                        <Typography >שאלה מהדאטה</Typography>
+                        <RadioButtons required />
+                        <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
+                    </Stack>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")} TransitionProps={{ unmountOnExit: true }}>
+                <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                    <Typography>מקצועיות ואיכות בעבודה</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Stack direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
+                        <Typography >שאלה מהדאטה</Typography>
+                        <RadioButtons required />
+                        <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
+                    </Stack>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")} TransitionProps={{ unmountOnExit: true }}>
+                <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                    <Typography>יחסי עבודה , תקשורת ועבודת צוות</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Stack direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
+                        <Typography >שאלה מהדאטה</Typography>
+                        <RadioButtons required />
+                        <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
+                    </Stack>
+                </AccordionDetails>
+            </Accordion> */}

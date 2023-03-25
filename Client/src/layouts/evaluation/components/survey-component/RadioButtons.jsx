@@ -13,49 +13,63 @@ export default function RadioButtons() {
   };
 
   return (
-    <div style={{ display:"contents", fontSize: 28 }} >
+    <div style={{ display: "contents", fontSize: 28 }} >
       <Radio
         checked={selectedValue === '0'}
         onChange={handleChange}
         value="0"
         name="radio-buttons"
-        inputProps={{ 'aria-label': '0' }}
+        inputProps={{ 'aria-labelledby': 'לא רלוונטי לתפקיד' }}
       />
       <Radio
         checked={selectedValue === '1'}
         onChange={handleChange}
         value="1"
         name="radio-buttons"
-        inputProps={{ 'aria-label': '1' }}
+        inputProps={{ 'aria-labelledby': 'לא עומד בציפיות' }}
       />
       <Radio
         checked={selectedValue === '2'}
         onChange={handleChange}
         value="2"
         name="radio-buttons"
-        inputProps={{ 'aria-label': '2' }}
+        inputProps={{ 'aria-labelledby': 'עומד בחלק מהציפיות' }}
       />
       <Radio
         checked={selectedValue === '3'}
         onChange={handleChange}
         value="3"
         name="radio-buttons"
-        inputProps={{ 'aria-label': '3' }}
+        inputProps={{ 'aria-labelledby': 'עומד כמעט בכל הציפיות' }}
       />
       <Radio
         checked={selectedValue === '4'}
         onChange={handleChange}
         value="4"
         name="radio-buttons"
-        inputProps={{ 'aria-label': '4' }}
+        inputProps={{ 'aria-labelledby': 'עומד בציפיות' }}
       />
       <Radio
         checked={selectedValue === '5'}
         onChange={handleChange}
         value="5"
         name="radio-buttons"
-        inputProps={{ 'aria-label': '5' }}
+        inputProps={{ 'aria-labelledby': 'עומד בציפיות בצורה טובה מאוד' }}
       />
     </div>
+    // <FormControl>
+    //   <RadioGroup
+    //     row
+    //     aria-labelledby="demo-row-radio-buttons-group-label"
+    //     name="row-radio-buttons-group"
+    //   >
+    //     <FormControlLabel value="0" control={<Radio />} label="לא רלוונטי" labelPlacement="top"/>
+    //     <FormControlLabel value="1" control={<Radio />} label="לא עומד בציפיות" labelPlacement="top"/>
+    //     <FormControlLabel value="2" control={<Radio />} label="עומד בחלק מהציפיות" labelPlacement="top"/>
+    //     <FormControlLabel value="3" control={<Radio />} label="עומד כמעט בכל הציפיות" labelPlacement="top"/>
+    //     <FormControlLabel value="4" control={<Radio />} label="עומד בציפיות" labelPlacement="top"/>
+    //     <FormControlLabel value="5" control={<Radio />} label="עומד בציפיות בצורה טובה מאוד" labelPlacement="top"/>
+    //   </RadioGroup>
+    // </FormControl>
   );
 }
