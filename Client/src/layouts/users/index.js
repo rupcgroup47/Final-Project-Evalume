@@ -94,7 +94,7 @@ const _users = [
   {
     id: 6,
     userId: "F",
-    firstName: "Gladko",
+    firstName: "f",
     lastName: "Balabuha",
     // userAvatar: "https://randomuser.me/api/portraits/men/61.jpg",
     userEmail: "gladko.balabuha@example.com",
