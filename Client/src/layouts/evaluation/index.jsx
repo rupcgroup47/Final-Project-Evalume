@@ -54,8 +54,8 @@ function QuestionnaireForm() {
 
     return (
         <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-            <CustomizedSteppers/>
-            <SurveyForm/>
+            <CustomizedSteppers />
+            <SurveyForm />
         </Container>
     );
 }

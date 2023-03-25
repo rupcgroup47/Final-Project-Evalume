@@ -67,14 +67,14 @@ const routes = [
     route: "/users",
     component: <Users />,
   },
-  {
-    type: "collapse",
-    name: "הערכות",
-    key: "evalues",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/evalues",
-    component: <Evalues />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "הערכות",
+  //   key: "evalues",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/evalues",
+  //   component: <Evalues />,
+  // },
   // },
   // {
   //   type: "collapse",

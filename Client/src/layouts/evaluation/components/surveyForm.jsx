@@ -6,17 +6,16 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import RadioButtons from "./survey-component/RadioButtons";
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 import { useForm } from "react-hook-form";
-import SaveIcon from '@mui/icons-material/Save';
-import SendIcon from '@mui/icons-material/Send';
-
-import Paper from '@mui/material/Paper';
-
-
-
-
+import SaveIcon from "@mui/icons-material/Save";
+import SendIcon from "@mui/icons-material/Send";
+import { Button } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import CustomizedSteppers from "./steper";
+import QuestionnaireForm from "..";
 // const questionsResp = [{
 //     id: '1',
 //     title: 'שירותיות',
@@ -26,92 +25,148 @@ import Paper from '@mui/material/Paper';
 //     }],
 // }];
 
-const questionsResp = [...Array(6).keys()].map(idx => ({
-    id: `id-${idx}`,
-    title: `title - ${idx}`,
-    questions: [...Array(4).keys()].map(index => ({
-        id: `index-${index}`,
-        label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
-    }))
+const questionsResp = [...Array(6).keys()].map((idx) => ({
+  id: `id title-${idx}`,
+  title: `title - ${idx}`,
+  questions: [...Array(4).keys()].map((index) => ({
+    id: `question-${index}`,
+    label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
+  })),
 }));
 
 const Accordion = styled((props) => (
-    <MuiAccordion disableGutters elevation={0} square {...props} />
+  <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    "&:not(:last-child)": {
-        borderBottom: 0,
-    },
-    "&:before": {
-        display: "none",
-    },
+  border: `1px solid ${theme.palette.divider}`,
+  "&:not(:last-child)": {
+    borderBottom: 0,
+  },
+  "&:before": {
+    display: "none",
+  },
 }));
 
 const AccordionSummary = styled((props) => (
-    <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-        {...props}
-    />
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
 ))(({ theme }) => ({
-    backgroundColor:
-        theme.palette.mode === "dark"
-            ? "rgba(255, 255, 255, .05)"
-            : "rgba(0, 0, 0, .03)",
-    flexDirection: "row-reverse",
-    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-        transform: "rotate(90deg)",
-    },
-    "& .MuiAccordionSummary-content": {
-        marginLeft: theme.spacing(1),
-    },
+  backgroundColor:
+    theme.palette.mode === "dark" ? "rgba(255, 255, 255, .05)" : "rgba(0, 0, 0, .03)",
+  flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+    transform: "rotate(90deg)",
+  },
+  "& .MuiAccordionSummary-content": {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderTop: "1px solid rgba(0, 0, 0, .125)",
+  padding: theme.spacing(2),
+  borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
+export default function surveyForm(props) {
+  const [expanded, setExpanded] = React.useState(questionsResp[0].id);
+  const [step, setStep] = React.useState(0)
+  const [items, setItems] = React.useState([
+    { id: 1, name: "Item 1", selectedValue: "" ,textFieldValue: ''},
+    { id: 2, name: "Item 2", selectedValue: "" ,textFieldValue: ''},
+    { id: 3, name: "Item 3", selectedValue: "",textFieldValue: '' }
+  ]);
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
 
-export default function surveyForm() {
-    const [expanded, setExpanded] = React.useState(questionsResp[0].id);
-
-    const handleChange = (panel) => (event, newExpanded) => {
-        setExpanded(newExpanded ? panel : false);
+  const handleselectedValueChange = (itemId, value) => {
+    // Save all the answers from the form - Need to check if  the question answered
+    const item = {
+      id: items.length + 1,
+      name: itemId,
+      selectedValue: value,
     };
+    setItems((prevArray) => [...prevArray, item]);
+    console.log(items);
+  };
 
-    const { handleSubmit } = useForm();
-    const onSubmit = (data, e) => {
-        event.preventDefault()
-        console.log(data, e)
-    };
-    const onError = (errors, e) => {
-        event.preventDefault()
-        console.log(errors, e)
-    };
+  
+  function handleTextFieldChange(event, id) {
+    const newItems = items.map(item => {
+      if (item.name === id) {
+        return { ...item, textFieldValue: event.target.value };
+      } else {
+        return item;
+      }
+    });
+    setItems(newItems);
+  }
 
-    console.log(questionsResp);
-    return (
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
-            {questionsResp.map(({ id, title, questions }) => (
-                <Accordion key={'q' + id} expanded={expanded === id} onChange={handleChange(id)} TransitionProps={{ unmountOnExit: true }}>
-                    <AccordionSummary id={`${id}-header`}>
-                        <Typography>{title}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        {questions.map(({ id: questionId, label }) => (
-                            <Stack key={'q-' + id + '-' + questionId} direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
-                                <Typography >{label}</Typography>
-                                <RadioButtons required/>
-                                <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
-                            </Stack>
-                        ))}
-                    </AccordionDetails>
-                </Accordion>
-            ))} 
-            <Stack direction="row" spacing={8} alignItems="baseline" justifyContent="space-evenly" marginTop={'20px'}>
-                <button type={'button'} label='שמור'>שמור</button>
-                <input type={'submit'} label='סיים' />
-            </Stack>
-        </form>
-    );
+  const { handleSubmit } = useForm();
+  const onSubmit = (data, e) => {
+    event.preventDefault();
+    console.log(data, e);
+  };
+  const onError = (errors, e) => {
+    event.preventDefault();
+    console.log(errors, e);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit, onError)}>
+      {questionsResp.map(({ id, title, questions }) => (
+        <Accordion
+          key={"q" + id}
+          expanded={expanded === id}
+          onChange={handleChange(id)}
+          TransitionProps={{ unmountOnExit: true }}
+        >
+          <AccordionSummary id={`${id}-header`}>
+            <Typography>{title}</Typography>
+          </AccordionSummary>
+
+          <AccordionDetails>
+            {questions.map(({ id: questionId, label }) => (
+              <Stack
+                key={"q-" + id + "-" + questionId}
+                direction="row"
+                spacing={3}
+                justifyContent="space-evenly"
+                alignItems="baseline"
+              >
+                <Typography>{label}</Typography>
+                <RadioButtons
+                  itemId={"q-" + id + "-" + questionId}
+                  onselectedValueChange={handleselectedValueChange}
+                />
+                <TextField
+                  label="הוסף הערה"
+                //   key={"q-" + id + "-" + questionId}
+                  value={items.textFieldValue}
+                  onChange={(event) => handleTextFieldChange(event,"q-" + id + "-" + questionId)}
+                  multiline
+                  maxRows={3}
+                />
+              </Stack>
+            ))}
+          </AccordionDetails>
+        </Accordion>
+      ))}
+      <Stack
+        direction="row"
+        spacing={8}
+        alignItems="baseline"
+        justifyContent="space-evenly"
+        marginTop={"20px"}
+      >
+        <Button type={"button"} label="שמור">
+          שמור
+        </Button>
+        <Button type={"submit"} label="סיים">
+          סיום
+        </Button>
+      </Stack>
+    </form>
+  );
 }

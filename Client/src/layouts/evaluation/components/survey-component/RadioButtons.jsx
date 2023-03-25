@@ -5,12 +5,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-export default function RadioButtons() {
-  const [selectedValue, setSelectedValue] = React.useState('');
-
+export default function RadioButtons({itemId, selectedValue, onselectedValueChange}) {
   const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
+    console.log(event.target.value)
+    console.log(itemId)
+
+    onselectedValueChange(itemId, event.target.value) // Get question row and the selected value
+   };
 
   return (
     <div style={{ display: "contents", fontSize: 28 }} >

@@ -150,6 +150,7 @@ function Basic() {
                 onChange={changeHandler}
                 label="אימייל"
                 fullWidth
+                required
               />
             </MDBox>
             <MDBox mb={2}>
@@ -161,6 +162,7 @@ function Basic() {
                 onChange={changeHandler}
                 label="סיסמה"
                 fullWidth
+                required
               />
             </MDBox>
             <MDBox mt={4} mb={1}>
