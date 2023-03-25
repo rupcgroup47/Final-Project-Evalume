@@ -8,60 +8,14 @@ import Typography from "@mui/material/Typography";
 import RadioButtons from "./survey-component/RadioButtons";
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import { FormControl } from "@mui/material";
+import { useForm } from "react-hook-form";
+import SaveIcon from '@mui/icons-material/Save';
+import SendIcon from '@mui/icons-material/Send';
 
-const Qustions = [
-    {
-        QuestionNum: 1,
-        QuesContent: "מעניק שירות אדיב מנומס וסבלני",
-        QuesPack: "שירותיות"
-    },
-    {
-        QuestionNum: 2,
-        QuesContent: "פועל למילוי צרכי הלקוח ושביעות רצונו",
-        QuesPack: "שירותיות"
-    },
-    {
-        QuestionNum: 3,
-        QuesContent: "מגיב במהירותהנדרשת לצרכי הלקוחות",
-        QuesPack: "שירותיות"
-    },
-    {
-        QuestionNum: 4,
-        QuesContent: "מגלה גמישות ונכונות לשינוי",
-        QuesPack: "שירותיות"
-    },
-    {
-        QuestionNum: 5,
-        QuesContent: "מגלה שליטה מקצועית ומיומנות בתחום עיסוקי",
-        QuesPack: "מקצועיות ואיכות בעבודה"
-    },
-    {
-        QuestionNum: 9,
-        QuesContent: "מגלה יכולת עבודה עצמאית",
-        QuesPack: "מקצועיות ואיכות בעבודה"
-    },
-    {
-        QuestionNum: 7,
-        QuesContent: "מקפיד לעמוד בלוחות הזמנים",
-        QuesPack: "מקצועיות ואיכות בעבודה"
-    },
-    {
-        QuestionNum: 8,
-        QuesContent: "מנצל ביעילות את הזמן ביחס למשימות המוטלות",
-        QuesPack: "מקצועיות ואיכות בעבודה"
-    },
-    {
-        QuestionNum: 9,
-        QuesContent: "פועלת כמיטב היכולת לשם עמידה במשימות ויעדים שהוצבו",
-        QuesPack: "מקצועיות ואיכות בעבודה"
-    },
-    {
-        QuestionNum: 10,
-        QuesContent: "מקפיד על ביצוע איכותי של העבודה",
-        QuesPack: "מקצועיות ואיכות בעבודה"
-    }
-];
+import Paper from '@mui/material/Paper';
+
+
+
 
 // const questionsResp = [{
 //     id: '1',
@@ -72,7 +26,7 @@ const Qustions = [
 //     }],
 // }];
 
-const questionsResp = [...Array(10).keys()].map(idx => ({
+const questionsResp = [...Array(6).keys()].map(idx => ({
     id: `id-${idx}`,
     title: `title - ${idx}`,
     questions: [...Array(4).keys()].map(index => ({
@@ -117,6 +71,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
+
 export default function surveyForm() {
     const [expanded, setExpanded] = React.useState(questionsResp[0].id);
 
@@ -124,14 +79,19 @@ export default function surveyForm() {
         setExpanded(newExpanded ? panel : false);
     };
 
-    // useEffect(() => {
-    //     Qustions.map((question)=>{
+    const { handleSubmit } = useForm();
+    const onSubmit = (data, e) => {
+        event.preventDefault()
+        console.log(data, e)
+    };
+    const onError = (errors, e) => {
+        event.preventDefault()
+        console.log(errors, e)
+    };
 
-    //     })
-    // }, []);
     console.log(questionsResp);
     return (
-        <form>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
             {questionsResp.map(({ id, title, questions }) => (
                 <Accordion key={'q' + id} expanded={expanded === id} onChange={handleChange(id)} TransitionProps={{ unmountOnExit: true }}>
                     <AccordionSummary id={`${id}-header`}>
@@ -141,51 +101,17 @@ export default function surveyForm() {
                         {questions.map(({ id: questionId, label }) => (
                             <Stack key={'q-' + id + '-' + questionId} direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
                                 <Typography >{label}</Typography>
-                                <RadioButtons required />
+                                <RadioButtons required/>
                                 <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
                             </Stack>
                         ))}
                     </AccordionDetails>
                 </Accordion>
-            ))}
-            {/* <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")} TransitionProps={{ unmountOnExit: true }}>
-                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                    <Typography>שירותיות</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Stack direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
-                        <Typography >שאלה מהדאטה</Typography>
-                        <RadioButtons required />
-                        <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
-                    </Stack>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")} TransitionProps={{ unmountOnExit: true }}>
-                <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                    <Typography>מקצועיות ואיכות בעבודה</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Stack direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
-                        <Typography >שאלה מהדאטה</Typography>
-                        <RadioButtons required />
-                        <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
-                    </Stack>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")} TransitionProps={{ unmountOnExit: true }}>
-                <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                    <Typography>יחסי עבודה , תקשורת ועבודת צוות</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Stack direction="row" spacing={3} justifyContent="space-evenly" alignItems="baseline">
-                        <Typography >שאלה מהדאטה</Typography>
-                        <RadioButtons required />
-                        <TextField id="outlined-multiline-flexible" label="הוסף הערה" multiline maxRows={3} required />
-                    </Stack>
-                </AccordionDetails>
-            </Accordion> */}
-            <button>סיים</button>
-            <button>שמור</button>
+            ))} 
+            <Stack direction="row" spacing={8} alignItems="baseline" justifyContent="space-evenly" marginTop={'20px'}>
+                <button type={'button'} label='שמור'>שמור</button>
+                <input type={'submit'} label='סיים' />
+            </Stack>
         </form>
     );
 }

@@ -50,8 +50,8 @@ function Dashboard() {
     return () => setDirection(dispatch, "ltr");
   }, []);
   return (
+    <header>
       <MDBox py={3}>
-
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={3}>
@@ -102,6 +102,7 @@ function Dashboard() {
           </Grid>
         </Grid>
       </MDBox>
+    </header>
   );
 }
 
