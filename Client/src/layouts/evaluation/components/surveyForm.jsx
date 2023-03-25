@@ -68,9 +68,10 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export default function surveyForm(props) {
+export default function surveyForm() {
   const [expanded, setExpanded] = React.useState(questionsResp[0].id);
-  const [step, setStep] = React.useState(0)
+  const [currentStep, setStep] = React.useState(0);
+
   const [items, setItems] = React.useState([
     { id: 1, name: "Item 1", selectedValue: "" ,textFieldValue: ''},
     { id: 2, name: "Item 2", selectedValue: "" ,textFieldValue: ''},
@@ -80,19 +81,43 @@ export default function surveyForm(props) {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const handleselectedValueChange = (itemId, value) => {
+  function itemExists(itemId) {
+    return items.some(item => item.name === itemId);
+  }
+
+  function updateItem(itemId, value) { // Update radio button answer if the answer was marked allready in the same question 
+    const updatedItems = items.map(item => {
+      if (item.name === itemId) {
+        return {
+          ...item,
+          selectedValue: value
+        };
+      }
+      return item;
+    });
+    setItems(updatedItems);
+  }
+
+  const handleselectedValueChange = (itemId, value) => { // Update radio button answer if the answer was marked allready in the same question  or add the answer to the questions array
+    if (itemExists(itemId)) {
+        updateItem(itemId, value);
+      }
+      else {
+        const item = {
+            id: items.length + 1,
+            name: itemId,
+            selectedValue: value,
+          };
+          setItems((prevArray) => [...prevArray, item]);
+          console.log(items);
+      }
     // Save all the answers from the form - Need to check if  the question answered
-    const item = {
-      id: items.length + 1,
-      name: itemId,
-      selectedValue: value,
-    };
-    setItems((prevArray) => [...prevArray, item]);
     console.log(items);
+
   };
 
   
-  function handleTextFieldChange(event, id) {
+  function handleTextFieldChange(event, id) { // Get text field value for answer
     const newItems = items.map(item => {
       if (item.name === id) {
         return { ...item, textFieldValue: event.target.value };

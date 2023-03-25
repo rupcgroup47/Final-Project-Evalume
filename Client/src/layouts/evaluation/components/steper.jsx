@@ -10,7 +10,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
 import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector";
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -94,6 +94,7 @@ ColorlibStepIcon.propTypes = {
 const steps = ["משוב עצמי", "משוב מנהל", "שיחת משוב והצבת יעדים"];
 
 export default function CustomizedSteppers() {
+    // const currentStep = useContext(StepContext);// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     return (
         <Stack sx={{ width: "100%" }} spacing={4}>
