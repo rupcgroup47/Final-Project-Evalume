@@ -37,45 +37,82 @@ import { useEffect } from "react";
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 
-const users = [
-  {
-    email: "admin1",
-    password: "12345678"
-  },
-  {
-    email: "admin2",
-    password: "012345678"
-  },
-];
+// const users = [
+//   {
+//     email: "admin1",
+//     password: "12345678",
+//   },
+//   {
+//     email: "admin2",
+//     password: "012345678",
+//   },
+// ];
 
 function Basic() {
   const [, dispatch] = useMaterialUIController(); // rtl
   const [validationsMsg, setMsg] = useState("");
   const navigate = useNavigate();
-  const [userData, setUserData] = useState({// User details temp object
+  const apiUserUrl = "https://localhost:7079/userEmail/userpassword/";
+  const [userData, setUserData] = useState({
+    // User details temp object
     email: "",
     password: "",
   });
+  const [employee, SetEmployee] = useState("");
+  const [userDetailsValidation, setUserDetailsValidation] = useState(false)
 
+  useEffect(() => {
+    if (userDetailsValidation){
+      fetch(apiUserUrl + userData.email + userData.password, {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (result) => {
+            SetEmployee(result);
+            console.log(result, "dadsda");
+            console.log(employee);
+            localStorage.setItem("Current User", JSON.stringify(userData)); // Set user details in local storage
+            console.log("Login successful");
+            setMsg("");
+            navigate("layouts/profile");
+          },
+          (error) => {
+            console.log(userData.email + userData.password)
+            console.log("err get=", error);
+            console.log("Wrong password or email");
+            setMsg("פרטים לא נכונים או משתמש לא קיים");
+          }
+        );
+    }
+   
+  }, [userDetailsValidation]);
 
-  const changeHandler = (e) => {// Catch the values from input
+  const changeHandler = (e) => {
+    // Catch the values from input
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const checkUser = () => {// Checking whether the user details exist and are appropriate, if they are appropriate, the user details go to the dashboard via navigate, if not, an error message pops up and the details must be re-entered
-    const usercheck = users.find(
-      (user) => user.email === userData.email && user.password === userData.password
-    );
-    if (usercheck) {
-      localStorage.setItem('Current User', JSON.stringify(userData)); // Set user details in local storage
-      console.log("Login successful");
-      setMsg("");
-      navigate("layouts/profile");
-    } else {
-      console.log("Wrong password or email");
-      setMsg("פרטים לא נכונים או משתמש לא קיים");
-    }
-  };
+  // const checkUser = () => {// Checking whether the user details exist and are appropriate, if they are appropriate, the user details go to the dashboard via navigate, if not, an error message pops up and the details must be re-entered
+  //   // const usercheck = users.find(
+  //   //   (user) => user.email === userData.email && user.password === userData.password
+  //   // );
+  //   if (usercheck) {
+  //     localStorage.setItem('Current User', JSON.stringify(userData)); // Set user details in local storage
+  //     console.log("Login successful");
+  //     setMsg("");
+  //     navigate("layouts/profile");
+  //   } else {
+  //     console.log("Wrong password or email");
+  //     setMsg("פרטים לא נכונים או משתמש לא קיים");
+  //   }
+  // };
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -127,7 +164,12 @@ function Basic() {
               />
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" onClick={checkUser} fullWidth>
+              <MDButton
+                variant="gradient"
+                color="info"
+                onClick={() => setUserDetailsValidation(true)}
+                fullWidth
+              >
                 התחבר{" "}
               </MDButton>
               <MDTypography variant="h4" color="black" mt={1}>
