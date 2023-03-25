@@ -13,8 +13,6 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
-
 // react-router-dom components
 import { useNavigate } from "react-router-dom";
 
@@ -32,62 +30,59 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/warehouse.jpg";
-import { useEffect } from "react";
+import { useEffect, useContext, useState } from "react";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
-
-// const users = [
-//   {
-//     email: "admin1",
-//     password: "12345678",
-//   },
-//   {
-//     email: "admin2",
-//     password: "012345678",
-//   },
-// ];
+import { MainStateContext } from "App";
 
 function Basic() {
   const [, dispatch] = useMaterialUIController(); // rtl
   const [validationsMsg, setMsg] = useState("");
   const navigate = useNavigate();
-  const apiUserUrl = "https://localhost:7079/userEmail/userpassword/";
+  const apiUserUrl = "https://localhost:7079/userEmail/userpassword?";
   const [userData, setUserData] = useState({
     // User details temp object
     email: "",
     password: "",
   });
-  const [employee, SetEmployee] = useState("");
   const [userDetailsValidation, setUserDetailsValidation] = useState(false)
+  const {mainState,setMainState} = useContext(MainStateContext)
 
   useEffect(() => {
     if (userDetailsValidation){
-      fetch(apiUserUrl + userData.email + userData.password, {
+      fetch(apiUserUrl + "userEmail=" + userData.email + "&userpassword=" + userData.password, {
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json; charset=UTF-8",
           Accept: "application/json; charset=UTF-8",
         }),
       })
-        .then((res) => {
-          return res.json();
+        .then(async response => {
+          const data = await response.json();
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+        }
+
+        return data;
         })
         .then(
           (result) => {
-            SetEmployee(result);
-            console.log(result, "dadsda");
-            console.log(employee);
-            localStorage.setItem("Current User", JSON.stringify(userData)); // Set user details in local storage
+            console.log(result);
+            localStorage.setItem("Current User", JSON.stringify(result)); // Set user details in local storage
             console.log("Login successful");
+            setMainState(result);
             setMsg("");
             navigate("layouts/profile");
           },
           (error) => {
-            console.log(userData.email + userData.password)
             console.log("err get=", error);
             console.log("Wrong password or email");
             setMsg("פרטים לא נכונים או משתמש לא קיים");
+            setUserDetailsValidation(false);
           }
         );
     }
@@ -98,21 +93,6 @@ function Basic() {
     // Catch the values from input
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-
-  // const checkUser = () => {// Checking whether the user details exist and are appropriate, if they are appropriate, the user details go to the dashboard via navigate, if not, an error message pops up and the details must be re-entered
-  //   // const usercheck = users.find(
-  //   //   (user) => user.email === userData.email && user.password === userData.password
-  //   // );
-  //   if (usercheck) {
-  //     localStorage.setItem('Current User', JSON.stringify(userData)); // Set user details in local storage
-  //     console.log("Login successful");
-  //     setMsg("");
-  //     navigate("layouts/profile");
-  //   } else {
-  //     console.log("Wrong password or email");
-  //     setMsg("פרטים לא נכונים או משתמש לא קיים");
-  //   }
-  // };
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -174,7 +154,7 @@ function Basic() {
               >
                 התחבר{" "}
               </MDButton>
-              <MDTypography variant="h4" color="black" mt={1}>
+              <MDTypography variant="h4"  mt={1}>
                 {validationsMsg}
               </MDTypography>
             </MDBox>
@@ -186,3 +166,18 @@ function Basic() {
 }
 
 export default Basic;
+
+  // const checkUser = () => {// Checking whether the user details exist and are appropriate, if they are appropriate, the user details go to the dashboard via navigate, if not, an error message pops up and the details must be re-entered
+  //   // const usercheck = users.find(
+  //   //   (user) => user.email === userData.email && user.password === userData.password
+  //   // );
+  //   if (usercheck) {
+  //     localStorage.setItem('Current User', JSON.stringify(userData)); // Set user details in local storage
+  //     console.log("Login successful");
+  //     setMsg("");
+  //     navigate("layouts/profile");
+  //   } else {
+  //     console.log("Wrong password or email");
+  //     setMsg("פרטים לא נכונים או משתמש לא קיים");
+  //   }
+  // };

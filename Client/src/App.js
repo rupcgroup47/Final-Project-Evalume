@@ -74,9 +74,7 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   const [mainState, setMainState] = useState({
-    user: {
-      name: 'שמעון',
-    }
+    userFName: 'אורח'
   });
 
   // Cache for the rtl
@@ -136,6 +134,7 @@ export default function App() {
 
       return null;
     });
+
   const configsButton = (
     <MDBox
       display="flex"
@@ -161,10 +160,7 @@ export default function App() {
   );
 
   return (
-    <MainStateContext.Provider value={{
-      state: mainState,
-      setState: setMainState,
-    }}>
+    <MainStateContext.Provider value={{ mainState,setMainState }}>
       {direction === "rtl" ? (
         <CacheProvider value={rtlCache}>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -174,7 +170,7 @@ export default function App() {
                 <Sidenav
                   color={sidenavColor}
                   brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                  brandName="פורטל להערכת עובדים"
+                  brandName="פורטל הערכת עובדים"
                   routes={routes}
                   onMouseEnter={handleOnMouseEnter}
                   onMouseLeave={handleOnMouseLeave}
@@ -186,7 +182,7 @@ export default function App() {
             {layout === "vr" && <Configurator />}
             <Routes>
               {getRoutes(routes)}
-              <Route path="*" element={<Navigate to="/dashboard" />} />
+              <Route path="*" element={<Navigate to="/profile" />} />
             </Routes>
           </ThemeProvider>
         </CacheProvider>
@@ -198,7 +194,7 @@ export default function App() {
               <Sidenav
                 color={sidenavColor}
                 brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                brandName="פורטל להערכת עובדים"
+                brandName="פורטל הערכת עובדים"
                 routes={routes}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}

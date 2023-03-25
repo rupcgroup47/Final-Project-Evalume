@@ -13,7 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { MainStateContext } from "App";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -71,6 +72,9 @@ function Header({ children }) {
   }, [tabsOrientation]);
 
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  const {mainState,setMainState} = useContext(MainStateContext);
+  console.log(mainState);
+
 
   return (
     <MDBox position="relative" mb={5}>
@@ -100,7 +104,7 @@ function Header({ children }) {
             <MDBox height="100%" mt={0.5} lineHeight={1}>
               <MDTypography variant="h5" fontWeight="medium">
               {"ברוך הבא "}
-                {userName.email}
+                {mainState.userFName}
               </MDTypography>
             </MDBox>
           </Grid>
