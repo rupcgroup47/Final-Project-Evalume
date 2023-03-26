@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useState, useEffect, useMemo, createContext } from "react";
-import { Container } from "@mui/material";
+// import { Container } from "@mui/material";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -72,10 +72,22 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
-  const { pathname } = useLocation();
   const [mainState, setMainState] = useState({
-    userFName: 'אורח'
+    userFName: "אורח",
   });
+  console.log(mainState.userFName);
+  // const [routeFirst, setRouteFirst] = useState(
+  //   mainState.userFName === "אורח" ? "/authentication/sign-in" : "/profile"
+  // );
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Get user details from Local Storage
+    const Employee = JSON.parse(localStorage.getItem("Current User"));
+    if (Employee) {
+      setMainState(Employee);
+    }
+  }, []);
 
   // Cache for the rtl
   useMemo(() => {
@@ -123,12 +135,23 @@ export default function App() {
         return getRoutes(route.collapse);
       }
 
-      if (route.route) {
+      if (route.route === "/authentication/sign-in") {
+        return <Route exact path={route.route} element={route.component} key={route.key} />;
+      }
+
+      if (route.route !== "/authentication/sign-in") {
         return (
-          <Route exact path={route.route} element={(<DashboardLayout>
-            <DashboardNavbar />
-            {route.component}
-          </DashboardLayout>)} key={route.key} />
+          <Route
+            exact
+            path={route.route}
+            element={
+              <DashboardLayout>
+                <DashboardNavbar />
+                {route.component}
+              </DashboardLayout>
+            }
+            key={route.key}
+          />
         );
       }
 
@@ -159,8 +182,16 @@ export default function App() {
     </MDBox>
   );
 
+  const value = useMemo(
+    () => ({
+      mainState,
+      setMainState,
+    }),
+    [mainState]
+  );
+
   return (
-    <MainStateContext.Provider value={{ mainState,setMainState }}>
+    <MainStateContext.Provider value={value}>
       {direction === "rtl" ? (
         <CacheProvider value={rtlCache}>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>

@@ -17,58 +17,60 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 
-
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+// import MDTypography from "components/MDTypography";
 
-// Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // import Footer from "examples/Footer";
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-import ProfilesList from "examples/Lists/ProfilesList";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
+// import ProfilesList from "examples/Lists/ProfilesList";
+// import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 
 // Overview page components
 import Header from "layouts/profile/components/Header";
-// import PlatformSettings from "layouts/profile/components/PlatformSettings";
+// import PlatformSettings from "layouts/profile/components/PlatformSettings";\
 
-// Data
-import ProfileAlerts from "./data/ProfileAlerts";
 // Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import homeDecor4 from "assets/images/home-decor-4.jpeg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
-import { useEffect, useState } from "react";
+// import homeDecor1 from "assets/images/home-decor-1.jpg";
+// import homeDecor2 from "assets/images/home-decor-2.jpg";
+// import homeDecor3 from "assets/images/home-decor-3.jpg";
+// import homeDecor4 from "assets/images/home-decor-4.jpeg";
+// import team1 from "assets/images/team-1.jpg";
+// import team2 from "assets/images/team-2.jpg";
+// import team3 from "assets/images/team-3.jpg";
+// import team4 from "assets/images/team-4.jpg";
+import { useEffect, useState, useContext } from "react";
+import { MainStateContext } from "App";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 
-function Overview() {
+// Data
+import ProfileAlerts from "./data/ProfileAlerts";
 
-  const _alerts = [
+function Overview() {
+  const arrAlerts = [
+    {
+      alertNum: 0,
+      alertSub: "הערכה עצמית ממתינה לביצוע",
+    },
     {
       alertNum: 1,
-      alertSub: "הערכות עובד שיש למלא"
+      alertSub: "הערכות עובד שיש למלא",
     },
     {
       alertNum: 4,
-      alertSub: "פגישות ממתינות לקביעה"
+      alertSub: "פגישות ממתינות לקביעה",
     },
     {
       alertNum: 0,
-      alertSub: "הערכות ממתינות למישוב"
-    }
-  ]
+      alertSub: "הערכות ממתינות למישוב",
+    },
+  ];
 
-  const [alerts, setAlerts] = useState(_alerts);
+  const [alerts, setAlerts] = useState(arrAlerts);
   const [, dispatch] = useMaterialUIController();
+  const { mainState, setMainState } = useContext(MainStateContext);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -77,7 +79,6 @@ function Overview() {
     return () => setDirection(dispatch, "ltr");
   }, []);
   return (
-
     <Header>
       <MDBox mt={5} mb={3}>
         <Grid container spacing={1}>
@@ -86,13 +87,12 @@ function Overview() {
             <ProfileInfoCard
               title="פרטים אישיים"
               info={{
-                שם: "יהודה אביטן",
+                שם: `${mainState.userFName} ${mainState.userLName}`,
                 טלפון: "(44) 123 1234 123",
-                אימייל: "alecthompson@mail.com",
+                אימייל: `${mainState.userEmail}`,
                 מחלקה: "מחסן",
-                מנהל: "מנכל"
+                תפקיד: "מנכל",
               }}
-
               action={{ route: "", tooltip: "Edit Profile" }}
               shadow={false}
             />
@@ -103,7 +103,14 @@ function Overview() {
           </Grid>
         </Grid>
       </MDBox>
-      {/* <MDBox pt={2} px={2} lineHeight={1.25}>
+    </Header>
+  );
+}
+
+export default Overview;
+
+{
+  /* <MDBox pt={2} px={2} lineHeight={1.25}>
           <MDTypography variant="h6" fontWeight="medium">
             Projects
           </MDTypography>
@@ -112,8 +119,10 @@ function Overview() {
               Architects design houses
             </MDTypography>
           </MDBox>
-        </MDBox> */}
-      {/* <MDBox p={2}>
+        </MDBox> */
+}
+{
+  /* <MDBox p={2}>
           <Grid container spacing={6}>
             <Grid item xs={12} md={6} xl={3}>
               <DefaultProjectCard
@@ -196,10 +205,5 @@ function Overview() {
               />
             </Grid>
           </Grid>
-        </MDBox> */}
-    </Header>
-    // {/* <Footer /> */ }
-  );
+        </MDBox> */
 }
-
-export default Overview;

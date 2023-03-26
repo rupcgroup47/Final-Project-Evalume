@@ -27,7 +27,7 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { visuallyHidden } from "@mui/utils";
+// import { visuallyHidden } from "@mui/utils";
 import { useDebounce } from "use-debounce";
 
 import TableItem from "components/TableItem";
@@ -43,44 +43,6 @@ export default function UsersTable({ users, setUsers }) {
     // Update the users array
     setItems(users);
   }, [users]);
-
-  // handleSort - start
-  // const [orderType, setOrderType] = useState("asc");
-  // const [orderBy, setOrderBy] = useState("fullName");
-  // const handleSort = (value) => {
-  //   let sortedArray;
-
-  //   if (value === "fullName") {
-  //     sortedArray = items.sort((a, b) =>
-  //       a.firstName.localeCompare(b.firstName)
-  //     );
-  //   } else if (value === "email") {
-  //     sortedArray = items.sort((a, b) =>
-  //       a.userEmail.localeCompare(b.userEmail)
-  //     );
-  //   } else if (value === "gender") {
-  //     sortedArray = items.sort((a, b) =>
-  //       a.userGender.localeCompare(b.userGender)
-  //     );
-  //   } else if (value === "department") {
-  //     sortedArray = items.sort((a, b) =>
-  //       a.userDepartment.localeCompare(b.userDepartment)
-  //     );
-  //   } else if (value === "job") {
-  //     sortedArray = items.sort((a, b) => a.userJob.localeCompare(b.userJob));
-  //   }
-
-  //   if (orderType === "desc") {
-  //     sortedArray.reverse();
-  //   }
-
-  //   setItems(sortedArray);
-
-  //   const isAsc = orderBy === value && orderType === "asc";
-  //   setOrderType(isAsc ? "desc" : "asc");
-  //   setOrderBy(value);
-  // };
-  // handleSort - end
 
   // handleSearch - start
   const [searchInput, setSearchInput] = useState("");

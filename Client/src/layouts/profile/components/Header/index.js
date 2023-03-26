@@ -22,10 +22,10 @@ import PropTypes from "prop-types";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Icon from "@mui/material/Icon";
+// import AppBar from "@mui/material/AppBar";
+// import Tabs from "@mui/material/Tabs";
+// import Tab from "@mui/material/Tab";
+// import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -42,14 +42,6 @@ import backgroundImage from "assets/images/packages.jpg";
 function Header({ children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => { // Get user name from Local Storage
-    const userName = JSON.parse(localStorage.getItem("Current User"));
-    if (userName) {
-      setUserName(userName);
-    }
-  }, []);
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -73,8 +65,6 @@ function Header({ children }) {
 
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
   const {mainState,setMainState} = useContext(MainStateContext);
-  console.log(mainState);
-
 
   return (
     <MDBox position="relative" mb={5}>
