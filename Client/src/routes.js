@@ -58,7 +58,6 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
-  ,
   {
     type: "collapse",
     name: "משתמשים",
@@ -67,14 +66,14 @@ const routes = [
     route: "/users",
     component: <Users />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "הערכות",
-  //   key: "evalues",
-  //   icon: <Icon fontSize="small">notifications</Icon>,
-  //   route: "/evalues",
-  //   component: <Evalues />,
-  // },
+  {
+    type: "collapse",
+    name: "הקמת טופס הערכה",
+    key: "evalueForm",
+    icon: <Icon fontSize="small">feed</Icon>,
+    route: "/evalue",
+    component: <Evalues />,
+  },
   // },
   // {
   //   type: "collapse",
@@ -86,9 +85,9 @@ const routes = [
   // },
   {
     type: "collapse",
-    name: "הערכה שנתית",
+    name: "טופס הערכה שנתית",
     key: "evaluation",
-    icon: <Icon fontSize="small">form</Icon>,
+    icon: <Icon fontSize="small">poll</Icon>,
     route: "/evaluation",
     component: <Evaluations />,
   },
@@ -115,7 +114,7 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
-  }
+  },
 ];
 
 export default routes;

@@ -14,20 +14,16 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Grid from "@mui/material/Grid";
+// import Grid from "@mui/material/Grid";
 
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+// // Material Dashboard 2 React components
+// import MDBox from "components/MDBox";
 
-// Material Dashboard 2 React examples
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import UsersTable from "./UsersTable";
 import { Container } from "@mui/material";
-import { useState } from "react";
-import { useEffect } from "react";
-
+import { useState, useContext, useEffect } from "react";
+import { MainStateContext } from "App";
 
 // Data
 
@@ -103,9 +99,49 @@ const _users = [
     userJob: "Software Engineer",
   },
 ];
+
 function Users() {
   const [users, setUsers] = useState(_users);
   const [, dispatch] = useMaterialUIController();
+  const { mainState, setMainState } = useContext(MainStateContext);
+  const apiUserUrl = "https://localhost:7079/api/Employee";
+
+  // useEffect(() => {
+  //   if (mainState.is_Admin) {
+  //     fetch(
+  //       apiUserUrl,
+  //       {
+  //         method: "GET",
+  //         headers: new Headers({
+  //           "Content-Type": "application/json; charset=UTF-8",
+  //           Accept: "application/json; charset=UTF-8",
+  //         }),
+  //       })
+  //       .then(async response => {
+  //         const data = await response.json();
+
+  //         if (!response.ok) {
+  //           // get error message from body or default to response statusText
+  //           const error = (data && data.message) || response.statusText;
+  //           return Promise.reject(error);
+  //         }
+
+  //         return data;
+  //       })
+  //       .then(
+  //         (result) => {
+  //           console.log("success");
+  //           setUsers(result)
+  //           setMsg("");
+  //         },
+  //         (error) => {
+  //           console.log("err get=", error);
+  //           setMsg("קרתה תקלה");
+  //         }
+  //       );
+  //   }
+
+  // }, [users]);
 
   // Changing the direction to rtl
   useEffect(() => {
