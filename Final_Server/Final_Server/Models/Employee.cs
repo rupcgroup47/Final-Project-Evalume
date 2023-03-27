@@ -15,6 +15,12 @@ namespace Final_Server.Models
         bool is_Active;
         bool is_Admin;
         bool userType;
+        string userRole;
+        int userRoleGroup;
+        string userDepartment;
+        int userPhone;
+        string userManager;
+
 
         static List<Employee> EmployeesList = new List<Employee>();
 
@@ -29,6 +35,11 @@ namespace Final_Server.Models
         public bool Is_Active { get => is_Active; set => is_Active = value; }
         public bool Is_Admin { get => is_Admin; set => is_Admin = value; }
         public bool UserType { get => userType; set => userType = value; }
+        public string UserRole { get => userRole; set => userRole = value; }
+        public int UserRoleGroup { get => userRoleGroup; set => userRoleGroup = value; }
+        public string UserDepartment { get => userDepartment; set => userDepartment = value; }
+        public int UserPhone { get => userPhone; set => userPhone = value; }
+        public string UserManager { get => userManager; set => userManager = value; }
 
         public Employee Read(string userEmail, string userpassword) //get all user details that fit to the userEmail & userPassword
         {

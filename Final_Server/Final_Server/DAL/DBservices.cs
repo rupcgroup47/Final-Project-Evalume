@@ -75,12 +75,17 @@ public class DBservices
                 employee.UserLName = dataReader["UserLName"].ToString();
                 employee.UserGender = dataReader["UserGender"].ToString();
                 employee.UserInsertDate = Convert.ToDateTime(dataReader["UserInsertDate"]);
-                employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]); 
+                employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
                 employee.Is_Admin = Convert.ToBoolean(dataReader["Is_Admin"]);
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
+                employee.UserDepartment = dataReader["UserDepartment"].ToString();
+                employee.UserManager = dataReader["UserManager"].ToString();
+                employee.UserPhone = Convert.ToInt32(dataReader["UserPhone"]);
+                employee.UserRole = dataReader["UserRole"].ToString();
+                employee.UserRoleGroup = Convert.ToInt32(dataReader["UserRoleGroup"]);
             }
 
-            return employee;
+                return employee;
         }
         catch (Exception ex)
         {
@@ -250,6 +255,11 @@ public class DBservices
                 employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
                 employee.Is_Admin = Convert.ToBoolean(dataReader["Is_Admin"]);
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
+                employee.UserDepartment = dataReader["UserDepartment"].ToString();
+                employee.UserManager = dataReader["UserManager"].ToString();
+                employee.UserPhone = Convert.ToInt32(dataReader["UserPhone"]);
+                employee.UserRole = dataReader["UserRole"].ToString();
+                employee.UserRoleGroup = Convert.ToInt32(dataReader["UserRoleGroup"]);
 
                 UsersList.Add(employee);
 
@@ -439,6 +449,11 @@ public class DBservices
         cmd.Parameters.AddWithValue("@Is_Active", employee.Is_Active);
         cmd.Parameters.AddWithValue("@Is_Admin", employee.Is_Admin);
         cmd.Parameters.AddWithValue("@UserType", employee.UserType);
+        cmd.Parameters.AddWithValue("@UserRole", employee.UserRole);
+        cmd.Parameters.AddWithValue("@UserRoleGroup", employee.UserRoleGroup);
+        cmd.Parameters.AddWithValue("@UserDepartment", employee.UserDepartment);
+        cmd.Parameters.AddWithValue("@UserPhone", employee.UserPhone);
+        cmd.Parameters.AddWithValue("@UserManager", employee.UserManager);
 
         return cmd;
     }
