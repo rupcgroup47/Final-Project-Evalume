@@ -38,7 +38,6 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Users from "layouts/users";
-import Evalues from "layouts/evalue";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
 import SystemInfo from "layouts/info/SystemInfo";
