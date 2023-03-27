@@ -37,6 +37,7 @@ import { useCallback } from "react";
 import { MainStateContext } from "App";
 import CustomizedSteppers from "./components/steper";
 import SurveyForm from "./components/surveyForm";
+import { Outlet } from "react-router-dom";
 
 function QuestionnaireForm() {
 
@@ -57,6 +58,8 @@ function QuestionnaireForm() {
             <CustomizedSteppers />
             <SurveyForm />
         </Container>
+        // <Outlet/>
+
     );
 }
 

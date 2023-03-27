@@ -17,7 +17,7 @@ import { useState, useEffect, useMemo, createContext } from "react";
 import { Container } from "@mui/material";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -74,7 +74,7 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   const [mainState, setMainState] = useState({
-    userFName: 'אורח'
+    userFName: "אורח",
   });
 
   // Cache for the rtl
@@ -124,11 +124,23 @@ export default function App() {
       }
 
       if (route.route) {
+        // The route inside route in routes.js
         return (
-          <Route exact path={route.route} element={(<DashboardLayout>
-            <DashboardNavbar />
-            {route.component}
-          </DashboardLayout>)} key={route.key} />
+          <Route
+            exact
+            path={route.route}
+            element={
+              <DashboardLayout>
+                <DashboardNavbar />
+                {route.component ? route.component : null}
+              </DashboardLayout>
+            }
+            key={route.key}
+          >
+            {route.children?.map( (child)=> 
+            <Route key={child.key} path={child.path} element={child.component}/>
+            )}
+          </Route>
         );
       }
 
@@ -160,7 +172,7 @@ export default function App() {
   );
 
   return (
-    <MainStateContext.Provider value={{ mainState,setMainState }}>
+    <MainStateContext.Provider value={{ mainState, setMainState }}>
       {direction === "rtl" ? (
         <CacheProvider value={rtlCache}>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>

@@ -45,7 +45,7 @@ import SystemInfo from "layouts/info/SystemInfo";
 import SignIn from "layouts/authentication/sign-in";
 import Goals from "layouts/goals/Goals";
 import Evaluations from "layouts/evaluation";
-
+import { Outlet } from "react-router-dom";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -91,6 +91,21 @@ const routes = [
     icon: <Icon fontSize="small">form</Icon>,
     route: "/evaluation",
     component: <Evaluations />,
+    children: [
+      {
+      name: "מישוב ",
+      key: "evaluationMain",
+      icon: <Icon fontSize="small">form</Icon>,
+      route: "",
+      component:  <Dashboard/>},
+      {
+        name: "  מישוב עצמי",
+        key: "evaluationPersonal",
+        icon: <Icon fontSize="small">form</Icon>,
+        route: "step1",
+        component: <Goals/> },
+
+    ]
   },
   {
     type: "collapse",
