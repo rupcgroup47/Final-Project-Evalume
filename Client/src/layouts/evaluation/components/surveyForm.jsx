@@ -78,6 +78,7 @@ export default function surveyForm() {
     // { id: 3, name: "Item 3", selectedValue: "", textFieldValue: '' },
     // { id: 4, name: "Item 4", selectedValue: "", textFieldValue: '' }
   ]);
+  
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -181,12 +182,12 @@ export default function surveyForm() {
                 <Typography></Typography>
               </Grid>
               <Grid item style={gridItems2} xs={7} >
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "500" }}>לא רלוונטי לתפקיד</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "500" }}>לא עומד בציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "500" }}>עומד בחלק מהציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "500" }}>עומד כמעט בכל הציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "500" }}>עומד בציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "500" }}>עומד בציפיות טוב מאוד</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>לא רלוונטי לתפקיד</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>לא עומד בציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בחלק מהציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד כמעט בכל הציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בציפיות טוב מאוד</Typography>
               </Grid>
               <Grid item xs={2}>
                 <Typography></Typography>
