@@ -75,7 +75,6 @@ export default function App() {
   const [mainState, setMainState] = useState({
     userFName: "אורח",
   });
-  console.log(mainState.userFName);
   // const [routeFirst, setRouteFirst] = useState(
   //   mainState.userFName === "אורח" ? "/authentication/sign-in" : "/profile"
   // );
