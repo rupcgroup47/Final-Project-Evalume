@@ -5,13 +5,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-export default function RadioButtons({itemId, selectedValue, onselectedValueChange}) {
-  const handleChange = (event) => {
-    console.log(event.target.value)
-    console.log(itemId)
+export default function RadioButtons({ itemId, selectedValue, onselectedValueChange }) {
 
+  const handleChange = (event) => {
     onselectedValueChange(itemId, event.target.value) // Get question row and the selected value
-   };
+  };
 
   return (
     <div style={{ display: "contents", fontSize: 28 }} >

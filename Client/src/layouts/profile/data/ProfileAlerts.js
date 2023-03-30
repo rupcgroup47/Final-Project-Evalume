@@ -14,16 +14,17 @@ Coded by www.creative-tim.com
 */
 
 // react-routers components
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 // prop-types is library for typechecking of props
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // @mui material components
 import Divider from "@mui/material/Divider";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Subject from "@mui/icons-material/Subject";
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -36,12 +37,19 @@ export default function ProfileAlerts(props) {
       <MDBox p={2}>
         {alerts.map((item, index) => (
           <MDTypography variant="h2" color="secondary" key={index}>
-            {index === 0 ? <AccessAlarmIcon fontSize="large" /> : index === 1 ? <CalendarToday  fontSize="large" /> : <Subject  fontSize="large"/>}
+            {index === 0 ? (
+              <AssignmentIndIcon fontSize="large" />
+            ) : index === 1 ? (
+              <AccessAlarmIcon fontSize="large" />
+            ) : index === 2 ? (
+              <CalendarToday fontSize="large" />
+            ) : (
+              <Subject fontSize="large" />
+            )}
             &nbsp;
             {item.alertNum} &nbsp;
-            {item.alertSub}  
+            {item.alertSub}
             <Divider />
-
           </MDTypography>
         ))}
       </MDBox>

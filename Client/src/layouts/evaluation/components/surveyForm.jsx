@@ -73,21 +73,24 @@ export default function surveyForm() {
   const [currentStep, setStep] = React.useState(0);
 
   const [items, setItems] = React.useState([
-    { id: 1, name: "Item 1", selectedValue: "" ,textFieldValue: ''},
-    { id: 2, name: "Item 2", selectedValue: "" ,textFieldValue: ''},
-    { id: 3, name: "Item 3", selectedValue: "",textFieldValue: '' }
+    // { id: 1, name: "Item 1", selectedValue: "", textFieldValue: '' },
+    // { id: 2, name: "Item 2", selectedValue: "", textFieldValue: '' },
+    // { id: 3, name: "Item 3", selectedValue: "", textFieldValue: '' },
+    // { id: 4, name: "Item 4", selectedValue: "", textFieldValue: '' }
   ]);
+  
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   function itemExists(itemId) {
-    return items.some(item => item.name === itemId);
+    return items.some(item => item.id === itemId);
   }
 
   function updateItem(itemId, value) { // Update radio button answer if the answer was marked allready in the same question 
     const updatedItems = items.map(item => {
-      if (item.name === itemId) {
+      if (item.id === itemId) {
+        console.log('item.name');
         return {
           ...item,
           selectedValue: value
@@ -99,24 +102,23 @@ export default function surveyForm() {
   }
 
   const handleselectedValueChange = (itemId, value) => { // Update radio button answer if the answer was marked allready in the same question  or add the answer to the questions array
-    if (itemExists(itemId)) {
-        updateItem(itemId, value);
-      }
-      else {
-        const item = {
-            id: items.length + 1,
-            name: itemId,
-            selectedValue: value,
-          };
-          setItems((prevArray) => [...prevArray, item]);
-          console.log(items);
-      }
-    // Save all the answers from the form - Need to check if  the question answered
-    console.log(items);
-
+    if (items.length > 0 && itemExists(itemId)) {
+      console.log('items');
+      updateItem(itemId, value);
+    }
+    else {
+      console.log('here');
+      const item = {
+        id: itemId,
+        name: itemId,
+        selectedValue: value,
+      };
+      setItems((prevArray) => [...prevArray, item]);
+    }
+    // Save all the answers from the form - Need to check if the question answered
   };
 
-  
+
   function handleTextFieldChange(event, id) { // Get text field value for answer
     const newItems = items.map(item => {
       if (item.name === id) {
@@ -138,6 +140,22 @@ export default function surveyForm() {
     console.log(errors, e);
   };
 
+  const gridItems = {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    display: "flex",
+    padding: "initial",
+    alignSelf: "center"
+  }
+  const gridItems2 = {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    display: "flex",
+    padding: "initial",
+    alignSelf: "center",
+    textAlign: "center"
+  }
+  console.log(items);
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
       {questionsResp.map(({ id, title, questions }) => (
@@ -152,28 +170,61 @@ export default function surveyForm() {
           </AccordionSummary>
 
           <AccordionDetails>
-            {questions.map(({ id: questionId, label }) => (
-              <Stack
-                key={"q-" + id + "-" + questionId}
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-around"
+              alignItems="baseline"
+              spacing={3}
+              marginTop="-10px"
+            >
+              <Grid item xs={3}>
+                <Typography></Typography>
+              </Grid>
+              <Grid item style={gridItems2} xs={7} >
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>לא רלוונטי לתפקיד</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>לא עומד בציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בחלק מהציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד כמעט בכל הציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בציפיות</Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בציפיות טוב מאוד</Typography>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography></Typography>
+              </Grid>
+            </Grid>
+            {questions.map(({ id: questionId, label }, idx) => (
+              <Grid
+                container
                 direction="row"
-                spacing={3}
-                justifyContent="space-evenly"
+                justifyContent="space-around"
                 alignItems="baseline"
+                spacing={3}
+                marginTop="-10px"
+                key={"q-" + id + "-" + questionId}
               >
-                <Typography>{label}</Typography>
-                <RadioButtons
-                  itemId={"q-" + id + "-" + questionId}
-                  onselectedValueChange={handleselectedValueChange}
-                />
-                <TextField
-                  label="הוסף הערה"
-                //   key={"q-" + id + "-" + questionId}
-                  value={items.textFieldValue}
-                  onChange={(event) => handleTextFieldChange(event,"q-" + id + "-" + questionId)}
-                  multiline
-                  maxRows={3}
-                />
-              </Stack>
+                <Grid item xs={3}>
+                  <Typography>{label}</Typography>
+                </Grid>
+                <Grid item style={gridItems} xs={7} >
+                  <RadioButtons
+                    itemId={"q-" + id + "-" + questionId}
+                    onselectedValueChange={handleselectedValueChange}
+                    selectedValue={items.length > 0 ? (items?.find((item) => item.name === "q-" + id + "-" + questionId))?.selectedValue : ''}
+                  // style={{}}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <TextField
+                    label="הוסף הערה"
+                    //   key={"q-" + id + "-" + questionId}
+                    value={items.textFieldValue}
+                    onChange={(event) => handleTextFieldChange(event, "q-" + id + "-" + questionId)}
+                    multiline
+                    maxRows={3}
+                  />
+                </Grid>
+              </Grid>
             ))}
           </AccordionDetails>
         </Accordion>
@@ -195,3 +246,25 @@ export default function surveyForm() {
     </form>
   );
 }
+              // <Stack
+              //   key={"q-" + id + "-" + questionId}
+              //   direction="row"
+              //   spacing={3}
+              //   justifyContent="space-evenly"
+              //   alignItems="baseline"
+              // >
+              //   <Typography style={{maxWidth:'300px',}}>{label}</Typography>
+              //   <RadioButtons
+              //     itemId={"q-" + id + "-" + questionId}
+              //     onselectedValueChange={handleselectedValueChange}
+              //     selectedValue={items.length>0?(items?.find((item) => item.name === "q-" + id + "-" + questionId))?.selectedValue:''}
+              //   />
+              //   <TextField
+              //     label="הוסף הערה"
+              //     //   key={"q-" + id + "-" + questionId}
+              //     value={items.textFieldValue}
+              //     onChange={(event) => handleTextFieldChange(event, "q-" + id + "-" + questionId)}
+              //     multiline
+              //     maxRows={3}
+              //   />
+              // </Stack>
