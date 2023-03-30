@@ -18,7 +18,7 @@ namespace Final_Server.Models
         string userRole;
         int userRoleGroup;
         string userDepartment;
-        int userPhone;
+        int userPhoneNum;
         string userManager;
 
 
@@ -38,7 +38,7 @@ namespace Final_Server.Models
         public string UserRole { get => userRole; set => userRole = value; }
         public int UserRoleGroup { get => userRoleGroup; set => userRoleGroup = value; }
         public string UserDepartment { get => userDepartment; set => userDepartment = value; }
-        public int UserPhone { get => userPhone; set => userPhone = value; }
+        public int UserPhoneNum { get => userPhoneNum; set => userPhoneNum = value; }
         public string UserManager { get => userManager; set => userManager = value; }
 
         public Employee Read(string userEmail, string userpassword) //get all user details that fit to the userEmail & userPassword
