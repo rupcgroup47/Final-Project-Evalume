@@ -70,19 +70,21 @@ public class DBservices
             {
                 employee.UserEmail = dataReader["UserEmail"].ToString();
                 employee.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                employee.UserId = dataReader["UserId"].ToString();
+                employee.UserId = Convert.ToInt32(dataReader["UserId"]);
                 employee.UserFName = dataReader["UserFName"].ToString();
                 employee.UserLName = dataReader["UserLName"].ToString();
                 employee.UserGender = dataReader["UserGender"].ToString();
-                employee.UserInsertDate = Convert.ToDateTime(dataReader["UserInsertDate"]);
+                //employee.UserInsertDate = Convert.ToDateTime(dataReader["UserInsertDate"]);
                 employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
                 employee.Is_Admin = Convert.ToBoolean(dataReader["Is_Admin"]);
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
                 employee.UserDepartment = dataReader["DepName"].ToString();
-                employee.UserManager = dataReader["UserManager"].ToString();
+                employee.UserManagerNum = Convert.ToInt32(dataReader["UserManager"]);
                 employee.UserPhoneNum = Convert.ToInt32(dataReader["UserPhoneNum"]);
                 employee.UserRole = dataReader["UserRole"].ToString();
-                employee.UserRoleGroup = Convert.ToInt32(dataReader["RoleGroup_Desc"]);
+                employee.UserRoleGroupDesc = dataReader["RoleGroup_Desc"].ToString();
+                employee.ManagerFname = dataReader["ManagerFname"].ToString();
+                employee.ManagerLName = dataReader["ManagerLName"].ToString();
             }
 
                 return employee;
@@ -247,22 +249,23 @@ public class DBservices
                 Employee employee = new Employee();
                 employee.UserEmail = dataReader["UserEmail"].ToString();
                 employee.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                employee.UserId = dataReader["UserId"].ToString();
+                employee.UserId = Convert.ToInt32(dataReader["UserId"]);
                 employee.UserFName = dataReader["UserFName"].ToString();
                 employee.UserLName = dataReader["UserLName"].ToString();
                 employee.UserGender = dataReader["UserGender"].ToString();
-                employee.UserInsertDate = Convert.ToDateTime(dataReader["UserInsertDate"]);
+                //employee.UserInsertDate = Convert.ToDateTime(dataReader["UserInsertDate"]);
                 employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
                 employee.Is_Admin = Convert.ToBoolean(dataReader["Is_Admin"]);
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
-                employee.UserDepartment = dataReader["UserDepartment"].ToString();
-                employee.UserManager = dataReader["UserManager"].ToString();
+                employee.UserDepartment = dataReader["DepName"].ToString();
+                employee.UserManagerNum = Convert.ToInt32(dataReader["UserManager"]);
                 employee.UserPhoneNum = Convert.ToInt32(dataReader["UserPhoneNum"]);
                 employee.UserRole = dataReader["UserRole"].ToString();
-                employee.UserRoleGroup = Convert.ToInt32(dataReader["RoleGroup_Type"]);
+                employee.UserRoleGroupDesc = dataReader["RoleGroup_Desc"].ToString();
+                employee.ManagerFname = dataReader["ManagerFname"].ToString();
+                employee.ManagerLName = dataReader["ManagerLName"].ToString();
 
                 UsersList.Add(employee);
-
             }
 
             return UsersList;
@@ -451,9 +454,11 @@ public class DBservices
         cmd.Parameters.AddWithValue("@UserType", employee.UserType);
         cmd.Parameters.AddWithValue("@UserRole", employee.UserRole);
         cmd.Parameters.AddWithValue("@RoleGroup_Type", employee.UserRoleGroup);
-        cmd.Parameters.AddWithValue("@UserDepartment", employee.UserDepartment);
+        cmd.Parameters.AddWithValue("@DepName", employee.UserDepartment);
         cmd.Parameters.AddWithValue("@UserPhoneNum", employee.UserPhoneNum);
-        cmd.Parameters.AddWithValue("@UserManager", employee.UserManager);
+        cmd.Parameters.AddWithValue("@ManagerFname", employee.ManagerFname);
+        cmd.Parameters.AddWithValue("@ManagerLName", employee.ManagerLName);
+        cmd.Parameters.AddWithValue("@ManagerEmail", employee.ManagerEmail);
 
         return cmd;
     }

@@ -44,6 +44,7 @@ import SystemInfo from "layouts/info/SystemInfo";
 import SignIn from "layouts/authentication/sign-in";
 import Goals from "layouts/goals/Goals";
 import Evaluations from "layouts/evaluation";
+import EvalueForm from "layouts/evalue";
 import { Outlet } from "react-router-dom";
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -71,7 +72,7 @@ const routes = [
     key: "evalueForm",
     icon: <Icon fontSize="small">feed</Icon>,
     route: "/evalue",
-    component: <Evaluations />,
+    component: <EvalueForm />,
   },
   // },
   // {
