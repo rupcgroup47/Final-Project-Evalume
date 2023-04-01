@@ -76,11 +76,11 @@ namespace Final_Server.Controllers
             int numEffected = question.DeleteQuestion(QuestionNum);
             if (numEffected != 0)
             {
-                return Ok("vacation succesfully inserted");
+                return Ok("Question succesfully deleted");
             }
             else
             {
-                return NotFound("We couldnt insert your flat");
+                return NotFound("We couldnt delete your Question");
             }
 
         }
