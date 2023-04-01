@@ -71,7 +71,7 @@ const routes = [
     key: "evalueForm",
     icon: <Icon fontSize="small">feed</Icon>,
     route: "/evalue",
-    component: <Evalues />,
+    component: <Evaluations />,
   },
   // },
   // {

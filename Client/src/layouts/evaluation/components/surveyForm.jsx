@@ -9,31 +9,19 @@ import RadioButtons from "./survey-component/RadioButtons";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { useForm } from "react-hook-form";
-import SaveIcon from "@mui/icons-material/Save";
-import SendIcon from "@mui/icons-material/Send";
 import { Button } from "@mui/material";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import CustomizedSteppers from "./steper";
-import QuestionnaireForm from "..";
-// const questionsResp = [{
-//     id: '1',
-//     title: 'שירותיות',
-//     questions: [{
-//         id: '1',
-//         label: '',
-//     }],
-// }];
+import DialogSurvey from "./DialogSurvey";
 
-const questionsResp = [...Array(6).keys()].map((idx) => ({
+const questionsResp = [...Array(4).keys()].map((idx) => ({
   id: `id title-${idx}`,
-  title: `title - ${idx}`,
+  title: `title - ${idx}`,// Section name
   questions: [...Array(4).keys()].map((index) => ({
     id: `question-${index}`,
-    label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
+    label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,// Question name
   })),
 }));
-
+ console.log(questionsResp.length+"length")
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -70,15 +58,9 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function surveyForm() {
   const [expanded, setExpanded] = React.useState(questionsResp[0].id);
-  const [currentStep, setStep] = React.useState(0);
-
-  const [items, setItems] = React.useState([
-    // { id: 1, name: "Item 1", selectedValue: "", textFieldValue: '' },
-    // { id: 2, name: "Item 2", selectedValue: "", textFieldValue: '' },
-    // { id: 3, name: "Item 3", selectedValue: "", textFieldValue: '' },
-    // { id: 4, name: "Item 4", selectedValue: "", textFieldValue: '' }
-  ]);
-  
+  const [items, setItems] = React.useState([]);
+  const [showCloseDialog, setShowCloseDialog] = React.useState(false);
+const [statusMsg, setMsg] = React.useState("")
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -119,7 +101,7 @@ export default function surveyForm() {
   };
 
 
-  function handleTextFieldChange(event, id) { // Get text field value for answer
+  function handleTextFieldChange(id, event) { // Get text field value for answer
     const newItems = items.map(item => {
       if (item.name === id) {
         return { ...item, textFieldValue: event.target.value };
@@ -131,14 +113,23 @@ export default function surveyForm() {
   }
 
   const { handleSubmit } = useForm();
-  const onSubmit = (data, e) => {
+  const onSubmit = (data, event) => {
     event.preventDefault();
-    console.log(data, e);
+
+    if (items.length != ((questionsResp.length)*4)) {// Checking weather the user answer all the questions
+      setShowCloseDialog((e) => !e) // Error dialog message
+      setMsg("לא ענית על כל השאלות")
+    }
+    else{
+      setShowCloseDialog((e) => !e) // Error dialog message
+      setMsg("ענית על כל השאלות, מנהל ייצור איתך קשר לפגישת הערכה")
+    }
   };
-  const onError = (errors, e) => {
+  const onError = (errors, event) => {
     event.preventDefault();
-    console.log(errors, e);
+    console.log(errors, event);
   };
+
 
   const gridItems = {
     justifyContent: "space-evenly",
@@ -219,7 +210,7 @@ export default function surveyForm() {
                     label="הוסף הערה"
                     //   key={"q-" + id + "-" + questionId}
                     value={items.textFieldValue}
-                    onChange={(event) => handleTextFieldChange(event, "q-" + id + "-" + questionId)}
+                    onChange={(event) => handleTextFieldChange("q-" + id + "-" + questionId, event)}
                     multiline
                     maxRows={3}
                   />
@@ -236,16 +227,31 @@ export default function surveyForm() {
         justifyContent="space-evenly"
         marginTop={"20px"}
       >
-        <Button type={"button"} label="שמור">
+        <Button type={"button"} label="שמור" >
           שמור
         </Button>
         <Button type={"submit"} label="סיים">
           סיום
         </Button>
       </Stack>
+      <DialogSurvey
+        open={showCloseDialog}
+        setOpen={setShowCloseDialog}
+        msg={statusMsg}
+        onClick={() => {
+          setShowCloseDialog((e) => !e);
+        }}
+      />
     </form>
+
+
   );
+
+
+  
 }
+
+
               // <Stack
               //   key={"q-" + id + "-" + questionId}
               //   direction="row"
