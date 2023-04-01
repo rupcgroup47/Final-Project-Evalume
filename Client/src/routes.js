@@ -38,17 +38,17 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Users from "layouts/users";
-import Evalues from "layouts/evalue";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
 import SystemInfo from "layouts/info/SystemInfo";
 import SignIn from "layouts/authentication/sign-in";
 import Goals from "layouts/goals/Goals";
 import Evaluations from "layouts/evaluation";
-
+import { Outlet } from "react-router-dom";
 // @mui icons
 import Icon from "@mui/material/Icon";
-
+import EvalueForm from "layouts/evalue";
+// import Feedback from "layouts/evaluation/components/Feedback";
 const routes = [
   {
     type: "collapse",
@@ -72,8 +72,16 @@ const routes = [
     key: "evalueForm",
     icon: <Icon fontSize="small">feed</Icon>,
     route: "/evalue",
-    component: <Evalues />,
+    component: <EvalueForm />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "פידבק",
+  //   key: "feedback",
+  //   icon: <Icon fontSize="small">feed</Icon>,
+  //   route: "/feedback",
+  //   component: <Feedback />,
+  // },
   // },
   // {
   //   type: "collapse",
@@ -90,6 +98,21 @@ const routes = [
     icon: <Icon fontSize="small">poll</Icon>,
     route: "/evaluation",
     component: <Evaluations />,
+    children: [
+      {
+      name: "מישוב ",
+      key: "evaluationMain",
+      icon: <Icon fontSize="small">form</Icon>,
+      route: "",
+      component:  <Dashboard/>},
+      {
+        name: "  מישוב עצמי",
+        key: "evaluationPersonal",
+        icon: <Icon fontSize="small">form</Icon>,
+        route: "step1",
+        component: <Goals/> },
+
+    ]
   },
   {
     type: "collapse",

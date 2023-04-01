@@ -31,7 +31,9 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/warehouse.jpg";
 import { useEffect, useContext, useState } from "react";
-
+// import { Notifications } from 'react-push-notification';
+// import addNotification from 'react-push-notification';
+  
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 import { MainStateContext } from "App";

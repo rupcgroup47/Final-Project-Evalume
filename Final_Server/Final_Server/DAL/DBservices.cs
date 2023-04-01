@@ -79,11 +79,11 @@ public class DBservices
                 employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
                 employee.Is_Admin = Convert.ToBoolean(dataReader["Is_Admin"]);
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
-                employee.UserDepartment = dataReader["UserDepartment"].ToString();
+                employee.UserDepartment = dataReader["DepName"].ToString();
                 employee.UserManager = dataReader["UserManager"].ToString();
-                employee.UserPhone = Convert.ToInt32(dataReader["UserPhone"]);
+                employee.UserPhoneNum = Convert.ToInt32(dataReader["UserPhoneNum"]);
                 employee.UserRole = dataReader["UserRole"].ToString();
-                employee.UserRoleGroup = Convert.ToInt32(dataReader["UserRoleGroup"]);
+                employee.UserRoleGroup = Convert.ToInt32(dataReader["RoleGroup_Desc"]);
             }
 
                 return employee;
@@ -258,9 +258,9 @@ public class DBservices
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
                 employee.UserDepartment = dataReader["UserDepartment"].ToString();
                 employee.UserManager = dataReader["UserManager"].ToString();
-                employee.UserPhone = Convert.ToInt32(dataReader["UserPhone"]);
+                employee.UserPhoneNum = Convert.ToInt32(dataReader["UserPhoneNum"]);
                 employee.UserRole = dataReader["UserRole"].ToString();
-                employee.UserRoleGroup = Convert.ToInt32(dataReader["UserRoleGroup"]);
+                employee.UserRoleGroup = Convert.ToInt32(dataReader["RoleGroup_Type"]);
 
                 UsersList.Add(employee);
 
@@ -368,7 +368,7 @@ public class DBservices
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
         cmd.Parameters.AddWithValue("@UserEmail", employee.UserEmail); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@userpassword", employee.Userpassword);
+        cmd.Parameters.AddWithValue("@Userpassword", employee.Userpassword);
         cmd.Parameters.AddWithValue("@UserId", employee.UserId);
         cmd.Parameters.AddWithValue("@UserFName", employee.UserFName);
         cmd.Parameters.AddWithValue("@UserLName", employee.UserLName);
@@ -377,9 +377,9 @@ public class DBservices
         cmd.Parameters.AddWithValue("@Is_Admin", employee.Is_Admin);
         cmd.Parameters.AddWithValue("@UserType", employee.UserType);
         cmd.Parameters.AddWithValue("@UserRole", employee.UserRole);
-        cmd.Parameters.AddWithValue("@UserRoleGroup", employee.UserRoleGroup);
+        cmd.Parameters.AddWithValue("@RoleGroup_Type", employee.UserRoleGroup);
         cmd.Parameters.AddWithValue("@UserDepartment", employee.UserDepartment);
-        cmd.Parameters.AddWithValue("@UserPhone", employee.UserPhone);
+        cmd.Parameters.AddWithValue("@UserPhoneNum", employee.UserPhoneNum);
         cmd.Parameters.AddWithValue("@UserManager", employee.UserManager);
 
         return cmd;

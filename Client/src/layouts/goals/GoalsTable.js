@@ -123,7 +123,7 @@ export default function GoalsTable() {
       <TableToolbarGoal
         // Goals
         goals={_goals}
-        setUsers={setGoals}
+        setGoals={setGoals}
         setItems={setItems}
         // Search
         searchInput={searchInput}
