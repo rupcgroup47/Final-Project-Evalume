@@ -75,10 +75,12 @@ function Overview() {
               title="פרטים אישיים"
               info={{
                 שם: `${mainState.userFName} ${mainState.userLName}`,
-                טלפון: "(44) 123 1234 123",
+                טלפון: `${mainState.userPhoneNum}`,
                 אימייל: `${mainState.userEmail}`,
-                מחלקה: "מחסן",
-                תפקיד: "מנכל",
+                תז: `${mainState.userId}`,
+                מחלקה: `${mainState.userDepartment}`,
+                תפקיד: `${mainState.userRole}`,
+                מנהל: `${mainState.managerFname} ${mainState.managerLName}`
               }}
               action={{ route: "", tooltip: "Edit Profile" }}
               shadow={false}

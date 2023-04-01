@@ -151,7 +151,7 @@ export default function FilterMenu({
         {/* Name */}
         <FilterItem
           label="שם מלא"
-          array={users?.map((user) => `${user.firstName} ${user.lastName}`)}
+          array={users?.map((user) => `${user.userFName} ${user.userLName}`)}
           value={filterName}
           setValue={setFilterName}
         />
@@ -183,7 +183,7 @@ export default function FilterMenu({
         {/* Job */}
         <FilterItem
           label="תפקיד"
-          array={users?.map((user) => user.userJob)}
+          array={users?.map((user) => user.userRole)}
           value={filterJob}
           setValue={setFilterJob}
         />

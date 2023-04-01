@@ -55,7 +55,7 @@ export default function UsersTable({ users, setUsers }) {
     setSearchInput(value);
 
     let sx = users.filter((item) =>
-      `${item.firstName} ${item.lastName}`.toLowerCase().includes(value.toLowerCase())
+      `${item.userFName} ${item.userLName}`.toLowerCase().includes(value.toLowerCase())
     );
 
     setItems(value?.length > 0 ? sx : users);
@@ -77,11 +77,11 @@ export default function UsersTable({ users, setUsers }) {
     let filterdArray = users.filter(
       (user) =>
         (filterName
-          ? `${user.firstName} ${user.lastName}`?.toLowerCase().includes(filterName.toLowerCase())
+          ? `${user.userFName} ${user.userLName}`?.toLowerCase().includes(filterName.toLowerCase())
           : true) &&
         (filterGender ? user.userGender.toLowerCase() === filterGender.toLowerCase() : true) &&
         (filterEmail ? user.userEmail.toLowerCase().includes(filterEmail.toLowerCase()) : true) &&
-        (filterJob ? user.userJob.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
+        (filterJob ? user.userRole.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
         (filterDepartment
           ? user.userDepartment.toLowerCase().includes(filterDepartment.toLowerCase())
           : true)
@@ -135,7 +135,7 @@ export default function UsersTable({ users, setUsers }) {
       />
 
       <TableContainer>
-        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="small">
+        <Table sx={{ minWidth: 1500 }} aria-labelledby="tableTitle" size="small">
           {/* Table Head - Start */}
           <TableHead>
             <TableRow>
@@ -157,7 +157,6 @@ export default function UsersTable({ users, setUsers }) {
                   )
                 );
               })}
-
               <TableCell align="right" />
             </TableRow>
           </TableHead>
@@ -220,6 +219,20 @@ const _tableHead = [
     show: true,
   },
   {
+    id: "userId",
+    textAlign: "right",
+    disablePadding: true,
+    label: "תעודת זהות",
+    show: true,
+  },
+  {
+    id: "phoneNum",
+    textAlign: "right",
+    disablePadding: false,
+    label: "מספר טלפון",
+    show: true,
+  },
+  {
     id: "email",
     textAlign: "right",
     disablePadding: false,
@@ -241,10 +254,45 @@ const _tableHead = [
     show: true,
   },
   {
-    id: "job",
+    id: "role",
     textAlign: "right",
     disablePadding: false,
     label: "תפקיד",
+    show: true,
+  },
+  {
+    id: "userRoleGroupDesc",
+    textAlign: "right",
+    disablePadding: false,
+    label: "סוג תפקיד",
+    show: true,
+  },
+  {
+    id: "userType",
+    textAlign: "right",
+    disablePadding: false,
+    label: "סוג תפקידן",
+    show: true,
+  },
+  {
+    id: "managerName",
+    textAlign: "right",
+    disablePadding: false,
+    label: "מנהל ישיר",
+    show: true,
+  },
+  {
+    id: "is_Active",
+    textAlign: "right",
+    disablePadding: false,
+    label: "is Active",
+    show: true,
+  },
+  {
+    id: "is_Admin",
+    textAlign: "right",
+    disablePadding: false,
+    label: "is Admin",
     show: true,
   },
 ];

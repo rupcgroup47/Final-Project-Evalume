@@ -7,7 +7,7 @@ namespace Final_Server.Models
         string userEmail;
         string userpassword;
         int userNum;
-        string userId;
+        int userId;
         string userFName;
         string userLName;
         string userGender;
@@ -19,7 +19,11 @@ namespace Final_Server.Models
         int userRoleGroup;
         string userDepartment;
         int userPhoneNum;
-        string userManager;
+        int userManagerNum;
+        string managerFname;
+        string managerLName;
+        string managerEmail;
+        string userRoleGroupDesc;
 
 
         static List<Employee> EmployeesList = new List<Employee>();
@@ -27,7 +31,7 @@ namespace Final_Server.Models
         public string UserEmail { get => userEmail; set => userEmail = value; }
         public string Userpassword { get => userpassword; set => userpassword = value; }
         public int UserNum { get => userNum; set => userNum = value; }
-        public string UserId { get => userId; set => userId = value; }
+        public int UserId { get => userId; set => userId = value; }
         public string UserFName { get => userFName; set => userFName = value; }
         public string UserLName { get => userLName; set => userLName = value; }
         public string UserGender { get => userGender; set => userGender = value; }
@@ -39,7 +43,11 @@ namespace Final_Server.Models
         public int UserRoleGroup { get => userRoleGroup; set => userRoleGroup = value; }
         public string UserDepartment { get => userDepartment; set => userDepartment = value; }
         public int UserPhoneNum { get => userPhoneNum; set => userPhoneNum = value; }
-        public string UserManager { get => userManager; set => userManager = value; }
+        public int UserManagerNum { get => userManagerNum; set => userManagerNum = value; }
+        public string ManagerFname { get => managerFname; set => managerFname = value; }
+        public string ManagerLName { get => managerLName; set => managerLName = value; }
+        public string ManagerEmail { get => managerEmail; set => managerEmail = value; }
+        public string UserRoleGroupDesc { get => userRoleGroupDesc; set => userRoleGroupDesc = value; }
 
         public Employee Read(string userEmail, string userpassword) //get all user details that fit to the userEmail & userPassword
         {

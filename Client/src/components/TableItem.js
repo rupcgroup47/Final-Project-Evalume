@@ -16,6 +16,8 @@ import { useState } from "react";
 import { Avatar, IconButton, TableCell, TableRow } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import Checkbox from '@mui/material/Checkbox';
+
 
 import CloseDialog from "../dialog/CloseDialog";
 import UpdateUserDialog from "../dialog/CreateOrUpdateUserDialog";
@@ -39,14 +41,14 @@ export default function TableItem({
         role="checkbox"
         tabIndex={-1}
       >
-        {/* <TableCell>
-          <Avatar src={user.userAvatar} alt={user.firstName} />
-        </TableCell> */}
-
         {tableHead.find((i) => i.id === "fullName").show && (
-          <TableCell component="th" scope="row" padding="none">
-            {`${user.firstName} ${user.lastName}`}
-          </TableCell>
+          <TableCell align="right">{`${user.userFName} ${user.userLName}`}</TableCell>
+        )}
+        {tableHead.find((i) => i.id === "userId").show && (
+          <TableCell align="right">{user.userId}</TableCell>
+        )}
+        {tableHead.find((i) => i.id === "phoneNum").show && (
+          <TableCell align="right">{user.userPhoneNum}</TableCell>
         )}
         {tableHead.find((i) => i.id === "email").show && (
           <TableCell align="right">{user.userEmail}</TableCell>
@@ -57,8 +59,27 @@ export default function TableItem({
         {tableHead.find((i) => i.id === "department").show && (
           <TableCell align="right">{user.userDepartment}</TableCell>
         )}
-        {tableHead.find((i) => i.id === "job").show && (
-          <TableCell align="right">{user.userJob}</TableCell>
+        {tableHead.find((i) => i.id === "role").show && (
+          <TableCell align="right">{user.userRole}</TableCell>
+        )}
+        {tableHead.find((i) => i.id === "userRoleGroupDesc").show && (
+          <TableCell align="right">{user.userRoleGroupDesc}</TableCell>
+        )}
+        {tableHead.find((i) => i.id === "userType").show && (
+          <TableCell align="right">{(user.userType == 1) ? `מנהל` : `עובד`}</TableCell>
+        )}
+        {tableHead.find((i) => i.id === "managerName").show && (
+          <TableCell align="right"> {`${user.managerFname} ${user.managerLName}`}</TableCell>
+        )}
+        {tableHead.find((i) => i.id === "is_Active").show && (
+          <TableCell align="right">
+            <Checkbox inputProps={{ 'aria-label': 'Checkbox is_Active' }} disabled checked={(user.is_Active == 1) ? true : false} />
+          </TableCell>
+        )}
+        {tableHead.find((i) => i.id === "is_Admin").show && (
+          <TableCell align="right">
+            <Checkbox inputProps={{ 'aria-label': 'Checkbox is_Admin' }} disabled checked={(user.is_Admin == 1) ? true : false} />
+          </TableCell>
         )}
         <TableCell align="right">
           <IconButton
