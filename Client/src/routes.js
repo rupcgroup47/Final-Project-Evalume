@@ -47,7 +47,8 @@ import Evaluations from "layouts/evaluation";
 import { Outlet } from "react-router-dom";
 // @mui icons
 import Icon from "@mui/material/Icon";
-
+import EvalueForm from "layouts/evalue";
+// import Feedback from "layouts/evaluation/components/Feedback";
 const routes = [
   {
     type: "collapse",
@@ -71,8 +72,16 @@ const routes = [
     key: "evalueForm",
     icon: <Icon fontSize="small">feed</Icon>,
     route: "/evalue",
-    component: <Evaluations />,
+    component: <EvalueForm />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "פידבק",
+  //   key: "feedback",
+  //   icon: <Icon fontSize="small">feed</Icon>,
+  //   route: "/feedback",
+  //   component: <Feedback />,
+  // },
   // },
   // {
   //   type: "collapse",

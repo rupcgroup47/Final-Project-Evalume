@@ -1,75 +1,24 @@
 import React from "react";
-
+import { useState, useContext } from "react";
 // Material Dashboard 2 React examples
 import { Container, Typography } from "@mui/material";
 import { useEffect } from "react";
-import Checkbox from '@mui/material/Checkbox';
-import Button from '@mui/material/Button';
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion from "@mui/material/Accordion";
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import Grid from "@mui/material/Grid";
-
-// Data
-
+import FormBuilder from "./components/FormBuilder";
+import { Fade, IconButton, InputBase, Tooltip } from "@mui/material";
+import { Box } from "@mui/system";
+import AddIcon from "@mui/icons-material/Add";
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 import HeaderFrom from "./components/header";
-
-const questionsResp = [...Array(6).keys()].map((idx) => ({
-  id: `id title-${idx}`,
-  title: `title - ${idx}`,
-  questions: [...Array(4).keys()].map((index) => ({
-    id: `question-${index}`,
-    label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
-  })),
-}));
-
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&:before": {
-    display: "none",
-  },
-}));
-
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark" ? "rgba(255, 255, 255, .05)" : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
+import CreateQuestionsDialog from "dialog/CreateQuestionsDialog";
 
 export default function Evalues() {
-  const [expanded, setExpanded] = React.useState(questionsResp[0].id);
   const [, dispatch] = useMaterialUIController();
-  const [checked, setChecked] = React.useState(true);
-
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
+  const [showFormComponent, setShowFormComponent] = useState(false);
+  const [myCheckedArray, setMyArray] = useState([]);
+  const [myFormTypes, setMyObject] = useState({});
+  const myNewForm = { myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
+  const [showCreateQuestionDialog, setShowCreateQuestionDialog] = useState(false);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -77,58 +26,38 @@ export default function Evalues() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  const handleChangeCheck = (event) => {
-    setChecked(event.target.checked);
-  };
+  function updateArray(myCheckedArray) {
+    // receive the checked answers
+    setMyArray(myCheckedArray);
+    console.log(myNewForm);
+  }
+
+  function updateObject(myFormTypes) {
+    // receive the form user type
+    setMyObject(myFormTypes);
+  }
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <HeaderFrom />
-      <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-        {questionsResp.map(({ id, title, questions }) => (
-          <Accordion
-            key={"q" + id}
-            expanded={expanded === id}
-            onChange={handleChange(id)}
-            TransitionProps={{ unmountOnExit: true }}
-          >
-            <AccordionSummary id={`${id}-header`}>
-              <Typography>{title}</Typography>
-            </AccordionSummary>
-
-            <AccordionDetails>
-              {questions.map(({ id: questionId, label }, idx) => (
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-around"
-                  alignItems="baseline"
-                  spacing={3}
-                  marginTop="-10px"
-                  key={"q-" + id + "-" + questionId}
-                >
-                  <Grid item xs={10}>
-                    <Typography>{label}</Typography>
-                  </Grid>
-                  <Grid item xs={2} >
-                    <Checkbox
-                      checked={checked}
-                      onChange={handleChangeCheck}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
-                  </Grid>
-                  {/* <Grid item xs={2}>
-
-                  </Grid> */}
-                </Grid>
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        ))}
-        <Button type={"submit"} label="סיים">
-          סיום
-        </Button>
-      </Container>
+      <h1 style={{ padding: "10px 20px", textAlign: "center", color: "black" }}>
+        בניית טופס הערכה{" "}
+      </h1>
+      <Box style={{ display: "flex" }}>
+        <Tooltip title="הוספה">
+          <IconButton color="black" onClick={() => setShowCreateQuestionDialog((e) => !e)}>
+            <AddIcon />
+            הוספת שאלה
+          </IconButton>
+        </Tooltip>
+      </Box>
+      <CreateQuestionsDialog
+        open={showCreateQuestionDialog}
+        setOpen={setShowCreateQuestionDialog}
+        // setQuestions={setQuestions}
+        // setItems={setItems}
+      />
+      <HeaderFrom updateObject={updateObject} setShowFormComponent={setShowFormComponent} />
+      {showFormComponent && <FormBuilder updateArray={updateArray} />}
     </Container>
   );
 }

@@ -12,16 +12,18 @@ import { useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import DialogSurvey from "./DialogSurvey";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const questionsResp = [...Array(4).keys()].map((idx) => ({
+const questionsResp = [...Array(2).keys()].map((idx) => ({
   id: `id title-${idx}`,
-  title: `title - ${idx}`,// Section name
+  title: `title - ${idx}`, // Section name
   questions: [...Array(4).keys()].map((index) => ({
     id: `question-${index}`,
-    label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,// Question name
+    label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`, // Question name
   })),
 }));
- console.log(questionsResp.length+"length")
+console.log(questionsResp.length + "length");
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -57,25 +59,28 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function surveyForm() {
-  const [expanded, setExpanded] = React.useState(questionsResp[0].id);
-  const [items, setItems] = React.useState([]);
-  const [showCloseDialog, setShowCloseDialog] = React.useState(false);
-const [statusMsg, setMsg] = React.useState("")
+  const [expanded, setExpanded] = useState(questionsResp[0].id);
+  const navigate = useNavigate();
+  const [items, setItems] = useState([]);
+  const [showCloseDialog, setShowCloseDialog] = useState(false);
+  const [statusMsg, setMsg] = useState("");
+  const [finishRouteMsg, setRouteMsg] = useState("");
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   function itemExists(itemId) {
-    return items.some(item => item.id === itemId);
+    return items.some((item) => item.id === itemId);
   }
 
-  function updateItem(itemId, value) { // Update radio button answer if the answer was marked allready in the same question 
-    const updatedItems = items.map(item => {
+  function updateItem(itemId, value) {
+    // Update radio button answer if the answer was marked allready in the same question
+    const updatedItems = items.map((item) => {
       if (item.id === itemId) {
-        console.log('item.name');
+        console.log("item.name");
         return {
           ...item,
-          selectedValue: value
+          selectedValue: value,
         };
       }
       return item;
@@ -83,13 +88,13 @@ const [statusMsg, setMsg] = React.useState("")
     setItems(updatedItems);
   }
 
-  const handleselectedValueChange = (itemId, value) => { // Update radio button answer if the answer was marked allready in the same question  or add the answer to the questions array
+  const handleselectedValueChange = (itemId, value) => {
+    // Update radio button answer if the answer was marked allready in the same question  or add the answer to the questions array
     if (items.length > 0 && itemExists(itemId)) {
-      console.log('items');
+      console.log("items");
       updateItem(itemId, value);
-    }
-    else {
-      console.log('here');
+    } else {
+      console.log("here");
       const item = {
         id: itemId,
         name: itemId,
@@ -100,9 +105,9 @@ const [statusMsg, setMsg] = React.useState("")
     // Save all the answers from the form - Need to check if the question answered
   };
 
-
-  function handleTextFieldChange(id, event) { // Get text field value for answer
-    const newItems = items.map(item => {
+  function handleTextFieldChange(id, event) {
+    // Get text field value for answer
+    const newItems = items.map((item) => {
       if (item.name === id) {
         return { ...item, textFieldValue: event.target.value };
       } else {
@@ -116,13 +121,15 @@ const [statusMsg, setMsg] = React.useState("")
   const onSubmit = (data, event) => {
     event.preventDefault();
 
-    if (items.length != ((questionsResp.length)*4)) {// Checking weather the user answer all the questions
-      setShowCloseDialog((e) => !e) // Error dialog message
-      setMsg("לא ענית על כל השאלות")
-    }
-    else{
-      setShowCloseDialog((e) => !e) // Error dialog message
-      setMsg("ענית על כל השאלות, מנהל ייצור איתך קשר לפגישת הערכה")
+    if (items.length != questionsResp.length * 4) {
+      // Checking weather the user answer all the questions
+      setShowCloseDialog((e) => !e); // Error dialog message
+      setMsg("לא ענית על כל השאלות");
+      setRouteMsg("חזרה לשאלון");
+    } else {
+      setShowCloseDialog((e) => !e); // Error dialog message
+      setMsg("ענית על כל השאלות, מנהל ייצור איתך קשר לפגישת הערכה");
+      setRouteMsg("חזרה לדף הבית");
     }
   };
   const onError = (errors, event) => {
@@ -130,22 +137,21 @@ const [statusMsg, setMsg] = React.useState("")
     console.log(errors, event);
   };
 
-
   const gridItems = {
     justifyContent: "space-evenly",
     alignItems: "center",
     display: "flex",
     padding: "initial",
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  };
   const gridItems2 = {
     justifyContent: "space-evenly",
     alignItems: "center",
     display: "flex",
     padding: "initial",
     alignSelf: "center",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  };
   console.log(items);
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -172,13 +178,25 @@ const [statusMsg, setMsg] = React.useState("")
               <Grid item xs={3}>
                 <Typography></Typography>
               </Grid>
-              <Grid item style={gridItems2} xs={7} >
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>לא רלוונטי לתפקיד</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>לא עומד בציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בחלק מהציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד כמעט בכל הציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בציפיות</Typography>
-                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>עומד בציפיות טוב מאוד</Typography>
+              <Grid item style={gridItems2} xs={7}>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                  לא רלוונטי לתפקיד
+                </Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                  לא עומד בציפיות
+                </Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                  עומד בחלק מהציפיות
+                </Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                  עומד כמעט בכל הציפיות
+                </Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                  עומד בציפיות
+                </Typography>
+                <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                  עומד בציפיות טוב מאוד
+                </Typography>
               </Grid>
               <Grid item xs={2}>
                 <Typography></Typography>
@@ -197,12 +215,17 @@ const [statusMsg, setMsg] = React.useState("")
                 <Grid item xs={3}>
                   <Typography>{label}</Typography>
                 </Grid>
-                <Grid item style={gridItems} xs={7} >
+                <Grid item style={gridItems} xs={7}>
                   <RadioButtons
                     itemId={"q-" + id + "-" + questionId}
                     onselectedValueChange={handleselectedValueChange}
-                    selectedValue={items.length > 0 ? (items?.find((item) => item.name === "q-" + id + "-" + questionId))?.selectedValue : ''}
-                  // style={{}}
+                    selectedValue={
+                      items.length > 0
+                        ? items?.find((item) => item.name === "q-" + id + "-" + questionId)
+                            ?.selectedValue
+                        : ""
+                    }
+                    // style={{}}
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -227,7 +250,7 @@ const [statusMsg, setMsg] = React.useState("")
         justifyContent="space-evenly"
         marginTop={"20px"}
       >
-        <Button type={"button"} label="שמור" >
+        <Button type={"button"} label="שמור" onClick={()=> navigate("layouts\evaluation\components\feedback")}>
           שמור
         </Button>
         <Button type={"submit"} label="סיים">
@@ -238,39 +261,11 @@ const [statusMsg, setMsg] = React.useState("")
         open={showCloseDialog}
         setOpen={setShowCloseDialog}
         msg={statusMsg}
+        finishRouteMsg={finishRouteMsg}
         onClick={() => {
           setShowCloseDialog((e) => !e);
         }}
       />
     </form>
-
-
   );
-
-
-  
 }
-
-
-              // <Stack
-              //   key={"q-" + id + "-" + questionId}
-              //   direction="row"
-              //   spacing={3}
-              //   justifyContent="space-evenly"
-              //   alignItems="baseline"
-              // >
-              //   <Typography style={{maxWidth:'300px',}}>{label}</Typography>
-              //   <RadioButtons
-              //     itemId={"q-" + id + "-" + questionId}
-              //     onselectedValueChange={handleselectedValueChange}
-              //     selectedValue={items.length>0?(items?.find((item) => item.name === "q-" + id + "-" + questionId))?.selectedValue:''}
-              //   />
-              //   <TextField
-              //     label="הוסף הערה"
-              //     //   key={"q-" + id + "-" + questionId}
-              //     value={items.textFieldValue}
-              //     onChange={(event) => handleTextFieldChange(event, "q-" + id + "-" + questionId)}
-              //     multiline
-              //     maxRows={3}
-              //   />
-              // </Stack>

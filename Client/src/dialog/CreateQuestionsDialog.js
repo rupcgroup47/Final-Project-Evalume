@@ -22,62 +22,60 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
+import { FormControl, FormHelperText, InputLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal }) {
-  const [newGoalName, setNewGoalName] = useState("")
+export default function CreateQuestionsDialog({ open, setOpen }) {
+  const titles = ["שירתיות", "אכפתיות"]; // Add all the sections if the questions!!
+  const [title, setTitle] = useState("");
+  const [newQuestion1,setQuestion] = useState("")//// Need to insert question content
+  const [questions, setQuestions] = useState([]);
+
   const {
     register,
     handleSubmit,
+    watch,
     reset,
     setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      goalName: "",
+      questionContent: "",
+      title: "",
     },
   });
 
-  useEffect(() => {
-    if (open === true) {
-      setValue("goalName",newGoalName);
-    }
-  }, [goal, open]);
-  const changeHandler = (e) => {
-    // Catch the values from input
-    setNewGoalName(e.target.value);
-  };
+  // useEffect(() => {
+  //   if (open === true) {
+  //     setValue("questionContent", goal?.goalName);
+  //   }
+  // }, [goal, open]);
+
   const onSubmit = () => {
-    const newGoal = {
+    console.log(newQuestion1)
+    // NOT GOOD!!!!!!!!!!
+    const newQuestion = {
       id: Math.random().toString(36).substr(2, 9),
-      goalName: newGoalName,
+      questionContent: newQuestion1,
+      questionTitle:title
     };
 
-    if (goal) {
-      setGoals((array) =>
-        array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
-      );
-      setItems((array) =>
-        array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
-      );
-    } else {
-      // Add new goal at the end of the array
-      setGoals((oldArray) => [...oldArray, newGoal]);
-      setItems((oldArray) => [...oldArray, newGoal]);
-    }
-
+    // Add new question at the end of the array
+    setQuestions((questions) => [...questions, newQuestion]);
     setOpen((e) => !e);
     reset();
-    console.log(newGoal);
+    console.log(newQuestion);
   };
 
   return (
-    <Dialog onClose={() => setOpen((e) => !e)} open={open}>
-      <DialogTitle sx={{ fontWeight: 600 }}>{goal ? "ערוך" : "צור"} יעד</DialogTitle>
+    <Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
+      <DialogTitle sx={{ fontWeight: 600 }}> צור שאלה</DialogTitle>
 
       <DialogContent
         sx={{
@@ -108,14 +106,33 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
           >
             <TextField
               size="small"
-              id="goalName"
-              label="שם היעד"
-              error={errors.goalName}
-              helperText={errors.goalName && "שם יעד הוא שדה חובה"}
-              {...register("goalName", { required: true, maxLength: 20 })}
-              onChange={changeHandler}
+              id="questionContent"
+              label="שם השאלה"
+            error={errors.questionContent}
+              helperText={errors.questionContent && "שם השאלה הוא שדה חובה"}
+              {...register("questionContent", { required: true, maxLength: 200 })}
+              onChange={(newValue) => setQuestion(newValue.target.value)}      
+
               sx={{ m: 0, width: "100%" }}
             />
+            <FormControl sx={{ m: 0, width: "100%",height:"100%" }}>
+              <InputLabel id="title-label">קטגורייה</InputLabel>
+              <Select
+                labelId="title-label"
+                id="title"
+                label="קטגורייה"
+                {...register("title", { required: true })}
+                // Handle the change event
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              >
+                {titles.map((title) => (
+                  <MenuItem key={title} value={title}>
+                    {title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
           <button id="submitButton" type="submit" style={{ display: "none" }}>
             יצירה
@@ -155,7 +172,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
           onClick={() => document.getElementById("submitButton").click()}
           autoFocus
         >
-          {goal ? "עריכה" : "יצירה"}
+          יצירת שאלה{" "}
         </Button>
       </DialogActions>
     </Dialog>

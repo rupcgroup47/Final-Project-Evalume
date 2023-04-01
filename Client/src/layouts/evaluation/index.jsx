@@ -13,11 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// @mui material components
-import Grid from "@mui/material/Grid";
 
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React examples
 import { Container } from "@mui/material";
@@ -29,15 +25,10 @@ import { Container } from "@mui/material";
 import { useMaterialUIController, setDirection } from "context";
 
 import React, { useState, useEffect, useContext } from "react";
-// import "survey-core/defaultV2.min.css";
-// import { Model } from "survey-core";
-// import { Survey } from "survey-react-ui";
-import { useCallback } from "react";
 // import { json } from "./json"
 import { MainStateContext } from "App";
 import CustomizedSteppers from "./components/steper";
 import SurveyForm from "./components/surveyForm";
-import { Outlet } from "react-router-dom";
 
 function QuestionnaireForm() {
 
@@ -58,7 +49,6 @@ function QuestionnaireForm() {
             <CustomizedSteppers />
             <SurveyForm />
         </Container>
-        // <Outlet/>
 
     );
 }

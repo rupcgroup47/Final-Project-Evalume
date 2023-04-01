@@ -17,19 +17,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-export default function DialogSurvey({ open, setOpen, msg, finishRouteMsg }) {
+export default function FinishDialog({ open, setOpen, msg, finishRouteMsg }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log(msg)
-    if (msg === "לא ענית על כל השאלות") {
-      // render component A
-      setOpen(false);
-    } else {
-      // render component B
-      navigate("layouts/profile");
-    }
+    console.log(msg);
+    navigate("layouts/profile");
   };
+
   return (
     <Dialog maxWidth="xs" fullWidth onClose={() => setOpen((e) => !e)} open={open}>
       <DialogTitle>הודעה</DialogTitle>
@@ -54,7 +49,6 @@ export default function DialogSurvey({ open, setOpen, msg, finishRouteMsg }) {
           onClick={handleClick}
         >
           {finishRouteMsg}{" "}
-
         </Button>
       </DialogActions>
     </Dialog>
