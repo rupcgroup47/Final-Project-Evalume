@@ -23,7 +23,7 @@ const questionsResp = [...Array(2).keys()].map((idx) => ({
     label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`, // Question name
   })),
 }));
-console.log(questionsResp.length + "length");
+console.log(questionsResp.length + " length");
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({

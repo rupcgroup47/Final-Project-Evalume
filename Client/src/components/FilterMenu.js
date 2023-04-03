@@ -1,7 +1,11 @@
 /*
 This is a React component that implements a filter menu for a table. It imports several components from the Material-UI library, including Badge, ButtonBase, Divider, Fade, FormControl, IconButton, InputLabel, Menu, MenuItem, Select, and Typography.
 
-The FilterMenu component takes several props, including users (an array of user objects), and a series of filters and corresponding setter functions (filterName, setFilterName, filterEmail, setFilterEmail, filterGender, setFilterGender, filterDepartment, setFilterDepartment, filterJob, and setFilterJob).
+The FilterMenu component takes several props, including users (an array of user objects), and a series of filters and corresponding setter functions (
+  
+  
+  
+  , setFilterName, filterEmail, setFilterEmail, filterGender, setFilterGender, filterDepartment, setFilterDepartment, filterJob, and setFilterJob).
 
 When the component is rendered, it displays an icon button that, when clicked, opens a filter menu. The menu displays several filter items, each corresponding to a different filter (e.g. name, email, gender, department, and job). Each filter item contains a Select component that allows the user to select a filter value from a list of options. When a user selects a filter value, the corresponding filter setter function is called with that value.
 
@@ -40,6 +44,16 @@ export default function FilterMenu({
   setFilterDepartment,
   filterJob,
   setFilterJob,
+  filterRoleType,
+  setFilterRoleType,
+  filterDirector,
+  setFilterDirector,
+  filterActive,
+  setFilterActive,
+  filterAdmin,
+  setFilterAdmin,
+  filterRoleGroup,
+  setFilterRoleGroup,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -56,6 +70,11 @@ export default function FilterMenu({
     setFilterGender("");
     setFilterDepartment("");
     setFilterJob("");
+    setFilterRoleType("");
+    setFilterDirector("");
+    setFilterActive("");
+    setFilterAdmin("");
+    setFilterRoleGroup("");
   };
 
   return (
@@ -72,7 +91,12 @@ export default function FilterMenu({
             filterEmail ||
             filterGender ||
             filterDepartment ||
-            filterJob
+            filterJob ||
+            filterRoleType ||
+            filterDirector ||
+            filterActive ||
+            filterAdmin ||
+            filterRoleGroup
               ? "primary"
               : "default"
           }
@@ -86,7 +110,12 @@ export default function FilterMenu({
                 filterGender,
                 filterDepartment,
                 filterJob,
-              ].filter((filter) => filter.length > 0).length
+                filterRoleType,
+                filterDirector,
+                filterActive,
+                filterAdmin,
+                filterRoleGroup,
+              ].filter((filter) => filter?.length > 0).length
             }
             color="primary"
           >
@@ -128,7 +157,12 @@ export default function FilterMenu({
               filterEmail ||
               filterGender ||
               filterDepartment ||
-              filterJob
+              filterJob ||
+              filterRoleType ||
+              filterDirector ||
+              filterActive ||
+              filterAdmin ||
+              filterRoleGroup
                 ? true
                 : false
             }
@@ -187,6 +221,46 @@ export default function FilterMenu({
           value={filterJob}
           setValue={setFilterJob}
         />
+
+        {/* Role Type */}
+        <FilterItem
+          label="סוג תפקיד"
+          array={users?.map((user) => user.userRoleGroupDesc)}
+          value={filterRoleType}
+          setValue={setFilterRoleType}
+        />
+
+        {/* Role desc */}
+        <FilterItem
+          label="סוג תפקידן"
+          array={users?.map((user) => (user.userType ? "מנהל" : "עובד"))}
+          value={filterRoleGroup}
+          setValue={setFilterRoleGroup}
+        />
+
+        {/* Director */}
+        <FilterItem
+          label="מנהל ישיר"
+          array={users?.map((user) => `${user.managerFname} ${user.managerLName}`)}
+          value={filterDirector}
+          setValue={setFilterDirector}
+        />
+
+        {/* is Active */}
+        <FilterItem
+          label="פעיל"
+          array={users?.map((user) => (user.is_Active ? "פעיל" : "לא פעיל"))}
+          value={filterActive}
+          setValue={setFilterActive}
+        />
+
+        {/* is Admin */}
+        <FilterItem
+          label="אדמין"
+          array={users?.map((user) => (user.is_Admin ? "אדמין" : "לא אדמין"))}
+          value={filterAdmin}
+          setValue={setFilterAdmin}
+        />
       </Menu>
     </div>
   );
@@ -202,6 +276,7 @@ const FilterItem = ({ label, array, value, setValue }) => {
         label={label}
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        style={{ height: "30px", alignContent: "center" }}
       >
         <MenuItem value="">
           <em>הכל</em>

@@ -51,6 +51,16 @@ export default function TableToolbar({
   setFilterDepartment,
   filterJob,
   setFilterJob,
+  filterRoleType,
+  setFilterRoleType,
+  filterDirector,
+  setFilterDirector,
+  filterActive,
+  setFilterActive,
+  filterAdmin,
+  setFilterAdmin,
+  filterRoleGroup,
+  setFilterRoleGroup,
 }) {
   const [showSearchButton, setShowSearchButton] = useState(false);
   const [showCreateUserDialog, setShowCreateUserDialog] = useState(false);
@@ -154,6 +164,16 @@ export default function TableToolbar({
             setFilterDepartment={setFilterDepartment}
             filterJob={filterJob}
             setFilterJob={setFilterJob}
+            filterRoleType={filterRoleType}
+            setFilterRoleType={setFilterRoleType}
+            filterDirector={filterDirector}
+            setFilterDirector={setFilterDirector}
+            filterActive={filterActive}
+            setFilterActive={setFilterActive}
+            filterAdmin={filterAdmin}
+            setFilterAdmin={setFilterAdmin}
+            filterRoleGroup={filterRoleGroup}
+            setFilterRoleGroup={setFilterRoleGroup}
           />
         </Box>
       </Box>

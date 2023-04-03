@@ -72,21 +72,18 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
-  const [mainState, setMainState] = useState({
-    userFName: "אורח",
-  });
-  // const [routeFirst, setRouteFirst] = useState(
-  //   mainState.userFName === "אורח" ? "/authentication/sign-in" : "/profile"
-  // );
+  const [mainState, setMainState] = useState(null);
   const { pathname } = useLocation();
 
   useEffect(() => {
     // Get user details from Local Storage
-    const Employee = JSON.parse(localStorage.getItem("Current User"));
-    if (Employee) {
-      setMainState(Employee);
+    if (!mainState) {
+      const Employee = JSON.parse(localStorage.getItem("Current User"));
+      if (Employee) {
+        setMainState(Employee);
+      }
     }
-  }, []);
+  }, [mainState]);
 
   // Cache for the rtl
   useMemo(() => {
@@ -189,6 +186,10 @@ export default function App() {
     [mainState]
   );
 
+  if (!mainState && localStorage.getItem("Current User") !== null) {
+    return <div>Loading ...</div>;
+  }
+
   return (
     <MainStateContext.Provider value={value}>
       {direction === "rtl" ? (
@@ -212,7 +213,8 @@ export default function App() {
             {layout === "vr" && <Configurator />}
             <Routes>
               {getRoutes(routes)}
-              <Route path="*" element={<Navigate to="/profile" />} />
+              {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
+              {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
             </Routes>
           </ThemeProvider>
         </CacheProvider>
@@ -236,7 +238,8 @@ export default function App() {
           {layout === "vr" && <Configurator />}
           <Routes>
             {getRoutes(routes)}
-            <Route path="*" element={<Navigate to="/profile" />} />
+            {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
+            {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
           </Routes>
         </ThemeProvider>
       )}
