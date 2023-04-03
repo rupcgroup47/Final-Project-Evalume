@@ -13,12 +13,10 @@ The CloseDialog component is rendered outside of the TableRow component, and is 
 */
 
 import { useState } from "react";
-import { Avatar, IconButton, TableCell, TableRow } from "@mui/material";
+import { IconButton, TableCell, TableRow } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import Checkbox from '@mui/material/Checkbox';
-
-
+import Checkbox from "@mui/material/Checkbox";
 import CloseDialog from "../dialog/CloseDialog";
 import UpdateUserDialog from "../dialog/CreateOrUpdateUserDialog";
 
@@ -36,62 +34,68 @@ export default function TableItem({
   return (
     <>
       <TableRow
-        hover
+        key={`${user.userFName} ${user.userLName}`}
         // onClick={(event) => handleClick(event, row.name)}
-        role="checkbox"
         tabIndex={-1}
+        sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
+        hover
+        role="checkbox"
       >
         {tableHead.find((i) => i.id === "fullName").show && (
-          <TableCell align="right">{`${user.userFName} ${user.userLName}`}</TableCell>
+          <TableCell component="td" scope="row" align="center">
+            {`${user.userFName} ${user.userLName}`}
+          </TableCell>
         )}
         {tableHead.find((i) => i.id === "userId").show && (
-          <TableCell align="right">{user.userId}</TableCell>
+          <TableCell align="center">{user.userId}</TableCell>
         )}
         {tableHead.find((i) => i.id === "phoneNum").show && (
-          <TableCell align="right">{user.userPhoneNum}</TableCell>
+          <TableCell align="center">{user.userPhoneNum}</TableCell>
         )}
         {tableHead.find((i) => i.id === "email").show && (
-          <TableCell align="right">{user.userEmail}</TableCell>
+          <TableCell align="center">{user.userEmail}</TableCell>
         )}
         {tableHead.find((i) => i.id === "gender").show && (
-          <TableCell align="right">{user.userGender}</TableCell>
+          <TableCell align="center">{user.userGender}</TableCell>
         )}
         {tableHead.find((i) => i.id === "department").show && (
-          <TableCell align="right">{user.userDepartment}</TableCell>
+          <TableCell align="center">{user.userDepartment}</TableCell>
         )}
         {tableHead.find((i) => i.id === "role").show && (
-          <TableCell align="right">{user.userRole}</TableCell>
+          <TableCell align="center">{user.userRole}</TableCell>
         )}
         {tableHead.find((i) => i.id === "userRoleGroupDesc").show && (
-          <TableCell align="right">{user.userRoleGroupDesc}</TableCell>
+          <TableCell align="center">{user.userRoleGroupDesc}</TableCell>
         )}
         {tableHead.find((i) => i.id === "userType").show && (
-          <TableCell align="right">{(user.userType == 1) ? `מנהל` : `עובד`}</TableCell>
+          <TableCell align="center">{user.userType === true ? `מנהל` : `עובד`}</TableCell>
         )}
         {tableHead.find((i) => i.id === "managerName").show && (
-          <TableCell align="right"> {`${user.managerFname} ${user.managerLName}`}</TableCell>
+          <TableCell align="center"> {`${user.managerFname} ${user.managerLName}`}</TableCell>
         )}
         {tableHead.find((i) => i.id === "is_Active").show && (
-          <TableCell align="right">
-            <Checkbox inputProps={{ 'aria-label': 'Checkbox is_Active' }} disabled checked={(user.is_Active == 1) ? true : false} />
+          <TableCell align="center">
+            <Checkbox
+              inputProps={{ "aria-label": "Checkbox is_Active" }}
+              disabled
+              checked={user.is_Active}
+            />
           </TableCell>
         )}
         {tableHead.find((i) => i.id === "is_Admin").show && (
-          <TableCell align="right">
-            <Checkbox inputProps={{ 'aria-label': 'Checkbox is_Admin' }} disabled checked={(user.is_Admin == 1) ? true : false} />
+          <TableCell align="center">
+            <Checkbox
+              inputProps={{ "aria-label": "Checkbox is_Admin" }}
+              disabled
+              checked={user.is_Admin}
+            />
           </TableCell>
         )}
-        <TableCell align="right">
-          <IconButton
-            color="primary"
-            onClick={() => setShowUpdateUserDialog((e) => !e)}
-          >
+        <TableCell align="center">
+          <IconButton color="primary" onClick={() => setShowUpdateUserDialog((e) => !e)}>
             <EditRoundedIcon />
           </IconButton>
-          <IconButton
-            color="error"
-            onClick={() => setShowCloseDialog((e) => !e)}
-          >
+          <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
             <DeleteRoundedIcon />
           </IconButton>
         </TableCell>

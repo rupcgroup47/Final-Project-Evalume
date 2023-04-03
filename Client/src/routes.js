@@ -48,7 +48,7 @@ import EvalueForm from "layouts/evalue";
 import { Outlet } from "react-router-dom";
 // @mui icons
 import Icon from "@mui/material/Icon";
-import EvalueForm from "layouts/evalue";
+
 // import Feedback from "layouts/evaluation/components/Feedback";
 const routes = [
   {
@@ -101,17 +101,19 @@ const routes = [
     component: <Evaluations />,
     children: [
       {
-      name: "מישוב ",
-      key: "evaluationMain",
-      icon: <Icon fontSize="small">form</Icon>,
-      route: "",
-      component:  <Dashboard/>},
+        name: "מישוב ",
+        key: "evaluationMain",
+        icon: <Icon fontSize="small">form</Icon>,
+        route: "",
+        component: <Dashboard />
+      },
       {
-        name: "  מישוב עצמי",
+        name: "מישוב עצמי",
         key: "evaluationPersonal",
         icon: <Icon fontSize="small">form</Icon>,
         route: "step1",
-        component: <Goals/> },
+        component: <Goals />
+      },
 
     ]
   },
@@ -138,6 +140,7 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
+    isHiddenFromSideNav: true,
   },
 ];
 

@@ -15,7 +15,7 @@ Finally, the component renders the table using Material-UI components, including
 */
 
 import {
-  Box,
+  // Box,
   Paper,
   Table,
   TableBody,
@@ -24,7 +24,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TableSortLabel,
+  // TableSortLabel,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 // import { visuallyHidden } from "@mui/utils";
@@ -32,9 +32,11 @@ import { useDebounce } from "use-debounce";
 
 import TableItem from "components/TableItem";
 import TableToolbar from "components/TableToolbar";
+import { tableHeadArr } from "./tableHeaderArr";
+
 
 export default function UsersTable({ users, setUsers }) {
-  const [tableHead, setTableHead] = useState(_tableHead);
+  const [tableHead, setTableHead] = useState(tableHeadArr);
   const [items, setItems] = useState([users]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -68,10 +70,17 @@ export default function UsersTable({ users, setUsers }) {
   const [filterGender, setFilterGender] = useState("");
   const [filterDepartment, setFilterDepartment] = useState("");
   const [filterJob, setFilterJob] = useState("");
+  // const [filterId, setFilterId] = useState("");
+  // const [filterPhone, setFilterPhone] = useState("");
+  const [filterRoleType, setFilterRoleType] = useState("");
+  const [filterDirector, setFilterDirector] = useState("");
+  const [filterActive, setFilterActive] = useState("");
+  const [filterAdmin, setFilterAdmin] = useState("");
+  const [filterRoleGroup, setFilterRoleGroup] = useState("");
 
   useEffect(() => {
     handleFilter();
-  }, [filterName, filterEmail, filterGender, filterDepartment, filterJob]);
+  }, [filterName, filterEmail, filterGender, filterDepartment, filterJob, filterRoleType, filterDirector, filterActive, filterAdmin,filterRoleGroup]);
 
   const handleFilter = () => {
     let filterdArray = users.filter(
@@ -84,7 +93,12 @@ export default function UsersTable({ users, setUsers }) {
         (filterJob ? user.userRole.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
         (filterDepartment
           ? user.userDepartment.toLowerCase().includes(filterDepartment.toLowerCase())
-          : true)
+          : true) &&
+        (filterRoleType ? user.userRoleGroupDesc.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
+        (filterDirector ? `${user.managerFname} ${user.managerLName}`?.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
+        (filterRoleGroup ? user.userRoleGroup.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
+        (filterActive ? user.is_Active.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
+        (filterAdmin ? user.is_Admin.toLowerCase().includes(filterJob.toLowerCase()) : true)
     );
 
     setItems(filterdArray);
@@ -102,10 +116,15 @@ export default function UsersTable({ users, setUsers }) {
     setFilterGender("");
     setFilterDepartment("");
     setFilterJob("");
+    setFilterRoleType("");
+    setFilterDirector("");
+    setFilterActive("");
+    setFilterAdmin("");
+    setFilterRoleGroup("");
   };
   // handleRemoveUser - end
 
-  // shoe empty rows if the array / filted array is epmoty or less then rowsPerPage
+  // show empty rows if the array / filted array is epmty or less then rowsPerPage
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
   return (
@@ -132,32 +151,40 @@ export default function UsersTable({ users, setUsers }) {
         setFilterDepartment={setFilterDepartment}
         filterJob={filterJob}
         setFilterJob={setFilterJob}
+        filterRoleType={filterRoleType}
+        setFilterRoleType={setFilterRoleType}
+        filterDirector={filterDirector}
+        setFilterDirector={setFilterDirector}
+        filterActive={filterActive}
+        setFilterActive={setFilterActive}
+        filterAdmin={filterAdmin}
+        setFilterAdmin={setFilterAdmin}
+        filterRoleGroup={filterRoleGroup}
+        setFilterRoleGroup={setFilterRoleGroup}
       />
-
-      <TableContainer>
-        <Table sx={{ minWidth: 1500 }} aria-labelledby="tableTitle" size="small">
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 1200 }} aria-labelledby="tableTitle" size="small">
           {/* Table Head - Start */}
-          <TableHead>
+          <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
-              {/* <TableCell align="right" width={40} /> */}
-
               {tableHead.map((item) => {
                 return (
                   item.show && (
                     <TableCell
                       key={item.id}
-                      align={item.textAlign || "right"}
+                      align={item.textAlign || ""}
                       padding={item.disablePadding ? "none" : "normal"}
+                      // scope={item.scope || ""}
                       // sortDirection={orderBy === item.id ? orderType : false}
                       sx={{ fontWeight: 600 }}
                     >
-                      {" "}
+                      {/* {" "} */}
                       {item.label}
                     </TableCell>
                   )
                 );
               })}
-              <TableCell align="right" />
+              {/* <TableCell align="inherit" /> */}
             </TableRow>
           </TableHead>
           {/* Table Head - End */}
@@ -183,7 +210,7 @@ export default function UsersTable({ users, setUsers }) {
                   height: 53 * emptyRows,
                 }}
               >
-                <TableCell colSpan={7} sx={{ textAlign: "center" }}>
+                <TableCell colSpan={12} sx={{ textAlign: "inherit" }}>
                   {users.length > 0
                     ? items.length <= 0 && "לא נמצאו רשומות מתאימות"
                     : "הרשימה ריקה, הוסף רשומות"}
@@ -210,89 +237,4 @@ export default function UsersTable({ users, setUsers }) {
   );
 }
 
-const _tableHead = [
-  {
-    id: "fullName",
-    textAlign: "right",
-    disablePadding: true,
-    label: "שם מלא",
-    show: true,
-  },
-  {
-    id: "userId",
-    textAlign: "right",
-    disablePadding: true,
-    label: "תעודת זהות",
-    show: true,
-  },
-  {
-    id: "phoneNum",
-    textAlign: "right",
-    disablePadding: false,
-    label: "מספר טלפון",
-    show: true,
-  },
-  {
-    id: "email",
-    textAlign: "right",
-    disablePadding: false,
-    label: "אימייל",
-    show: true,
-  },
-  {
-    id: "gender",
-    textAlign: "right",
-    disablePadding: false,
-    label: "מגדר",
-    show: true,
-  },
-  {
-    id: "department",
-    textAlign: "right",
-    disablePadding: false,
-    label: "מחלקה",
-    show: true,
-  },
-  {
-    id: "role",
-    textAlign: "right",
-    disablePadding: false,
-    label: "תפקיד",
-    show: true,
-  },
-  {
-    id: "userRoleGroupDesc",
-    textAlign: "right",
-    disablePadding: false,
-    label: "סוג תפקיד",
-    show: true,
-  },
-  {
-    id: "userType",
-    textAlign: "right",
-    disablePadding: false,
-    label: "סוג תפקידן",
-    show: true,
-  },
-  {
-    id: "managerName",
-    textAlign: "right",
-    disablePadding: false,
-    label: "מנהל ישיר",
-    show: true,
-  },
-  {
-    id: "is_Active",
-    textAlign: "right",
-    disablePadding: false,
-    label: "is Active",
-    show: true,
-  },
-  {
-    id: "is_Admin",
-    textAlign: "right",
-    disablePadding: false,
-    label: "is Admin",
-    show: true,
-  },
-];
+

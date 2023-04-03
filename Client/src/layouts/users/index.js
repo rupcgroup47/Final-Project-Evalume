@@ -103,11 +103,12 @@ import { useMaterialUIController, setDirection } from "context";
 function Users() {
   const [users, setUsers] = useState([]);
   const [, dispatch] = useMaterialUIController();
-  const [validationsMsg, setMsg] = useState("");
+  // const [validationsMsg, setMsg] = useState("");
   const { mainState, setMainState } = useContext(MainStateContext);
   const apiUserUrl = "https://localhost:7079/api/Employee";
 
   useEffect(() => {
+    const abortController = new AbortController()
     if (mainState.is_Admin) {
       fetch(
         apiUserUrl,
@@ -117,6 +118,7 @@ function Users() {
             "Content-Type": "application/json; charset=UTF-8",
             Accept: "application/json; charset=UTF-8",
           }),
+          signal: abortController.signal
         })
         .then(async response => {
           const data = await response.json();
@@ -133,13 +135,19 @@ function Users() {
           (result) => {
             console.log("success");
             setUsers(result);
-            setMsg("");
+            // setMsg("");
           },
           (error) => {
+            if (error.name === 'AbortError') return
             console.log("err get=", error);
-            setMsg("קרתה תקלה");
+            // setMsg("קרתה תקלה");
+            throw error
           }
         );
+        return () => {
+          abortController.abort()
+          // stop the query by aborting on the AbortController on unmount
+        }
     }
   }, []);
 

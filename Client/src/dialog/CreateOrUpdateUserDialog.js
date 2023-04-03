@@ -54,6 +54,11 @@ export default function CreateOrUpdateUserDialog({
       gender: "",
       department: "",
       job: "",
+      roleType: "",
+      director: "",
+      isActive: "",
+      isAdmin: "",
+      roleGroup: "",
     },
   });
   const avatarValue = watch("avatar");
