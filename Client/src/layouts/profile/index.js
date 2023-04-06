@@ -41,18 +41,25 @@ function Overview() {
     {
       alertNum: 0,
       alertSub: "הערכה עצמית ממתינה לביצוע",
+      route: "/evaluation",
+
     },
     {
       alertNum: 1,
       alertSub: "הערכות עובד שיש למלא",
+      route: "/evaluation",
+
     },
     {
       alertNum: 4,
       alertSub: "פגישות ממתינות לקביעה",
+      route: "/evaluation",
+
     },
     {
       alertNum: 0,
       alertSub: "הערכות ממתינות למישוב",
+      route: "/managerEvalues",
     },
   ];
 

@@ -4,11 +4,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { MainStateContext } from "App";
 import CustomizedSteppers from "./components/steper";
 import SurveyForm from "./components/surveyForm";
+import { StepperContext } from "context/steper";
+
+
+
 function QuestionnaireForm() {
 
     const [, dispatch] = useMaterialUIController();
     const mainState = useContext(MainStateContext)
-    const [count, setCount] = useState(0);
 
     // Changing the direction to rtl
     useEffect(() => {
@@ -17,10 +20,13 @@ function QuestionnaireForm() {
         return () => setDirection(dispatch, "ltr");
     }, []);
 
-
+const [currentStep,setCurrentStep] = useState(0)
     return (
+
         <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
+            <StepperContext.Provider value={{currentStep,setCurrentStep}}>
             <CustomizedSteppers />
+            </StepperContext.Provider>
             <SurveyForm />    
         </Container>
 
