@@ -117,7 +117,7 @@ function Overview() {
                 title="הערכות"
                 description="צפייה והורדת כלל ההערכות שלי לאורך השנים"
                 action={{
-                  type: "internal",
+                  type: "evalues",
                   route: "/myEvalues",
                   color: "info",
                   label: "מעבר להערכות שלי",
@@ -130,10 +130,8 @@ function Overview() {
                 title="יעדים"
                 description="צפייה ועדכון היעדים האישיים שלי"
                 action={{
-                  type: "evalues",
-                  route: "/myEvalues",
+                  type: "goals",
                   color: "info",
-                  label: "מעבר ליעדים שלי",
                 }}
 
               />
@@ -143,7 +141,7 @@ function Overview() {
                 title="יומן פגישות"
                 description="צפייה בפגישות שלי"
                 action={{
-                  type: "goals",
+                  type: "meeting",
                   route: "/pages/profile/profile-overview",
                   color: "info",
                   label: "view project",

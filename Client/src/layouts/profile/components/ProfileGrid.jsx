@@ -1,36 +1,26 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// react-router-dom components
 import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// @mui material components
+import PersonalGoals from "components/ProfileTables/PersonalGoals";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
-
-// Material Dashboard 2 React components
+import { useState } from "react";
+import { Dialog, DialogContent, Button } from "@mui/material";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
-
+const myGoalsData = [
+  {id:1, name:"קורס אקסל", date:"22-2-2022", isDone:"בוצע"},
+  {id:2, name:"קורס נגרות", date:"22-2-2023", isDone:"בוצע"},
+  {id:3, name:"קורס נגרות", date:"22-2-2023", isDone:"לא בוצע"}
+]
 function ProfileGrid({ title, description, action }) {
-
-
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const handleTypographyClick = () => {
+    setIsPopupOpen(true);
+  };
+  const handleCloseDialog = () => {
+    setIsPopupOpen(false);
+  };
   return (
     <Card
       sx={{
@@ -39,8 +29,8 @@ function ProfileGrid({ title, description, action }) {
         backgroundColor: "transparent",
         // boxShadow: "none",
         overflow: "visible",
-        textAlign:"center",
-        height:200
+        textAlign: "center",
+        height: 200,
       }}
     >
       <MDBox position="relative" width="100.25%" shadow="xl" borderRadius="xl">
@@ -66,12 +56,20 @@ function ProfileGrid({ title, description, action }) {
             >
               {title}
             </MDTypography>
+          ) : action.type === "goals" ? (
+            <>
+              <MDTypography onClick={handleTypographyClick} variant="h2" textTransform="capitalize">
+                {title}
+              </MDTypography>
+              <Dialog open={isPopupOpen} onClose={handleCloseDialog}>
+                <Button onClick={handleCloseDialog}>חזרה לדף הבית</Button>
+                <DialogContent><PersonalGoals myGoalsData={myGoalsData}/> </DialogContent>
+              </Dialog>
+            </>
           ) : (
             <MDTypography
-              component="a"
-              href={action.route}
-              target="_blank"
-              rel="noreferrer"
+              component={Link}
+              to={action.route}
               variant="h2"
               textTransform="capitalize"
             >
@@ -113,8 +111,6 @@ function ProfileGrid({ title, description, action }) {
     </Card>
   );
 }
-
-
 
 // Typechecking props for the DefaultProjectCard
 ProfileGrid.propTypes = {
