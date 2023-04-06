@@ -6,12 +6,13 @@
         string quesContent;
         DateTime insert_date = new DateTime();
         bool is_Active;
+        int quesGroup_Type;
 
         public int QuestionNum { get => questionNum; set => questionNum = value; }
         public string QuesContent { get => quesContent; set => quesContent = value; }
         public DateTime Insert_date { get => insert_date; set => insert_date = value; }
         public bool Is_Active { get => is_Active; set => is_Active = value; }
-
+        public int QuesGroup_Type { get => quesGroup_Type; set => quesGroup_Type = value; }
 
         public static List<Question> ReadQuestions() //Get all Questions
         {
