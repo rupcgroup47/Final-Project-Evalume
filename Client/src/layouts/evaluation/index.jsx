@@ -1,35 +1,12 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-
-
-// Material Dashboard 2 React examples
 import { Container } from "@mui/material";
-
-
-// Data
-
-// Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
-
 import React, { useState, useEffect, useContext } from "react";
-// import { json } from "./json"
 import { MainStateContext } from "App";
 import CustomizedSteppers from "./components/steper";
 import SurveyForm from "./components/surveyForm";
-
+import PDFFile from "./components/PDFFile";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Button } from "@mui/material";
 function QuestionnaireForm() {
 
     const [, dispatch] = useMaterialUIController();
@@ -48,6 +25,10 @@ function QuestionnaireForm() {
         <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
             <CustomizedSteppers />
             <SurveyForm />
+            <PDFDownloadLink document={<PDFFile/>} fileName="טופס הערכה">
+                {({loading}) => loading ? (<Button>טעינת קובץ</Button>) : (<Button>הורד קובץ כPFD</Button>)}
+            </PDFDownloadLink>
+    
         </Container>
 
     );
