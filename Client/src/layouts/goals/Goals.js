@@ -40,10 +40,6 @@ function Goals() {
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <Typography>
-        <Button>היעדים שלי כעובד</Button>
-        <Button>היעדים שלי כמנהל</Button>
-      </Typography>
       <GoalsTable />
     </Container>
   );
