@@ -25,10 +25,14 @@ import {
   MenuItem,
   Select,
   TextField,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
-import { FormControl, FormHelperText, InputLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function CreateOrUpdateUserDialog({
@@ -36,7 +40,7 @@ export default function CreateOrUpdateUserDialog({
   setOpen,
   setUsers,
   setItems,
-
+  users,
   user,
 }) {
   const {
@@ -50,47 +54,122 @@ export default function CreateOrUpdateUserDialog({
     defaultValues: {
       firstName: "",
       lastName: "",
+      id: "",
+      phone: "",
       email: "",
       gender: "",
       department: "",
       job: "",
       roleType: "",
-      director: "",
+      managerFname: "",
+      managerLName: "",
+      managerEmail: "",
       isActive: "",
       isAdmin: "",
       roleGroup: "",
     },
   });
-  const avatarValue = watch("avatar");
+  // const avatarValue = watch("avatar");
+  const apiDeprUrl = "https://localhost:7079/api/Department";
+  const genders = ["זכר", "נקבה", "אחר"];
+  const roleTypes = ["מנהל", "עובד"];
+  const roleGroups = ["כללי", "תפעולי", "משרדי"];
+
+  // Use state to store the selected value
+  const [gender, setGender] = useState("");
+  const [department, setDepartment] = useState("");
+  const [roleType, setroleType] = useState("");
+  const [roleGroup, setroleGroup] = useState("");
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    // Get importent details and set the main context
+    const abortController = new AbortController();
+    fetch(apiDeprUrl, {
+      method: "GET",
+      headers: new Headers({
+        "Content-Type": "application/json; charset=UTF-8",
+        Accept: "application/json; charset=UTF-8",
+      }),
+      signal: abortController.signal,
+    })
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (!response.ok) {
+          // get error message from body or default to response statusText
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+        }
+
+        return data;
+      })
+      .then(
+        (result) => {
+          console.log("success");
+          if (!localStorage.getItem("Department list")) {
+            localStorage.setItem("Department list", JSON.stringify(result));
+          }
+          setDepartments(result.map((index) => (index.depName)));
+          // setMsg("");
+        },
+        (error) => {
+          if (error.name === "AbortError") return;
+          console.log("err get=", error);
+          // setMsg("קרתה תקלה");
+          throw error;
+        }
+      );
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
+
+  }, [user]);
 
   useEffect(() => {
     if (open === true) {
-      setValue("firstName", user?.firstName);
-      setValue("lastName", user?.lastName);
+      setValue("firstName", user?.userFName);
+      setValue("lastName", user?.userLName);
+      setValue("id", user?.userId);
+      setValue("phone", user?.userPhoneNum);
       setValue("email", user?.userEmail);
-
       setValue("gender", user?.userGender);
       setValue("department", user?.userDepartment);
-      setValue("job", user?.userJob);
+      setValue("job", user?.userRole);
+      setValue("managerFname", user?.managerFname);
+      setValue("managerLName", user?.managerLName);
+      setValue("managerEmail", user?.managerEmail);
+      setValue("roleType", user?.userType);
+      setValue("roleGroup", user?.userRoleGroupDesc);
+      setValue("isActive", user?.is_Active);
+      setValue("isAdmin", user?.is_Admin);
 
-      setGender(user?.userGender);
-      setDepartment(user?.userDepartment);
-      setJob(user?.userJob);
-
+      setGender(user?.userGender ? user?.userGender : "");
+      setDepartment(user?.userDepartment ? user?.userDepartment : "");
+      setroleType(user?.userType ? (user?.userType ? "מנהל" : "עובד") : "");
+      setroleGroup(user?.userRoleGroupDesc ? user?.userRoleGroupDesc : "");
       // console.log("User: ", user);
     }
   }, [user, open]);
 
   const onSubmit = (data) => {
     const newUser = {
-      id: Math.random().toString(36).substr(2, 9),
-      firstName: data?.firstName,
-      lastName: data?.lastName,
-      userAvatar: avatar,
+      userId: data?.id,
+      userFName: data?.firstName,
+      userLName: data?.lastName,
       userEmail: data?.email,
       userGender: data?.gender,
       userDepartment: data?.department,
-      userJob: data?.job,
+      userRole: data?.job,
+      userPhoneNum: data?.phone,
+      managerFname: data?.managerFname,
+      managerLName: data?.managerLName,
+      managerEmail: data?.managerEmail,
+      userType: data?.roleType,
+      userRoleGroupDesc: data?.roleGroup,
+      is_Active: data?.isActive,
+      is_Admin: data?.isAdmin,
     };
 
     if (user) {
@@ -116,33 +195,26 @@ export default function CreateOrUpdateUserDialog({
     reset();
     setGender();
     setDepartment();
-    setJob();
+    setroleType();
+    setroleGroup();
 
     console.log(data);
   };
 
-  const genders = ["זכר", "נקבה", "אחר"];
-  const departments = ["מכירות", "הנהלת חשבונות", "לוגיסטיקה"];
-  const jobs = ["מנהל", "מנהלת חשבונות", "מחסנאי"];
+  // const [avatar, setAvatar] = useState(null);
 
-  // Use state to store the selected value
-  const [gender, setGender] = useState("");
-  const [department, setDepartment] = useState("");
-  const [job, setJob] = useState("");
-  const [avatar, setAvatar] = useState(null);
+  // const handleAvatarChange = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setAvatar(reader.result);
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
 
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setAvatar(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const isImage = (file) => {
-    return file?.length > 0 && file[0].type?.includes("image/");
-  };
+  // const isImage = (file) => {
+  //   return file?.length > 0 && file[0].type?.includes("image/");
+  // };
 
   return (
     <Dialog onClose={() => setOpen((e) => !e)} open={open}>
@@ -169,7 +241,7 @@ export default function CreateOrUpdateUserDialog({
             paddingTop: 10,
           }}
         >
-          <TextField
+          {/* <TextField
             InputProps={{
               startAdornment: <div />,
             }}
@@ -187,8 +259,7 @@ export default function CreateOrUpdateUserDialog({
               ((avatarValue?.length <= 0 && "Profile picture is required") ||
                 (!isImage(avatarValue) && "This file is not an image"))
             }
-          />
-
+          /> */}
           <div
             style={{
               display: "flex",
@@ -228,6 +299,38 @@ export default function CreateOrUpdateUserDialog({
               pattern: {
                 value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                 message: "האימייל אינו תקין",
+              },
+            })}
+            sx={{ m: 0, width: "100%" }}
+          />
+          <TextField
+            size="small"
+            id="id"
+            label="תעודת זהות"
+            type="id"
+            error={errors.id}
+            helperText={errors.id && "תעודת זהות הוא שדה חובה"}
+            {...register("id", {
+              required: true,
+              pattern: {
+                value: /^[0-9]{9,9}$/,
+                message: "תעודת זהות אינה תקינה",
+              },
+            })}
+            sx={{ m: 0, width: "100%" }}
+          />
+          <TextField
+            size="small"
+            id="phone"
+            label="מספר טלפון"
+            type="phone"
+            error={errors.phone}
+            helperText={errors.phone && "מספר טלפון הוא שדה חובה"}
+            {...register("phone", {
+              required: true,
+              pattern: {
+                value: /^[0-9]{9,9}$/,
+                message: "מספר טלפון אינו תקין",
               },
             })}
             sx={{ m: 0, width: "100%" }}
@@ -272,7 +375,7 @@ export default function CreateOrUpdateUserDialog({
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
             >
-              {departments.map((department) => (
+              {departments?.map((department) => (
                 <MenuItem key={department} value={department}>
                   {department}
                 </MenuItem>
@@ -282,28 +385,142 @@ export default function CreateOrUpdateUserDialog({
               {errors.department && "מחלקה היא שדה חובה"}
             </FormHelperText>
           </FormControl>
+          <TextField
+            size="small"
+            id="job"
+            label="תפקיד"
+            type="job"
+            error={errors.job}
+            helperText={errors.job && "תפקיד הוא שדה חובה"}
+            {...register("job", { required: true, maxLength: 20 })}
+            sx={{ m: 0, width: "100%" }}
+          />
           <FormControl
             size="small"
-            error={errors.job}
+            error={errors.roleType}
             sx={{ m: 0, width: "100%" }}
           >
-            <InputLabel id="job-label">תפקיד</InputLabel>
+            <InputLabel id="roleType-label">סוג תפקיד</InputLabel>
             <Select
-              labelId="job-label"
-              id="job"
-              label="תפקיד"
-              {...register("job", { required: true })}
+              labelId="roleType-label"
+              id="roleType"
+              label="סוג תפקיד"
+              {...register("roleType", { required: true })}
               // Handle the change event
-              value={job}
-              onChange={(e) => setJob(e.target.value)}
+              value={roleType}
+              onChange={(e) => setroleType(e.target.value)}
             >
-              {jobs.map((job) => (
-                <MenuItem key={job} value={job}>
-                  {job}
+              {roleTypes.map((roleType) => (
+                <MenuItem key={roleType} value={roleType}>
+                  {roleType}
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText>{errors.job && "תפקיד הוא שדה חובה"}</FormHelperText>
+            <FormHelperText>{errors.roleType && "סוג תפקיד הוא שדה חובה"}</FormHelperText>
+          </FormControl>
+          <FormControl
+            size="small"
+            error={errors.roleGroup}
+            sx={{ m: 0, width: "100%" }}
+          >
+            <InputLabel id="roleGroup-label">סוג תפקידן</InputLabel>
+            <Select
+              labelId="roleGroup-label"
+              id="roleGroup"
+              label="סוג תפקידן"
+              {...register("roleGroup", { required: true })}
+              // Handle the change event
+              value={roleGroup}
+              onChange={(e) => setroleGroup(e.target.value)}
+            >
+              {roleGroups.map((roleGroup) => (
+                <MenuItem key={roleGroup} value={roleGroup}>
+                  {roleGroup}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>{errors.roleGroup && "סוג תפקידן הוא שדה חובה"}</FormHelperText>
+          </FormControl>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              gap: 20,
+            }}
+          >
+            <TextField
+              size="small"
+              id="managerFname"
+              label="שם פרטי מנהל"
+              error={errors.managerFname}
+              helperText={errors.managerFname && "שם פרטי הוא שדה חובה"}
+              {...register("managerFname", { required: true, maxLength: 20 })}
+              sx={{ m: 0, width: "100%" }}
+            />
+            <TextField
+              size="small"
+              id="managerLName"
+              label="שם משפחה מנהל"
+              error={errors.managerLName}
+              helperText={errors.managerLName && "שם משפחה הוא שדה חובה"}
+              {...register("managerLName", { required: true, maxLength: 20 })}
+              sx={{ m: 0, width: "100%" }}
+            />
+          </div>
+          <TextField
+            size="small"
+            id="managerEmail"
+            label="אימייל מנהל"
+            type="managerEmail"
+            error={errors.managerEmail}
+            helperText={errors.managerEmail && "אימייל הוא שדה חובה"}
+            {...register("managerEmail", {
+              required: true,
+              pattern: {
+                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                message: "האימייל אינו תקין",
+              },
+            })}
+            sx={{ m: 0, width: "100%" }}
+          />
+          <FormControl
+            size="small"
+            error={errors.isActive}
+            sx={{ m: 0, width: "100%" }}
+          >
+            <FormControlLabel
+              value="isActive"
+              control={
+                <Checkbox
+                  inputProps={{ "aria-label": "Checkbox is_Active" }}
+                  {...register("isActive", { required: true })}
+                  checked={user?.is_Active}
+                />
+              }
+              label="isActive"
+              labelPlacement="top"
+            />
+            <FormHelperText>{errors.isActive && "הפעלה הוא שדה חובה"}</FormHelperText>
+          </FormControl>
+          <FormControl
+            size="small"
+            error={errors.isActive}
+            sx={{ m: 0, width: "100%" }}
+          >
+            <FormControlLabel
+              value="isAdmin"
+              control={
+                <Checkbox
+                  inputProps={{ "aria-label": "Checkbox is_Admin" }}
+                  {...register("isAdmin", { required: true })}
+                  checked={user?.is_Admin}
+                />
+              }
+              label="isAdmin"
+              labelPlacement="top"
+            />
+            <FormHelperText>{errors.isActive && "אדמין הוא שדה חובה"}</FormHelperText>
           </FormControl>
           <button id="submitButton" type="submit" style={{ display: "none" }}>
             יצירה

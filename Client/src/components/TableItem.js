@@ -17,6 +17,7 @@ import { IconButton, TableCell, TableRow } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import Checkbox from "@mui/material/Checkbox";
+
 import CloseDialog from "../dialog/CloseDialog";
 import UpdateUserDialog from "../dialog/CreateOrUpdateUserDialog";
 
@@ -72,6 +73,9 @@ export default function TableItem({
         )}
         {tableHead.find((i) => i.id === "managerName").show && (
           <TableCell align="center"> {`${user.managerFname} ${user.managerLName}`}</TableCell>
+        )}
+        {tableHead.find((i) => i.id === "managerEmail").show && (
+          <TableCell align="center"> {user.managerEmail}</TableCell>
         )}
         {tableHead.find((i) => i.id === "is_Active").show && (
           <TableCell align="center">

@@ -48,8 +48,8 @@ function Basic() {
     email: "",
     password: "",
   });
-  const [userDetailsValidation, setUserDetailsValidation] = useState(false)
-  const {mainState,setMainState} = useContext(MainStateContext)
+  const [userDetailsValidation, setUserDetailsValidation] = useState(false);
+  const {mainState,setMainState} = useContext(MainStateContext);
 
   useEffect(() => {
     if (userDetailsValidation){
