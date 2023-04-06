@@ -1,40 +1,17 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-
-
-// Material Dashboard 2 React examples
 import { Container } from "@mui/material";
-
-
-// Data
-
-// Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
-
 import React, { useState, useEffect, useContext } from "react";
-// import { json } from "./json"
 import { MainStateContext } from "App";
 import CustomizedSteppers from "./components/steper";
 import SurveyForm from "./components/surveyForm";
+import { StepperContext } from "context/steper";
+
+
 
 function QuestionnaireForm() {
 
     const [, dispatch] = useMaterialUIController();
     const mainState = useContext(MainStateContext)
-    const [count, setCount] = useState(0);
 
     // Changing the direction to rtl
     useEffect(() => {
@@ -43,11 +20,14 @@ function QuestionnaireForm() {
         return () => setDirection(dispatch, "ltr");
     }, []);
 
-
+const [currentStep,setCurrentStep] = useState(0)
     return (
+
         <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
+            <StepperContext.Provider value={{currentStep,setCurrentStep}}>
             <CustomizedSteppers />
-            <SurveyForm />
+            </StepperContext.Provider>
+            <SurveyForm />    
         </Container>
 
     );

@@ -45,7 +45,7 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
     setForms([...allForms, newForm]);
     setShowFormComponent(true); // show form with questions only if all required fields
     console.log(newForm);
-    updateObject(newForm);
+    updateObject(newForm);// send to the parent component the form type
   };
 
   return (

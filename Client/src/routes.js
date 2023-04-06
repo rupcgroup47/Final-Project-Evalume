@@ -46,8 +46,10 @@ import Goals from "layouts/goals/Goals";
 import Evaluations from "layouts/evaluation";
 import EvalueForm from "layouts/evalue";
 import { Outlet } from "react-router-dom";
+import MyEvalues from "layouts/profile/components/MyEvalues";
 // @mui icons
 import Icon from "@mui/material/Icon";
+import ManagerEvalues from "layouts/evaluation/components/Evaluation-Steps/ManagerEvalues";
 
 // import Feedback from "layouts/evaluation/components/Feedback";
 const routes = [
@@ -140,6 +142,24 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
+    isHiddenFromSideNav: true,
+  },
+  {
+    type: "collapse",
+    name: "הערכות שלי",
+    key: "my-evalues",
+    icon: <Icon fontSize="small">InsertDriveFile</Icon>,
+    route: "/myEvalues",
+    component: <MyEvalues />,
+    isHiddenFromSideNav: true,
+  },
+  {
+    type: "collapse",
+    name: "הערכות מנהל",
+    key: "manager-evalues",
+    icon: <Icon fontSize="small">InsertDriveFile</Icon>,
+    route: "/managerEvalues",
+    component: <ManagerEvalues />,
     isHiddenFromSideNav: true,
   },
 ];

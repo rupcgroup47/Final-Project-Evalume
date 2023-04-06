@@ -1,20 +1,3 @@
-/*
-This is a React component that creates a dialog box for creating a new user. The component uses Material UI library for its UI components.
-
-The component accepts several props including open, setOpen, setUsers, and setItems. These props are used to control the state of the dialog box and update the list of users and items when a new user is created.
-
-The component also uses the useForm hook from the react-hook-form library to manage form state and validation. The useState hook is also used to manage the state of the gender, department, job, and avatar fields.
-
-The handleSubmit function is called when the form is submitted, and a new user object is created from the form data. The new user object is then added to the list of users and items using the setUsers and setItems functions passed as props.
-
-The component also has several form fields for collecting user data, including a file input for the user's profile picture, text inputs for the user's first and last name, email, and select fields for gender, department, and job.
-
-The handleAvatarChange function is called when a new file is selected for the profile picture input. This function reads the file data and sets the avatar state to the file data.
-
-The isImage function checks if the selected file is an image file.
-
-Overall, this component provides a simple and easy-to-use form for creating new users.
-*/
 
 import {
   Button,
@@ -29,13 +12,16 @@ import {
 
 import { useForm } from "react-hook-form";
 import { FormControl, FormHelperText, InputLabel } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ArrayContext } from "context/questions";
+
 
 export default function CreateQuestionsDialog({ open, setOpen }) {
-  const titles = ["שירתיות", "אכפתיות"]; // Add all the sections if the questions!!
+  const titles = ["שירתיות", "אכפתיות"]; // Add all the sections of the questions!!
   const [title, setTitle] = useState("");
   const [newQuestion1,setQuestion] = useState("")//// Need to insert question content
   const [questions, setQuestions] = useState([]);
+  const{globalQuestionArray, setGlobalQuestionsArray} = useContext(ArrayContext);//Global variable
 
   const {
     register,
@@ -58,8 +44,8 @@ export default function CreateQuestionsDialog({ open, setOpen }) {
   // }, [goal, open]);
 
   const onSubmit = () => {
+    
     console.log(newQuestion1)
-    // NOT GOOD!!!!!!!!!!
     const newQuestion = {
       id: Math.random().toString(36).substr(2, 9),
       questionContent: newQuestion1,
@@ -67,10 +53,11 @@ export default function CreateQuestionsDialog({ open, setOpen }) {
     };
 
     // Add new question at the end of the array
-    setQuestions((questions) => [...questions, newQuestion]);
+    setGlobalQuestionsArray([...globalQuestionArray, newQuestion]);
     setOpen((e) => !e);
     reset();
     console.log(newQuestion);
+    console.log(globalQuestionArray)
   };
 
   return (
@@ -133,6 +120,7 @@ export default function CreateQuestionsDialog({ open, setOpen }) {
                 ))}
               </Select>
             </FormControl>
+            {console.log(globalQuestionArray)}
           </div>
           <button id="submitButton" type="submit" style={{ display: "none" }}>
             יצירה
