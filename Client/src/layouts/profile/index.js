@@ -19,12 +19,13 @@ import Divider from "@mui/material/Divider";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+
 // import MDTypography from "components/MDTypography";
 
 // import Footer from "examples/Footer";
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-
-// Overview page components
+import ProfileGrid from "./components/ProfileGrid";// Overview page components
 import Header from "layouts/profile/components/Header";
 import { useEffect, useState, useContext } from "react";
 import { MainStateContext } from "App";
@@ -92,6 +93,60 @@ function Overview() {
           </Grid>
         </Grid>
       </MDBox>
+      {/* <MDBox pt={2} px={2} lineHeight={1.25}>
+          <MDTypography variant="h6" fontWeight="medium">
+            Projects
+          </MDTypography>
+          <MDBox mb={1}>
+            <MDTypography variant="button" color="text">
+              Architects design houses
+            </MDTypography>
+          </MDBox>
+        </MDBox> */}
+        <MDBox p={2}>
+          <Grid container spacing={6}>
+            <Grid item xs={12} md={6} xl={4}>
+              <ProfileGrid
+                title="הערכות"
+                description="צפייה והורדת כלל ההערכות שלי לאורך השנים"
+                action={{
+                  type: "internal",
+                  route: "/pages/profile/profile-overview",
+                  color: "info",
+                  label: "מעבר להערכות שלי",
+                }}
+
+              />
+            </Grid>
+            <Grid item xs={12} md={6} xl={4}>
+              <ProfileGrid
+                title="יעדים"
+                description="צפייה ועדכון היעדים האישיים שלי"
+                action={{
+                  type: "evalues",
+                  route: "/pages/profile/profile-overview",
+                  color: "info",
+                  label: "מעבר ליעדים שלי",
+                }}
+
+              />
+            </Grid>
+            <Grid item xs={12} md={6} xl={4}>
+              <ProfileGrid
+                title="יומן פגישות"
+                description="צפייה בפגישות שלי"
+                action={{
+                  type: "goals",
+                  route: "/pages/profile/profile-overview",
+                  color: "info",
+                  label: "view project",
+                }}
+              
+              />
+            </Grid>
+           
+          </Grid>
+        </MDBox>
     </Header>
   );
 }
