@@ -78,7 +78,7 @@ function Overview() {
       <MDBox mt={5} mb={3}>
         <Grid container spacing={1}>
           {/* //Profile card */}
-          <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
+          <Grid item xs={12} md={6} xl={4} sx={{ display: "flex"}}>
             <ProfileInfoCard
               title="פרטים אישיים"
               info={{

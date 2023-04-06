@@ -20,7 +20,7 @@ const WaitingEvalues = ({ data }) => {
 
   return (
     <Table>
-      <TableHead>
+      <TableHead sx={{ display: "table-header-group" }}>
         <TableRow>
           <TableCell >שם עובד</TableCell>
           <TableCell>תאריך סיום שאלון</TableCell>

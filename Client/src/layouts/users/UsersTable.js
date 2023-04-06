@@ -128,7 +128,7 @@ export default function UsersTable({ users, setUsers }) {
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
   return (
-    <Paper sx={{ boxShadow: "none" }}>
+    <Paper sx={{ boxShadow: "none"}}>
       <TableToolbar
         // Users
         users={users}
