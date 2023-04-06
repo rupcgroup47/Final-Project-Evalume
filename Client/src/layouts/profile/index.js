@@ -111,7 +111,7 @@ function Overview() {
                 description="צפייה והורדת כלל ההערכות שלי לאורך השנים"
                 action={{
                   type: "internal",
-                  route: "/pages/profile/profile-overview",
+                  route: "/myEvalues",
                   color: "info",
                   label: "מעבר להערכות שלי",
                 }}
@@ -124,7 +124,7 @@ function Overview() {
                 description="צפייה ועדכון היעדים האישיים שלי"
                 action={{
                   type: "evalues",
-                  route: "/pages/profile/profile-overview",
+                  route: "/myEvalues",
                   color: "info",
                   label: "מעבר ליעדים שלי",
                 }}
