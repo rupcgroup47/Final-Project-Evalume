@@ -34,7 +34,6 @@ import TableItem from "components/TableItem";
 import TableToolbar from "components/TableToolbar";
 import { tableHeadArr } from "./tableHeaderArr";
 
-
 export default function UsersTable({ users, setUsers }) {
   const [tableHead, setTableHead] = useState(tableHeadArr);
   const [items, setItems] = useState([users]);
@@ -80,7 +79,7 @@ export default function UsersTable({ users, setUsers }) {
 
   useEffect(() => {
     handleFilter();
-  }, [filterName, filterEmail, filterGender, filterDepartment, filterJob, filterRoleType, filterDirector, filterActive, filterAdmin,filterRoleGroup]);
+  }, [filterName, filterEmail, filterGender, filterDepartment, filterJob, filterRoleType, filterDirector, filterActive, filterAdmin, filterRoleGroup]);
 
   const handleFilter = () => {
     let filterdArray = users.filter(
@@ -88,17 +87,15 @@ export default function UsersTable({ users, setUsers }) {
         (filterName
           ? `${user.userFName} ${user.userLName}`?.toLowerCase().includes(filterName.toLowerCase())
           : true) &&
-        (filterGender ? user.userGender.toLowerCase() === filterGender.toLowerCase() : true) &&
+        (filterGender ? user.userGender === filterGender : true) &&
         (filterEmail ? user.userEmail.toLowerCase().includes(filterEmail.toLowerCase()) : true) &&
-        (filterJob ? user.userRole.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
-        (filterDepartment
-          ? user.userDepartment.toLowerCase().includes(filterDepartment.toLowerCase())
-          : true) &&
-        (filterRoleType ? user.userRoleGroupDesc.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
-        (filterDirector ? `${user.managerFname} ${user.managerLName}`?.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
-        (filterRoleGroup ? user.userRoleGroup.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
-        (filterActive ? user.is_Active.toLowerCase().includes(filterJob.toLowerCase()) : true) &&
-        (filterAdmin ? user.is_Admin.toLowerCase().includes(filterJob.toLowerCase()) : true)
+        (filterJob ? user.userRole.includes(filterJob) : true) &&
+        (filterDepartment ? user.userDepartment.includes(filterDepartment) : true) &&
+        (filterRoleType ? user.userRoleGroupDesc.includes(filterRoleType) : true) &&
+        (filterDirector ? `${user.managerFname} ${user.managerLName}`?.toLowerCase().includes(filterDirector.toLowerCase()) : true) &&
+        (filterRoleGroup ?  user.userType == (filterRoleGroup == "מנהל" ? true : false) : true) &&
+        (filterActive ? user.is_Active == (filterActive == "פעיל" ? true : false) : true) &&
+        (filterAdmin ?  user.is_Admin == (filterAdmin == "אדמין" ? true : false) : true)
     );
 
     setItems(filterdArray);

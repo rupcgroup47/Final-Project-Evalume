@@ -84,8 +84,9 @@ public class DBservices
                 employee.UserPhoneNum = Convert.ToInt32(dataReader["UserPhoneNum"]);
                 employee.UserRole = dataReader["UserRole"].ToString();
                 employee.UserRoleGroupDesc = dataReader["RoleGroup_Desc"].ToString();
-                employee.ManagerFname = dataReader["ManagerFname"].ToString();
-                employee.ManagerLName = dataReader["ManagerLName"].ToString();
+                employee.ManagerFname = dataReader["managerFname"].ToString();
+                employee.ManagerLName = dataReader["managerLName"].ToString();
+                employee.ManagerEmail = dataReader["managerEmail"].ToString();
             }
 
                 return employee;
@@ -265,6 +266,7 @@ public class DBservices
                 employee.UserRoleGroupDesc = dataReader["RoleGroup_Desc"].ToString();
                 employee.ManagerFname = dataReader["ManagerFname"].ToString();
                 employee.ManagerLName = dataReader["ManagerLName"].ToString();
+                employee.ManagerEmail = dataReader["managerEmail"].ToString();
 
                 UsersList.Add(employee);
             }

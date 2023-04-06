@@ -71,6 +71,13 @@ export const tableHeadArr = [
         show: true,
     },
     {
+        id: "managerEmail",
+        textAlign: "center",
+        disablePadding: false,
+        label: "מייל מנהל ישיר",
+        show: true,
+    },
+    {
         id: "is_Active",
         textAlign: "center",
         disablePadding: false,
