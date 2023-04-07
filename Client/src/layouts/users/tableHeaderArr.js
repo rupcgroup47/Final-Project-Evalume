@@ -81,14 +81,14 @@ export const tableHeadArr = [
         id: "is_Active",
         textAlign: "center",
         disablePadding: false,
-        label: "is Active",
+        label: "פעיל?",
         show: true,
     },
     {
         id: "is_Admin",
         textAlign: "center",
         disablePadding: false,
-        label: "is Admin",
+        label: "אדמין?",
         show: true,
     },
 ];

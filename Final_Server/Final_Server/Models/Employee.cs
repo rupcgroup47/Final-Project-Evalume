@@ -86,10 +86,10 @@ namespace Final_Server.Models
         }
 
 
-        public int UpdateUserDetails(string userEmail, string userFName, string userLName, string userGender) //Update user datails
+        public int UpdateUserDetails(int userNum) //Update user datails
         {
             DBservices tmp = new DBservices();
-            return tmp.UpdateUserDetails(userEmail, userFName, userLName, userGender);
+            return tmp.UpdateUserDetails(this, userNum);
 
         }
 

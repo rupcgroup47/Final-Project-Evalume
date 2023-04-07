@@ -22,7 +22,7 @@ Coded by www.creative-tim.com
 
 import UsersTable from "./UsersTable";
 import { Container } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, createContext, useMemo } from "react";
 import { MainStateContext } from "App";
 
 // Data
@@ -99,13 +99,16 @@ import { useMaterialUIController, setDirection } from "context";
 //     userJob: "Software Engineer",
 //   },
 // ];
+export const DepartmentStateContext = createContext();
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [, dispatch] = useMaterialUIController();
   // const [validationsMsg, setMsg] = useState("");
   const { mainState, setMainState } = useContext(MainStateContext);
+  const [depState, setDepState] = useState([]);
   const apiUserUrl = "https://localhost:7079/api/Employee";
+  const apiDeprUrl = "https://localhost:7079/api/Department";
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -144,11 +147,55 @@ function Users() {
             throw error
           }
         );
-        return () => {
-          abortController.abort()
-          // stop the query by aborting on the AbortController on unmount
-        }
+      return () => {
+        abortController.abort()
+        // stop the query by aborting on the AbortController on unmount
+      }
     }
+  }, []);
+
+  useEffect(() => {
+    // Get importent details and set the main context
+    const abortController = new AbortController();
+    fetch(apiDeprUrl, {
+      method: "GET",
+      headers: new Headers({
+        "Content-Type": "application/json; charset=UTF-8",
+        Accept: "application/json; charset=UTF-8",
+      }),
+      signal: abortController.signal,
+    })
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (!response.ok) {
+          // get error message from body or default to response statusText
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+        }
+
+        return data;
+      })
+      .then(
+        (result) => {
+          console.log("success");
+          if (!localStorage.getItem("Department list")) {
+            localStorage.setItem("Department list", JSON.stringify(result));
+          }
+          setDepState(result.map((index) => (index.depName)));
+          // setMsg("");
+        },
+        (error) => {
+          if (error.name === "AbortError") return;
+          console.log("err get=", error);
+          // setMsg("קרתה תקלה");
+          throw error;
+        }
+      );
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
   }, []);
 
   // Changing the direction to rtl
@@ -157,13 +204,23 @@ function Users() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
+  const value = useMemo(
+    () => ({
+      depState,
+      setDepState,
+    }),
+    [depState]
+  );
+
   return (
-    <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <UsersTable users={users} setUsers={setUsers} />
-      {/* <MDTypography variant="h4" mt={1}>
+    <DepartmentStateContext.Provider value={value}>
+      <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
+        <UsersTable users={users} setUsers={setUsers} />
+        {/* <MDTypography variant="h4" mt={1}>
         {validationsMsg}
       </MDTypography> */}
-    </Container>
+      </Container>
+    </DepartmentStateContext.Provider>
   );
 }
 

@@ -63,14 +63,14 @@ export default function SelectColumnsMenu({ tableHead, setTableHead }) {
         PaperProps={{
           style: {
             maxHeight: 275,
-            width: "20ch",
+            width: "25ch",
           },
         }}
       >
         <Typography
           variant="body1"
           fontWeight={600}
-          sx={{ pl: 2, pb: 2, pt: 1 }}
+          sx={{ pl: 2, pt: 1 }}
         >
           הצג עמודות
         </Typography>

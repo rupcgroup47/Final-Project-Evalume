@@ -33,7 +33,9 @@ import {
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DepartmentStateContext } from "layouts/users";
+import { useColumnOrder } from "react-table";
 
 export default function CreateOrUpdateUserDialog({
   open,
@@ -46,7 +48,7 @@ export default function CreateOrUpdateUserDialog({
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
     reset,
     setValue,
     formState: { errors },
@@ -70,7 +72,8 @@ export default function CreateOrUpdateUserDialog({
     },
   });
   // const avatarValue = watch("avatar");
-  const apiDeprUrl = "https://localhost:7079/api/Department";
+  console.log(errors);
+
   const genders = ["זכר", "נקבה", "אחר"];
   const roleTypes = ["מנהל", "עובד"];
   const roleGroups = ["כללי", "תפעולי", "משרדי"];
@@ -80,52 +83,13 @@ export default function CreateOrUpdateUserDialog({
   const [department, setDepartment] = useState("");
   const [roleType, setroleType] = useState("");
   const [roleGroup, setroleGroup] = useState("");
-  const [departments, setDepartments] = useState([]);
-
-  useEffect(() => {
-    // Get importent details and set the main context
-    const abortController = new AbortController();
-    fetch(apiDeprUrl, {
-      method: "GET",
-      headers: new Headers({
-        "Content-Type": "application/json; charset=UTF-8",
-        Accept: "application/json; charset=UTF-8",
-      }),
-      signal: abortController.signal,
-    })
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          // get error message from body or default to response statusText
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
-
-        return data;
-      })
-      .then(
-        (result) => {
-          console.log("success");
-          if (!localStorage.getItem("Department list")) {
-            localStorage.setItem("Department list", JSON.stringify(result));
-          }
-          setDepartments(result.map((index) => (index.depName)));
-          // setMsg("");
-        },
-        (error) => {
-          if (error.name === "AbortError") return;
-          console.log("err get=", error);
-          // setMsg("קרתה תקלה");
-          throw error;
-        }
-      );
-    return () => {
-      abortController.abort();
-      // stop the query by aborting on the AbortController on unmount
-    };
-
-  }, [user]);
+  const [isActiveState, setisActiveState] = useState(undefined);
+  const [isAdminState, setisAdminState] = useState(undefined);
+  const [putUser, setPutUser] = useState("");
+  const [postUser, setPostUser] = useState("");
+  const { depState, setDepState } = useContext(DepartmentStateContext);
+  const apiPutUserUrl = "https://localhost:7079/api/Employee?userNum=";
+  const apiPostUserUrl = "https://localhost:7079/api/Employee";
 
   useEffect(() => {
     if (open === true) {
@@ -147,13 +111,117 @@ export default function CreateOrUpdateUserDialog({
 
       setGender(user?.userGender ? user?.userGender : "");
       setDepartment(user?.userDepartment ? user?.userDepartment : "");
-      setroleType(user?.userType ? (user?.userType ? "מנהל" : "עובד") : "");
+      setroleType(user ? (user?.userType ? "מנהל" : "עובד") : "");
       setroleGroup(user?.userRoleGroupDesc ? user?.userRoleGroupDesc : "");
-      // console.log("User: ", user);
+      setisActiveState(user ? (user?.is_Active ? true : undefined) : undefined);
+      setisAdminState(user ? (user?.is_Admin ? true : undefined) : undefined);
     }
   }, [user, open]);
 
+  useEffect(() => {
+    // Update details
+    const abortController = new AbortController();
+    if (putUser.value !== undefined) {
+      console.log('here hey 3');
+      console.log('put'+ putUser.value , 'post'+ postUser.value);
+      fetch(apiPutUserUrl + user?.userNum, {
+        method: "PUT",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        body: JSON.stringify(putUser),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success" + result);
+            setUsers((array) =>
+              array.map((item) =>
+                item.userNum === user?.userNum ? { ...item, ...putUser } : item
+              )
+            );
+            setItems((array) =>
+              array.map((item) =>
+                item.userNum === user?.userNum ? { ...item, ...putUser } : item
+              )
+            );
+            // setMsg("");
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err get=", error.value);
+            // setMsg("קרתה תקלה");
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, [putUser]);
+
+  useEffect(() => {
+    // Update details
+    if (postUser.value !== undefined) {
+      console.log('here hey 2');
+      console.log('put'+ putUser.value , 'post'+ postUser.value);
+      const abortController = new AbortController();
+      fetch(apiPostUserUrl, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        body: JSON.stringify(postUser),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success" + result);
+            setUsers((oldArray) => [...oldArray, postUser]);
+            setItems((oldArray) => [...oldArray, postUser]);
+            // setMsg("");
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err get=", error.value);
+            // setMsg("קרתה תקלה");
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, [postUser]);
+
   const onSubmit = (data) => {
+    console.log('here');
     const newUser = {
       userId: data?.id,
       userFName: data?.firstName,
@@ -168,38 +236,31 @@ export default function CreateOrUpdateUserDialog({
       managerEmail: data?.managerEmail,
       userType: data?.roleType,
       userRoleGroupDesc: data?.roleGroup,
-      is_Active: data?.isActive,
-      is_Admin: data?.isAdmin,
+      is_Active: (data?.isActive === "true" ? true : false),
+      is_Admin: (data?.isAdmin === "true" ? true : false),
     };
+    console.log(newUser);
 
     if (user) {
       // Update a user
-      setUsers((array) =>
-        array.map((item) =>
-          item.id === user.id ? { ...item, ...newUser } : item
-        )
-      );
-      setItems((array) =>
-        array.map((item) =>
-          item.id === user.id ? { ...item, ...newUser } : item
-        )
-      );
+      setPutUser(newUser);
     } else {
       // Add new user at the end of the array
-      setUsers((oldArray) => [...oldArray, newUser]);
-      setItems((oldArray) => [...oldArray, newUser]);
+      setPostUser(newUser);
     }
 
     setOpen((e) => !e);
 
     reset();
-    setGender();
-    setDepartment();
-    setroleType();
-    setroleGroup();
-
-    console.log(data);
+    // setGender();
+    // setDepartment();
+    // setroleType();
+    // setroleGroup();
   };
+
+  const onError = (errors, e) => console.log(errors, e);
+  // console.log('gender' + gender,'department' + department, 'roleType' + roleType, 'roleGroup' + roleGroup);
+  // console.log('put'+ putUser.value , 'post'+ postUser.value);
 
   // const [avatar, setAvatar] = useState(null);
 
@@ -230,7 +291,7 @@ export default function CreateOrUpdateUserDialog({
         }}
       >
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit,onError)}
           style={{
             width: "100%",
             flex: 1,
@@ -241,25 +302,6 @@ export default function CreateOrUpdateUserDialog({
             paddingTop: 10,
           }}
         >
-          {/* <TextField
-            InputProps={{
-              startAdornment: <div />,
-            }}
-            size="small"
-            type="file"
-            label="תמונת פרופיל"
-            {...register("avatar", {
-              required: true,
-              validate: isImage,
-            })}
-            onChange={handleAvatarChange}
-            error={errors.avatar}
-            helperText={
-              errors.avatar &&
-              ((avatarValue?.length <= 0 && "Profile picture is required") ||
-                (!isImage(avatarValue) && "This file is not an image"))
-            }
-          /> */}
           <div
             style={{
               display: "flex",
@@ -346,6 +388,7 @@ export default function CreateOrUpdateUserDialog({
               id="gender"
               label="מגדר"
               {...register("gender", { required: true })}
+              style={{ height: "2.6375em", alignContent: "center" }}
               // Handle the change event
               value={gender}
               onChange={(e) => setGender(e.target.value)}
@@ -371,11 +414,12 @@ export default function CreateOrUpdateUserDialog({
               id="department"
               label="מחלקה"
               {...register("department", { required: true })}
+              style={{ height: "2.6375em", alignContent: "center" }}
               // Handle the change event
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
             >
-              {departments?.map((department) => (
+              {depState?.map((department) => (
                 <MenuItem key={department} value={department}>
                   {department}
                 </MenuItem>
@@ -392,7 +436,7 @@ export default function CreateOrUpdateUserDialog({
             type="job"
             error={errors.job}
             helperText={errors.job && "תפקיד הוא שדה חובה"}
-            {...register("job", { required: true, maxLength: 20 })}
+            {...register("job", { required: true, maxLength: 30 })}
             sx={{ m: 0, width: "100%" }}
           />
           <FormControl
@@ -406,6 +450,7 @@ export default function CreateOrUpdateUserDialog({
               id="roleType"
               label="סוג תפקיד"
               {...register("roleType", { required: true })}
+              style={{ height: "2.6375em", alignContent: "center" }}
               // Handle the change event
               value={roleType}
               onChange={(e) => setroleType(e.target.value)}
@@ -429,6 +474,7 @@ export default function CreateOrUpdateUserDialog({
               id="roleGroup"
               label="סוג תפקידן"
               {...register("roleGroup", { required: true })}
+              style={{ height: "2.6375em", alignContent: "center" }}
               // Handle the change event
               value={roleGroup}
               onChange={(e) => setroleGroup(e.target.value)}
@@ -490,16 +536,16 @@ export default function CreateOrUpdateUserDialog({
             sx={{ m: 0, width: "100%" }}
           >
             <FormControlLabel
-              value="isActive"
+              value={isActiveState}
+              onChange={(e) => setisActiveState(e.target.checked)}
               control={
                 <Checkbox
                   inputProps={{ "aria-label": "Checkbox is_Active" }}
-                  {...register("isActive", { required: true })}
-                  checked={user?.is_Active}
+                  {...register("isActive")}
+                  checked={isActiveState}
                 />
               }
-              label="isActive"
-              labelPlacement="top"
+              label="פעיל?"
             />
             <FormHelperText>{errors.isActive && "הפעלה הוא שדה חובה"}</FormHelperText>
           </FormControl>
@@ -509,16 +555,16 @@ export default function CreateOrUpdateUserDialog({
             sx={{ m: 0, width: "100%" }}
           >
             <FormControlLabel
-              value="isAdmin"
+              value={isAdminState}
+              onChange={(e) => setisAdminState(e.target.checked)}
               control={
                 <Checkbox
                   inputProps={{ "aria-label": "Checkbox is_Admin" }}
-                  {...register("isAdmin", { required: true })}
-                  checked={user?.is_Admin}
+                  {...register("isAdmin")}
+                  checked={isAdminState}
                 />
               }
-              label="isAdmin"
-              labelPlacement="top"
+              label="אדמין?"
             />
             <FormHelperText>{errors.isActive && "אדמין הוא שדה חובה"}</FormHelperText>
           </FormControl>
@@ -527,7 +573,6 @@ export default function CreateOrUpdateUserDialog({
           </button>
         </form>
       </DialogContent>
-
       <DialogActions sx={{ mr: 2, mb: 2, p: 1, display: "flex", gap: 1 }}>
         <Button
           sx={{
@@ -566,3 +611,22 @@ export default function CreateOrUpdateUserDialog({
     </Dialog>
   );
 }
+{/* <TextField
+            InputProps={{
+              startAdornment: <div />,
+            }}
+            size="small"
+            type="file"
+            label="תמונת פרופיל"
+            {...register("avatar", {
+              required: true,
+              validate: isImage,
+            })}
+            onChange={handleAvatarChange}
+            error={errors.avatar}
+            helperText={
+              errors.avatar &&
+              ((avatarValue?.length <= 0 && "Profile picture is required") ||
+                (!isImage(avatarValue) && "This file is not an image"))
+            }
+          /> */}

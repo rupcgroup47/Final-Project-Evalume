@@ -23,6 +23,8 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -187,7 +189,19 @@ export default function App() {
   );
 
   if (!mainState && localStorage.getItem("Current User") !== null) {
-    return <div>Loading ...</div>;
+    return (
+      <Box
+        sx={{
+          display: "block",
+          alignSelf: "center",
+          alignItems: "center",
+          height: "100%",
+          backgroundColor: "white",
+        }}
+      >
+        <CircularProgress size={300} sx={{ alignSelf: "center", margin: 50 }} />
+      </Box>
+    );
   }
 
   return (
