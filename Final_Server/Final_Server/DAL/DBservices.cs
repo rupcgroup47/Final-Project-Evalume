@@ -383,7 +383,7 @@ public class DBservices
         cmd.Parameters.AddWithValue("@Is_Admin", employee.Is_Admin);
         cmd.Parameters.AddWithValue("@UserType", employee.UserType);
         cmd.Parameters.AddWithValue("@UserRole", employee.UserRole);
-        cmd.Parameters.AddWithValue("@RoleGroup_Type", employee.UserRoleGroup);
+        cmd.Parameters.AddWithValue("@userRoleGroupDesc", employee.UserRoleGroupDesc);
         cmd.Parameters.AddWithValue("@DepName", employee.UserDepartment);
         cmd.Parameters.AddWithValue("@UserPhoneNum", employee.UserPhoneNum);
         cmd.Parameters.AddWithValue("@ManagerFname", employee.ManagerFname);
@@ -527,7 +527,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method saves the changes in user details
     ////--------------------------------------------------------------------------------------------------
-    public int UpdateUserDetails(string userEmail, string userFName, string userLName, string userGender)
+    public int UpdateUserDetails(Employee employee, int userNum)
     {
 
         SqlConnection con;
@@ -543,7 +543,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPUpdateDetails("spUpdateUser", con, userEmail, userFName, userLName, userGender);             // create the command
+        cmd = CreateCommandWithSPUpdateDetails("spUpdateUser", con, employee, userNum);             // create the command
 
         try
         {
@@ -570,7 +570,7 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPUpdateDetails(String spName, SqlConnection con, string userEmail, string userFName, string userLName, string userGender)
+    private SqlCommand CreateCommandWithSPUpdateDetails(String spName, SqlConnection con, Employee employee, int userNum)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -583,10 +583,22 @@ public class DBservices
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        cmd.Parameters.AddWithValue("@UserEmail", userEmail); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@UserFName", userFName);
-        cmd.Parameters.AddWithValue("@UserLName", userLName);
-        cmd.Parameters.AddWithValue("@UserGender", userGender);
+        cmd.Parameters.AddWithValue("@UserEmail", employee.UserEmail); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@UserId", employee.UserId);
+        cmd.Parameters.AddWithValue("@UserFName", employee.UserFName);
+        cmd.Parameters.AddWithValue("@UserLName", employee.UserLName);
+        cmd.Parameters.AddWithValue("@UserGender", employee.UserGender);
+        cmd.Parameters.AddWithValue("@Is_Active", employee.Is_Active);
+        cmd.Parameters.AddWithValue("@Is_Admin", employee.Is_Admin);
+        cmd.Parameters.AddWithValue("@UserType", employee.UserType);
+        cmd.Parameters.AddWithValue("@UserRole", employee.UserRole);
+        cmd.Parameters.AddWithValue("@userRoleGroupDesc", employee.UserRoleGroupDesc);
+        cmd.Parameters.AddWithValue("@DepName", employee.UserDepartment);
+        cmd.Parameters.AddWithValue("@UserPhoneNum", employee.UserPhoneNum);
+        cmd.Parameters.AddWithValue("@ManagerFname", employee.ManagerFname);
+        cmd.Parameters.AddWithValue("@ManagerLName", employee.ManagerLName);
+        cmd.Parameters.AddWithValue("@ManagerEmail", employee.ManagerEmail);
+        cmd.Parameters.AddWithValue("@UserNum", userNum);
 
         return cmd;
     }

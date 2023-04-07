@@ -74,11 +74,10 @@ namespace Final_Server.Controllers
 
 
         // PUT api/<EmployeeController>/5
-        [HttpPut("/userEmail/userFName/userLName/userGender")]
-        public IActionResult PutUserDetails(string userEmail, string userFName, string userLName, string userGender) //Update user details
+        [HttpPut]
+        public IActionResult PutUserDetails(int userNum,[FromBody] Employee employee) //Update user details
         {
-            Employee employee = new Employee();
-            int numEffected = employee.UpdateUserDetails(userEmail, userFName, userLName, userGender);
+            int numEffected = employee.UpdateUserDetails(userNum);
             if (numEffected != 0)
             {
                 return Ok("user succesfully updated");

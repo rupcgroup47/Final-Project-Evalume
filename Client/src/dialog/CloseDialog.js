@@ -16,8 +16,10 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
+import {useState} from "react";
 
 export default function CloseDialog({ open, setOpen, onClick }) {
+  const [deleteUser, setDeleteUser] = useState("");
   return (
     <Dialog maxWidth="xs" fullWidth onClose={() => setOpen((e) => !e)} open={open}>
       <DialogTitle>מחיקה</DialogTitle>

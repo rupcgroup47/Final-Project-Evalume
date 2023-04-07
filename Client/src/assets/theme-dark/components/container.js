@@ -66,7 +66,7 @@ const container = {
   [XXL]: {
     ".MuiContainer-root": {
       ...sharedClasses,
-      maxWidth: "1320px !important",
+      maxWidth: "2000px !important",
     },
   },
 };
