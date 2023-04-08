@@ -1,10 +1,13 @@
 ﻿using Final_Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Net.Mail;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Final_Server.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -58,8 +61,26 @@ namespace Final_Server.Controllers
 
         // POST api/<EmployeeController>
         [HttpPost]
-        public IActionResult Post([FromBody] Employee employee) //Insert new user
+        public IActionResult Post([FromBody] JsonElement data) //Insert new user
         {
+            Employee employee = new Employee();
+            employee.UserEmail = data.GetProperty("userEmail").ToString();
+            employee.UserId = Convert.ToInt32(data.GetProperty("userId").GetInt32());
+            employee.UserFName = data.GetProperty("userFName").ToString();
+            employee.UserLName = data.GetProperty("userLName").ToString();
+            employee.UserGender = data.GetProperty("userGender").ToString();
+            employee.Is_Active = Convert.ToBoolean(data.GetProperty("is_Active").GetBoolean());
+            employee.Is_Admin = Convert.ToBoolean(data.GetProperty("is_Admin").GetBoolean());
+            employee.UserType = Convert.ToBoolean(data.GetProperty("userType").GetBoolean());
+            employee.UserDepartment = data.GetProperty("userDepartment").ToString();
+            employee.UserPhoneNum = Convert.ToInt32(data.GetProperty("userPhoneNum").GetInt32());
+            employee.UserRole = data.GetProperty("userRole").ToString();
+            employee.UserRoleGroupDesc = data.GetProperty("userRoleGroupDesc").ToString();
+            employee.ManagerFname = data.GetProperty("managerFname").ToString();
+            employee.ManagerLName = data.GetProperty("managerLName").ToString();
+            employee.ManagerEmail = data.GetProperty("managerEmail").ToString();
+            MailAddress addr = new MailAddress(employee.UserEmail);
+            employee.Userpassword = addr.User+"555";
             int numEffected = employee.InsertEmployee();
             if (numEffected != 0)
             {
@@ -74,9 +95,25 @@ namespace Final_Server.Controllers
 
 
         // PUT api/<EmployeeController>/5
-        [HttpPut]
-        public IActionResult PutUserDetails(int userNum,[FromBody] Employee employee) //Update user details
+        [HttpPut("{userNum}")]
+        public IActionResult PutUserDetails(int userNum,[FromBody] JsonElement data) //Update user details
         {
+            Employee employee = new Employee();
+            employee.UserEmail = data.GetProperty("userEmail").ToString();
+            employee.UserId = Convert.ToInt32(data.GetProperty("userId").GetInt32());
+            employee.UserFName = data.GetProperty("userFName").ToString();
+            employee.UserLName = data.GetProperty("userLName").ToString();
+            employee.UserGender = data.GetProperty("userGender").ToString();
+            employee.Is_Active = Convert.ToBoolean(data.GetProperty("is_Active").GetBoolean());
+            employee.Is_Admin = Convert.ToBoolean(data.GetProperty("is_Admin").GetBoolean());
+            employee.UserType = Convert.ToBoolean(data.GetProperty("userType").GetBoolean());
+            employee.UserDepartment = data.GetProperty("userDepartment").ToString();
+            employee.UserPhoneNum = Convert.ToInt32(data.GetProperty("userPhoneNum").GetInt32());
+            employee.UserRole = data.GetProperty("userRole").ToString();
+            employee.UserRoleGroupDesc = data.GetProperty("userRoleGroupDesc").ToString();
+            employee.ManagerFname = data.GetProperty("managerFname").ToString();
+            employee.ManagerLName = data.GetProperty("managerLName").ToString();
+            employee.ManagerEmail = data.GetProperty("managerEmail").ToString();
             int numEffected = employee.UpdateUserDetails(userNum);
             if (numEffected != 0)
             {

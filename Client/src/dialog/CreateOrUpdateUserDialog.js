@@ -83,12 +83,12 @@ export default function CreateOrUpdateUserDialog({
   const [department, setDepartment] = useState("");
   const [roleType, setroleType] = useState("");
   const [roleGroup, setroleGroup] = useState("");
-  const [isActiveState, setisActiveState] = useState(undefined);
-  const [isAdminState, setisAdminState] = useState(undefined);
+  const [isActiveState, setisActiveState] = useState(user ? user?.is_Active : false);
+  const [isAdminState, setisAdminState] = useState(user ? user?.is_Admin : false);
   const [putUser, setPutUser] = useState("");
   const [postUser, setPostUser] = useState("");
   const { depState, setDepState } = useContext(DepartmentStateContext);
-  const apiPutUserUrl = "https://localhost:7079/api/Employee?userNum=";
+  const apiPutUserUrl = "https://localhost:7079/api/Employee/";
   const apiPostUserUrl = "https://localhost:7079/api/Employee";
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function CreateOrUpdateUserDialog({
       setValue("managerFname", user?.managerFname);
       setValue("managerLName", user?.managerLName);
       setValue("managerEmail", user?.managerEmail);
-      setValue("roleType", user?.userType);
+      setValue("roleType", (user?.userType ? "מנהל" : "עובד"));
       setValue("roleGroup", user?.userRoleGroupDesc);
       setValue("isActive", user?.is_Active);
       setValue("isAdmin", user?.is_Admin);
@@ -113,17 +113,19 @@ export default function CreateOrUpdateUserDialog({
       setDepartment(user?.userDepartment ? user?.userDepartment : "");
       setroleType(user ? (user?.userType ? "מנהל" : "עובד") : "");
       setroleGroup(user?.userRoleGroupDesc ? user?.userRoleGroupDesc : "");
-      setisActiveState(user ? (user?.is_Active ? true : undefined) : undefined);
-      setisAdminState(user ? (user?.is_Admin ? true : undefined) : undefined);
+      setisActiveState(user?.is_Active ? true : false);
+      setisAdminState(user?.is_Admin ? true : false);
     }
   }, [user, open]);
+
+  // console.log(putUser);
 
   useEffect(() => {
     // Update details
     const abortController = new AbortController();
-    if (putUser.value !== undefined) {
-      console.log('here hey 3');
-      console.log('put'+ putUser.value , 'post'+ postUser.value);
+    console.log(JSON.stringify(putUser))
+    if (putUser !== "") {
+      console.log("here 22");
       fetch(apiPutUserUrl + user?.userNum, {
         method: "PUT",
         headers: new Headers({
@@ -135,6 +137,7 @@ export default function CreateOrUpdateUserDialog({
       })
         .then(async (response) => {
           const data = await response.json();
+          console.log(response);
 
           if (!response.ok) {
             // get error message from body or default to response statusText
@@ -161,7 +164,7 @@ export default function CreateOrUpdateUserDialog({
           },
           (error) => {
             if (error.name === "AbortError") return;
-            console.log("err get=", error.value);
+            console.log("err put=", error);
             // setMsg("קרתה תקלה");
             throw error;
           }
@@ -175,9 +178,9 @@ export default function CreateOrUpdateUserDialog({
 
   useEffect(() => {
     // Update details
-    if (postUser.value !== undefined) {
+    if (postUser !== "") {
       console.log('here hey 2');
-      console.log('put'+ putUser.value , 'post'+ postUser.value);
+      console.log(postUser);
       const abortController = new AbortController();
       fetch(apiPostUserUrl, {
         method: "POST",
@@ -190,6 +193,7 @@ export default function CreateOrUpdateUserDialog({
       })
         .then(async (response) => {
           const data = await response.json();
+          console.log(response);
 
           if (!response.ok) {
             // get error message from body or default to response statusText
@@ -220,37 +224,44 @@ export default function CreateOrUpdateUserDialog({
     }
   }, [postUser]);
 
+
   const onSubmit = (data) => {
     console.log('here');
     const newUser = {
-      userId: data?.id,
+      userEmail: data?.email,
+      // userpassword: (user ? user?.userpassword+"p" : null),
+      // userNum: (user ? user?.userNum : null),
+      userId: parseInt(data?.id),
       userFName: data?.firstName,
       userLName: data?.lastName,
-      userEmail: data?.email,
       userGender: data?.gender,
-      userDepartment: data?.department,
+      // userInsertDate: (user ? user?.userInsertDate : null),
+      is_Active: (data?.isActive === "true" ? true : false),
+      is_Admin: (data?.isAdmin === "true" ? true : false),
+      userType: (data?.roleType === "מנהל" ? true : false),
       userRole: data?.job,
-      userPhoneNum: data?.phone,
+      // userRoleGroup: (user ? user?.userRoleGroup : null),
+      userDepartment: data?.department,
+      userPhoneNum: parseInt(data?.phone),
+      // userManagerNum: (user ? user?.userManagerNum : null),
       managerFname: data?.managerFname,
       managerLName: data?.managerLName,
       managerEmail: data?.managerEmail,
-      userType: data?.roleType,
       userRoleGroupDesc: data?.roleGroup,
-      is_Active: (data?.isActive === "true" ? true : false),
-      is_Admin: (data?.isAdmin === "true" ? true : false),
     };
     console.log(newUser);
 
     if (user) {
       // Update a user
+      console.log('here?');
       setPutUser(newUser);
     } else {
       // Add new user at the end of the array
+      console.log('here??');
       setPostUser(newUser);
     }
 
     setOpen((e) => !e);
-
     reset();
     // setGender();
     // setDepartment();
@@ -291,7 +302,7 @@ export default function CreateOrUpdateUserDialog({
         }}
       >
         <form
-          onSubmit={handleSubmit(onSubmit,onError)}
+          onSubmit={handleSubmit(onSubmit, onError)}
           style={{
             width: "100%",
             flex: 1,
@@ -537,12 +548,12 @@ export default function CreateOrUpdateUserDialog({
           >
             <FormControlLabel
               value={isActiveState}
-              onChange={(e) => setisActiveState(e.target.checked)}
               control={
                 <Checkbox
                   inputProps={{ "aria-label": "Checkbox is_Active" }}
                   {...register("isActive")}
                   checked={isActiveState}
+                  onChange={(e) => setisActiveState(e.target.checked)}
                 />
               }
               label="פעיל?"
@@ -556,12 +567,12 @@ export default function CreateOrUpdateUserDialog({
           >
             <FormControlLabel
               value={isAdminState}
-              onChange={(e) => setisAdminState(e.target.checked)}
               control={
                 <Checkbox
                   inputProps={{ "aria-label": "Checkbox is_Admin" }}
                   {...register("isAdmin")}
                   checked={isAdminState}
+                  onChange={(e) => setisAdminState(e.target.checked)}
                 />
               }
               label="אדמין?"
