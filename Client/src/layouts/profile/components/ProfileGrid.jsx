@@ -9,7 +9,7 @@ import { Dialog, DialogContent, Button } from "@mui/material";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MeetingCalendar from "layouts/meetings/Calendar";
-
+import MyEvalues from "./MyEvalues";
 const myGoalsData = [
   {id:1, name:"קורס אקסל", date:"22-2-2022", isDone:"בוצע"},
   {id:2, name:"קורס נגרות", date:"22-2-2023", isDone:"בוצע"},
@@ -56,6 +56,7 @@ function ProfileGrid({ title, description, action }) {
               variant="h2"
               textTransform="capitalize"
             >
+
               {title}
             </MDTypography>
           ) : action.type === "goals" ? (

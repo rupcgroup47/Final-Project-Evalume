@@ -15,6 +15,7 @@ import Grid from "@mui/material/Grid";
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 import FinishDialog from "./FinishDialog";
+import { QuestionsContext } from "context/globalVariables";
 
 const questionsResp = [...Array(2).keys()].map((idx) => ({
   id: `id title-${idx}`,
@@ -66,6 +67,10 @@ export default function FormBuilder({ updateArray }) {
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
+  const { globalQuestionArray } = useContext(QuestionsContext);
+  const [isChecked, setIsChecked] = useState(false);
+  const [checkedBoxes, setCheckedBoxes] = useState([]);
+
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -76,27 +81,56 @@ export default function FormBuilder({ updateArray }) {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  const handleChangeCheck = (event) => {
-    const question = event.target.name;
+  const handleChangeCheck = (event, id, questionId) => {
     const isChecked = event.target.checked;
-
+    const question = event.target.name;
+    const newCheck = {
+      titleId: id,
+      questionId: questionId,
+    };
     if (isChecked) {
-      setCheckedItems([...checkedItems, question]);
+      setCheckedBoxes([...checkedBoxes, question]);
+      const newCheckedItems = checkedItems.includes(newCheck)
+        ? checkedItems
+        : [...checkedItems, newCheck];
+      setCheckedItems(newCheckedItems);
+      console.log(checkedItems);
     } else {
-      setCheckedItems(checkedItems.filter((q) => q !== question));
+      setCheckedBoxes(checkedBoxes.filter((q) => q !== question));
+      setCheckedItems(
+        checkedItems.filter((field) => JSON.stringify(field) !== JSON.stringify(newCheck))
+      );
     }
+    console.log(newCheck);
+
+    console.log(checkedItems);
   };
 
   const handleCheckedForm = () => {
-    console.log(checkedItems);
-    updateArray(checkedItems);
+    // const groupedData = [];
+  
+    // checkedItems.forEach((item) => {
+    //   if (groupedData[item.titleId]) {
+    //     groupedData[item.titleId].push(item.questionId);
+    //   } else {
+    //     groupedData[item.titleId] = [item.questionId];
+    //   }
+    // });
+    const groupedData = Array.from(new Set(checkedItems.map((item) => item.titleId))).map(
+      (titleId) => ({
+        titleId,
+        questionIds: checkedItems.filter((item) => item.titleId === titleId).map((item) => item.questionId),
+      })
+    );
+    console.log(groupedData);
+    updateArray(groupedData);
     setShowCloseDialog((e) => !e); // Error dialog message
-      setMsg("סיימת למלא את טופס ההערכה");
-      setRouteMsg("חזרה לדף הבית");
+    setMsg("סיימת למלא את טופס ההערכה");
+    setRouteMsg("חזרה לדף הבית");
   };
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      {questionsResp.map(({ id, title, questions }) => (
+      {globalQuestionArray.map(({ id, title, questions }) => (
         <Accordion
           key={"q" + id}
           expanded={expanded === id}
@@ -108,7 +142,8 @@ export default function FormBuilder({ updateArray }) {
           </AccordionSummary>
 
           <AccordionDetails>
-            {questions.map(({ id: questionId, label }, idx) => (
+            {console.log(questions)}
+            {questions.map(({ questionId, name }) => (
               <Grid
                 container
                 direction="row"
@@ -119,13 +154,13 @@ export default function FormBuilder({ updateArray }) {
                 key={"q-" + id + "-" + questionId}
               >
                 <Grid item xs={10}>
-                  <Typography>{label}</Typography>
+                  <Typography>{name}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                   <Checkbox
                     name={"q-" + id + "-" + questionId}
-                    checked={checkedItems.includes("q-" + id + "-" + questionId)}
-                    onChange={handleChangeCheck}
+                    checked={checkedBoxes.includes("q-" + id + "-" + questionId)}
+                    onChange={(event) => handleChangeCheck(event, id, questionId)}
                     inputProps={{ "aria-label": "controlled" }}
                   />
                 </Grid>
@@ -138,15 +173,14 @@ export default function FormBuilder({ updateArray }) {
         סיום
       </Button>
       <FinishDialog
-      open={showCloseDialog}
-      setOpen={setShowCloseDialog}
-      msg={statusMsg}
-      finishRouteMsg={finishRouteMsg}
-      onClick={() => {
-        setShowCloseDialog((e) => !e);
-      }}
-    />
+        open={showCloseDialog}
+        setOpen={setShowCloseDialog}
+        msg={statusMsg}
+        finishRouteMsg={finishRouteMsg}
+        onClick={() => {
+          setShowCloseDialog((e) => !e);
+        }}
+      />
     </Container>
-      
   );
 }
