@@ -9,7 +9,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-
 // Data
 
 // Material Dashboard 2 React contexts
@@ -18,7 +17,6 @@ import { useMaterialUIController, setDirection } from "context";
 export default function HeaderFrom({ setShowFormComponent, updateObject }) {
   const [, dispatch] = useMaterialUIController();
   const [allForms, setForms] = useState([]);
-
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -38,7 +36,6 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const newForm = {
-      id: Math.random().toString(36).substr(2, 9),
       groupType: roleGroupType,
       roleType: roleType,
     };

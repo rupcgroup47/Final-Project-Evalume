@@ -11,7 +11,7 @@ import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
 import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector";
 import { useState, useContext } from "react";
-import { StepperContext } from "context/steper";
+import { StepperContext } from "context/globalVariables";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {

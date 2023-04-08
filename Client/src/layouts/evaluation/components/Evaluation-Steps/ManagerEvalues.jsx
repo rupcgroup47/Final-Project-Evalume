@@ -3,7 +3,7 @@ import { useMaterialUIController, setDirection } from "context";
 import React, { useState, useEffect, useContext } from "react";
 import { MainStateContext } from "App";
 import CustomizedSteppers from "../steper";
-import { StepperContext } from "context/steper";
+import { StepperContext } from "context/globalVariables";
 import SurveyForm from "../surveyForm";
 
 function ManagerEvalues() {

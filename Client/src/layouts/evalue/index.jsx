@@ -11,14 +11,30 @@ import AddIcon from "@mui/icons-material/Add";
 import { useMaterialUIController, setDirection } from "context";
 import HeaderFrom from "./components/header";
 import CreateQuestionsDialog from "dialog/CreateQuestionsDialog";
+import { QuestionsContext } from "context/globalVariables";
 
 export default function Evalues() {
   const [, dispatch] = useMaterialUIController();
   const [showFormComponent, setShowFormComponent] = useState(false);
+  const [surveyId, setSurveyId] = useState("1")
   const [myCheckedArray, setMyArray] = useState([]);
   const [myFormTypes, setMyObject] = useState({});
-  const myNewForm = { myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
+  const myNewForm = { surveyId, myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
   const [showCreateQuestionDialog, setShowCreateQuestionDialog] = useState(false);
+  const [globalQuestionArray, setGlobalQuestionsArray] = useState([{
+    id: 1,
+    title: "אכפתיות",
+    questions: [
+      {
+        questionId: 1,
+        name: "Question Name 1"
+      },
+      {
+        questionId: 2,
+        name: "Question Name 2"
+      }
+    ]
+  }, {id:2, title:"שירותיות", questions:[]}]);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -29,6 +45,7 @@ export default function Evalues() {
   function updateArray(myCheckedArray) {
     // receive the checked answers
     setMyArray(myCheckedArray);
+    setSurveyId(Math.random().toString(36).substr(2, 9))
     console.log(myNewForm);
   }
 
@@ -50,14 +67,15 @@ export default function Evalues() {
           </IconButton>
         </Tooltip>
       </Box>
-      <CreateQuestionsDialog
-        open={showCreateQuestionDialog}
-        setOpen={setShowCreateQuestionDialog}
-        // setQuestions={setQuestions}
-        // setItems={setItems}
-      />
-      <HeaderFrom updateObject={updateObject} setShowFormComponent={setShowFormComponent} />
-      {showFormComponent && <FormBuilder updateArray={updateArray} />}
+      <QuestionsContext.Provider value={{ globalQuestionArray, setGlobalQuestionsArray }}>
+        <CreateQuestionsDialog
+          open={showCreateQuestionDialog}
+          setOpen={setShowCreateQuestionDialog}
+        />
+        <HeaderFrom updateObject={updateObject} setShowFormComponent={setShowFormComponent} />
+        {showFormComponent && <FormBuilder updateArray={updateArray} />}
+      </QuestionsContext.Provider>
+      
     </Container>
   );
 }

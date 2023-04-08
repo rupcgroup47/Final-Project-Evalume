@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { MainStateContext } from "App";
 import CustomizedSteppers from "./components/steper";
 import SurveyForm from "./components/surveyForm";
-import { StepperContext } from "context/steper";
+import { StepperContext } from "context/globalVariables";
 
 
 
