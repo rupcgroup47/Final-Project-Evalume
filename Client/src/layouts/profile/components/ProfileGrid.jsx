@@ -8,6 +8,8 @@ import { useState } from "react";
 import { Dialog, DialogContent, Button } from "@mui/material";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MeetingCalendar from "layouts/meetings/Calendar";
+
 const myGoalsData = [
   {id:1, name:"קורס אקסל", date:"22-2-2022", isDone:"בוצע"},
   {id:2, name:"קורס נגרות", date:"22-2-2023", isDone:"בוצע"},
@@ -67,14 +69,12 @@ function ProfileGrid({ title, description, action }) {
               </Dialog>
             </>
           ) : (
-            <MDTypography
-              component={Link}
-              to={action.route}
-              variant="h2"
-              textTransform="capitalize"
-            >
-              {title}
-            </MDTypography>
+            <><MDTypography onClick={handleTypographyClick} variant="h2" textTransform="capitalize">
+                  {title}
+                </MDTypography><Dialog open={isPopupOpen} onClose={handleCloseDialog}>
+                    <Button onClick={handleCloseDialog}>חזרה לדף הבית</Button>
+                    <DialogContent><MeetingCalendar /> </DialogContent>
+                  </Dialog></>
           )}
         </MDBox>
         <MDBox mb={3} lineHeight={0}>

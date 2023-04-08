@@ -50,7 +50,7 @@ import MyEvalues from "layouts/profile/components/MyEvalues";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import ManagerEvalues from "layouts/evaluation/components/Evaluation-Steps/ManagerEvalues";
-
+import MeetingCalendar from "layouts/meetings/Calendar";
 // import Feedback from "layouts/evaluation/components/Feedback";
 const routes = [
   {
@@ -160,6 +160,15 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/managerEvalues",
     component: <ManagerEvalues />,
+    isHiddenFromSideNav: true,
+  },
+  {
+    type: "collapse",
+    name: "יומן",
+    key: "calendar",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/calendar",
+    component: <MeetingCalendar />,
     isHiddenFromSideNav: true,
   },
 ];
