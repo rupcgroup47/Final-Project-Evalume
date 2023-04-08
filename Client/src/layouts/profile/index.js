@@ -116,38 +116,22 @@ function Overview() {
               <ProfileGrid
                 title="הערכות"
                 description="צפייה והורדת כלל ההערכות שלי לאורך השנים"
-                action={{
-                  type: "evalues",
-                  route: "/myEvalues",
-                  color: "info",
-                  label: "מעבר להערכות שלי",
-                }}
-
+                type="evalues"
               />
             </Grid>
             <Grid item xs={12} md={6} xl={4}>
               <ProfileGrid
                 title="יעדים"
                 description="צפייה ועדכון היעדים האישיים שלי"
-                action={{
-                  type: "goals",
-                  color: "info",
-                }}
-
+                type="goals"
+               
               />
             </Grid>
             <Grid item xs={12} md={6} xl={4}>
               <ProfileGrid
                 title="יומן פגישות"
                 description="צפייה בפגישות שלי"
-                action={{
-                  type: "meeting",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-              
-              />
+                             />
             </Grid>
            
           </Grid>

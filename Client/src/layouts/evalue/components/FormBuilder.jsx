@@ -68,7 +68,6 @@ export default function FormBuilder({ updateArray }) {
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
   const { globalQuestionArray } = useContext(QuestionsContext);
-  const [isChecked, setIsChecked] = useState(false);
   const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -81,7 +80,7 @@ export default function FormBuilder({ updateArray }) {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  const handleChangeCheck = (event, id, questionId) => {
+  const handleChangeCheck = (event, id, questionId) => {//Perception and insertion or removal from the array of the questions marked in the check box
     const isChecked = event.target.checked;
     const question = event.target.name;
     const newCheck = {
@@ -98,30 +97,19 @@ export default function FormBuilder({ updateArray }) {
     } else {
       setCheckedBoxes(checkedBoxes.filter((q) => q !== question));
       setCheckedItems(
-        checkedItems.filter((field) => JSON.stringify(field) !== JSON.stringify(newCheck))
+        checkedItems.filter((field) => JSON.stringify(field) !== JSON.stringify(newCheck))// remove object from questions form if object removed from check box
       );
     }
-    console.log(newCheck);
 
-    console.log(checkedItems);
   };
 
   const handleCheckedForm = () => {
-    // const groupedData = [];
-  
-    // checkedItems.forEach((item) => {
-    //   if (groupedData[item.titleId]) {
-    //     groupedData[item.titleId].push(item.questionId);
-    //   } else {
-    //     groupedData[item.titleId] = [item.questionId];
-    //   }
-    // });
     const groupedData = Array.from(new Set(checkedItems.map((item) => item.titleId))).map(
       (titleId) => ({
         titleId,
         questionIds: checkedItems.filter((item) => item.titleId === titleId).map((item) => item.questionId),
       })
-    );
+    ); // group by titles and questions
     console.log(groupedData);
     updateArray(groupedData);
     setShowCloseDialog((e) => !e); // Error dialog message
@@ -142,8 +130,7 @@ export default function FormBuilder({ updateArray }) {
           </AccordionSummary>
 
           <AccordionDetails>
-            {console.log(questions)}
-            {questions.map(({ questionId, name }) => (
+            {questions.map(({ questionId, name }) => (//show the questions inside the title
               <Grid
                 container
                 direction="row"
@@ -159,8 +146,8 @@ export default function FormBuilder({ updateArray }) {
                 <Grid item xs={2}>
                   <Checkbox
                     name={"q-" + id + "-" + questionId}
-                    checked={checkedBoxes.includes("q-" + id + "-" + questionId)}
-                    onChange={(event) => handleChangeCheck(event, id, questionId)}
+                    checked={checkedBoxes.includes("q-" + id + "-" + questionId)}//check if allready checked
+                    onChange={(event) => handleChangeCheck(event, id, questionId)}//create new object of the qustion and title the user just checked
                     inputProps={{ "aria-label": "controlled" }}
                   />
                 </Grid>
