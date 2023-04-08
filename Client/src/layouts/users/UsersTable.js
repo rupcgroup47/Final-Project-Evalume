@@ -55,8 +55,9 @@ export default function UsersTable({ users, setUsers }) {
   const handleSearch = (value) => {
     setSearchInput(value);
 
-    let sx = users.filter((item) =>
-      `${item.userFName} ${item.userLName}`.toLowerCase().includes(value.toLowerCase())
+    let sx = users.filter((item) => 
+      `${item.userFName} ${item.userLName}`.toLowerCase().includes(value.toLowerCase()) || item.userEmail.toLowerCase().includes(value.toLowerCase())
+    
     );
 
     setItems(value?.length > 0 ? sx : users);
