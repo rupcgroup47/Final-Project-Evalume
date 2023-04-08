@@ -55,8 +55,15 @@ export default function UsersTable({ users, setUsers }) {
   const handleSearch = (value) => {
     setSearchInput(value);
 
+<<<<<<< Updated upstream
     let sx = users.filter((item) =>
       `${item.userFName} ${item.userLName}`.toLowerCase().includes(value.toLowerCase())
+=======
+    let sx = users.filter(
+      (item) =>
+        `${item.userFName} ${item.userLName}`.toLowerCase().includes(value.toLowerCase()) ||
+        item.userEmail.toLowerCase().includes(value.toLowerCase())
+>>>>>>> Stashed changes
     );
 
     setItems(value?.length > 0 ? sx : users);
@@ -79,7 +86,18 @@ export default function UsersTable({ users, setUsers }) {
 
   useEffect(() => {
     handleFilter();
-  }, [filterName, filterEmail, filterGender, filterDepartment, filterJob, filterRoleType, filterDirector, filterActive, filterAdmin, filterRoleGroup]);
+  }, [
+    filterName,
+    filterEmail,
+    filterGender,
+    filterDepartment,
+    filterJob,
+    filterRoleType,
+    filterDirector,
+    filterActive,
+    filterAdmin,
+    filterRoleGroup,
+  ]);
 
   const handleFilter = () => {
     let filterdArray = users.filter(
@@ -92,10 +110,14 @@ export default function UsersTable({ users, setUsers }) {
         (filterJob ? user.userRole.includes(filterJob) : true) &&
         (filterDepartment ? user.userDepartment.includes(filterDepartment) : true) &&
         (filterRoleType ? user.userRoleGroupDesc.includes(filterRoleType) : true) &&
-        (filterDirector ? `${user.managerFname} ${user.managerLName}`?.toLowerCase().includes(filterDirector.toLowerCase()) : true) &&
-        (filterRoleGroup ?  user.userType == (filterRoleGroup == "מנהל" ? true : false) : true) &&
+        (filterDirector
+          ? `${user.managerFname} ${user.managerLName}`
+              ?.toLowerCase()
+              .includes(filterDirector.toLowerCase())
+          : true) &&
+        (filterRoleGroup ? user.userType == (filterRoleGroup == "מנהל" ? true : false) : true) &&
         (filterActive ? user.is_Active == (filterActive == "פעיל" ? true : false) : true) &&
-        (filterAdmin ?  user.is_Admin == (filterAdmin == "אדמין" ? true : false) : true)
+        (filterAdmin ? user.is_Admin == (filterAdmin == "אדמין" ? true : false) : true)
     );
 
     setItems(filterdArray);
@@ -125,7 +147,7 @@ export default function UsersTable({ users, setUsers }) {
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
   return (
-    <Paper sx={{ boxShadow: "none"}}>
+    <Paper sx={{ boxShadow: "none" }}>
       <TableToolbar
         // Users
         users={users}
@@ -233,5 +255,3 @@ export default function UsersTable({ users, setUsers }) {
     </Paper>
   );
 }
-
-
