@@ -10,6 +10,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Xml.Linq;
+using System.Text.Json.Nodes;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -60,7 +61,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPUserDetails("spGetUserDetails",con, userEmail, userpassword);            // create the command
+        cmd = CreateCommandWithSPUserDetails("spGetUserDetails", con, userEmail, userpassword);            // create the command
 
         Employee employee = new Employee();
 
@@ -90,7 +91,7 @@ public class DBservices
                 employee.ManagerEmail = dataReader["managerEmail"].ToString();
             }
 
-                return employee;
+            return employee;
         }
         catch (Exception ex)
         {
@@ -238,7 +239,7 @@ public class DBservices
         }
 
         cmd = CreateCommandWithSPGet("spGetAllUsers", con);            // create the command
-                                                                               
+
         List<Employee> UsersList = new List<Employee>();
 
         try
@@ -781,14 +782,15 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                Question question = new Question();
-                question.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
-                question.QuesContent = dataReader["QuesContent"].ToString();
-                question.Insert_date = Convert.ToDateTime(dataReader["Insert_date"]);
-                question.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
+                Question Question = new Question();
+                Question.QuesGroup_ID = Convert.ToInt32(dataReader["quesGroup_Type"]);
+                Question.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
+                Question.GroupType = Convert.ToBoolean(dataReader["GroupType"]);
+                Question.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
+                Question.QuesContent = dataReader["QuesContent"].ToString();
+                Question.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
 
-                QuestionsList.Add(question);
-
+                QuestionsList.Add(Question);
             }
 
             return QuestionsList;
@@ -892,7 +894,7 @@ public class DBservices
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
         cmd.Parameters.AddWithValue("@QuesContent", question.QuesContent); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@Insert_date", question.Insert_date);
+        //cmd.Parameters.AddWithValue("@Insert_date", question.Insert_date);
         cmd.Parameters.AddWithValue("@Is_Active", question.Is_Active);
 
         return cmd;

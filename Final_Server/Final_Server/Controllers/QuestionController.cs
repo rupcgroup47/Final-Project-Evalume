@@ -1,5 +1,6 @@
 ﻿using Final_Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Nodes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,7 +12,7 @@ namespace Final_Server.Controllers
     {
         // GET: api/<QuestionController>
         [HttpGet]
-        public IEnumerable<Question> Get() //get all questions
+        public IEnumerable<Object> Get() //get all questions
         {
             return Question.ReadQuestions();
         }
