@@ -237,7 +237,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetAllUsers("spGetAllUsers", con);            // create the command
+        cmd = CreateCommandWithSPGet("spGetAllUsers", con);            // create the command
                                                                                
         List<Employee> UsersList = new List<Employee>();
 
@@ -292,9 +292,9 @@ public class DBservices
     }
 
     //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure to get all Users
+    // Create the SqlCommand using a stored procedure for get with no conditions
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetAllUsers(String spName, SqlConnection con)
+    private SqlCommand CreateCommandWithSPGet(String spName, SqlConnection con)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -461,7 +461,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method change "is_active" field by user email
     ////--------------------------------------------------------------------------------------------------
-    public int UpdateUserActive(string userEmail, bool is_Active)
+    public int UpdateUserActive(int userNum, bool is_Active)
     {
 
         SqlConnection con;
@@ -477,7 +477,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPUserActive("spUpdateUserActive", con, userEmail, is_Active);             // create the command
+        cmd = CreateCommandWithSPUserActive("spUpdateUserActive", con, userNum, is_Active);             // create the command
 
         try
         {
@@ -504,7 +504,7 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPUserActive(String spName, SqlConnection con, string userEmail, bool is_Active)
+    private SqlCommand CreateCommandWithSPUserActive(String spName, SqlConnection con, int userNum, bool is_Active)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -517,7 +517,7 @@ public class DBservices
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        cmd.Parameters.AddWithValue("@UserEmail", userEmail); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@UserNum", userNum); //insert all the parameters we got from the user
         cmd.Parameters.AddWithValue("@Is_Active", is_Active);
 
         return cmd;
@@ -622,7 +622,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetAllGoals("spGetAllGoals", con);            // create the command
+        cmd = CreateCommandWithSPGet("spGetAllGoals", con);            // create the command
 
         List<Goal> GoalsList = new List<Goal>();
 
@@ -665,24 +665,24 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure to get all Goals
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetAllGoals(String spName, SqlConnection con)
-    {
+    //private SqlCommand CreateCommandWithSPGetAllGoals(String spName, SqlConnection con)
+    //{
 
-        SqlCommand cmd = new SqlCommand(); // create the command object
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
 
-        cmd.Connection = con;              // assign the connection to the command object
+    //    cmd.Connection = con;              // assign the connection to the command object
 
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
 
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
 
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
+    //    /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
 
 
-        return cmd;
-    }
+    //    return cmd;
+    //}
 
     ////--------------------------------------------------------------------------------------------------
     //// This method inserts new Goal
@@ -769,7 +769,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetAllQuestions("spGetAllQuestions", con);            // create the command
+        cmd = CreateCommandWithSPGet("spGetAllQuestions", con);            // create the command
 
         List<Question> QuestionsList = new List<Question>();
 
@@ -813,24 +813,24 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure to get all Questions
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetAllQuestions(String spName, SqlConnection con)
-    {
+    //private SqlCommand CreateCommandWithSPGetAllQuestions(String spName, SqlConnection con)
+    //{
 
-        SqlCommand cmd = new SqlCommand(); // create the command object
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
 
-        cmd.Connection = con;              // assign the connection to the command object
+    //    cmd.Connection = con;              // assign the connection to the command object
 
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
 
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
 
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
+    //    /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
 
 
-        return cmd;
-    }
+    //    return cmd;
+    //}
 
     ////--------------------------------------------------------------------------------------------------
     //// This method inserts new Question
@@ -1380,7 +1380,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetUserGoals("spGetUserGoals", con);            // create the command
+        cmd = CreateCommandWithSPGet("spGetUserGoals", con);            // create the command
 
         List<Rel_Goal_Employee> UserGoalsList = new List<Rel_Goal_Employee>();
 
@@ -1427,24 +1427,24 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure to get all User goals
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetUserGoals(String spName, SqlConnection con)
-    {
+    //private SqlCommand CreateCommandWithSPGetUserGoals(String spName, SqlConnection con)
+    //{
 
-        SqlCommand cmd = new SqlCommand(); // create the command object
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
 
-        cmd.Connection = con;              // assign the connection to the command object
+    //    cmd.Connection = con;              // assign the connection to the command object
 
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
 
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
 
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
+    //    /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
 
 
-        return cmd;
-    }
+    //    return cmd;
+    //}
 
 
     //--------------------------------------------------------------------------------------------------
@@ -1685,4 +1685,68 @@ public class DBservices
 
         return cmd;
     }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method delete a user bt his user number
+    ////--------------------------------------------------------------------------------------------------
+    //public int DeleteUser(int UserNum)
+    //{
+
+    //    SqlConnection con;
+    //    SqlCommand cmd;
+
+    //    try
+    //    {
+    //        con = connect("myProjDB"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    cmd = CreateCommandWithSPDeleteUser("spDeleteUser", con, UserNum);             // create the command
+
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
+
+    //}
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand using a stored procedure
+    ////---------------------------------------------------------------------------------
+    //private SqlCommand CreateCommandWithSPDeleteUser(String spName, SqlConnection con, int UserNum)
+    //{
+
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
+
+    //    cmd.Connection = con;              // assign the connection to the command object
+
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+    //    cmd.Parameters.AddWithValue("@UserNum", UserNum); //insert all the parameters we got from the user
+
+    //    return cmd;
+    //}
 }

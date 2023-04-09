@@ -61,27 +61,11 @@ namespace Final_Server.Models
         {
             DBservices dbs = new DBservices();
             return dbs.GetAllUsers();
-
         }
 
         public int InsertEmployee() //Insert new user (Employee)
         {
             DBservices tmp = new DBservices();
-
-            //List<string> List = tmp.ReadAllUsersEmails(); //Befor read all existing Emails
-
-            //if (List.Count > 0)
-            //{
-            //    foreach (string email in List)
-            //    {
-            //        if (this.UserEmail == email)
-            //        {
-            //            Console.WriteLine("This Email is already exist");
-            //            return 0;
-            //        }
-            //    }
-            //}
-
             return tmp.InsertEmployee(this);
         }
 
@@ -90,22 +74,19 @@ namespace Final_Server.Models
         {
             DBservices tmp = new DBservices();
             return tmp.UpdateUserDetails(this, userNum);
-
         }
 
         public int UpdateUserPassword(string userEmail, string userpassword) //Update user password
         {
             DBservices tmp = new DBservices();
             return tmp.UpdateUserPassword(userEmail, userpassword);
-
         }
 
-        public int UpdateActive(string userEmail, bool is_Active) //Update user feild "is_active"
+        public int UpdateActive(int userNum, bool is_Active) //Update user feild "is_active"
         {
             DBservices tmp = new DBservices();
 
-            return tmp.UpdateUserActive(userEmail, is_Active);
+            return tmp.UpdateUserActive(userNum, is_Active);
         }
     }
-
 }

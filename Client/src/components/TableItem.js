@@ -15,9 +15,8 @@ The CloseDialog component is rendered outside of the TableRow component, and is 
 import { useState } from "react";
 import { IconButton, TableCell, TableRow } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import ToggleOffRoundedIcon from '@mui/icons-material/ToggleOffRounded';
 import Checkbox from "@mui/material/Checkbox";
-
 import CloseDialog from "../dialog/CloseDialog";
 import UpdateUserDialog from "../dialog/CreateOrUpdateUserDialog";
 
@@ -100,7 +99,7 @@ export default function TableItem({
             <EditRoundedIcon />
           </IconButton>
           <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
-            <DeleteRoundedIcon />
+            <ToggleOffRoundedIcon />
           </IconButton>
         </TableCell>
       </TableRow>

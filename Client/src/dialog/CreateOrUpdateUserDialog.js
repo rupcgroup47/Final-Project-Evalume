@@ -3,13 +3,11 @@ This is a React component that creates a dialog box for creating a new user. The
 
 The component accepts several props including open, setOpen, setUsers, and setItems. These props are used to control the state of the dialog box and update the list of users and items when a new user is created.
 
-The component also uses the useForm hook from the react-hook-form library to manage form state and validation. The useState hook is also used to manage the state of the gender, department, job, and avatar fields.
+The component also uses the useForm hook from the react-hook-form library to manage form state and validation. The useState hook is also used to manage the state of the gender, department, and job fields.
 
 The handleSubmit function is called when the form is submitted, and a new user object is created from the form data. The new user object is then added to the list of users and items using the setUsers and setItems functions passed as props.
 
 The component also has several form fields for collecting user data, including a file input for the user's profile picture, text inputs for the user's first and last name, email, and select fields for gender, department, and job.
-
-The handleAvatarChange function is called when a new file is selected for the profile picture input. This function reads the file data and sets the avatar state to the file data.
 
 The isImage function checks if the selected file is an image file.
 
@@ -34,25 +32,18 @@ import {
 
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
-import { DepartmentStateContext } from "layouts/users";
-import { useColumnOrder } from "react-table";
+import { DepartmentStateContext } from "context/globalVariables";
+import swal from 'sweetalert';
 
-export default function CreateOrUpdateUserDialog({
-  open,
-  setOpen,
-  setUsers,
-  setItems,
-  users,
-  user,
-}) {
+export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setItems, user }) {
   const {
     register,
     handleSubmit,
-    // watch,
     reset,
     setValue,
     formState: { errors },
   } = useForm({
+    // default setup values for the form
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -71,12 +62,14 @@ export default function CreateOrUpdateUserDialog({
       roleGroup: "",
     },
   });
-  // const avatarValue = watch("avatar");
   console.log(errors);
 
+  // setup variables 
   const genders = ["זכר", "נקבה", "אחר"];
   const roleTypes = ["מנהל", "עובד"];
   const roleGroups = ["כללי", "תפעולי", "משרדי"];
+  const apiPutUserUrl = "https://localhost:7079/api/Employee/";
+  const apiPostUserUrl = "https://localhost:7079/api/Employee";
 
   // Use state to store the selected value
   const [gender, setGender] = useState("");
@@ -88,9 +81,8 @@ export default function CreateOrUpdateUserDialog({
   const [putUser, setPutUser] = useState("");
   const [postUser, setPostUser] = useState("");
   const { depState, setDepState } = useContext(DepartmentStateContext);
-  const apiPutUserUrl = "https://localhost:7079/api/Employee/";
-  const apiPostUserUrl = "https://localhost:7079/api/Employee";
 
+  //set the values of the form inputs and the states to be of the selected user if it exist
   useEffect(() => {
     if (open === true) {
       setValue("firstName", user?.userFName);
@@ -108,7 +100,6 @@ export default function CreateOrUpdateUserDialog({
       setValue("roleGroup", user?.userRoleGroupDesc);
       setValue("isActive", user?.is_Active);
       setValue("isAdmin", user?.is_Admin);
-
       setGender(user?.userGender ? user?.userGender : "");
       setDepartment(user?.userDepartment ? user?.userDepartment : "");
       setroleType(user ? (user?.userType ? "מנהל" : "עובד") : "");
@@ -118,12 +109,10 @@ export default function CreateOrUpdateUserDialog({
     }
   }, [user, open]);
 
-  // console.log(putUser);
-
+  //update user datails using PUT api
   useEffect(() => {
     // Update details
     const abortController = new AbortController();
-    console.log(JSON.stringify(putUser))
     if (putUser !== "") {
       console.log("here 22");
       fetch(apiPutUserUrl + user?.userNum, {
@@ -160,12 +149,22 @@ export default function CreateOrUpdateUserDialog({
                 item.userNum === user?.userNum ? { ...item, ...putUser } : item
               )
             );
-            // setMsg("");
+            swal({
+              title: "הצלחנו!",
+              text: "המשתמש עודכן בהצלחה",
+              icon: "success",
+              button: "סגור"
+            });
           },
           (error) => {
             if (error.name === "AbortError") return;
             console.log("err put=", error);
-            // setMsg("קרתה תקלה");
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
             throw error;
           }
         );
@@ -176,6 +175,7 @@ export default function CreateOrUpdateUserDialog({
     }
   }, [putUser]);
 
+    //insert a new user datails using POST api
   useEffect(() => {
     // Update details
     if (postUser !== "") {
@@ -208,12 +208,22 @@ export default function CreateOrUpdateUserDialog({
             console.log("success" + result);
             setUsers((oldArray) => [...oldArray, postUser]);
             setItems((oldArray) => [...oldArray, postUser]);
-            // setMsg("");
+            swal({
+              title: "הצלחנו!",
+              text: "המשתמש נוסף בהצלחה",
+              icon: "success",
+              button: "סגור"
+            });
           },
           (error) => {
             if (error.name === "AbortError") return;
             console.log("err get=", error.value);
-            // setMsg("קרתה תקלה");
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
             throw error;
           }
         );
@@ -224,7 +234,7 @@ export default function CreateOrUpdateUserDialog({
     }
   }, [postUser]);
 
-
+  //creating a new user when submiting the form at the targeted varibles type and set the relevant state
   const onSubmit = (data) => {
     console.log('here');
     const newUser = {
@@ -263,30 +273,10 @@ export default function CreateOrUpdateUserDialog({
 
     setOpen((e) => !e);
     reset();
-    // setGender();
-    // setDepartment();
-    // setroleType();
-    // setroleGroup();
   };
 
+  //in case of an error on the validations of the form sending the error to te console
   const onError = (errors, e) => console.log(errors, e);
-  // console.log('gender' + gender,'department' + department, 'roleType' + roleType, 'roleGroup' + roleGroup);
-  // console.log('put'+ putUser.value , 'post'+ postUser.value);
-
-  // const [avatar, setAvatar] = useState(null);
-
-  // const handleAvatarChange = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     setAvatar(reader.result);
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
-
-  // const isImage = (file) => {
-  //   return file?.length > 0 && file[0].type?.includes("image/");
-  // };
 
   return (
     <Dialog onClose={() => setOpen((e) => !e)} open={open}>
@@ -622,22 +612,3 @@ export default function CreateOrUpdateUserDialog({
     </Dialog>
   );
 }
-{/* <TextField
-            InputProps={{
-              startAdornment: <div />,
-            }}
-            size="small"
-            type="file"
-            label="תמונת פרופיל"
-            {...register("avatar", {
-              required: true,
-              validate: isImage,
-            })}
-            onChange={handleAvatarChange}
-            error={errors.avatar}
-            helperText={
-              errors.avatar &&
-              ((avatarValue?.length <= 0 && "Profile picture is required") ||
-                (!isImage(avatarValue) && "This file is not an image"))
-            }
-          /> */}
