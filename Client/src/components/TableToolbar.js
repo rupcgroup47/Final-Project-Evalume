@@ -9,14 +9,7 @@ The component returns a Box element containing the toolbar's various elements, i
 */
 
 import { useState } from "react";
-import {
-  Fade,
-  IconButton,
-  InputBase,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
+import { Fade, IconButton, InputBase, Tooltip, Typography, Box } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";

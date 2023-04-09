@@ -33,6 +33,7 @@ import { useDebounce } from "use-debounce";
 import TableItem from "components/TableItem";
 import TableToolbar from "components/TableToolbar";
 import { tableHeadArr } from "./tableHeaderArr";
+import swal from 'sweetalert';
 
 export default function UsersTable({ users, setUsers }) {
   const [tableHead, setTableHead] = useState(tableHeadArr);
@@ -48,19 +49,21 @@ export default function UsersTable({ users, setUsers }) {
   // handleSearch - start
   const [searchInput, setSearchInput] = useState("");
   const [searchDebounce] = useDebounce(searchInput, 500);
-  useEffect(() => {
-    handleSearch(searchDebounce);
-  }, [searchDebounce]);
 
   const handleSearch = (value) => {
     setSearchInput(value);
 
-    let sx = users.filter((item) =>
+    const sx = users.filter((item) =>
       `${item.userFName} ${item.userLName}`.toLowerCase().includes(value.toLowerCase())
     );
 
     setItems(value?.length > 0 ? sx : users);
   };
+
+  useEffect(() => {
+    handleSearch(searchDebounce);
+  }, [searchDebounce]);
+
   // handleSearch - end
 
   // handleFilter - start
@@ -69,13 +72,35 @@ export default function UsersTable({ users, setUsers }) {
   const [filterGender, setFilterGender] = useState("");
   const [filterDepartment, setFilterDepartment] = useState("");
   const [filterJob, setFilterJob] = useState("");
-  // const [filterId, setFilterId] = useState("");
-  // const [filterPhone, setFilterPhone] = useState("");
   const [filterRoleType, setFilterRoleType] = useState("");
   const [filterDirector, setFilterDirector] = useState("");
   const [filterActive, setFilterActive] = useState("");
   const [filterAdmin, setFilterAdmin] = useState("");
   const [filterRoleGroup, setFilterRoleGroup] = useState("");
+
+  const handleFilter = () => {
+    const filterdArray = users.filter(
+      (user) =>
+        (filterName
+          ? `${user.userFName} ${user.userLName}`?.toLowerCase().includes(filterName.toLowerCase())
+          : true) &&
+        (filterGender ? user.userGender === filterGender : true) &&
+        (filterEmail ? user.userEmail.toLowerCase().includes(filterEmail.toLowerCase()) : true) &&
+        (filterJob ? user.userRole.includes(filterJob) : true) &&
+        (filterDepartment ? user.userDepartment.includes(filterDepartment) : true) &&
+        (filterRoleType ? user.userRoleGroupDesc.includes(filterRoleType) : true) &&
+        (filterDirector
+          ? `${user.managerFname} ${user.managerLName}`
+            ?.toLowerCase()
+            .includes(filterDirector.toLowerCase())
+          : true) &&
+        (filterRoleGroup ? user.userType === (filterRoleGroup === "מנהל" ? true : false) : true) &&
+        (filterActive ? user.is_Active === (filterActive === "פעיל" ? true : false) : true) &&
+        (filterAdmin ? user.is_Admin === (filterAdmin === "אדמין" ? true : false) : true)
+    );
+
+    setItems(filterdArray);
+  };
 
   useEffect(() => {
     handleFilter();
@@ -91,49 +116,86 @@ export default function UsersTable({ users, setUsers }) {
     filterAdmin,
     filterRoleGroup,
   ]);
-
-  const handleFilter = () => {
-    let filterdArray = users.filter(
-      (user) =>
-        (filterName
-          ? `${user.userFName} ${user.userLName}`?.toLowerCase().includes(filterName.toLowerCase())
-          : true) &&
-        (filterGender ? user.userGender === filterGender : true) &&
-        (filterEmail ? user.userEmail.toLowerCase().includes(filterEmail.toLowerCase()) : true) &&
-        (filterJob ? user.userRole.includes(filterJob) : true) &&
-        (filterDepartment ? user.userDepartment.includes(filterDepartment) : true) &&
-        (filterRoleType ? user.userRoleGroupDesc.includes(filterRoleType) : true) &&
-        (filterDirector
-          ? `${user.managerFname} ${user.managerLName}`
-              ?.toLowerCase()
-              .includes(filterDirector.toLowerCase())
-          : true) &&
-        (filterRoleGroup ? user.userType == (filterRoleGroup == "מנהל" ? true : false) : true) &&
-        (filterActive ? user.is_Active == (filterActive == "פעיל" ? true : false) : true) &&
-        (filterAdmin ? user.is_Admin == (filterAdmin == "אדמין" ? true : false) : true)
-    );
-
-    setItems(filterdArray);
-  };
   // handleFilter - end
 
   // handleRemoveUser - start
-  const handleRemoveUser = (user) => {
-    setUsers((i) => i.filter((item) => item.userEmail !== user.userEmail));
-    setItems((i) => i.filter((item) => item.userEmail !== user.userEmail));
+  const apiPutUserUrl = "https://localhost:7079/userEmail/is_Active/";
+  const [putUser, setPutUser] = useState("");
 
-    setSearchInput("");
-    setFilterName("");
-    setFilterEmail("");
-    setFilterGender("");
-    setFilterDepartment("");
-    setFilterJob("");
-    setFilterRoleType("");
-    setFilterDirector("");
-    setFilterActive("");
-    setFilterAdmin("");
-    setFilterRoleGroup("");
+  const handleRemoveUser = (user) => {
+    user.is_Active = false;
+    console.log(user);
+    setPutUser(user);
+    setUsers((array) =>
+      array.map((item) =>
+        item.userNum === user?.userNum ? { ...item, ...user } : item
+      )
+    );
+    setItems((array) =>
+      array.map((item) =>
+        item.userNum === user?.userNum ? { ...item, ...user } : item
+      )
+    );
   };
+
+
+  //update user datails using PUT api
+  useEffect(() => {
+    // Update is active for a user ("delete")
+    const abortController = new AbortController();
+    if (putUser !== "") {
+      console.log("here 25");
+      console.log(putUser);
+      fetch(apiPutUserUrl + putUser.userNum, {
+        method: "PUT",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        body: JSON.stringify(!putUser.is_Active),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success" + result);
+            handleRemoveUser(putUser);
+            swal({
+              title: "הצלחנו!",
+              text: "המשתמש עודכן בהצלחה",
+              icon: "success",
+              button: "סגור"
+            });
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err put=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, [putUser]);
   // handleRemoveUser - end
 
   // show empty rows if the array / filted array is epmty or less then rowsPerPage
@@ -149,7 +211,7 @@ export default function UsersTable({ users, setUsers }) {
         // Search
         searchInput={searchInput}
         setSearchInput={setSearchInput}
-        //Table Head
+        // Table Head
         tableHead={tableHead}
         setTableHead={setTableHead}
         // Filters
@@ -186,17 +248,13 @@ export default function UsersTable({ users, setUsers }) {
                       key={item.id}
                       align={item.textAlign || ""}
                       padding={item.disablePadding ? "none" : "normal"}
-                      // scope={item.scope || ""}
-                      // sortDirection={orderBy === item.id ? orderType : false}
                       sx={{ fontWeight: 600 }}
                     >
-                      {/* {" "} */}
                       {item.label}
                     </TableCell>
                   )
                 );
               })}
-              {/* <TableCell align="inherit" /> */}
             </TableRow>
           </TableHead>
           {/* Table Head - End */}
@@ -244,6 +302,10 @@ export default function UsersTable({ users, setUsers }) {
           setRowsPerPage(parseInt(event.target.value, 10));
           setPage(0);
         }}
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
+        }
+        labelRowsPerPage="מספר שורות להציג:"
       />
     </Paper>
   );

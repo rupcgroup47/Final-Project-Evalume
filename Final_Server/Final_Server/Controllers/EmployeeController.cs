@@ -42,11 +42,11 @@ namespace Final_Server.Controllers
 
 
 
-        [HttpPut("/userEmail/is_Active")]
-        public IActionResult PutActive(string userEmail, bool is_Active) //Change by check box Is_Active feild in the logged in user
+        [HttpPut("/userEmail/is_Active/{userNum}")]
+        public IActionResult PutActive(int userNum, [FromBody] bool is_Active) //Change by check box Is_Active feild in the logged in user
         {
             Employee employee = new Employee();
-            int numEffected = employee.UpdateActive(userEmail, is_Active);
+            int numEffected = employee.UpdateActive(userNum, is_Active);
             if (numEffected != 0)
             {
                 return Ok("user succesfully updated");
@@ -61,7 +61,7 @@ namespace Final_Server.Controllers
 
         // POST api/<EmployeeController>
         [HttpPost]
-        public IActionResult Post([FromBody] JsonElement data) //Insert new user
+        public IActionResult Post([FromBody] JsonElement data) //Insert new user using a json object implentet into empolyee
         {
             Employee employee = new Employee();
             employee.UserEmail = data.GetProperty("userEmail").ToString();
@@ -80,7 +80,7 @@ namespace Final_Server.Controllers
             employee.ManagerLName = data.GetProperty("managerLName").ToString();
             employee.ManagerEmail = data.GetProperty("managerEmail").ToString();
             MailAddress addr = new MailAddress(employee.UserEmail);
-            employee.Userpassword = addr.User+"555";
+            employee.Userpassword = addr.User+"555"; // creating a default password for a new user
             int numEffected = employee.InsertEmployee();
             if (numEffected != 0)
             {
@@ -96,7 +96,7 @@ namespace Final_Server.Controllers
 
         // PUT api/<EmployeeController>/5
         [HttpPut("{userNum}")]
-        public IActionResult PutUserDetails(int userNum,[FromBody] JsonElement data) //Update user details
+        public IActionResult PutUserDetails(int userNum,[FromBody] JsonElement data) //Update user details using a json object implentet into empolyee
         {
             Employee employee = new Employee();
             employee.UserEmail = data.GetProperty("userEmail").ToString();
@@ -145,6 +145,7 @@ namespace Final_Server.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
 
 
