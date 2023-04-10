@@ -17,14 +17,16 @@ import { useMaterialUIController, setDirection } from "context";
 import FinishDialog from "./FinishDialog";
 import { QuestionsContext } from "context/globalVariables";
 
-const questionsResp = [...Array(2).keys()].map((idx) => ({
-  id: `id title-${idx}`,
-  title: `title - ${idx}`,
-  questions: [...Array(2).keys()].map((index) => ({
-    id: `question-${index}`,
-    label: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
-  })),
-}));
+// const questionsResp = [...Array(2).keys()].map((idx) => ({
+//   quesGroup_ID: `id title-${idx}`,
+//   quesGroup_Desc: `title - ${idx}`,
+//   groupType: 0,
+//   questions: [...Array(2).keys()].map((index) => ({
+//     questionNum: `question-${index}`,
+//     quesContent: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
+//     is_Active: 1,
+//   })),
+// }));
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -61,13 +63,13 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function FormBuilder({ updateArray }) {
-  const [expanded, setExpanded] = useState(questionsResp[0].id);
+  const { globalQuestionArray } = useContext(QuestionsContext);
+  const [expanded, setExpanded] = useState(globalQuestionArray[0].quesGroup_ID);
   const [, dispatch] = useMaterialUIController();
   const [checkedItems, setCheckedItems] = useState([]);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
-  const { globalQuestionArray } = useContext(QuestionsContext);
   const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -84,8 +86,8 @@ export default function FormBuilder({ updateArray }) {
     const isChecked = event.target.checked;
     const question = event.target.name;
     const newCheck = {
-      titleId: id,
-      questionId: questionId,
+      quesGroup_ID: id,
+      questionNum: questionId,
     };
     if (isChecked) {
       setCheckedBoxes([...checkedBoxes, question]);
@@ -104,10 +106,10 @@ export default function FormBuilder({ updateArray }) {
   };
 
   const handleCheckedForm = () => {
-    const groupedData = Array.from(new Set(checkedItems.map((item) => item.titleId))).map(
-      (titleId) => ({
-        titleId,
-        questionIds: checkedItems.filter((item) => item.titleId === titleId).map((item) => item.questionId),
+    const groupedData = Array.from(new Set(checkedItems.map((item) => item.quesGroup_ID))).map(
+      (quesGroup_ID) => ({
+        quesGroup_ID,
+        questionNum: checkedItems.filter((item) => item.quesGroup_ID === quesGroup_ID).map((item) => item.questionNum),
       })
     ); // group by titles and questions
     console.log(groupedData);
@@ -116,21 +118,22 @@ export default function FormBuilder({ updateArray }) {
     setMsg("סיימת למלא את טופס ההערכה");
     setRouteMsg("חזרה לדף הבית");
   };
+  
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      {globalQuestionArray.map(({ id, title, questions }) => (
+      {globalQuestionArray?.map(({ quesGroup_ID, quesGroup_Desc, questions }) => (
         <Accordion
-          key={"q" + id}
-          expanded={expanded === id}
-          onChange={handleChange(id)}
+          key={"q" + quesGroup_ID}
+          expanded={expanded === quesGroup_ID}
+          onChange={handleChange(quesGroup_ID)}
           TransitionProps={{ unmountOnExit: true }}
         >
-          <AccordionSummary id={`${id}-header`}>
-            <Typography>{title}</Typography>
+          <AccordionSummary id={`${quesGroup_ID}-header`}>
+            <Typography>{quesGroup_Desc}</Typography>
           </AccordionSummary>
 
           <AccordionDetails>
-            {questions.map(({ questionId, name }) => (//show the questions inside the title
+            {questions.map(({ questionNum, quesContent }) => (//show the questions inside the title
               <Grid
                 container
                 direction="row"
@@ -138,16 +141,16 @@ export default function FormBuilder({ updateArray }) {
                 alignItems="baseline"
                 spacing={3}
                 marginTop="-10px"
-                key={"q-" + id + "-" + questionId}
+                key={"q-" + quesGroup_ID + "-" + questionNum}
               >
                 <Grid item xs={10}>
-                  <Typography>{name}</Typography>
+                  <Typography>{quesContent}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                   <Checkbox
-                    name={"q-" + id + "-" + questionId}
-                    checked={checkedBoxes.includes("q-" + id + "-" + questionId)}//check if allready checked
-                    onChange={(event) => handleChangeCheck(event, id, questionId)}//create new object of the qustion and title the user just checked
+                    name={"q-" + quesGroup_ID + "-" + questionNum}
+                    checked={checkedBoxes.includes("q-" + quesGroup_ID + "-" + questionNum)}//check if allready checked
+                    onChange={(event) => handleChangeCheck(event, quesGroup_ID, questionNum)}//create new object of the qustion and title the user just checked
                     inputProps={{ "aria-label": "controlled" }}
                   />
                 </Grid>
@@ -156,7 +159,7 @@ export default function FormBuilder({ updateArray }) {
           </AccordionDetails>
         </Accordion>
       ))}
-      <Button type={"submit"} label="סיים" onClick={handleCheckedForm}>
+      <Button type={"submit"} label="סיים" onClick={handleCheckedForm} style={{fontSize:"large", position:"absolute", left:"50px"}}>
         סיום
       </Button>
       <FinishDialog

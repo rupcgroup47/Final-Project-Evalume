@@ -40,7 +40,6 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
       roleType: roleType,
     };
     setForms([...allForms, newForm]);
-    setShowFormComponent(true); // show form with questions only if all required fields
     console.log(newForm);
     updateObject(newForm);// send to the parent component the form type
   };
@@ -55,8 +54,8 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
         justifyContent="flex-start"
         alignItems="center"
       >
-        <form onSubmit={handleSubmit}>
-          <FormControl sx={{ m: 2, minWidth: 120 }}>
+        <form onSubmit={handleSubmit} style={{display:"inherit", verticalAlign:"middle"}}>
+          <FormControl sx={{ m: 2, minWidth: 120}}>
             <InputLabel id="roleGroupType">סוג תפקיד</InputLabel>
             <Select
               labelId="roleGroupType"
@@ -67,9 +66,9 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
               required
               style={{ height: "50px", alignContent: "center" }}
             >
-              <MenuItem value="">
+              {/* <MenuItem value="">
                 <em> </em>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem value={1}>כללי</MenuItem>
               <MenuItem value={2}>תפעולי</MenuItem>
               <MenuItem value={3}>משרדי</MenuItem>
@@ -86,9 +85,9 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
               required
               style={{ height: "50px", alignContent: "center" }}
             >
-              <MenuItem value="">
+              {/* <MenuItem value="">
                 <em> </em>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem value={0}>עובד</MenuItem>
               <MenuItem value={1}>מנהל</MenuItem>
             </Select>

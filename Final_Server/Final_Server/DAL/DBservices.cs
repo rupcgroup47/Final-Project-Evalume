@@ -779,7 +779,6 @@ public class DBservices
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             //dt.Load(dataReader);
 
-
             while (dataReader.Read())
             {
                 Question Question = new Question();
@@ -857,8 +856,16 @@ public class DBservices
 
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            int questionNum = 0;
+
+            while (dataReader.Read())
+            {
+                questionNum = Convert.ToInt32(dataReader["questionNum"]); // execute the command
+            }
+
+            return questionNum;
         }
         catch (Exception ex)
         {
@@ -894,8 +901,7 @@ public class DBservices
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
         cmd.Parameters.AddWithValue("@QuesContent", question.QuesContent); //insert all the parameters we got from the user
-        //cmd.Parameters.AddWithValue("@Insert_date", question.Insert_date);
-        cmd.Parameters.AddWithValue("@Is_Active", question.Is_Active);
+        cmd.Parameters.AddWithValue("@QuesGroup_Desc", question.QuesGroup_Desc);
 
         return cmd;
     }

@@ -144,8 +144,6 @@ export default function UsersTable({ users, setUsers }) {
     // Update is active for a user ("delete")
     const abortController = new AbortController();
     if (putUser !== "") {
-      console.log("here 25");
-      console.log(putUser);
       fetch(apiPutUserUrl + putUser.userNum, {
         method: "PUT",
         headers: new Headers({
