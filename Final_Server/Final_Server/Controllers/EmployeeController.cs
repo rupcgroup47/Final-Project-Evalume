@@ -43,7 +43,7 @@ namespace Final_Server.Controllers
 
 
         [HttpPut("/userEmail/is_Active/{userNum}")]
-        public IActionResult PutActive(int userNum, [FromBody] bool is_Active) //Change by check box Is_Active feild in the logged in user
+        public IActionResult PutActive(int userNum, [FromBody] bool is_Active) //Change by check box Is_Active feild in the logged in user - because we are not deleting an employee record we make him not active
         {
             Employee employee = new Employee();
             int numEffected = employee.UpdateActive(userNum, is_Active);
@@ -142,11 +142,11 @@ namespace Final_Server.Controllers
         }
 
         // DELETE api/<EmployeeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
 
-        }
+        //}
 
 
 

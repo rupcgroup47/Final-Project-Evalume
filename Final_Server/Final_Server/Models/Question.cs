@@ -83,11 +83,11 @@ namespace Final_Server.Models
 
         }
 
-        public int DeleteQuestion(int QuestionNum) //Delete qustion
-        {
-            DBservices tmp = new DBservices();
+        //public int DeleteQuestion(int QuestionNum) //Delete qustion
+        //{
+        //    DBservices tmp = new DBservices();
 
-            return tmp.DeleteQues(QuestionNum);
-        }
+        //    return tmp.DeleteQues(QuestionNum);
+        //}
     }
 }
