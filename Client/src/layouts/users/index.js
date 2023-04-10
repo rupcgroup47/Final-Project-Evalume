@@ -46,6 +46,7 @@ function Users() {
         })
         .then(async response => {
           const data = await response.json();
+          console.log(response);
 
           if (!response.ok) {
             // get error message from body or default to response statusText
@@ -59,12 +60,10 @@ function Users() {
           (result) => {
             console.log("success");
             setUsers(result);
-            // setMsg("");
           },
           (error) => {
             if (error.name === 'AbortError') return
             console.log("err get=", error);
-            // setMsg("קרתה תקלה");
             throw error
           }
         );
@@ -88,6 +87,7 @@ function Users() {
     })
       .then(async (response) => {
         const data = await response.json();
+        console.log(response);
 
         if (!response.ok) {
           // get error message from body or default to response statusText
@@ -104,12 +104,10 @@ function Users() {
             localStorage.setItem("Department list", JSON.stringify(result));
           }
           setDepState(result.map((index) => (index.depName)));
-          // setMsg("");
         },
         (error) => {
           if (error.name === "AbortError") return;
           console.log("err get=", error);
-          // setMsg("קרתה תקלה");
           throw error;
         }
       );

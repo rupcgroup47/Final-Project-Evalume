@@ -1,5 +1,6 @@
 ﻿using Final_Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -20,12 +21,15 @@ namespace Final_Server.Controllers
 
         // POST api/<QuestionController>
         [HttpPost]
-        public IActionResult Post([FromBody] Question question) //insert new question
+        public IActionResult Post([FromBody] JsonElement data) //insert new question
         {
-            int numEffected = question.InsertQuestion();
-            if (numEffected != 0)
+            Question question = new Question();
+            question.QuesContent = data.GetProperty("quesContent").ToString();
+            question.QuesGroup_Desc = data.GetProperty("quesGroup_Desc").ToString();
+            int questionNum = question.InsertQuestion();
+            if (questionNum != 0)
             {
-                return Ok("question succesfully inserted");
+                return Ok(questionNum);
             }
             else
             {

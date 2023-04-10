@@ -7,33 +7,62 @@ import {
   MenuItem,
   Select,
   TextField,
+  FormControl,
+  // FormHelperText,
+  InputLabel,
 } from "@mui/material";
 
-import { useForm } from "react-hook-form";
-import { FormControl, FormHelperText, InputLabel } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
-import { QuestionsContext } from "context/globalVariables";
+// import { QuestionsContext } from "context/globalVariables";
 
-export default function CreateQuestionsDialog({ open, setOpen }) {
-  const titles = ["שירותיות", "אכפתיות"]; // Add all the sections of the questions!!
+export default function CreateQuestionsDialog({
+  open,
+  setOpen,
+  tempQuestionArray,
+  setPostQuestion,
+}) {
+  const [titles, setTitles] = useState([]); // Add all the sections of the questions!!
   const [title, setTitle] = useState("");
-  const [content, setQuestion] = useState(""); //// Need to insert question content
-  const { globalQuestionArray, setGlobalQuestionsArray } = useContext(QuestionsContext); //Global variable
+  const [content, setQuestion] = useState(""); // Need to insert question content
+  // const { globalQuestionArray, setGlobalQuestionsArray } = useContext(QuestionsContext); // Global variable
 
-    const addQuestion = (event) => {
-event.preventDefault();
-    const index = globalQuestionArray.findIndex(obj => obj.title === title);
-  
-    if (index !== -1) {
-      const newQuestion = { questionId: globalQuestionArray[index].questions.length + 1, name:content }
-      const newArray = [...globalQuestionArray];
-      newArray[index].questions.push(newQuestion);
-      setGlobalQuestionsArray(newArray);
-    } else {
-      setGlobalQuestionsArray([...globalQuestionArray, { questionId: globalQuestionArray.length + 1, title: title, questions: [content] }]);
-    }
+  const addQuestion = (event) => {
+    event.preventDefault();
+    // const index = tempQuestionArray.findIndex((obj) => obj.QuesGroup_Desc === title);
+    const newQuestion = {
+      quesContent: content,
+      quesGroup_Desc: title,
+    };
+    setPostQuestion(newQuestion);
+    // if (index !== -1) {
+
+    // }
+    // else {
+    // //   setGlobalQuestionsArray([
+    // //     ...tempQuestionArray,
+    // //     {
+    // //       questionNum: globalQuestionArray.length + 1,
+    // //       quesGroup_Desc: title,
+    // //       questions: [content],
+    //     },
+    //   ]);
+    // }
     setOpen((e) => !e);
+  };
 
+  useEffect(() => {
+    console.log("here");
+    console.log(tempQuestionArray);
+    if (tempQuestionArray !== null) {
+      const titleArray = tempQuestionArray.map((item) => item.quesGroup_Desc);
+      setTitles(titleArray);
+    }
+  }, [tempQuestionArray]);
+
+  const handleClose = (event) => {
+    event.preventDefault();
+    setOpen(false);
+    setTitle("");
   };
 
   return (
@@ -74,7 +103,9 @@ event.preventDefault();
               sx={{ m: 0, width: "100%" }}
             />
             <FormControl sx={{ m: 0, width: "100%", height: "100%" }}>
-              <InputLabel id="title-label">קטגורייה</InputLabel>
+              <InputLabel id="title-label" style={{ alignSelf: "center" }}>
+                קטגורייה
+              </InputLabel>
               <Select
                 labelId="title-label"
                 id="title"
@@ -82,54 +113,52 @@ event.preventDefault();
                 // Handle the change event
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                style={{ height: "35px", alignContent: "center" }}
               >
-                {titles.map((title) => (
-                  <MenuItem key={title} value={title}>
-                    {title}
+                {titles?.map((titleItem) => (
+                  <MenuItem key={titleItem} value={titleItem}>
+                    {titleItem}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            {console.log(globalQuestionArray)}
           </div>
           <DialogActions sx={{ mr: 2, mb: 2, p: 1, display: "flex", gap: 1 }}>
-
-           <Button
-          sx={{
-            fontWeight: 600,
-            textTransform: "none",
-            bgcolor: "#1976d226",
-            pl: 4,
-            pr: 4,
-            "&:hover": {
-              bgcolor: "#1976d240",
-            },
-          }}
-          color="primary"
-          onClick={addQuestion}
-          autoFocus
-          type="submit"
-        >
-          יצירת שאלה{" "}
-        </Button>
-        <Button
-          sx={{
-            fontWeight: 500,
-            textTransform: "none",
-            bgcolor: "#d32f2f26",
-            pl: 2,
-            pr: 2,
-            "&:hover": {
-              bgcolor: "#d32f2f40",
-            },
-          }}
-          color="error"
-          onClick={() => setOpen(false)}
-        >
-          ביטול
-        </Button>
-        </DialogActions>
-
+            <Button
+              sx={{
+                fontWeight: 600,
+                textTransform: "none",
+                bgcolor: "#1976d226",
+                pl: 4,
+                pr: 4,
+                "&:hover": {
+                  bgcolor: "#1976d240",
+                },
+              }}
+              color="primary"
+              onClick={addQuestion}
+              autoFocus
+              type="submit"
+            >
+              יצירת שאלה{" "}
+            </Button>
+            <Button
+              sx={{
+                fontWeight: 500,
+                textTransform: "none",
+                bgcolor: "#d32f2f26",
+                pl: 2,
+                pr: 2,
+                "&:hover": {
+                  bgcolor: "#d32f2f40",
+                },
+              }}
+              color="error"
+              onClick={handleClose}
+            >
+              ביטול
+            </Button>
+          </DialogActions>
         </form>
       </DialogContent>
     </Dialog>

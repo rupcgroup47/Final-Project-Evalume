@@ -62,7 +62,7 @@ namespace Final_Server.Models
             return QuestionsList;
         }
 
-        public int InsertQuestion() //Insert new goal
+        public int InsertQuestion() //Insert new Question
         {
             DBservices dbs = new DBservices();
             return dbs.InsertQuestion(this);
