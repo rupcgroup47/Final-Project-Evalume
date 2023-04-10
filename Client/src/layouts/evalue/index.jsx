@@ -16,10 +16,10 @@ import swal from 'sweetalert';
 export default function Evalues() {
   const [, dispatch] = useMaterialUIController();
   const [showFormComponent, setShowFormComponent] = useState(false);
-  const [surveyId, setSurveyId] = useState("1")
+  // const [surveyId, setSurveyId] = useState("1")
   const [myCheckedArray, setMyArray] = useState([]);
   const [myFormTypes, setMyObject] = useState({});
-  const myNewForm = { surveyId, myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
+  const myNewForm = { myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
   const [showCreateQuestionDialog, setShowCreateQuestionDialog] = useState(false);
   const apiQuestionrUrl = "https://localhost:7079/api/Question";
   const { mainState, setMainState } = useContext(MainStateContext);
@@ -158,13 +158,13 @@ export default function Evalues() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  function updateArray(myCheckedArray) {
-    // receive the checked answers
-    setMyArray(myCheckedArray);
-    setSurveyId(Math.random().toString(36).substr(2, 9))
-    console.log(myNewForm);
-  }
-
+  // function updateArray(myCheckedArray) {
+  //   // receive the checked answers
+  //   setMyArray(myCheckedArray);
+  //   setSurveyId(Math.random().toString(36).substr(2, 9))
+  //   // console.log(myNewForm);
+  // }
+  console.log(myNewForm);
   function updateObject(myFormTypes) {
     // receive the form user type
     setMyObject(myFormTypes);
@@ -192,7 +192,7 @@ export default function Evalues() {
           setPostQuestion={setPostQuestion}
         />
         <HeaderFrom updateObject={updateObject} />
-        {showFormComponent && <FormBuilder updateArray={updateArray} />}
+        {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
 
     </Container>

@@ -62,7 +62,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export default function FormBuilder({ updateArray }) {
+export default function FormBuilder({ setMyArray }) {
   const { globalQuestionArray } = useContext(QuestionsContext);
   const [expanded, setExpanded] = useState(globalQuestionArray[0].quesGroup_ID);
   const [, dispatch] = useMaterialUIController();
@@ -113,7 +113,7 @@ export default function FormBuilder({ updateArray }) {
       })
     ); // group by titles and questions
     console.log(groupedData);
-    updateArray(groupedData);
+    setMyArray(groupedData);
     setShowCloseDialog((e) => !e); // Error dialog message
     setMsg("סיימת למלא את טופס ההערכה");
     setRouteMsg("חזרה לדף הבית");

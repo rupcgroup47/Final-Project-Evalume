@@ -73,21 +73,21 @@ namespace Final_Server.Controllers
 
 
 
-        // DELETE api/<QuestionController>/5
-        [HttpDelete("/QuestionNum")]
-        public IActionResult Delete(int QuestionNum) //Delete question
-        {
-            Question question = new Question();
-            int numEffected = question.DeleteQuestion(QuestionNum);
-            if (numEffected != 0)
-            {
-                return Ok("Question succesfully deleted");
-            }
-            else
-            {
-                return NotFound("We couldnt delete your Question");
-            }
+        //// DELETE api/<QuestionController>/5
+        //[HttpDelete("/QuestionNum")]
+        //public IActionResult Delete(int QuestionNum) //Delete question
+        //{
+        //    Question question = new Question();
+        //    int numEffected = question.DeleteQuestion(QuestionNum);
+        //    if (numEffected != 0)
+        //    {
+        //        return Ok("Question succesfully deleted");
+        //    }
+        //    else
+        //    {
+        //        return NotFound("We couldnt delete your Question");
+        //    }
 
-        }
+        //}
     }
 }

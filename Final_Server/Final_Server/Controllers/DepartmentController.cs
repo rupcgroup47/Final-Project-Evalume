@@ -11,7 +11,7 @@ namespace Final_Server.Controllers
     public class DepartmentController : ControllerBase
     {
         // GET: api/<DepartmentController>
-        [HttpGet]
+        //[HttpGet]
         //public DataTable GetDepartments()
         //{
         //    DataTable dt = new DataTable();
@@ -19,7 +19,7 @@ namespace Final_Server.Controllers
         //    dt = department.ReadDepartments();
         //    return dt;
         //}
-
+        [HttpGet]
         public IEnumerable<Department> Get() //get all departments
         {
             //Department department = new Department();
@@ -28,12 +28,12 @@ namespace Final_Server.Controllers
         }
 
 
-        // GET api/<DepartmentController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET api/<DepartmentController>/5
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
 
         // POST api/<DepartmentController>
@@ -59,10 +59,10 @@ namespace Final_Server.Controllers
         }
 
 
-        // DELETE api/<DepartmentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<DepartmentController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

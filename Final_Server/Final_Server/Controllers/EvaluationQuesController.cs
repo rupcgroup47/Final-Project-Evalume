@@ -19,7 +19,7 @@ namespace Final_Server.Controllers
         //}
 
         [HttpGet]
-        public Object Get(bool quesType) //get all questions that fill the quesType
+        public Object Get(bool quesType) //get all questions that fit the quesType
         {
             EvaluationQues e = new EvaluationQues();
             return e.getFitQues(quesType);
@@ -54,10 +54,10 @@ namespace Final_Server.Controllers
         {
         }
 
-        // DELETE api/<EvaluationQuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<EvaluationQuesController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

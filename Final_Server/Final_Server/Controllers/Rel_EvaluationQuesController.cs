@@ -87,9 +87,9 @@ namespace Final_Server.Controllers
         }
 
         // DELETE api/<Rel_EvaluationQuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

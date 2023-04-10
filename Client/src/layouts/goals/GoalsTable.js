@@ -201,6 +201,19 @@ export default function GoalsTable() {
         }}
       />
     </Paper>
+  );
+}
+
+const _tableHead = [
+  {
+    id: "goalName",
+    textAlign: "right",
+    disablePadding: true,
+    label: "שם יעד",
+    show: true,
+  },
+];
+
     // <TableContainer component={Paper}>
     //   <Table aria-label="collapsible table">
     //     <TableHead>
@@ -218,15 +231,3 @@ export default function GoalsTable() {
     //     </TableBody>
     //   </Table>
     // </TableContainer>
-  );
-}
-
-const _tableHead = [
-  {
-    id: "goalName",
-    textAlign: "right",
-    disablePadding: true,
-    label: "שם יעד",
-    show: true,
-  },
-];
