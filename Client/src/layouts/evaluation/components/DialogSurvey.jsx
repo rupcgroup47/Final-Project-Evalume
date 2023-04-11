@@ -1,13 +1,3 @@
-/*
-This is a React functional component that displays a dialog box with a confirmation message when the user tries to delete a user from a table. It receives three props: open, setOpen, and onClick.
-
-The open prop is a boolean that determines whether the dialog box should be open or closed. The setOpen prop is a function that is called when the user clicks the close button or clicks outside the dialog box to close it. The onClick prop is a function that is called when the user clicks the Agree button to confirm the deletion of the user.
-
-The component uses the Dialog component from MUI to display the dialog box. The dialog box contains a DialogTitle, a DialogContent with a Typography component that displays the confirmation message, and two DialogActions with Button components. The Cancel button simply closes the dialog box, while the Agree button calls the onClick function passed as a prop and then closes the dialog box.
-
-Overall, this component is a simple and reusable way to display a confirmation dialog box in a React application.
-*/
-
 import {
   Button,
   Dialog,
@@ -21,7 +11,7 @@ export default function DialogSurvey({ open, setOpen, msg, finishRouteMsg }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log(msg)
+    console.log(msg);
     if (msg === "לא ענית על כל השאלות") {
       // render component A
       setOpen(false);
@@ -54,7 +44,6 @@ export default function DialogSurvey({ open, setOpen, msg, finishRouteMsg }) {
           onClick={handleClick}
         >
           {finishRouteMsg}{" "}
-
         </Button>
       </DialogActions>
     </Dialog>

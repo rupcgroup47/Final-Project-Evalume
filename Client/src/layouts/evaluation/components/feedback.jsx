@@ -4,7 +4,8 @@ import { useMaterialUIController, setDirection } from "context";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material";
+import { Paper, Box, Button } from "@mui/material";
+
 export default function Feedback() {
   const [, dispatch] = useMaterialUIController();
 
@@ -16,50 +17,55 @@ export default function Feedback() {
   }, []);
 
   return (
-    <Container maxWidth="xl" sx={{ pt: 5, pb: 5, background: "white", borderRadius: "15px" }}>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-around"
-        alignItems="baseline"
-        spacing={3}
-        marginTop="-10px"
-      >
+    <Paper
+      sx={{ boxShadow: "none", minWidth: 300, maxWidth: 1200, margin: "auto", marginTop: "50px" }}
+    >
+      <Grid container direction="row" spacing={3} marginTop="-10px">
         <Grid item xs={12}>
-          <Typography>חוות דעת מנהל</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            label="הוסף מלל"
-            // value={items.textFieldValue}
-            multiline
-            maxRows={3}
-          />
+          <Typography textAlign="center">חוות דעת מנהל</Typography>
+          <Box textAlign="center">
+            <TextField
+              label="הוסף מלל"
+              InputProps={{
+                style: { fontSize: 20, height: "150px", width: "550px" },
+              }}
+              multiline
+              maxRows={3}
+            />
+          </Box>
         </Grid>
         <Grid item xs={12}>
-          <Typography>חוות דעת עובד</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            label="הוסף מלל"
-            // value={items.textFieldValue}
-            multiline
-            maxRows={3}
-          />
+          <Typography textAlign="center">חוות דעת עובד</Typography>
+          <Box textAlign="center">
+            <TextField
+              label="הוסף מלל"
+              InputProps={{
+                style: { fontSize: 20, height: "150px", width: "550px" },
+              }}
+              multiline
+              maxRows={3}
+            />
+          </Box>
         </Grid>{" "}
         <Grid item xs={12}>
-          <Typography>הצבת יעדים</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            label="הוסף מלל"
-            // value={items.textFieldValue}
-            multiline
-            maxRows={3}
-          />
+          <Typography textAlign="center">הצבת יעדים</Typography>
+          <Box textAlign="center">
+            <TextField
+              label="הוסף מלל"
+              InputProps={{
+                style: { fontSize: 20, height: "150px", width: "550px" },
+              }}
+              multiline
+              maxRows={3}
+            />
+          </Box>
         </Grid>
       </Grid>
-      <button>סיום הערכה שנתית</button>
-    </Container>
+      <br/>
+      <Box textAlign="center">
+        <Button variant="contained" color="white">סיום הערכה שנתית</Button>
+      </Box>
+      <br/>
+    </Paper>
   );
 }

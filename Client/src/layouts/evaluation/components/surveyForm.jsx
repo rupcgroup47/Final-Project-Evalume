@@ -251,10 +251,11 @@ export default function surveyForm() {
         justifyContent="space-evenly"
         marginTop={"20px"}
       >
-        <Button type={"button"} label="שמור" onClick={() => navigate("layouts\evaluation\components\feedback")}>
+        {/* <Button type={"button"} label="שמור" onClick={() => navigate("layouts\evaluation\components\feedback")}>
           שמור
-        </Button>
-        <Button type={"submit"} label="סיים">
+        </Button> */}
+
+        <Button type={"submit"} label="סיים" variant="contained" color="white">
           סיום
         </Button>
       </Stack>

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Dialog, DialogContent, Button } from "@mui/material";
 import WaitingEvalues from "components/ProfileTables/WaitingEvalues";
+import Card from "@mui/material/Card";
 
 export default function ProfileAlerts(props) {
   const { alerts } = props;
@@ -44,6 +45,7 @@ export default function ProfileAlerts(props) {
   };
   return (
     <>
+    <Card sx={{ height: "100%", backgroundColor: "#e6f2ff", paddingTop:"10%", width:"fit-content"}}>
       <MDBox p={2}>
         {alerts.map((item, index) => (
           // <MDTypography variant="h2" color="secondary" key={index} component={Link} to={item.route}>
@@ -64,7 +66,7 @@ export default function ProfileAlerts(props) {
           </MDTypography>
         ))}
       </MDBox>
-
+      </Card>
       <Dialog open={isPopupOpen} onClose={handleCloseDialog}>
       <Button onClick={handleCloseDialog}>חזרה לדף הבית</Button>
         <DialogContent>
