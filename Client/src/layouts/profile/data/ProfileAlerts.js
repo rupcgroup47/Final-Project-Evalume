@@ -18,18 +18,21 @@ export default function ProfileAlerts(props) {
       id: 1,
       name: 'שיר זיו',
       date: '2022-03-01',
+      status:"ממתין למישוב מנהל",
       link: '/managerEvalues'
     },
     {
       id: 2,
       name: 'נועה פרקש',
       date: '2022-04-15',
+      status:"ממתין למישוב מנהל",
       link: '/managerEvalues'
     },
     {
       id: 3,
       name: 'יהל שבח',
       date: '2022-05-20',
+      status:"ממתין למישוב משותף",
       link: '/managerEvalues'
     }
   ]);

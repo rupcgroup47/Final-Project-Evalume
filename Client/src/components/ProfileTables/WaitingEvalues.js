@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Button,
   // Box,
   Paper,
   Table,
@@ -13,6 +14,7 @@ import {
 } from "@mui/material";
 const WaitingEvalues = ({ data }) => {
   const [selectedRow, setSelectedRow] = useState(null);
+  const [myValue,setValue] = useState(2);
 
   const handleRowClick = (row) => {
     setSelectedRow(row);
@@ -24,6 +26,7 @@ const WaitingEvalues = ({ data }) => {
         <TableRow>
           <TableCell >שם עובד</TableCell>
           <TableCell>תאריך סיום שאלון</TableCell>
+          <TableCell>שלב</TableCell>
           <TableCell></TableCell>
         </TableRow>
       </TableHead>
@@ -34,11 +37,13 @@ const WaitingEvalues = ({ data }) => {
             onClick={() => handleRowClick(row)}
             style={{ backgroundColor: selectedRow === row ? "lightgray" : "white" }}
           >
-            <TableCell style={{ width: '33%' }} >{row.name}</TableCell>
-            <TableCell style={{ width: '33%' }}>{row.date}</TableCell>
-            <TableCell style={{ width: '33%' }}>
-              {" "}
-              <a href={row.link}>מעבר לשאלון</a>
+            <TableCell style={{ width: '25%' }} >{row.name}</TableCell>
+            <TableCell style={{ width: '25%' }}>{row.date}</TableCell>
+            <TableCell style={{ width: '25%' }}>{row.status}</TableCell>
+            <TableCell style={{ width: '25%' }}>
+              {console.log(myValue)}
+              {/* <Button component={Link} to={{ pathname: '/ManagerEvalues', myProp: myValue }}>מעבר לשאלון
+              </Button> */}
             </TableCell>
           </TableRow>
         ))}
