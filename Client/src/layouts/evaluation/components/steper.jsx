@@ -13,6 +13,26 @@ import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector
 import { useState, useContext } from "react";
 import { StepperContext } from "context/globalVariables";
 
+const steps = ["משוב עצמי", "משוב מנהל", "שיחת משוב והצבת יעדים"];
+
+export default function CustomizedSteppers(props) {
+const {currentStep} = props;
+    // const {currentStep,setCurrentStep} = useContext(StepperContext)
+    return (
+        <Stack sx={{ width: "100%" }} spacing={4}>
+                    {console.log(currentStep)}
+
+            <Stepper alternativeLabel activeStep={currentStep} connector={<ColorlibConnector />}>
+                {steps.map((label) => (
+                    <Step key={label}>
+                        <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                    </Step>
+                ))}
+            </Stepper>
+        </Stack>
+    );
+}
+
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
         top: 22,
@@ -91,21 +111,3 @@ ColorlibStepIcon.propTypes = {
      */
     icon: PropTypes.node,
 };
-
-const steps = ["משוב עצמי", "משוב מנהל", "שיחת משוב והצבת יעדים"];
-
-export default function CustomizedSteppers() {
-
-    const {currentStep,setCurrentStep} = useContext(StepperContext)
-    return (
-        <Stack sx={{ width: "100%" }} spacing={4}>
-            <Stepper alternativeLabel activeStep={currentStep} connector={<ColorlibConnector />}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-        </Stack>
-    );
-}

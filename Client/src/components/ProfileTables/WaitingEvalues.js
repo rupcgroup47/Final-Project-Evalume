@@ -1,30 +1,22 @@
 import { useState } from "react";
-import {
-  Button,
-  // Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  // TableSortLabel,
-} from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Link } from "react-router-dom";
+
 const WaitingEvalues = ({ data }) => {
   const [selectedRow, setSelectedRow] = useState(null);
-  const [myValue,setValue] = useState(2);
+  const [currentStep, setStep] = useState(1);
+  const [currentStep1, setStep1] = useState(2);
 
   const handleRowClick = (row) => {
     setSelectedRow(row);
+    console.log(row.status);
   };
 
   return (
     <Table>
       <TableHead sx={{ display: "table-header-group" }}>
         <TableRow>
-          <TableCell >שם עובד</TableCell>
+          <TableCell>שם עובד</TableCell>
           <TableCell>תאריך סיום שאלון</TableCell>
           <TableCell>שלב</TableCell>
           <TableCell></TableCell>
@@ -37,13 +29,19 @@ const WaitingEvalues = ({ data }) => {
             onClick={() => handleRowClick(row)}
             style={{ backgroundColor: selectedRow === row ? "lightgray" : "white" }}
           >
-            <TableCell style={{ width: '25%' }} >{row.name}</TableCell>
-            <TableCell style={{ width: '25%' }}>{row.date}</TableCell>
-            <TableCell style={{ width: '25%' }}>{row.status}</TableCell>
-            <TableCell style={{ width: '25%' }}>
-              {console.log(myValue)}
-              {/* <Button component={Link} to={{ pathname: '/ManagerEvalues', myProp: myValue }}>מעבר לשאלון
-              </Button> */}
+            <TableCell style={{ width: "25%" }}>{row.name}</TableCell>
+            <TableCell style={{ width: "25%" }}>{row.date}</TableCell>
+            <TableCell style={{ width: "25%" }}>{row.status}</TableCell>
+            <TableCell style={{ width: "25%" }}>
+              {row.status === "ממתין למישוב מנהל" ? (
+                <Link to="/ManagerEvalues" state={currentStep}>
+                  מעבר לשאלון
+                </Link>
+              ) : (
+                <Link to="/ManagerEvalues" state={currentStep1}>
+                  מעבר לשאלון
+                </Link>
+              )}
             </TableCell>
           </TableRow>
         ))}

@@ -5,6 +5,7 @@ import { MainStateContext } from "App";
 import CustomizedSteppers from "../steper";
 import { StepperContext } from "context/globalVariables";
 import SurveyForm from "../surveyForm";
+import { useLocation } from 'react-router-dom';
 
 function ManagerEvalues() {
   const [, dispatch] = useMaterialUIController();
@@ -15,13 +16,16 @@ function ManagerEvalues() {
 
     return () => setDirection(dispatch, "ltr");
   }, []);
-  const [currentStep, setCurrentStep] = useState(0)
-
+  // const myValue = useContext(StepperContext)
+  // const [currentStep, setCurrentStep] = useState(0)
+  const location = useLocation();
+  const currentStep = location.state;
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <StepperContext.Provider value={{ currentStep, setCurrentStep }}>
-        <CustomizedSteppers />
-      </StepperContext.Provider>
+      {console.log(currentStep)}
+      {/* <StepperContext.Provider value={{ currentStep, setCurrentStep }}> */}
+        <CustomizedSteppers currentStep={currentStep} />
+      {/* </StepperContext.Provider> */}
 
       <SurveyForm />
     </Container>
