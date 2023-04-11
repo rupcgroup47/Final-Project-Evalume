@@ -9,14 +9,13 @@ import SurveyForm from "../surveyForm";
 function ManagerEvalues() {
   const [, dispatch] = useMaterialUIController();
   const mainState = useContext(MainStateContext);
-
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
 
     return () => setDirection(dispatch, "ltr");
   }, []);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0)
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
