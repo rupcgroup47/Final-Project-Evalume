@@ -51,7 +51,7 @@ import MyEvalues from "layouts/profile/components/MyEvalues";
 import Icon from "@mui/material/Icon";
 import ManagerEvalues from "layouts/evaluation/components/Evaluation-Steps/ManagerEvalues";
 import MeetingCalendar from "layouts/meetings/Calendar";
-// import Feedback from "layouts/evaluation/components/Feedback";
+import Feedback from "layouts/evaluation/components/feedback";
 const routes = [
   {
     type: "collapse",
@@ -79,14 +79,15 @@ const routes = [
     component: <EvalueForm />,
     forAdmin: true,
   },
-  // {
-  //   type: "collapse",
-  //   name: "פידבק",
-  //   key: "feedback",
-  //   icon: <Icon fontSize="small">feed</Icon>,
-  //   route: "/feedback",
-  //   component: <Feedback />,
-  // },
+  {
+    type: "collapse",
+    name: "פידבק",
+    key: "feedback",
+    icon: <Icon fontSize="small">feed</Icon>,
+    route: "/feedback",
+    component: <Feedback />,
+    isHiddenFromSideNav: true
+  },
   // },
   // {
   //   type: "collapse",
