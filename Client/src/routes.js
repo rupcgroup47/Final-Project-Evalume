@@ -52,6 +52,7 @@ import Icon from "@mui/material/Icon";
 import ManagerEvalues from "layouts/evaluation/components/Evaluation-Steps/ManagerEvalues";
 import MeetingCalendar from "layouts/meetings/Calendar";
 import Feedback from "layouts/evaluation/components/feedback";
+import BuildEvaluation from "layouts/evalue/buildEvaluation";
 const routes = [
   {
     type: "collapse",
@@ -75,9 +76,21 @@ const routes = [
     name: "הקמת טופס הערכה",
     key: "evalueForm",
     icon: <Icon fontSize="small">feed</Icon>,
+    route: "/evalueMain",
+    component: <BuildEvaluation />,
+    forAdmin: true,
+  },
+  ,
+  {
+    type: "collapse",
+    name: "הקמת טופס הערכה",
+    key: "evalueForm",
+    icon: <Icon fontSize="small">feed</Icon>,
     route: "/evalue",
     component: <EvalueForm />,
     forAdmin: true,
+    isHiddenFromSideNav: true
+
   },
   {
     type: "collapse",
