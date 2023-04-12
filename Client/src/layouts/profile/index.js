@@ -5,12 +5,8 @@ import ProfileInfoCard from "./components/ProfileInfoCard";
 import Header from "layouts/profile/components/Header";
 import { useEffect, useState, useContext } from "react";
 import { MainStateContext } from "App";
-import { employeeFinishStep1Context } from "context/globalVariables";
-import addNotification from 'react-push-notification';
-import { Notifications } from 'react-push-notification';
-// Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
-
+import OpenEvaluation from "./components/Header/openEvaluation";
 // Data
 import ProfileAlerts from "./data/ProfileAlerts";
 import ProfileGrid from "./components/ProfileGrid";
@@ -38,18 +34,6 @@ function Overview() {
   ];
   const [alerts, setAlerts] = useState(arrAlerts);
 
- const buttonOnClick = () =>{
-
-  addNotification({
-    title: 'Success',
-    subtitle: 'You have successfully submitted',
-    message: 'Welcome to GeeksforGeeks',
-    theme: 'light',
-    closeButton:"X",
-    backgroundTop:"green",
-    backgroundBottom:"yellowgreen"
-  })
-};
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -58,9 +42,7 @@ function Overview() {
   }, []);
   return (
     <Header>
-      <button onClick={buttonOnClick}>Show Notification</button>
-        <Notifications
-        />
+      <OpenEvaluation/>
       <MDBox mt={5} mb={3}>
         <Grid container spacing={1}>
           {/* //Profile card */}
@@ -97,16 +79,6 @@ function Overview() {
           </Grid>
         </Grid>
       </MDBox>
-      {/* <MDBox pt={2} px={2} lineHeight={1.25}>
-          <MDTypography variant="h6" fontWeight="medium">
-            Projects
-          </MDTypography>
-          <MDBox mb={1}>
-            <MDTypography variant="button" color="text">
-              Architects design houses
-            </MDTypography>
-          </MDBox>
-        </MDBox> */}
       <MDBox p={2}>
         <Grid container spacing={6}>
           <Grid item xs={12} md={6} xl={4}>
@@ -115,7 +87,7 @@ function Overview() {
               description="צפייה והורדת כלל ההערכות שלי לאורך השנים"
               type="evalues"
             />
-          </Grid>
+          </Grid> 
           <Grid item xs={12} md={6} xl={4}>
             <ProfileGrid title="יעדים" description="צפייה ועדכון היעדים האישיים שלי" type="goals" />
           </Grid>
