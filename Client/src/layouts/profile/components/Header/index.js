@@ -71,6 +71,13 @@ function Header({ children }) {
               </MDTypography>
             </MDBox>
           </Grid>
+          <Grid item>
+          <MDBox height="100%" mt={0.5} lineHeight={1}>
+              <MDTypography variant="h5" fontWeight="medium">
+              <OpenEvaluation/>
+              </MDTypography>
+            </MDBox>
+          </Grid>
         </Grid>
         {children}
       </Card>

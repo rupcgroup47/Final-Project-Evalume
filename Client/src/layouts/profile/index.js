@@ -42,7 +42,6 @@ function Overview() {
   }, []);
   return (
     <Header>
-      <OpenEvaluation/>
       <MDBox mt={5} mb={3}>
         <Grid container spacing={1}>
           {/* //Profile card */}

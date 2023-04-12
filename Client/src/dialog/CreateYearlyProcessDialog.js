@@ -9,6 +9,7 @@ import {
   Grid,
   MenuList,
   Box,
+  Card
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import DatePicker from "react-datepicker";
@@ -64,6 +65,7 @@ export default function CreateYearlyProcessDialog({
       });
     } else {
       setOpenProcess((prevObject) => ({ ...prevObject, selectedOptions, date: finishDate }));
+      console.log(openProcess);
       setOpen(false);
     }
   };
@@ -78,10 +80,20 @@ export default function CreateYearlyProcessDialog({
         alignItems="center"
         marginTop={3}
         marginBottom={10}
-        marginLeft="15%"
+        marginLeft="20%"
         textAlign="center"
         width="60%"
       >
+         <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "whitesmoke",
+        overflow: "visible",
+        textAlign: "center",
+        padding:"30px"
+      }}
+    >
         <Typography>בחירת שאלונים</Typography>
         <TableContainer sx={{ backgroundColor: "#e6f2ff" }}>
           <Table>
@@ -141,14 +153,21 @@ export default function CreateYearlyProcessDialog({
         <Typography>בחירת תאריך סיום</Typography>
 
         <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
+      {/* </Box> */}</Card>
       </Box>
       <Box textAlign="center" marginBottom={3}>
-      <Button variant="contained" color="white" onClick={() => setOpen(false)}>
-        יציאה{" "}
-      </Button>
-        <Button variant="contained" color="white" onClick={handleFinish}>
-          סיום הערכה שנתית
-        </Button>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item>
+            <Button variant="contained" color="white" size="large" onClick={() => setOpen(false)}>
+              יציאה{" "}
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="white" size="large" onClick={handleFinish}>
+              שליחת הערכה שנתית
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </Dialog>
   );

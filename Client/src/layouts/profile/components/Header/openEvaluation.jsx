@@ -7,12 +7,24 @@ export default function OpenEvaluation() {
   const rows = ["מנהל", "עובד"];
   return (
     <>
-      <Button onClick={() => setShowCreateOpenEvalueDialog((e) => !e)}>פתיחת תהליך הערכה</Button>
+      <Button
+        variant="contained"
+        color="white"
+        size="large"
+        sx={{
+          borderRadius: 50,
+          height:"100px",
+          width:"300px"
+        }}
+        onClick={() => setShowCreateOpenEvalueDialog((e) => !e)}
+      >
+        פתיחת תהליך הערכה
+      </Button>
       <CreateYearlyProcessDialog
         open={showCreateOpenEvalueDialog}
         setOpen={setShowCreateOpenEvalueDialog}
-        columnHeaders={columns}//roleType
-        rowHeaders={rows}//roleGroupType
+        columnHeaders={columns} //roleType
+        rowHeaders={rows} //roleGroupType
         cellData={[
           [
             ["שאלון 1", "שאלון 2"],
