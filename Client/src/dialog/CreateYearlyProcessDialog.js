@@ -1,16 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  MenuItem,
-  Select,
-  TextField,
-  FormControl,
-  InputLabel,
-  Typography,
-} from "@mui/material";
+import { Button, Dialog, MenuItem, Select, Typography } from "@mui/material";
 import {
   Table,
   TableBody,
@@ -20,16 +8,16 @@ import {
   TableRow,
   Grid,
   MenuList,
-  Paper,
   Box,
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import DatePicker from "react-datepicker";
-// import "./src/layouts/profile/components/Header/datePicker.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
 registerLocale("he", he);
+import addNotification from "react-push-notification";
+import { Notifications } from "react-push-notification";
 
 export default function CreateYearlyProcessDialog({
   open,
@@ -38,29 +26,47 @@ export default function CreateYearlyProcessDialog({
   columnHeaders,
   cellData,
 }) {
-    const [selectedOptions, setSelectedOptions] = useState({})
-    const [openProcess,setOpenProcess] = useState({})
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [openProcess, setOpenProcess] = useState({});
+  const [finishDate, setfinishDate] = useState(new Date());
   const [tableData, setTableData] = useState(() => {
     return cellData.map((row) => [...row]);
   });
-  const updateCell = (rowIndex, columnIndex, value) => {
-    var combination =rowIndex+','+columnIndex;
+  const updateCell = (rowIndex, columnIndex, value, ddlKey) => {
     const updatedTableData = [...tableData];
     updatedTableData[rowIndex][columnIndex] = value;
-    setTableData(updatedTableData);
-    setSelectedOptions((prevSelectedOptions) => ({
-        ...prevSelectedOptions,
-        [combination]: value,
-      }));
-  console.log(selectedOptions)
-  console.log(updatedTableData)
+    setTableData(updatedTableData); //shows the chosen value in
+    const index = selectedOptions.findIndex((obj) => obj.key === ddlKey);
+    if (index !== -1) {
+      // If the ddlKey exists, update the value of the corresponding object
+      const updatedChoices = [...selectedOptions];
+      updatedChoices[index].value = value;
+      setSelectedOptions(updatedChoices);
+    } else {
+      // If the ddlKey doesn't exist, add a new object to the selectedOptions array
+      setSelectedOptions([
+        ...selectedOptions,
+        { roleGroupType: columnHeaders[columnIndex], roleType: rowHeaders[rowIndex], value: value },
+      ]);
+    }
+    console.log(selectedOptions);
+    console.log(updatedTableData);
   };
-  const [finishDate, setfinishDate] = useState(new Date());
- const handleFinish =() => {
-    setOpenProcess(prevObject => ({ ...prevObject, ...selectedOptions,  date:finishDate }));
-    console.log(openProcess)
 
- }
+  const handleFinish = () => {
+    if (selectedOptions.length != columnHeaders.length * rowHeaders.length) {
+      addNotification({
+        title: "אזהרה",
+        subtitle: "לא בחרת בכל האפשרויות",
+        message: "צריך לבחור בכל שאלון מספר שאלון",
+        theme: "red",
+        closeButton: "X",
+      });
+    } else {
+      setOpenProcess((prevObject) => ({ ...prevObject, selectedOptions, date: finishDate }));
+      setOpen(false);
+    }
+  };
   return (
     <Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
       <Typography sx={{ fontFamily: "Rubik", fontSize: "50px", textAlign: "center" }}>
@@ -76,7 +82,6 @@ export default function CreateYearlyProcessDialog({
         textAlign="center"
         width="60%"
       >
-        
         <Typography>בחירת שאלונים</Typography>
         <TableContainer sx={{ backgroundColor: "#e6f2ff" }}>
           <Table>
@@ -108,7 +113,12 @@ export default function CreateYearlyProcessDialog({
                           label="בחירת שאלון"
                           value={cellValue}
                           onChange={(event) =>
-                            updateCell(rowIndex, columnIndex, event.target.value)
+                            updateCell(
+                              rowIndex,
+                              columnIndex,
+                              event.target.value,
+                              cellData[rowIndex][columnIndex]
+                            )
                           }
                         >
                           {cellData[rowIndex][columnIndex].map((optionValue, optionIndex) => (
@@ -126,12 +136,16 @@ export default function CreateYearlyProcessDialog({
               ))}
             </TableBody>
           </Table>
+          <Notifications />
         </TableContainer>
         <Typography>בחירת תאריך סיום</Typography>
 
-        <DatePicker selected={finishDate}  onChange={(date) => setfinishDate(date)} locale="he" />
+        <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
       </Box>
       <Box textAlign="center" marginBottom={3}>
+      <Button variant="contained" color="white" onClick={() => setOpen(false)}>
+        יציאה{" "}
+      </Button>
         <Button variant="contained" color="white" onClick={handleFinish}>
           סיום הערכה שנתית
         </Button>

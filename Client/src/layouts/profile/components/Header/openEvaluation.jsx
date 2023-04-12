@@ -11,8 +11,8 @@ export default function OpenEvaluation() {
       <CreateYearlyProcessDialog
         open={showCreateOpenEvalueDialog}
         setOpen={setShowCreateOpenEvalueDialog}
-        columnHeaders={columns}
-        rowHeaders={rows}
+        columnHeaders={columns}//roleType
+        rowHeaders={rows}//roleGroupType
         cellData={[
           [
             ["שאלון 1", "שאלון 2"],
@@ -22,7 +22,7 @@ export default function OpenEvaluation() {
             ["שאלון 21", "שאלון 77"],
             ["שאלון 18", "שאלון 66"],
           ],
-        ]}
+        ]} // all the matching forms according the matrix
       />
     </>
   );
