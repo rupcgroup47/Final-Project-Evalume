@@ -165,6 +165,7 @@ export default function Evalues() {
   //   // console.log(myNewForm);
   // }
   console.log(myNewForm);
+  console.log(JSON.stringify(myNewForm));
   function updateObject(myFormTypes) {
     // receive the form user type
     setMyObject(myFormTypes);

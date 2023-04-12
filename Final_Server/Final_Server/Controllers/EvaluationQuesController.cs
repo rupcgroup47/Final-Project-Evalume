@@ -1,7 +1,9 @@
 ﻿using Final_Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,16 +37,45 @@ namespace Final_Server.Controllers
         }
 
         // POST api/<EvaluationQuesController>
-        //[HttpPost]
-        //public int Post(JsonElement data)
-        //{
-        //    bool QuesType = Convert.ToBoolean(data.GetProperty("QuesType").GetInt32());
-        //    int RoleGroup_Type = Convert.ToInt32(data.GetProperty("RoleGroup_Type").GetInt32());
-        //    JsonElement group = data.GetProperty("Ques_Group");
-        //    string quesNum = group.GetProperty("QuesNum").ToString();
+        [HttpPost]
+        public IActionResult Post([FromBody] JsonElement data)
+        {
+            try
+            {
+                JsonDocument document = JsonDocument.Parse(data.ToString());
+                JsonElement checkedArry = document.RootElement.GetProperty("myCheckedArray");
+                List<Object> questionList = new List<Object>();
+                foreach (JsonElement item in checkedArry.EnumerateArray())
+                {
+                    int[] numbers = item.GetProperty("questionNum").EnumerateArray().Select(x => x.GetInt32()).ToArray();
+                    foreach (int number in numbers)
+                    {
+                        questionList.Add(number);
+                    }
+                }
+                Object newForm = new
+                {
+                    roleType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("roleType").GetInt32()),
+                    groupType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("groupType").GetInt32()),
+                    questions = questionList.ToArray(),
+                };
 
+                int numEffected = EvaluationQues.insertNewForm(newForm);
 
-        //}
+                if (numEffected != 0)
+                {
+                    return Ok("Employee succesfully inserted");
+                }
+                else
+                {
+                    return NotFound("Error in insert this employee");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
 
