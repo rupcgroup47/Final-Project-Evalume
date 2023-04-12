@@ -22,10 +22,10 @@ export default function CloseDialog({ open, setOpen, onClick }) {
 
   return (
     <Dialog maxWidth="xs" fullWidth onClose={() => setOpen((e) => !e)} open={open}>
-      <DialogTitle>מחיקה</DialogTitle>
+      <DialogTitle>שינוי מצב המשתמש</DialogTitle>
 
       <DialogContent>
-        <Typography variant="body1">האם אתה בטוח שאתה רוצה למחוק ? </Typography>
+        <Typography variant="body1">האם אתה בטוח שאתה רוצה להפוך את המשתמש ללא פעיל ? </Typography>
       </DialogContent>
 
       <DialogActions sx={{ m: 2, p: 1, display: "flex", gap: 1 }}>

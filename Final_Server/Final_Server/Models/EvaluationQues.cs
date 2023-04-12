@@ -6,20 +6,35 @@ namespace Final_Server.Models
     {
         int questionnaireNum;
         DateTime quesInsertDate = new DateTime();
-        bool quesType;
+        int roleType;
         DateTime quesLimitDate = new DateTime();
-        int roleGroup_Type;
+        int groupType;
 
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
         public DateTime QuesInsertDate { get => quesInsertDate; set => quesInsertDate = value; }
-        public bool QuesType { get => quesType; set => quesType = value; }
-        public int RoleGroup_Type { get => roleGroup_Type; set => roleGroup_Type = value; }
+        public int RoleType { get => roleType; set => roleType = value; }
+        public int GroupType { get => groupType; set => groupType = value; }
         public DateTime QuesLimitDate { get => quesLimitDate; set => quesLimitDate = value; }
 
         public Object getFitQues(bool quesType) //get all questions that fill the quesType
         {
             DBservices dbs = new DBservices();
             return dbs.GetFitQues(quesType);
+        }
+
+        static public int insertNewForm(Object newForm)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return 1;
+                //return dbs.insertNewForm(newForm);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

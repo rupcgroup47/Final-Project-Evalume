@@ -51,42 +51,84 @@ namespace Final_Server.Models
 
         public Employee Read(string userEmail, string userpassword) //get all user details that fit to the userEmail & userPassword
         {
-            DBservices dbs = new DBservices();
-            Employee employee = new Employee();
-            employee = dbs.GetUserLoginDetails(userEmail, userpassword);
-            return employee;
+            try
+            {
+                DBservices dbs = new DBservices();
+                Employee employee = new Employee();
+                employee = dbs.GetUserLoginDetails(userEmail, userpassword);
+                return employee;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static List<Employee> ReadEmployees() //Read all user (active + not active)
         {
-            DBservices dbs = new DBservices();
-            return dbs.GetAllUsers();
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetAllUsers();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public int InsertEmployee() //Insert new user (Employee)
         {
-            DBservices tmp = new DBservices();
-            return tmp.InsertEmployee(this);
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.InsertEmployee(this);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
         public int UpdateUserDetails(int userNum) //Update user datails
         {
-            DBservices tmp = new DBservices();
-            return tmp.UpdateUserDetails(this, userNum);
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.UpdateUserDetails(this, userNum);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public int UpdateUserPassword(string userEmail, string userpassword) //Update user password
         {
-            DBservices tmp = new DBservices();
-            return tmp.UpdateUserPassword(userEmail, userpassword);
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.UpdateUserPassword(userEmail, userpassword);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public int UpdateActive(int userNum, bool is_Active) //Update user feild "is_active"
         {
-            DBservices tmp = new DBservices();
+            try
+            {
+                DBservices tmp = new DBservices();
 
-            return tmp.UpdateUserActive(userNum, is_Active);
+                return tmp.UpdateUserActive(userNum, is_Active);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
