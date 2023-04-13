@@ -3,8 +3,8 @@ import { Card, Grid, CardContent, Paper } from "@mui/material";
 import { useMaterialUIController, setDirection } from "context";
 import { Link } from "react-router-dom";
 export default function BuildEvaluation() {
-  const [isOldForms, setIsOldForms] = useState(true);
-  const [isNotOldForms, setIsNotOldForms] = useState(true);//change it
+  const isOldForms = true;
+  const isNotOldForms=false;//change it
   const [, dispatch] = useMaterialUIController();
   // Changing the direction to rtl
   useEffect(() => {
@@ -23,14 +23,14 @@ export default function BuildEvaluation() {
         <Grid item xs={6}>
           <Link to="/evalue" state={isNotOldForms}>
             <Card sx={{ height: "500px", backgroundColor:"whitesmoke" }}>
-              <CardContent sx={{textAlign: "center", fontSize:"90px", fontFamily: "Rubik"}}>יצירת טופס חדש ממאגר השאלות</CardContent>
+              <CardContent sx={{textAlign: "center", fontSize:"70px", fontFamily: "Rubik"}}>יצירת טופס חדש ממאגר השאלות</CardContent>
             </Card>
           </Link>
         </Grid>
         <Grid item xs={6}>
           <Link to="/evalue" state={isOldForms}>
             <Card sx={{ height: "500px",backgroundColor:"whitesmoke"  }}>
-              <CardContent sx={{textAlign: "center", fontSize:"90px", fontFamily: "Rubik"}}>יצירת טופס חדש מבוסס על שאלונים קיימים</CardContent>
+              <CardContent sx={{textAlign: "center", fontSize:"70px", fontFamily: "Rubik"}}>יצירת טופס חדש מבוסס על שאלונים קיימים</CardContent>
             </Card>
           </Link>
         </Grid>

@@ -29,7 +29,7 @@ export default function Evalues() {
   const [postQuestion, setPostQuestion] = useState({});
 
   const location = useLocation();
-  const isOld = location.state;
+  const isOldForms = location.state;
   // Bring all questions using GET api
   useEffect(() => {
     const abortController = new AbortController()
@@ -188,6 +188,8 @@ export default function Evalues() {
         </Tooltip>
       </Box>
       <QuestionsContext.Provider value={{ globalQuestionArray, setGlobalQuestionsArray }}>
+      {console.log(isOldForms)}
+
         <CreateQuestionsDialog
           open={showCreateQuestionDialog}
           setOpen={setShowCreateQuestionDialog}
@@ -195,7 +197,7 @@ export default function Evalues() {
           settempQuestionArray={settempQuestionArray}
           setPostQuestion={setPostQuestion}
         />
-        <HeaderFrom updateObject={updateObject} />
+        <HeaderFrom updateObject={updateObject} isOld={isOldForms} />
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
 
