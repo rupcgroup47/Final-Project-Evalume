@@ -16,18 +16,18 @@ namespace Final_Server.Models
         public int GroupType { get => groupType; set => groupType = value; }
         public DateTime QuesLimitDate { get => quesLimitDate; set => quesLimitDate = value; }
 
-        public Object getFitQues(bool quesType) //get all questions that fill the quesType
-        {
-            DBservices dbs = new DBservices();
-            return dbs.GetFitQues(quesType);
-        }
+        //public Object getFitQues(bool quesType) //get all questions that fill the quesType
+        //{
+        //    DBservices dbs = new DBservices();
+        //    return dbs.GetFitQues(quesType);
+        //}
 
-        static public int insertNewForm(Object newForm)
+        static public int insertNewForm(dynamic newForm)
         {
             try
             {
                 DBservices dbs = new DBservices();
-                return 1;
+                return dbs.InserEvaluationQues(newForm);
                 //return dbs.insertNewForm(newForm);
             }
             catch (Exception)
