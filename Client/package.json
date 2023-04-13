@@ -21,6 +21,7 @@
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
     "@fontsource/rubik": "^4.5.14",
+    "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "5.4.1",
     "@mui/lab": "^5.0.0-alpha.124",
     "@mui/material": "^5.4.1",
