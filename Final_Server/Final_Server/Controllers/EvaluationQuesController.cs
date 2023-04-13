@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -20,12 +21,12 @@ namespace Final_Server.Controllers
         //    return new string[] { "value1", "value2" };
         //}
 
-        [HttpGet]
-        public Object Get(bool quesType) //get all questions that fit the quesType
-        {
-            EvaluationQues e = new EvaluationQues();
-            return e.getFitQues(quesType);
-        }
+        //[HttpGet]
+        //public Object Get(bool quesType) //get all questions that fit the quesType
+        //{
+        //    EvaluationQues e = new EvaluationQues();
+        //    return e.getFitQues(quesType);
+        //}
 
 
 
@@ -38,13 +39,13 @@ namespace Final_Server.Controllers
 
         // POST api/<EvaluationQuesController>
         [HttpPost]
-        public IActionResult Post([FromBody] JsonElement data)
+        public IActionResult Post([FromBody] JsonElement data) // post a new evaluation form to the database
         {
             try
             {
                 JsonDocument document = JsonDocument.Parse(data.ToString());
                 JsonElement checkedArry = document.RootElement.GetProperty("myCheckedArray");
-                List<Object> questionList = new List<Object>();
+                List<int> questionList = new List<int>();
                 foreach (JsonElement item in checkedArry.EnumerateArray())
                 {
                     int[] numbers = item.GetProperty("questionNum").EnumerateArray().Select(x => x.GetInt32()).ToArray();
@@ -53,12 +54,11 @@ namespace Final_Server.Controllers
                         questionList.Add(number);
                     }
                 }
-                Object newForm = new
-                {
-                    roleType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("roleType").GetInt32()),
-                    groupType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("groupType").GetInt32()),
-                    questions = questionList.ToArray(),
-                };
+
+                dynamic newForm = new ExpandoObject();
+                newForm.roleType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("roleType").GetInt32());
+                newForm.groupType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("groupType").GetInt32());
+                newForm.questions = questionList.ToArray();
 
                 int numEffected = EvaluationQues.insertNewForm(newForm);
 
