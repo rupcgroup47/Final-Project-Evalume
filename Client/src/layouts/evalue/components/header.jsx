@@ -12,16 +12,16 @@ import { useMaterialUIController, setDirection } from "context";
 export default function HeaderFrom(props) {
   const [, dispatch] = useMaterialUIController();
   const [allExistForms, setAllExistForms] = useState([]);//Display of all existing questionnaires as strings
-  const [chosenExistForm, setChosenExistForm] = useState();//The questionnaire selected in DDL
+  const [chosenExistForm, setChosenExistForm] = useState("");//The questionnaire selected in DDL
   const [roleTypeArray, setRoleTypeArray] = useState([{roleDesc :"עובד",value:0},{roleDesc :"מנהל",value:1}]);
   const [roleGroupTypeArray, setRoleGroupTypeArray] = useState([{roleDesc :"כללי",value:1},{roleDesc : "תפעולי",value:2},{roleDesc :"משרדי",value:3}]);
   const [showSelect, setShowSelect] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [roleType, setRoleType] = useState("");
   const [roleGroupType, setRoleGroupType] = useState("");
-  const { isOld, updateObject, setShowAddQuestion, existForms, setSendExistForms, chosenParameters } = props;
-  const [showFormSelect,setShowFormSelect] = useState(false)
-  const [chosenTypes, setChosenTypes] = useState()
+  const { isOld, setMyObject, setShowAddQuestion, existForms, setSendExistForms, setChosenParameters } = props;
+  const [showFormSelect,setShowFormSelect] = useState(false);
+  const [chosenTypes, setChosenTypes] = useState();
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -58,14 +58,14 @@ export default function HeaderFrom(props) {
         roleType: roleType,
         chosenForm: chosenExistForm,
       };
-      updateObject(newForm); // send to the parent component the form type
+      setMyObject(newForm); // send to the parent component the form type
     } else {
       const newForm = {
         //check if the questions arrive all the questions in DB
         groupType: roleGroupType,
         roleType: roleType,
       };
-      updateObject(newForm); // send to the parent component the form type
+      setMyObject(newForm); // send to the parent component the form type
     }
   };
 
@@ -73,21 +73,26 @@ export default function HeaderFrom(props) {
     console.log(roleGroupType)
     console.log(roleType)
     if (roleGroupType !== undefined && roleType !== undefined) {
-      setShowSelect(true);
-      setShowButton(true);
-      setSendExistForms(true);
       const selectedTypes = {
         groupType: roleGroupType,
         roleType: roleType,
       };
+      setChosenParameters(selectedTypes);//pass data to index 
       setChosenTypes(selectedTypes);
-      chosenParameters(selectedTypes);//pass data to index 
-      console.log(selectedTypes)
-
+      console.log(selectedTypes);
+      setShowSelect(true);
+      setShowButton(true);
+      setSendExistForms(true);
     } else {
       console.log("Error");
     }
   };
+
+  const handleClick = () => {
+    setShowAddQuestion(true);
+    setShowFormSelect(true);
+  };
+
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5, background: "white", borderRadius: "15px" }}>
@@ -155,7 +160,6 @@ export default function HeaderFrom(props) {
                 onChange={handleChangeExistForm}
                 required
                 disabled={showFormSelect}
-
                 style={{ height: "50px", alignContent: "center" }}
               >
                 {allExistForms.map((item) => (
@@ -167,7 +171,7 @@ export default function HeaderFrom(props) {
             </FormControl>
           )}
           {isOld && showButton && (
-            <Button onClick={setShowAddQuestion(true) && setShowFormSelect(true)}  type="submit">
+            <Button onClick={handleClick}  type="submit">
               המשך
             </Button>
           )}
