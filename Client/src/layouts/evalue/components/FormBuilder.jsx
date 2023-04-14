@@ -5,7 +5,7 @@ import { Container, Typography } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+// import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
@@ -14,62 +14,17 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Grid from "@mui/material/Grid";
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
-import FinishDialog from "./FinishDialog";
+// import FinishDialog from "./FinishDialog";
 import { QuestionsContext } from "context/globalVariables";
-
-// const questionsResp = [...Array(2).keys()].map((idx) => ({
-//   quesGroup_ID: `id title-${idx}`,
-//   quesGroup_Desc: `title - ${idx}`,
-//   groupType: 0,
-//   questions: [...Array(2).keys()].map((index) => ({
-//     questionNum: `question-${index}`,
-//     quesContent: `שאלה מאוד מאוד מאוד אבל מאוד מעניינת - ${index}`,
-//     is_Active: 1,
-//   })),
-// }));
-
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&:before": {
-    display: "none",
-  },
-}));
-
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark" ? "rgba(255, 255, 255, .05)" : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
 
 export default function FormBuilder({ setMyArray }) {
   const { globalQuestionArray } = useContext(QuestionsContext);
   const [expanded, setExpanded] = useState(globalQuestionArray[0].quesGroup_ID);
   const [, dispatch] = useMaterialUIController();
   const [checkedItems, setCheckedItems] = useState([]);
-  const [showCloseDialog, setShowCloseDialog] = useState(false);
-  const [statusMsg, setMsg] = useState("");
-  const [finishRouteMsg, setRouteMsg] = useState("");
+  // const [showCloseDialog, setShowCloseDialog] = useState(false);
+  // const [statusMsg, setMsg] = useState("");
+  // const [finishRouteMsg, setRouteMsg] = useState("");
   const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -114,9 +69,8 @@ export default function FormBuilder({ setMyArray }) {
     ); // group by titles and questions
     console.log(groupedData);
     setMyArray(groupedData);
-    setShowCloseDialog((e) => !e); // Error dialog message
-    setMsg("סיימת למלא את טופס ההערכה");
-    setRouteMsg("חזרה לדף הבית");
+    // setMsg("סיימת למלא את טופס ההערכה");
+    // setRouteMsg("חזרה לדף הבית");
   };
   
   return (
@@ -162,7 +116,7 @@ export default function FormBuilder({ setMyArray }) {
       <Button type={"submit"} label="סיים" onClick={handleCheckedForm} style={{fontSize:"large", position:"absolute", left:"50px"}}>
         סיום
       </Button>
-      <FinishDialog
+      {/* <FinishDialog
         open={showCloseDialog}
         setOpen={setShowCloseDialog}
         msg={statusMsg}
@@ -170,7 +124,42 @@ export default function FormBuilder({ setMyArray }) {
         onClick={() => {
           setShowCloseDialog((e) => !e);
         }}
-      />
+      /> */}
     </Container>
   );
 }
+
+
+const Accordion = styled((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  "&:not(:last-child)": {
+    borderBottom: 0,
+  },
+  "&:before": {
+    display: "none",
+  },
+}));
+
+const AccordionSummary = styled((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark" ? "rgba(255, 255, 255, .05)" : "rgba(0, 0, 0, .03)",
+  flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+    transform: "rotate(90deg)",
+  },
+  "& .MuiAccordionSummary-content": {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: "1px solid rgba(0, 0, 0, .125)",
+}));
