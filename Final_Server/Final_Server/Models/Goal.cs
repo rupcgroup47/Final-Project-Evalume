@@ -32,34 +32,34 @@
             return dbs.InsertGoal(this);
         }
 
-        public static List<Object> Read(int userNum) //Get all the questions that posed by the current manager
-        {
-            DBservices dbs = new DBservices();
-            List<Object> list = dbs.GetGoals(userNum);
+        //public static List<Object> Read(int userNum) //Get all the questions that posed by the current manager
+        //{
+        //    DBservices dbs = new DBservices();
+        //    List<Object> list = dbs.GetGoals(userNum);
 
-            List<Goal> GoalsList = new List<Goal>();
-            int catchID = 1;
+        //    List<Goal> GoalsList = new List<Goal>();
+        //    int catchID = 1;
 
-            for (int i = 0; i < list.Count; i++)
-            {
-                if(catchID == (list[i].GoalNum))
-                {
-                    GoalsList.Add(new {
-                        GoalCreateDate = list[i].GoalCreateDate,
-                        UserManagerNum = list[i].UserManagerNum,
-                        UserNum = list[i].UserNum,
-                        UserFName = list[i].UserFName,
-                        UserLName = list[i].UserLName,
-                        GoalStatus = list[i].GoalStatus
-
-
-                    });
+        //    for (int i = 0; i < list.Count; i++)
+        //    {
+        //        if(catchID == (list[i].GoalNum))
+        //        {
+        //            GoalsList.Add(new {
+        //                GoalCreateDate = list[i].GoalCreateDate,
+        //                UserManagerNum = list[i].UserManagerNum,
+        //                UserNum = list[i].UserNum,
+        //                UserFName = list[i].UserFName,
+        //                UserLName = list[i].UserLName,
+        //                GoalStatus = list[i].GoalStatus
 
 
-                }
-            }
+        //            });
+
+
+        //        }
+        //    }
             
-            return list;
-        }
+        //    return list;
+        //}
     }
 }
