@@ -211,52 +211,95 @@ export default function Evalues() {
 
   // Gat all questionnaires that fit the roletype and grouptype using GET api
   useEffect(() => {
-    // const abortController = new AbortController();
+    const abortController = new AbortController();
     console.log("chocen",chosenParameters);
     if (chosenParameters.roleType !== undefined) {
       console.log(chosenParameters.roleType);
       console.log(chosenParameters.groupType);
       console.log("hereere");
-      // fetch(
-      //   apiQuestionnaire + chosenParameters.roleType +"&roleGroup_Type="+ chosenParameters.groupType, 
-      //   {
-      //   method: "GET",
-      //   headers: new Headers({
-      //     "Content-Type": "application/json; charset=UTF-8",
-      //     Accept: "application/json; charset=UTF-8",
-      //   }),
-      //   signal: abortController.signal,
-      // })
-      //   .then(async (response) => {
-      //     const data = await response.json();
-      //     console.log(response);
+      fetch(
+        apiQuestionnaire + ( chosenParameters.roleType === 1 ? true : false) +"&roleGroup_Type="+ chosenParameters.groupType, 
+        {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
 
-      //     if (!response.ok) {
-      //       // get error message from body or default to response statusText
-      //       const error = (data && data.message) || response.statusText;
-      //       return Promise.reject(error);
-      //     }
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
 
-      //     return data;
-      //   })
-      //   .then(
-      //     (result) => {
-      //       console.log("success");
-
-      //       settempQuestionArray(result);
-      //     },
-      //     (error) => {
-      //       if (error.name === "AbortError") return;
-      //       console.log("err get=", error);
-      //       throw error;
-      //     }
-      //   );
-      // return () => {
-      //   abortController.abort();
-      //   // stop the query by aborting on the AbortController on unmount
-      // };
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            console.log(result);
+            setExistForms(result);
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err get=", error);
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
     }
   }, [chosenParameters]);
+
+    // Bring all questions using GET api
+    useEffect(() => {
+      const abortController = new AbortController();
+      if (!isOldForms) {
+        fetch(apiQuestionrUrl, {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          signal: abortController.signal,
+        })
+          .then(async (response) => {
+            const data = await response.json();
+            console.log(response);
+  
+            if (!response.ok) {
+              // get error message from body or default to response statusText
+              const error = (data && data.message) || response.statusText;
+              return Promise.reject(error);
+            }
+  
+            return data;
+          })
+          .then(
+            (result) => {
+              console.log("success");
+  
+              settempQuestionArray(result);
+            },
+            (error) => {
+              if (error.name === "AbortError") return;
+              console.log("err get=", error);
+              throw error;
+            }
+          );
+        return () => {
+          abortController.abort();
+          // stop the query by aborting on the AbortController on unmount
+        };
+      }
+    }, [isOldForms]);
 
   // set the globalQuestionArray with the relevant question by the user decision
   useEffect(() => {
