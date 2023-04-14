@@ -19,8 +19,9 @@ export default function HeaderFrom(props) {
   const [showButton, setShowButton] = useState(false);
   const [roleType, setRoleType] = useState("");
   const [roleGroupType, setRoleGroupType] = useState("");
-  const { isOld, updateObject, setShowAddQuestion, existForms, setSendExistForms } = props;
+  const { isOld, updateObject, setShowAddQuestion, existForms, setSendExistForms, chosenParameters } = props;
   const [showFormSelect,setShowFormSelect] = useState(false)
+  const [chosenTypes, setChosenTypes] = useState()
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -69,10 +70,20 @@ export default function HeaderFrom(props) {
   };
 
   const handleButtonClick = () => {
-    if (roleGroupType && roleType) {
+    console.log(roleGroupType)
+    console.log(roleType)
+    if (roleGroupType !== undefined && roleType !== undefined) {
       setShowSelect(true);
       setShowButton(true);
       setSendExistForms(true);
+      const selectedTypes = {
+        groupType: roleGroupType,
+        roleType: roleType,
+      };
+      setChosenTypes(selectedTypes);
+      chosenParameters(selectedTypes);//pass data to index 
+      console.log(selectedTypes)
+
     } else {
       console.log("Error");
     }
