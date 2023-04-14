@@ -31,60 +31,60 @@ namespace Final_Server.Controllers
 
 
 
-        // GET api/<EvaluationQuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET api/<EvaluationQuesController>/5
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
-        // POST api/<EvaluationQuesController>
-        [HttpPost]
-        public IActionResult Post([FromBody] JsonElement data) // post a new evaluation form to the database
-        {
-            try
-            {
-                JsonDocument document = JsonDocument.Parse(data.ToString());
-                JsonElement checkedArry = document.RootElement.GetProperty("myCheckedArray");
-                List<int> questionList = new List<int>();
-                foreach (JsonElement item in checkedArry.EnumerateArray())
-                {
-                    int[] numbers = item.GetProperty("questionNum").EnumerateArray().Select(x => x.GetInt32()).ToArray();
-                    foreach (int number in numbers)
-                    {
-                        questionList.Add(number);
-                    }
-                }
+        //// POST api/<EvaluationQuesController>
+        //[HttpPost]
+        //public IActionResult Post([FromBody] JsonElement data) // post a new evaluation form to the database
+        //{
+        //    try
+        //    {
+        //        JsonDocument document = JsonDocument.Parse(data.ToString());
+        //        JsonElement checkedArry = document.RootElement.GetProperty("myCheckedArray");
+        //        List<int> questionList = new List<int>();
+        //        foreach (JsonElement item in checkedArry.EnumerateArray())
+        //        {
+        //            int[] numbers = item.GetProperty("questionNum").EnumerateArray().Select(x => x.GetInt32()).ToArray();
+        //            foreach (int number in numbers)
+        //            {
+        //                questionList.Add(number);
+        //            }
+        //        }
 
-                dynamic newForm = new ExpandoObject();
-                newForm.roleType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("roleType").GetInt32());
-                newForm.groupType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("groupType").GetInt32());
-                newForm.questions = questionList.ToArray();
+        //        dynamic newForm = new ExpandoObject();
+        //        newForm.roleType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("roleType").GetInt32());
+        //        newForm.groupType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("groupType").GetInt32());
+        //        newForm.questions = questionList.ToArray();
 
-                int numEffected = EvaluationQues.insertNewForm(newForm);
+        //        int numEffected = EvaluationQues.insertNewForm(newForm);
 
-                if (numEffected != 0)
-                {
-                    return Ok("Evaluation succesfully inserted");
-                }
-                else
-                {
-                    return NotFound("Error in insert this Evaluation");
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //        if (numEffected != 0)
+        //        {
+        //            return Ok("Evaluation succesfully inserted");
+        //        }
+        //        else
+        //        {
+        //            return NotFound("Error in insert this Evaluation");
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
 
 
-        // PUT api/<EvaluationQuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<EvaluationQuesController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
         //// DELETE api/<EvaluationQuesController>/5
         //[HttpDelete("{id}")]

@@ -116,15 +116,6 @@ export default function FormBuilder({ setMyArray }) {
       <Button type={"submit"} label="סיים" onClick={handleCheckedForm} style={{fontSize:"large", position:"absolute", left:"50px"}}>
         סיום
       </Button>
-      {/* <FinishDialog
-        open={showCloseDialog}
-        setOpen={setShowCloseDialog}
-        msg={statusMsg}
-        finishRouteMsg={finishRouteMsg}
-        onClick={() => {
-          setShowCloseDialog((e) => !e);
-        }}
-      /> */}
     </Container>
   );
 }

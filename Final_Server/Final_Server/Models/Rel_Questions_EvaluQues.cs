@@ -125,6 +125,20 @@ namespace Final_Server.Models
             return QuestionsList;
         }
 
+        static public int insertNewForm(dynamic newForm)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.InserEvaluationQues(newForm);
+                //return dbs.insertNewForm(newForm);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public static List<Object> ReadEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
         {
@@ -178,6 +192,7 @@ namespace Final_Server.Models
 
 
         
+
     }
 }
 
