@@ -71,8 +71,8 @@ namespace Final_Server.Models
                 {
                     EvaleQuesList.Add(new
                     {
-                        QuestionnaireNum = item.QuestionnaireNum,
-                        QuesInsertDate = item.QuesInsertDate,
+                        id = item.QuestionnaireNum,
+                        year = item.QuesInsertDate,
 
                     });
                 }

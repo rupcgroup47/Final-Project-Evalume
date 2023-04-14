@@ -1567,6 +1567,7 @@ public class DBservices
         catch (Exception ex)
         {
             // write to log
+            Console.WriteLine(ex.Message);
             throw (ex);
         }
 
@@ -1580,6 +1581,7 @@ public class DBservices
         catch (Exception ex)
         {
             // write to log
+            Console.WriteLine(ex.Message);
             throw (ex);
         }
 
@@ -1830,6 +1832,7 @@ public class DBservices
         catch (Exception ex)
         {
             // write to log
+            Console.WriteLine(ex.Message);
             throw (ex);
         }
 
@@ -1910,9 +1913,14 @@ public class DBservices
 
             return rel_Ques;
         }
+        //catch (NullReferenceException)
+        //{
+        //    return 0;
+        //}
         catch (Exception ex)
         {
             // write to log
+            Console.WriteLine(ex.Message);
             throw (ex);
         }
 
@@ -1998,6 +2006,7 @@ public class DBservices
         catch (Exception ex)
         {
             // write to log
+            Console.WriteLine(ex.Message);
             throw (ex);
         }
 
