@@ -37,7 +37,7 @@ export default function Evalues() {
   const [showAddQuestion, setShowAddQuestion] = useState(false);//Adjustments according to the type of form - existing or new
   const [existForms, setExistForms] = useState([{id:1, year:2022},{id:2,year:2022},{id:4,year:2023}])//Questionnaires that are adapted to the type of roletype and rolegrouptype
   const [sendExistForms,setSendExistForms] = useState(false)//An indication that we can get questionnaires from the server that are adapted to the type of roletype and rolegrouptype
-
+const [chosenParameters, setChosenParameters] = useState()
   const location = useLocation();
   const isOldForms = location.state;
 
@@ -273,7 +273,11 @@ export default function Evalues() {
     setDirection(dispatch, "rtl");
     return () => setDirection(dispatch, "ltr");
   }, []);
-
+  function handleDataFromHeader(obj) {
+    setChosenParameters(obj);
+    console.log(obj+"testttt")
+    console.log(chosenParameters+"test")
+  }
   console.log(myNewForm);
   console.log(JSON.stringify(myNewForm));
   function updateObject(myFormTypes) {
@@ -326,6 +330,7 @@ export default function Evalues() {
           setShowAddQuestion={setShowAddQuestion}
           existForms ={existForms}
           setSendExistForms={setSendExistForms}//An indication that you can receive questionnaires from the server that are adapted to the type of position and rank
+          chosenParameters={handleDataFromHeader}
         />
         {console.log(sendExistForms)}
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}

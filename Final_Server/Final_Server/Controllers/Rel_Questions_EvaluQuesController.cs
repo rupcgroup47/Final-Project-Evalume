@@ -39,11 +39,32 @@ namespace Final_Server.Controllers
             }
         }
 
+
         //// POST api/<Rel_Questions_EvaluQuesController>
         //[HttpPost]
         //public void Post([FromBody] string value)
         //{
         //}
+
+        [HttpGet("/userNum")]
+        public IEnumerable<Object> GetEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadEvaluQuesByUserId(userNum);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        // GET api/<Rel_Questions_EvaluQuesController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            return "value";
+        }
 
         // POST api/<Rel_Questions_EvaluQuesController>
         [HttpPost]
