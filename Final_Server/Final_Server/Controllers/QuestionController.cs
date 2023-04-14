@@ -7,6 +7,7 @@ using System.Text.Json.Nodes;
 
 namespace Final_Server.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionController : ControllerBase

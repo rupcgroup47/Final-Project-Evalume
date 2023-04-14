@@ -13,14 +13,15 @@ export default function HeaderFrom(props) {
   const [, dispatch] = useMaterialUIController();
   const [allExistForms, setAllExistForms] = useState([]);//Display of all existing questionnaires as strings
   const [chosenExistForm, setChosenExistForm] = useState();//The questionnaire selected in DDL
-  const [roleTypeArray, setRoleTypeArray] = useState(["עובד", "מנהל"]);
-  const [roleGroupTypeArray, setRoleGroupTypeArray] = useState(["כללי", "תפעולי", "משרדי"]);
+  const [roleTypeArray, setRoleTypeArray] = useState([{roleDesc :"עובד",value:0},{roleDesc :"מנהל",value:1}]);
+  const [roleGroupTypeArray, setRoleGroupTypeArray] = useState([{roleDesc :"כללי",value:1},{roleDesc : "תפעולי",value:2},{roleDesc :"משרדי",value:3}]);
   const [showSelect, setShowSelect] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [roleType, setRoleType] = useState("");
   const [roleGroupType, setRoleGroupType] = useState("");
   const { isOld, updateObject, setShowAddQuestion, existForms, setSendExistForms } = props;
   const [showFormSelect,setShowFormSelect] = useState(false)
+
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -101,8 +102,8 @@ export default function HeaderFrom(props) {
               style={{ height: "50px", alignContent: "center" }}
             >
               {roleGroupTypeArray.map((roleGroupType, index) => (
-                <MenuItem key={index} value={roleGroupType}>
-                  {roleGroupType}
+                <MenuItem key={index} value={roleGroupType.value}>
+                  {roleGroupType.roleDesc}
                 </MenuItem>
               ))}
             </Select>
@@ -120,8 +121,8 @@ export default function HeaderFrom(props) {
               style={{ height: "50px", alignContent: "center" }}
             >
               {roleTypeArray.map((roleType, index) => (
-                <MenuItem key={index} value={roleType}>
-                  {roleType}
+                <MenuItem key={index} value={roleType.value}>
+                  {roleType.roleDesc}
                 </MenuItem>
               ))}
             </Select>

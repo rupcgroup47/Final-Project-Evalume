@@ -105,7 +105,7 @@ export default function CreateYearlyProcessDialog({
                     <TableCell
                       key={columnIndex}
                       // align={columnIndex.textAlign || ""}
-                      // padding={columnIndex.disablePadding ? "none" : "normal"}
+                      padding={ "normal"}
                       sx={{ fontWeight: 600 }}
                     >
                       {header}

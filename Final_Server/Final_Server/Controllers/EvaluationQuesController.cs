@@ -10,6 +10,7 @@ using System.Text.Json.Nodes;
 
 namespace Final_Server.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class EvaluationQuesController : ControllerBase
@@ -64,11 +65,11 @@ namespace Final_Server.Controllers
 
                 if (numEffected != 0)
                 {
-                    return Ok("Employee succesfully inserted");
+                    return Ok("Evaluation succesfully inserted");
                 }
                 else
                 {
-                    return NotFound("Error in insert this employee");
+                    return NotFound("Error in insert this Evaluation");
                 }
             }
             catch (Exception)
