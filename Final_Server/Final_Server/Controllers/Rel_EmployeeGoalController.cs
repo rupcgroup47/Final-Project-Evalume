@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Final_Server.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class Rel_EmployeeGoalController : ControllerBase

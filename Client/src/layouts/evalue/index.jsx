@@ -13,6 +13,8 @@ import { QuestionsContext } from "context/globalVariables";
 import { MainStateContext } from "App";
 import swal from 'sweetalert';
 import { useLocation } from "react-router-dom";
+import FinishDialog from "./components/FinishDialog";
+// import {featchAPI} from "fetchAPI";
 
 export default function Evalues() {
   const [, dispatch] = useMaterialUIController();
@@ -23,13 +25,18 @@ export default function Evalues() {
   const myNewForm = { myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
   const [showCreateQuestionDialog, setShowCreateQuestionDialog] = useState(false);
   const apiQuestionrUrl = "https://localhost:7079/api/Question";
+  const apiEvaluationQues = "https://localhost:7079/api/EvaluationQues";
   const { mainState, setMainState } = useContext(MainStateContext);
   const [globalQuestionArray, setGlobalQuestionsArray] = useState([]);
   const [tempQuestionArray, settempQuestionArray] = useState([]);
   const [postQuestion, setPostQuestion] = useState({});
+  const [showCloseDialog, setShowCloseDialog] = useState(false);
+  const [statusMsg, setMsg] = useState("");
+  const [finishRouteMsg, setRouteMsg] = useState("");
 
   const location = useLocation();
   const isOldForms = location.state;
+
   // Bring all questions using GET api
   useEffect(() => {
     const abortController = new AbortController()
@@ -59,6 +66,7 @@ export default function Evalues() {
         .then(
           (result) => {
             console.log("success");
+
             settempQuestionArray(result);
           },
           (error) => {
@@ -77,7 +85,7 @@ export default function Evalues() {
   // Post a new questions using Post api
   useEffect(() => {
     const abortController = new AbortController()
-    console.log("postQuestion",postQuestion);
+    console.log("postQuestion", postQuestion);
     if (postQuestion.quesContent !== undefined) {
       fetch(
         apiQuestionrUrl,
@@ -142,6 +150,63 @@ export default function Evalues() {
     };
   }, [postQuestion]);
 
+  // Post a new Evaluation using Post api
+  useEffect(() => {
+    const abortController = new AbortController();
+    console.log("myCheckedArray", myCheckedArray);
+    if (myCheckedArray.length !== 0) {
+      console.log("hereagain");
+      fetch(
+        apiEvaluationQues,
+        {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: JSON.stringify(myNewForm),
+          signal: abortController.signal,
+        })
+        .then(async response => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            console.log(result);
+            setMyArray([]);
+            setMsg("סיימת למלא את טופס ההערכה");
+            setRouteMsg("חזרה לדף הבית");
+            setShowCloseDialog((e) => !e); // Error dialog message
+          },
+          (error) => {
+            if (error.name === 'AbortError') return;
+            console.log("err get=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    };
+  }, [myNewForm]);
+
   // set the globalQuestionArray with the relevant question by the user decision
   useEffect(() => {
     if (myFormTypes.roleType !== undefined) {
@@ -161,12 +226,6 @@ export default function Evalues() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  // function updateArray(myCheckedArray) {
-  //   // receive the checked answers
-  //   setMyArray(myCheckedArray);
-  //   setSurveyId(Math.random().toString(36).substr(2, 9))
-  //   // console.log(myNewForm);
-  // }
   console.log(myNewForm);
   console.log(JSON.stringify(myNewForm));
   function updateObject(myFormTypes) {
@@ -176,7 +235,7 @@ export default function Evalues() {
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <h1 style={{ padding: "10px 20px", textAlign: "center", color: "black", fontFamily:"Rubik" }}>
+      <h1 style={{ padding: "10px 20px", textAlign: "center", color: "black", fontFamily: "Rubik" }}>
         הקמת טופס הערכה{" "}
       </h1>
       <Box style={{ display: "flex" }}>
@@ -188,7 +247,7 @@ export default function Evalues() {
         </Tooltip>
       </Box>
       <QuestionsContext.Provider value={{ globalQuestionArray, setGlobalQuestionsArray }}>
-      {console.log(isOldForms)}
+        {console.log(isOldForms)}
 
         <CreateQuestionsDialog
           open={showCreateQuestionDialog}
@@ -200,7 +259,15 @@ export default function Evalues() {
         <HeaderFrom updateObject={updateObject} isOld={isOldForms} />
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
-
+      <FinishDialog
+        open={showCloseDialog}
+        setOpen={setShowCloseDialog}
+        msg={statusMsg}
+        finishRouteMsg={finishRouteMsg}
+        onClick={() => {
+          setShowCloseDialog((e) => !e);
+        }}
+      />
     </Container>
   );
 }

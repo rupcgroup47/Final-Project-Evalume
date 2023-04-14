@@ -18,8 +18,8 @@ export default function HeaderFrom({ setShowFormComponent, updateObject, isOld }
   const [, dispatch] = useMaterialUIController();
   const [allForms, setForms] = useState(["שאלון 1", "שאלון 2"]);
   const [existForm, setExistForm] = useState();
-  const [roleTypeArray, setRoleTypeArray] = useState(["עובד", "מנהל"]);
-  const [roleGroupTypeArray, setRoleGroupTypeArray] = useState(["כללי", "תפעולי", "משרדי"]);
+  const [roleTypeArray, setRoleTypeArray] = useState([{roleDesc :"עובד",value:0},{roleDesc :"מנהל",value:1}]);
+  const [roleGroupTypeArray, setRoleGroupTypeArray] = useState([{roleDesc :"כללי",value:1},{roleDesc : "תפעולי",value:2},{roleDesc :"משרדי",value:3}]);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -85,8 +85,8 @@ export default function HeaderFrom({ setShowFormComponent, updateObject, isOld }
               style={{ height: "50px", alignContent: "center" }}
             >
               {roleGroupTypeArray.map((roleGroupType, index) => (
-                <MenuItem key={index} value={roleGroupType}>
-                  {roleGroupType}
+                <MenuItem key={index} value={roleGroupType.value}>
+                  {roleGroupType.roleDesc}
                 </MenuItem>
               ))}
             </Select>
@@ -103,8 +103,8 @@ export default function HeaderFrom({ setShowFormComponent, updateObject, isOld }
               style={{ height: "50px", alignContent: "center" }}
             >
               {roleTypeArray.map((roleType, index) => (
-                <MenuItem key={index} value={roleType}>
-                  {roleType}
+                <MenuItem key={index} value={roleType.value}>
+                  {roleType.roleDesc}
                 </MenuItem>
               ))}
             </Select>

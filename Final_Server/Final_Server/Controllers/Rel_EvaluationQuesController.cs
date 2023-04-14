@@ -6,6 +6,7 @@ using System.Text.Json;
 
 namespace Final_Server.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class Rel_EvaluationQuesController : ControllerBase
