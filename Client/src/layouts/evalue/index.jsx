@@ -27,8 +27,9 @@ export default function Evalues() {
   const [globalQuestionArray, setGlobalQuestionsArray] = useState([]);
   const [tempQuestionArray, settempQuestionArray] = useState([]);
   const [postQuestion, setPostQuestion] = useState({});
-  const [showAddQuestion, setShowAddQuestion] = useState(false);
-  const [existForms, setExistForms] = useState([{id:1, year:2022},{id:2,year:2022},{id:4,year:2023}])
+  const [showAddQuestion, setShowAddQuestion] = useState(false);//Adjustments according to the type of form - existing or new
+  const [existForms, setExistForms] = useState([{id:1, year:2022},{id:2,year:2022},{id:4,year:2023}])//Questionnaires that are adapted to the type of roletype and rolegrouptype
+  const [sendExistForms,setSendExistForms] = useState(false)//An indication that we can get questionnaires from the server that are adapted to the type of roletype and rolegrouptype
   const location = useLocation();
   const isOldForms = location.state;
   // Bring all questions using GET api
@@ -218,7 +219,9 @@ export default function Evalues() {
           showAddQuestion={showAddQuestion}
           setShowAddQuestion={setShowAddQuestion}
           existForms ={existForms}
+          setSendExistForms={setSendExistForms}//An indication that you can receive questionnaires from the server that are adapted to the type of position and rank
         />
+        {console.log(sendExistForms)}
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
     </Container>

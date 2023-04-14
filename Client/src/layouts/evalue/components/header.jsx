@@ -11,15 +11,15 @@ import { useMaterialUIController, setDirection } from "context";
 
 export default function HeaderFrom(props) {
   const [, dispatch] = useMaterialUIController();
-  const [allExistForms, setAllExistForms] = useState([]);
-  const [existForm, setExistForm] = useState();
+  const [allExistForms, setAllExistForms] = useState([]);//Display of all existing questionnaires as strings
+  const [chosenExistForm, setChosenExistForm] = useState();//The questionnaire selected in DDL
   const [roleTypeArray, setRoleTypeArray] = useState(["עובד", "מנהל"]);
   const [roleGroupTypeArray, setRoleGroupTypeArray] = useState(["כללי", "תפעולי", "משרדי"]);
   const [showSelect, setShowSelect] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [roleType, setRoleType] = useState("");
   const [roleGroupType, setRoleGroupType] = useState("");
-  const { isOld, updateObject, setShowAddQuestion, existForms } = props;
+  const { isOld, updateObject, setShowAddQuestion, existForms, setSendExistForms } = props;
   const [showFormSelect,setShowFormSelect] = useState(false)
   // Changing the direction to rtl
   useEffect(() => {
@@ -44,17 +44,17 @@ export default function HeaderFrom(props) {
 
   const handleChangeExistForm = (event) => {
     //chosen exist form
-    setExistForm(event.target.value);
+    setChosenExistForm(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (existForm != undefined) {
+    if (chosenExistForm != undefined) {
       //check if the questions arrive from exist form
       const newForm = {
         groupType: roleGroupType,
         roleType: roleType,
-        chosenForm: existForm,
+        chosenForm: chosenExistForm,
       };
       updateObject(newForm); // send to the parent component the form type
     } else {
@@ -71,6 +71,7 @@ export default function HeaderFrom(props) {
     if (roleGroupType && roleType) {
       setShowSelect(true);
       setShowButton(true);
+      setSendExistForms(true);
     } else {
       console.log("Error");
     }
@@ -137,7 +138,7 @@ export default function HeaderFrom(props) {
               <Select
                 labelId="existForm"
                 id="existFormSelect"
-                value={existForm}
+                value={chosenExistForm}
                 label="שאלון"
                 onChange={handleChangeExistForm}
                 required
