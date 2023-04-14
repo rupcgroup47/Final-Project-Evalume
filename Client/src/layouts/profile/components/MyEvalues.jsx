@@ -22,7 +22,7 @@ const evalues = [
 export default function MyEvalues() {
   const [tableHead, setTableHead] = useState({
     id: "evalueYear",
-    textAlign: "end",
+    align: "center",
     scope: "row",
     disablePadding: false,
     label: "שאלוני הערכה",
@@ -48,7 +48,7 @@ export default function MyEvalues() {
             <TableRow height="50px" />
             <TableRow
               key={tableHead.id}
-              align={tableHead.textAlign || ""}
+              align={tableHead.align || ""}
               padding={tableHead.disablePadding ? "none" : "normal"}
               sx={{ fontWeight: 600 }}
             >
@@ -65,11 +65,11 @@ export default function MyEvalues() {
                 hover
               >
                 {" "}
-                <TableCell align="left">
+                <TableCell align="left" >
                   {console.log(evalue.name)}
                   {evalue.name}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="center" >
                   {console.log(evalue.name)}
                   <PDFDownloadLink document={<PDFFile />} fileName="טופס הערכה">
                     {({ loading }) =>
