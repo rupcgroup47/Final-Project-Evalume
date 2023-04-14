@@ -1,20 +1,17 @@
 ﻿using Final_Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Final_Server.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class Rel_Questions_EvaluQuesController : ControllerBase
     {
-        // GET: api/<Rel_Questions_EvaluQuesController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
 
         [HttpGet("/quesType/roleGroup_Type")]
         public IEnumerable<Object> GetEvaluQuesByType(bool quesType, int roleGroup_Type) //gets the all the EvaluQues that fit the QuesType and RoleType
@@ -42,29 +39,62 @@ namespace Final_Server.Controllers
             }
         }
 
-        // GET api/<Rel_Questions_EvaluQuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// POST api/<Rel_Questions_EvaluQuesController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
         // POST api/<Rel_Questions_EvaluQuesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] JsonElement data) // post a new evaluation form to the database
         {
+            try
+            {
+                JsonDocument document = JsonDocument.Parse(data.ToString());
+                JsonElement checkedArry = document.RootElement.GetProperty("myCheckedArray");
+                List<int> questionList = new List<int>();
+                foreach (JsonElement item in checkedArry.EnumerateArray())
+                {
+                    int[] numbers = item.GetProperty("questionNum").EnumerateArray().Select(x => x.GetInt32()).ToArray();
+                    foreach (int number in numbers)
+                    {
+                        questionList.Add(number);
+                    }
+                }
+
+                dynamic newForm = new ExpandoObject();
+                newForm.roleType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("roleType").GetInt32());
+                newForm.groupType = Convert.ToInt32(data.GetProperty("myFormTypes").GetProperty("groupType").GetInt32());
+                newForm.questions = questionList.ToArray();
+
+                int numEffected = Rel_Questions_EvaluQues.insertNewForm(newForm);
+
+                if (numEffected != 0)
+                {
+                    return Ok("Evaluation succesfully inserted");
+                }
+                else
+                {
+                    return NotFound("Error in insert this Evaluation");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        // PUT api/<Rel_Questions_EvaluQuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<Rel_Questions_EvaluQuesController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<Rel_Questions_EvaluQuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<Rel_Questions_EvaluQuesController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

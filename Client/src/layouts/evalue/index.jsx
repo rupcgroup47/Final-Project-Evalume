@@ -25,7 +25,8 @@ export default function Evalues() {
   const myNewForm = { myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
   const [showCreateQuestionDialog, setShowCreateQuestionDialog] = useState(false);
   const apiQuestionrUrl = "https://localhost:7079/api/Question";
-  const apiEvaluationQues = "https://localhost:7079/api/EvaluationQues";
+  const apiEvaluationQues = "https://localhost:7079/api/Rel_Questions_EvaluQues";
+  const apiQuestionnaire = "https://localhost:7079/quesType/roleGroup_Type?quesType=";
   const { mainState, setMainState } = useContext(MainStateContext);
   const [globalQuestionArray, setGlobalQuestionsArray] = useState([]);
   const [tempQuestionArray, settempQuestionArray] = useState([]);
@@ -190,63 +191,6 @@ export default function Evalues() {
             setShowCloseDialog((e) => !e); // Error dialog message
           },
           (error) => {
-            if (error.name === "AbortError") return;
-            console.log("err get=", error);
-            swal({
-              title: "קרתה תקלה!",
-              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-              icon: "error",
-              button: "סגור",
-            });
-            throw error;
-          }
-        );
-      return () => {
-        abortController.abort();
-        // stop the query by aborting on the AbortController on unmount
-      };
-    };
-  }, [postQuestion]);
-
-  // Post a new Evaluation using Post api
-  useEffect(() => {
-    const abortController = new AbortController();
-    console.log("myCheckedArray", myCheckedArray);
-    if (myCheckedArray.length !== 0) {
-      console.log("hereagain");
-      fetch(
-        apiEvaluationQues,
-        {
-          method: "POST",
-          headers: new Headers({
-            "Content-Type": "application/json; charset=UTF-8",
-            Accept: "application/json; charset=UTF-8",
-          }),
-          body: JSON.stringify(myNewForm),
-          signal: abortController.signal,
-        })
-        .then(async response => {
-          const data = await response.json();
-          console.log(response);
-
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-
-          return data;
-        })
-        .then(
-          (result) => {
-            console.log("success");
-            console.log(result);
-            setMyArray([]);
-            setMsg("סיימת למלא את טופס ההערכה");
-            setRouteMsg("חזרה לדף הבית");
-            setShowCloseDialog((e) => !e); // Error dialog message
-          },
-          (error) => {
             if (error.name === 'AbortError') return;
             console.log("err get=", error);
             swal({
@@ -264,6 +208,51 @@ export default function Evalues() {
       };
     };
   }, [myNewForm]);
+
+    // Gat all questionnaires that fit the roletype and grouptype using GET api
+    // useEffect(() => {
+    //   const abortController = new AbortController();
+    //   if (mainState.is_Admin) {
+    //     fetch(
+    //       apiQuestionnaire + +"&roleGroup_Type="+, 
+    //       {
+    //       method: "GET",
+    //       headers: new Headers({
+    //         "Content-Type": "application/json; charset=UTF-8",
+    //         Accept: "application/json; charset=UTF-8",
+    //       }),
+    //       signal: abortController.signal,
+    //     })
+    //       .then(async (response) => {
+    //         const data = await response.json();
+    //         console.log(response);
+  
+    //         if (!response.ok) {
+    //           // get error message from body or default to response statusText
+    //           const error = (data && data.message) || response.statusText;
+    //           return Promise.reject(error);
+    //         }
+  
+    //         return data;
+    //       })
+    //       .then(
+    //         (result) => {
+    //           console.log("success");
+  
+    //           settempQuestionArray(result);
+    //         },
+    //         (error) => {
+    //           if (error.name === "AbortError") return;
+    //           console.log("err get=", error);
+    //           throw error;
+    //         }
+    //       );
+    //     return () => {
+    //       abortController.abort();
+    //       // stop the query by aborting on the AbortController on unmount
+    //     };
+    //   }
+    // }, [mainState]);
 
   // set the globalQuestionArray with the relevant question by the user decision
   useEffect(() => {

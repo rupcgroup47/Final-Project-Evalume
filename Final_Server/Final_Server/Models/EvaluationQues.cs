@@ -22,20 +22,20 @@ namespace Final_Server.Models
         //    return dbs.GetFitQues(quesType);
         //}
 
-        static public int insertNewForm(dynamic newForm)
-        {
-            try
-            {
-                DBservices dbs = new DBservices();
-                return dbs.InserEvaluationQues(newForm);
-                //return dbs.insertNewForm(newForm);
-            }
-            catch (Exception)
-            {
+        //static public int insertNewForm(dynamic newForm)
+        //{
+        //    try
+        //    {
+        //        DBservices dbs = new DBservices();
+        //        return dbs.InserEvaluationQues(newForm);
+        //        //return dbs.insertNewForm(newForm);
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
     }
 }
 
