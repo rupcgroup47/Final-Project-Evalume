@@ -35,16 +35,16 @@ export default function Evalues() {
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
   const [showAddQuestion, setShowAddQuestion] = useState(false);//Adjustments according to the type of form - existing or new
-  const [existForms, setExistForms] = useState([{id:1, year:2022},{id:2,year:2022},{id:4,year:2023}])//Questionnaires that are adapted to the type of roletype and rolegrouptype
-  const [sendExistForms,setSendExistForms] = useState(false)//An indication that we can get questionnaires from the server that are adapted to the type of roletype and rolegrouptype
-const [chosenParameters, setChosenParameters] = useState()
+  const [existForms, setExistForms] = useState([{ id: 1, year: 2022 }, { id: 2, year: 2022 }, { id: 4, year: 2023 }])//Questionnaires that are adapted to the type of roletype and rolegrouptype
+  const [sendExistForms, setSendExistForms] = useState(false)//An indication that we can get questionnaires from the server that are adapted to the type of roletype and rolegrouptype
+  const [chosenParameters, setChosenParameters] = useState({});
   const location = useLocation();
   const isOldForms = location.state;
 
   // Bring all questions using GET api
   useEffect(() => {
     const abortController = new AbortController();
-    if (mainState.is_Admin) {
+    if (!isOldForms) {
       fetch(apiQuestionrUrl, {
         method: "GET",
         headers: new Headers({
@@ -82,7 +82,7 @@ const [chosenParameters, setChosenParameters] = useState()
         // stop the query by aborting on the AbortController on unmount
       };
     }
-  }, [mainState]);
+  }, [isOldForms]);
 
   // Post a new questions using Post api
   useEffect(() => {
@@ -209,50 +209,54 @@ const [chosenParameters, setChosenParameters] = useState()
     };
   }, [myNewForm]);
 
-    // Gat all questionnaires that fit the roletype and grouptype using GET api
-    // useEffect(() => {
-    //   const abortController = new AbortController();
-    //   if (mainState.is_Admin) {
-    //     fetch(
-    //       apiQuestionnaire + +"&roleGroup_Type="+, 
-    //       {
-    //       method: "GET",
-    //       headers: new Headers({
-    //         "Content-Type": "application/json; charset=UTF-8",
-    //         Accept: "application/json; charset=UTF-8",
-    //       }),
-    //       signal: abortController.signal,
-    //     })
-    //       .then(async (response) => {
-    //         const data = await response.json();
-    //         console.log(response);
-  
-    //         if (!response.ok) {
-    //           // get error message from body or default to response statusText
-    //           const error = (data && data.message) || response.statusText;
-    //           return Promise.reject(error);
-    //         }
-  
-    //         return data;
-    //       })
-    //       .then(
-    //         (result) => {
-    //           console.log("success");
-  
-    //           settempQuestionArray(result);
-    //         },
-    //         (error) => {
-    //           if (error.name === "AbortError") return;
-    //           console.log("err get=", error);
-    //           throw error;
-    //         }
-    //       );
-    //     return () => {
-    //       abortController.abort();
-    //       // stop the query by aborting on the AbortController on unmount
-    //     };
-    //   }
-    // }, [mainState]);
+  // Gat all questionnaires that fit the roletype and grouptype using GET api
+  useEffect(() => {
+    // const abortController = new AbortController();
+    console.log("chocen",chosenParameters);
+    if (chosenParameters.roleType !== undefined) {
+      console.log(chosenParameters.roleType);
+      console.log(chosenParameters.groupType);
+      console.log("hereere");
+      // fetch(
+      //   apiQuestionnaire + chosenParameters.roleType +"&roleGroup_Type="+ chosenParameters.groupType, 
+      //   {
+      //   method: "GET",
+      //   headers: new Headers({
+      //     "Content-Type": "application/json; charset=UTF-8",
+      //     Accept: "application/json; charset=UTF-8",
+      //   }),
+      //   signal: abortController.signal,
+      // })
+      //   .then(async (response) => {
+      //     const data = await response.json();
+      //     console.log(response);
+
+      //     if (!response.ok) {
+      //       // get error message from body or default to response statusText
+      //       const error = (data && data.message) || response.statusText;
+      //       return Promise.reject(error);
+      //     }
+
+      //     return data;
+      //   })
+      //   .then(
+      //     (result) => {
+      //       console.log("success");
+
+      //       settempQuestionArray(result);
+      //     },
+      //     (error) => {
+      //       if (error.name === "AbortError") return;
+      //       console.log("err get=", error);
+      //       throw error;
+      //     }
+      //   );
+      // return () => {
+      //   abortController.abort();
+      //   // stop the query by aborting on the AbortController on unmount
+      // };
+    }
+  }, [chosenParameters]);
 
   // set the globalQuestionArray with the relevant question by the user decision
   useEffect(() => {
@@ -273,17 +277,18 @@ const [chosenParameters, setChosenParameters] = useState()
     setDirection(dispatch, "rtl");
     return () => setDirection(dispatch, "ltr");
   }, []);
-  function handleDataFromHeader(obj) {
-    setChosenParameters(obj);
-    console.log(obj+"testttt")
-    console.log(chosenParameters+"test")
-  }
+
+  // function handleDataFromHeader(obj) {
+  //   setChosenParameters(obj);
+  //   console.log(obj+"testttt")
+  //   console.log(chosenParameters+"test")
+  // }
   console.log(myNewForm);
   console.log(JSON.stringify(myNewForm));
-  function updateObject(myFormTypes) {
-    // receive the form user type
-    setMyObject(myFormTypes);
-  }
+  // function updateObject(myFormTypes) {
+  //   // receive the form user type
+  //   setMyObject(myFormTypes);
+  // }
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
@@ -324,13 +329,13 @@ const [chosenParameters, setChosenParameters] = useState()
           setPostQuestion={setPostQuestion}
         />
         <HeaderFrom
-          updateObject={updateObject}//receiving from the header roletype & rolegroup type 
+          setMyObject={setMyObject}//receiving from the header roletype & rolegroup type 
           isOld={isOldForms}
-          showAddQuestion={showAddQuestion}
+          // showAddQuestion={showAddQuestion}
           setShowAddQuestion={setShowAddQuestion}
-          existForms ={existForms}
+          existForms={existForms}
           setSendExistForms={setSendExistForms}//An indication that you can receive questionnaires from the server that are adapted to the type of position and rank
-          chosenParameters={handleDataFromHeader}
+          setChosenParameters={setChosenParameters}
         />
         {console.log(sendExistForms)}
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}

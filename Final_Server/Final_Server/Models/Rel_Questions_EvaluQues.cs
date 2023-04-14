@@ -188,10 +188,7 @@ namespace Final_Server.Models
             });
 
             return FinalList;
-        }
-
-
-        
+        } 
 
     }
 }
