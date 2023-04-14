@@ -12,6 +12,7 @@ import CreateQuestionsDialog from "dialog/CreateQuestionsDialog";
 import { QuestionsContext } from "context/globalVariables";
 import { MainStateContext } from "App";
 import swal from 'sweetalert';
+import { useLocation } from "react-router-dom";
 
 export default function Evalues() {
   const [, dispatch] = useMaterialUIController();
@@ -27,6 +28,8 @@ export default function Evalues() {
   const [tempQuestionArray, settempQuestionArray] = useState([]);
   const [postQuestion, setPostQuestion] = useState({});
 
+  const location = useLocation();
+  const isOldForms = location.state;
   // Bring all questions using GET api
   useEffect(() => {
     const abortController = new AbortController()
@@ -165,6 +168,7 @@ export default function Evalues() {
   //   // console.log(myNewForm);
   // }
   console.log(myNewForm);
+  console.log(JSON.stringify(myNewForm));
   function updateObject(myFormTypes) {
     // receive the form user type
     setMyObject(myFormTypes);
@@ -172,8 +176,8 @@ export default function Evalues() {
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <h1 style={{ padding: "10px 20px", textAlign: "center", color: "black" }}>
-        בניית טופס הערכה{" "}
+      <h1 style={{ padding: "10px 20px", textAlign: "center", color: "black", fontFamily:"Rubik" }}>
+        הקמת טופס הערכה{" "}
       </h1>
       <Box style={{ display: "flex" }}>
         <Tooltip title="הוספה">
@@ -184,6 +188,8 @@ export default function Evalues() {
         </Tooltip>
       </Box>
       <QuestionsContext.Provider value={{ globalQuestionArray, setGlobalQuestionsArray }}>
+      {console.log(isOldForms)}
+
         <CreateQuestionsDialog
           open={showCreateQuestionDialog}
           setOpen={setShowCreateQuestionDialog}
@@ -191,7 +197,7 @@ export default function Evalues() {
           settempQuestionArray={settempQuestionArray}
           setPostQuestion={setPostQuestion}
         />
-        <HeaderFrom updateObject={updateObject} />
+        <HeaderFrom updateObject={updateObject} isOld={isOldForms} />
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Xml.Linq;
 using System.Text.Json.Nodes;
+using System.Reflection.Metadata;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -1101,6 +1102,7 @@ public class DBservices
     //    return cmd;
     //}
 
+
     ////--------------------------------------------------------------------------------------------------
     //// This method saves the changes in user details
     ////--------------------------------------------------------------------------------------------------
@@ -1608,11 +1610,14 @@ public class DBservices
         return cmd;
     }
 
+    ////--------------------------------------------------------------------------------------------------
+    //// This section has all EvaluationQues functions
+    ////--------------------------------------------------------------------------------------------------
 
-    //--------------------------------------------------------------------------------------------------
-    // This method get all fit questions to QuesType & RoleGroup_Type by object 
-    //--------------------------------------------------------------------------------------------------
-    public Object GetFitQues(bool quesType)
+    ////--------------------------------------------------------------------------------------------------
+    //// This method inserts new Question
+    ////--------------------------------------------------------------------------------------------------
+    public int InserEvaluationQues(dynamic newForm)
     {
 
         SqlConnection con;
@@ -1628,33 +1633,12 @@ public class DBservices
             throw (ex);
         }
 
-
-        cmd = CreateCommandWithSPGetFitQues("spGetFitQues", con, quesType);            // create the command
-
-        List<Object> listObjs = new List<Object>();
+        cmd = CreateCommandWithSPnewEvaluationQues("spInsertToPartOfTable", con, newForm);            // create the command
 
         try
         {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-
-            while (dataReader.Read())
-            {
-
-                Object obj = new Object();
-                listObjs.Add(new
-                {
-                    QuestionNum = dataReader["QuestionNum"],
-                    QuesContent = dataReader["QuesContent"],
-                    Is_Active = dataReader["Is_Active"],
-                    QuesGroup_Type = dataReader["QuesGroup_Type"],
-                    QuesGroup_Desc = dataReader["QuesGroup_Desc"],
-
-                });
-
-            }
-
-            return listObjs;
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
         }
         catch (Exception ex)
         {
@@ -1673,11 +1657,12 @@ public class DBservices
 
     }
 
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand for get user details
-    ////---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetFitQues(string spName, SqlConnection con, bool quesType)
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure for add new Question
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPnewEvaluationQues(String spName, SqlConnection con, dynamic newForm)
     {
+
         SqlCommand cmd = new SqlCommand(); // create the command object
 
         cmd.Connection = con;              // assign the connection to the command object
@@ -1688,11 +1673,109 @@ public class DBservices
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        cmd.Parameters.AddWithValue("@QuesType", quesType); //insert all the parameters we got from the user
+        var dt = new DataTable();
+        dt.Columns.Add("Questions", typeof(int));
+        int[] questions = newForm.questions;
+        foreach (var question in questions)
+        {
+            dt.Rows.Add(question);
+        }
 
+        cmd.Parameters.AddWithValue("@QuesType", newForm.roleType); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@RoleGroup_Type", newForm.groupType);
+        SqlParameter intListParam = new SqlParameter("@InputList", dt);
+        intListParam.SqlDbType = SqlDbType.Structured;
+        intListParam.TypeName = "IntList";
+        cmd.Parameters.Add(intListParam);
 
         return cmd;
     }
+
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method get all fit questions to QuesType & RoleGroup_Type by object 
+    ////--------------------------------------------------------------------------------------------------
+    //public Object GetFitQues(bool quesType)
+    //{
+
+    //    SqlConnection con;
+    //    SqlCommand cmd;
+
+    //    try
+    //    {
+    //        con = connect("myProjDB"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+
+    //    cmd = CreateCommandWithSPGetFitQues("spGetFitQues", con, quesType);            // create the command
+
+    //    List<Object> listObjs = new List<Object>();
+
+    //    try
+    //    {
+    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+
+    //        while (dataReader.Read())
+    //        {
+
+    //            Object obj = new Object();
+    //            listObjs.Add(new
+    //            {
+    //                QuestionNum = dataReader["QuestionNum"],
+    //                QuesContent = dataReader["QuesContent"],
+    //                Is_Active = dataReader["Is_Active"],
+    //                QuesGroup_Type = dataReader["QuesGroup_Type"],
+    //                QuesGroup_Desc = dataReader["QuesGroup_Desc"],
+
+    //            });
+
+    //        }
+
+    //        return listObjs;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
+
+    //}
+
+    //////---------------------------------------------------------------------------------
+    ////// Create the SqlCommand for get user details
+    //////---------------------------------------------------------------------------------
+    //private SqlCommand CreateCommandWithSPGetFitQues(string spName, SqlConnection con, bool quesType)
+    //{
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
+
+    //    cmd.Connection = con;              // assign the connection to the command object
+
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+    //    cmd.Parameters.AddWithValue("@QuesType", quesType); //insert all the parameters we got from the user
+
+
+    //    return cmd;
+    //}
 
     ////--------------------------------------------------------------------------------------------------
     //// This method delete a user bt his user number

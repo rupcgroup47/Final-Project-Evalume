@@ -14,9 +14,13 @@ import Stack from "@mui/material/Stack";
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 
-export default function HeaderFrom({ setShowFormComponent, updateObject }) {
+export default function HeaderFrom({ setShowFormComponent, updateObject, isOld }) {
   const [, dispatch] = useMaterialUIController();
-  const [allForms, setForms] = useState([]);
+  const [allForms, setForms] = useState(["שאלון 1", "שאלון 2"]);
+  const [existForm, setExistForm] = useState();
+  const [roleTypeArray, setRoleTypeArray] = useState(["עובד", "מנהל"]);
+  const [roleGroupTypeArray, setRoleGroupTypeArray] = useState(["כללי", "תפעולי", "משרדי"]);
+
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -33,15 +37,29 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
     setRoleGroupType(event.target.value);
   };
 
+  const handleChangeExistForm = (event) => {
+    //chosen exist form
+    setExistForm(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newForm = {
-      groupType: roleGroupType,
-      roleType: roleType,
-    };
-    setForms([...allForms, newForm]);
-    console.log(newForm);
-    updateObject(newForm);// send to the parent component the form type
+    if (existForm != undefined) {
+      //check if the questions arrive from exist form
+      const newForm = {
+        groupType: roleGroupType,
+        roleType: roleType,
+        chosenForm: existForm,
+      };
+      updateObject(newForm); // send to the parent component the form type
+    } else {
+      const newForm = {
+        //check if the questions arrive all the questions in DB
+        groupType: roleGroupType,
+        roleType: roleType,
+      };
+      updateObject(newForm); // send to the parent component the form type
+    }
   };
 
   return (
@@ -54,8 +72,8 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
         justifyContent="flex-start"
         alignItems="center"
       >
-        <form onSubmit={handleSubmit} style={{display:"inherit", verticalAlign:"middle"}}>
-          <FormControl sx={{ m: 2, minWidth: 120}}>
+        <form onSubmit={handleSubmit} style={{ display: "inherit", verticalAlign: "middle" }}>
+          <FormControl sx={{ m: 2, minWidth: 120 }}>
             <InputLabel id="roleGroupType">סוג תפקיד</InputLabel>
             <Select
               labelId="roleGroupType"
@@ -66,12 +84,11 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
               required
               style={{ height: "50px", alignContent: "center" }}
             >
-              {/* <MenuItem value="">
-                <em> </em>
-              </MenuItem> */}
-              <MenuItem value={1}>כללי</MenuItem>
-              <MenuItem value={2}>תפעולי</MenuItem>
-              <MenuItem value={3}>משרדי</MenuItem>
+              {roleGroupTypeArray.map((roleGroupType, index) => (
+                <MenuItem key={index} value={roleGroupType}>
+                  {roleGroupType}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl sx={{ m: 2, minWidth: 120 }}>
@@ -85,13 +102,33 @@ export default function HeaderFrom({ setShowFormComponent, updateObject }) {
               required
               style={{ height: "50px", alignContent: "center" }}
             >
-              {/* <MenuItem value="">
-                <em> </em>
-              </MenuItem> */}
-              <MenuItem value={0}>עובד</MenuItem>
-              <MenuItem value={1}>מנהל</MenuItem>
+              {roleTypeArray.map((roleType, index) => (
+                <MenuItem key={index} value={roleType}>
+                  {roleType}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
+          {isOld && (
+            <FormControl sx={{ m: 2, minWidth: 120 }}>
+              <InputLabel id="roleType">שאלון קיים</InputLabel>
+              <Select
+                labelId="existForm"
+                id="existFormSelect"
+                value={existForm}
+                label="שאלון"
+                onChange={handleChangeExistForm}
+                required
+                style={{ height: "50px", alignContent: "center" }}
+              >
+                {allForms.map((form, index) => (
+                  <MenuItem key={index} value={form}>
+                    {form}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <Button type="submit">המשך</Button>
         </form>
       </Stack>

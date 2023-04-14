@@ -42,6 +42,7 @@ function Users() {
             "Content-Type": "application/json; charset=UTF-8",
             Accept: "application/json; charset=UTF-8",
           }),
+          body: undefined,
           signal: abortController.signal
         })
         .then(async response => {
