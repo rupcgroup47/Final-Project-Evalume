@@ -1949,4 +1949,89 @@ public class DBservices
         return cmd;
     }
 
+    ////--------------------------------------------------------------------------------------------------
+    //// This method gets the all the EvaluQues that fit the QuesType and RoleType
+    ////--------------------------------------------------------------------------------------------------
+    public List<Rel_Questions_EvaluQues> GetEvaluQuesByUserId(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetUserEvaluQues("spGetUserEvaluQues", con, userNum);            // create the command
+
+        List<Rel_Questions_EvaluQues> rel_Ques = new List<Rel_Questions_EvaluQues>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
+
+                r.UserNum = Convert.ToInt32(dataReader["UserNum"]);
+                r.UserManagerNum = Convert.ToInt32(dataReader["UserManager"]);
+                r.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+                r.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
+                r.QuesContent = dataReader["QuesContent"].ToString();
+                r.QuesGroup_ID = Convert.ToInt32(dataReader["QuesGroup_Type"]);
+                r.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
+
+                rel_Ques.Add(r);
+            }
+
+            return rel_Ques;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure for get with no conditions
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGetUserEvaluQues(String spName, SqlConnection con, int userNum)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@UserNum", userNum); //insert all the parameters we got from the user
+
+
+        return cmd;
+    }
+
 }
