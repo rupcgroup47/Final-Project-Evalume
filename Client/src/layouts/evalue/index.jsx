@@ -11,7 +11,7 @@ import HeaderFrom from "./components/header";
 import CreateQuestionsDialog from "dialog/CreateQuestionsDialog";
 import { QuestionsContext } from "context/globalVariables";
 import { MainStateContext } from "App";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 import { useLocation } from "react-router-dom";
 import FinishDialog from "./components/FinishDialog";
 // import {featchAPI} from "fetchAPI";
@@ -33,25 +33,26 @@ export default function Evalues() {
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
+  const [showAddQuestion, setShowAddQuestion] = useState(false);//Adjustments according to the type of form - existing or new
+  const [existForms, setExistForms] = useState([{id:1, year:2022},{id:2,year:2022},{id:4,year:2023}])//Questionnaires that are adapted to the type of roletype and rolegrouptype
+  const [sendExistForms,setSendExistForms] = useState(false)//An indication that we can get questionnaires from the server that are adapted to the type of roletype and rolegrouptype
 
   const location = useLocation();
   const isOldForms = location.state;
 
   // Bring all questions using GET api
   useEffect(() => {
-    const abortController = new AbortController()
+    const abortController = new AbortController();
     if (mainState.is_Admin) {
-      fetch(
-        apiQuestionrUrl,
-        {
-          method: "GET",
-          headers: new Headers({
-            "Content-Type": "application/json; charset=UTF-8",
-            Accept: "application/json; charset=UTF-8",
-          }),
-          signal: abortController.signal,
-        })
-        .then(async response => {
+      fetch(apiQuestionrUrl, {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
           const data = await response.json();
           console.log(response);
 
@@ -70,7 +71,7 @@ export default function Evalues() {
             settempQuestionArray(result);
           },
           (error) => {
-            if (error.name === 'AbortError') return;
+            if (error.name === "AbortError") return;
             console.log("err get=", error);
             throw error;
           }
@@ -79,23 +80,92 @@ export default function Evalues() {
         abortController.abort();
         // stop the query by aborting on the AbortController on unmount
       };
-    };
+    }
   }, [mainState]);
 
   // Post a new questions using Post api
   useEffect(() => {
-    const abortController = new AbortController()
+    const abortController = new AbortController();
     console.log("postQuestion", postQuestion);
     if (postQuestion.quesContent !== undefined) {
+      fetch(apiQuestionrUrl, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        body: JSON.stringify(postQuestion),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            console.log(result);
+            const index = tempQuestionArray.findIndex(
+              (obj) => obj.quesGroup_Desc === postQuestion.quesGroup_Desc
+            );
+            const newArray = [...tempQuestionArray];
+            const newQuestion = {
+              quesContent: postQuestion.quesContent,
+              questionNum: result,
+              is_Active: true,
+            };
+            newArray[index].questions.push(newQuestion);
+            if (globalQuestionArray !== null) setGlobalQuestionsArray(newArray);
+            else settempQuestionArray(newArray);
+            swal({
+              title: "הצלחנו!",
+              text: "השאלה נוספה בהצלחה",
+              icon: "success",
+              button: "סגור",
+            });
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err get=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור",
+            });
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, [postQuestion]);
+
+  // Post a new Evaluation using Post api
+  useEffect(() => {
+    const abortController = new AbortController();
+    console.log("myCheckedArray", myCheckedArray);
+    if (myCheckedArray.length !== 0) {
+      console.log("hereagain");
       fetch(
-        apiQuestionrUrl,
+        apiEvaluationQues,
         {
           method: "POST",
           headers: new Headers({
             "Content-Type": "application/json; charset=UTF-8",
             Accept: "application/json; charset=UTF-8",
           }),
-          body: JSON.stringify(postQuestion),
+          body: JSON.stringify(myNewForm),
           signal: abortController.signal,
         })
         .then(async response => {
@@ -114,31 +184,19 @@ export default function Evalues() {
           (result) => {
             console.log("success");
             console.log(result);
-            const index = tempQuestionArray.findIndex((obj) => obj.quesGroup_Desc === postQuestion.quesGroup_Desc);
-            const newArray = [...tempQuestionArray];
-            const newQuestion = {
-              quesContent: postQuestion.quesContent,
-              questionNum: result,
-              is_Active: true,
-            };
-            newArray[index].questions.push(newQuestion);
-            if (globalQuestionArray !== null) setGlobalQuestionsArray(newArray);
-            else settempQuestionArray(newArray);
-            swal({
-              title: "הצלחנו!",
-              text: "השאלה נוספה בהצלחה",
-              icon: "success",
-              button: "סגור"
-            });
+            setMyArray([]);
+            setMsg("סיימת למלא את טופס ההערכה");
+            setRouteMsg("חזרה לדף הבית");
+            setShowCloseDialog((e) => !e); // Error dialog message
           },
           (error) => {
-            if (error.name === 'AbortError') return;
+            if (error.name === "AbortError") return;
             console.log("err get=", error);
             swal({
               title: "קרתה תקלה!",
               text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
               icon: "error",
-              button: "סגור"
+              button: "סגור",
             });
             throw error;
           }
@@ -211,10 +269,11 @@ export default function Evalues() {
   useEffect(() => {
     if (myFormTypes.roleType !== undefined) {
       if (myFormTypes.roleType === 0) {
-        const filteredArray = tempQuestionArray.filter((item) => (item.groupType ? 1 : 0) === myFormTypes.roleType);
+        const filteredArray = tempQuestionArray.filter(
+          (item) => (item.groupType ? 1 : 0) === myFormTypes.roleType
+        );
         setGlobalQuestionsArray(filteredArray);
-      }
-      else setGlobalQuestionsArray(tempQuestionArray)
+      } else setGlobalQuestionsArray(tempQuestionArray);
 
       setShowFormComponent(true); // show form with questions only if all required fields
     }
@@ -235,28 +294,51 @@ export default function Evalues() {
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <h1 style={{ padding: "10px 20px", textAlign: "center", color: "black", fontFamily: "Rubik" }}>
+      <h1
+        style={{ padding: "10px 20px", textAlign: "center", color: "black", fontFamily: "Rubik" }}
+      >
         הקמת טופס הערכה{" "}
       </h1>
-      <Box style={{ display: "flex" }}>
-        <Tooltip title="הוספה">
-          <IconButton color="black" onClick={() => setShowCreateQuestionDialog((e) => !e)}>
-            <AddIcon />
-            הוספת שאלה
-          </IconButton>
-        </Tooltip>
-      </Box>
+      {!isOldForms && (//hide and show according to the type of questionnaire constructed
+        <Box style={{ display: "flex" }}>
+          <Tooltip title="הוספה">
+            <IconButton color="black" onClick={() => setShowCreateQuestionDialog((e) => !e)}>
+              <AddIcon />
+              הוספת שאלה
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
+      {isOldForms && showAddQuestion && (//hide and show according to the type of questionnaire constructed
+        <Box style={{ display: "flex" }}>
+          <Tooltip title="הוספה">
+            <IconButton color="black" onClick={() => setShowCreateQuestionDialog((e) => !e)}>
+              <AddIcon />
+              הוספת שאלה
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
+
       <QuestionsContext.Provider value={{ globalQuestionArray, setGlobalQuestionsArray }}>
         {console.log(isOldForms)}
 
         <CreateQuestionsDialog
-          open={showCreateQuestionDialog}
+          open={showCreateQuestionDialog}//Open the add question dialog
           setOpen={setShowCreateQuestionDialog}
           tempQuestionArray={tempQuestionArray}
           settempQuestionArray={settempQuestionArray}
           setPostQuestion={setPostQuestion}
         />
-        <HeaderFrom updateObject={updateObject} isOld={isOldForms} />
+        <HeaderFrom
+          updateObject={updateObject}//receiving from the header roletype & rolegroup type 
+          isOld={isOldForms}
+          showAddQuestion={showAddQuestion}
+          setShowAddQuestion={setShowAddQuestion}
+          existForms ={existForms}
+          setSendExistForms={setSendExistForms}//An indication that you can receive questionnaires from the server that are adapted to the type of position and rank
+        />
+        {console.log(sendExistForms)}
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
       <FinishDialog
@@ -271,4 +353,3 @@ export default function Evalues() {
     </Container>
   );
 }
-

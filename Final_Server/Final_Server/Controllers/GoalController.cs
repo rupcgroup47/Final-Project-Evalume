@@ -16,7 +16,13 @@ namespace Final_Server.Controllers
         {
             return Goal.ReadGoals();
         }
-        
+
+        //[HttpGet("/userNum")]
+        //public IEnumerable<Object> GetGoalsByManager(int userNum) //Get all the questions that posed by the current manager
+        //{
+        //    Goal goal = new Goal();
+        //    return Goal.Read(userNum);
+        //}
 
         // GET api/<GoalController>/5
         [HttpGet("{id}")]
