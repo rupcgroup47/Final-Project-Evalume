@@ -20,6 +20,65 @@ registerLocale("he", he);
 import addNotification from "react-push-notification";
 import { Notifications } from "react-push-notification";
 
+
+const test = [
+  {
+    roleGrouptype: "משרדי",
+    roletype: "מנהל",
+    forms: [
+      {
+        id: 1,
+        year: 2023,
+      },
+      {
+        id: 2,
+        year: 2022,
+      },
+    ],
+  },
+  {
+    roleGrouptype: "משרדי",
+    roletype: "עובד",
+    forms: [
+      {
+        id: 4,
+        year: 20233,
+      },
+      {
+        id: 3,
+        year: 20422,
+      },
+    ],
+  },
+  {
+    roleGrouptype: "תפעולי",
+    roletype: "מנהל",
+    forms: [
+      {
+        id: 5,
+        year: 1990,
+      },
+      {
+        id: 6,
+        year: 2009,
+      },
+    ],
+  },
+  {
+    roleGrouptype: "תפעולי",
+    roletype: "עובד",
+    forms: [
+      {
+        id: 7,
+        year: 1777,
+      },
+      {
+        id: 31,
+        year: 4572,
+      },
+    ],
+  },
+];
 export default function CreateYearlyProcessDialog({
   open,
   setOpen,
@@ -115,11 +174,13 @@ export default function CreateYearlyProcessDialog({
               </TableRow>
             </TableHead>
             <TableBody>
+              {console.log(tableData+"tableData")}
               {tableData.map((row, rowIndex) => (
                 <TableRow key={rowIndex}>
                   <TableHead>{rowHeaders[rowIndex]}</TableHead>
                   {row.map((cellValue, columnIndex) => (
                     <TableCell key={columnIndex}>
+                                  {console.log(cellData[rowIndex][columnIndex])}
                       {Array.isArray(cellData[rowIndex][columnIndex]) ? (
                         <Select
                           label="בחירת שאלון"
@@ -133,6 +194,7 @@ export default function CreateYearlyProcessDialog({
                             )
                           }
                         >
+
                           {cellData[rowIndex][columnIndex].map((optionValue, optionIndex) => (
                             <MenuItem key={optionIndex} value={optionValue}>
                               {optionValue}

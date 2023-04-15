@@ -6,15 +6,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import GoalsData from "./GoalsData";
 import { useEffect } from "react";
-import Collapse from '@mui/material/Collapse';
-// Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 import TableToolbarGoal from "./TableToolBarGoal";
-import { Box, TablePagination, TableSortLabel } from "@mui/material";
+import {TablePagination } from "@mui/material";
 import { useState } from "react";
-import { visuallyHidden } from "@mui/utils";
 import { useDebounce } from "use-debounce";
 import GoalItem from "./GoalItem";
 
