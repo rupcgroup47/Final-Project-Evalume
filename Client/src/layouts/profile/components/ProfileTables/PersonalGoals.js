@@ -11,7 +11,7 @@ import {
   TableRow,
   // TableSortLabel,
 } from "@mui/material";
-const PersonalGoals = ({ myGoalsData }) => {
+const PersonalGoals = ({ myGoalsData }) => {///receive all user goals and their data
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowClick = (row) => {

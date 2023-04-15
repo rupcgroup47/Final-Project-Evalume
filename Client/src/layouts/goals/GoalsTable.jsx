@@ -93,7 +93,7 @@ export default function GoalsTable() {
     setItems(_goals);
   }, [_goals]);
 
-  // handleSearch - start
+//search goal 
   const [searchInput, setSearchInput] = useState("");
   const [searchDebounce] = useDebounce(searchInput, 500);
   useEffect(() => {
@@ -109,7 +109,6 @@ export default function GoalsTable() {
 
     setItems(value?.length > 0 ? sx : _goals);
   };
-  // handleSearch - end
   const handleRemoveGoal = (goal) => {
     setGoals((i) => i.filter((item) => item.goalName !== goal.goalName));
     setItems((i) => i.filter((item) => item.goalName !== goal.goalName));
@@ -121,14 +120,11 @@ export default function GoalsTable() {
   return (
     <Paper sx={{ boxShadow: "none" }}>
       <TableToolbarGoal
-        // Goals
         goals={_goals}
         setGoals={setGoals}
         setItems={setItems}
-        // Search
         searchInput={searchInput}
         setSearchInput={setSearchInput}
-        //Table Head
         tableHead={tableHead}
         setTableHead={setTableHead}
       />
@@ -214,20 +210,3 @@ const _tableHead = [
   },
 ];
 
-    // <TableContainer component={Paper}>
-    //   <Table aria-label="collapsible table">
-    //     <TableHead>
-    //       <TableRow>
-    //         <TableCell />
-    //         <TableCell>יעדים</TableCell>
-    //         {/* <TableCell>אחוז השלמה</TableCell> */}
-    //       </TableRow>
-    //       <TableToolbarGoal/>
-    //     </TableHead>
-    //     <TableBody>
-    //       {_goals.map((row) => (
-    //         <GoalsData key={row.id} row={row} />
-    //       ))}
-    //     </TableBody>
-    //   </Table>
-    // </TableContainer>
