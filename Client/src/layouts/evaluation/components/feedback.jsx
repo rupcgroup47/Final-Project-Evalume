@@ -37,7 +37,7 @@ export default function Feedback({ userNum, managerId }) {
   const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
   const [allGoals, setAllGoals] = useState([]); //Format to send to the server
   const [questionnaireNum, setQuestionnaireNum] = useState(1);
-  const evalu_Part_Typ =2;
+  const evalu_Part_Type = 2;
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -66,7 +66,7 @@ export default function Feedback({ userNum, managerId }) {
   };
 
   function sendFeedbackToServer() {
-    return { questionnaireNum, managerId, userNum,evalu_Part_Typ, feedbackEmployee, feedbackManager, allGoals };
+    return { questionnaireNum, managerId, userNum, evalu_Part_Type, feedbackEmployee, feedbackManager, allGoals };
   }
 
   function handleSubmit() {

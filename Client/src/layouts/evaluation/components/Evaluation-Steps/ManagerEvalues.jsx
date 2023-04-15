@@ -74,12 +74,13 @@ function ManagerEvalues() {
 
   const location = useLocation();
   const currentStep = location.state;
+  console.log(currentStep);
   const userId = mainState.mainState.userNum;//The employee who is now connected to the system
   // const userManagerId=mainState.mainState.userManagerNum;//The manager of the employee who is now connected to the system
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />
-      {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Typ={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} />}
+      {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} />}
       {currentStep === 2 && <Feedback userNum={chosenEmployee} managerId={userId} />}
       {/* <SurveyForm /> */}
     </Container>

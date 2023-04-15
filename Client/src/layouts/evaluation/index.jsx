@@ -9,15 +9,13 @@ function QuestionnaireForm() {
   const [, dispatch] = useMaterialUIController();
   const mainState = useContext(MainStateContext);
   const evaluationApi = "https://localhost:7079/userNum?userNum=";
-  const evalu_Part_Typ = 0;
+  const evalu_Part_Type = 0;
   const [questionsResp, setQuestionsResp] = useState([]);
   const [questionnaireNum, setQuestionnaireNum] = useState("");
 
   // GET the evaluation form of the user
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("ani");
-    console.log(mainState);
     if (mainState.mainState.userNum) {
       fetch(
         evaluationApi + mainState.mainState.userNum,
@@ -43,11 +41,9 @@ function QuestionnaireForm() {
         })
         .then(
           (result) => {
-            console.log("bani");
             console.log("success");
             setQuestionnaireNum(result.questionnaireNum);
             setQuestionsResp(result.questionsList);
-            console.log(result.questionsList);
           },
           (error) => {
             if (error.name === "AbortError") return;
@@ -68,12 +64,13 @@ function QuestionnaireForm() {
 
     return () => setDirection(dispatch, "ltr");
   }, []);
+
   const userId = mainState.mainState.userNum;//The employee who is now connected to the system
   const userManagerId = mainState.mainState.userManagerNum;//The manager of the employee who is now connected to the system
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-      <CustomizedSteppers currentStep={evalu_Part_Typ} />
-      <SurveyForm userNum={userId} employeesManager={userManagerId} evalu_Part_Typ={evalu_Part_Typ} questionsResp={questionsResp} questionnaireNum={questionnaireNum} />
+      <CustomizedSteppers currentStep={evalu_Part_Type} />
+      <SurveyForm userNum={userId} employeesManager={userManagerId} evalu_Part_Type={evalu_Part_Type} questionsResp={questionsResp} questionnaireNum={questionnaireNum} />
     </Container>
   );
 }
