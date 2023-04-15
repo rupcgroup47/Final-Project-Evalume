@@ -27,6 +27,7 @@ export default function Evalues() {
   const apiQuestionrUrl = "https://localhost:7079/api/Question";
   const apiEvaluationQues = "https://localhost:7079/api/Rel_Questions_EvaluQues";
   const apiQuestionnaire = "https://localhost:7079/quesType/roleGroup_Type?quesType=";
+  const apiQuestionnaireQuestiones = "https://localhost:7079/questionnaireNum?questionnaireNum="
   const { mainState, setMainState } = useContext(MainStateContext);
   const [globalQuestionArray, setGlobalQuestionsArray] = useState([]);
   const [tempQuestionArray, settempQuestionArray] = useState([]);
@@ -35,7 +36,7 @@ export default function Evalues() {
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
   const [showAddQuestion, setShowAddQuestion] = useState(false);//Adjustments according to the type of form - existing or new
-  const [existForms, setExistForms] = useState([{ id: 1, year: 2022 }, { id: 2, year: 2022 }, { id: 4, year: 2023 }])//Questionnaires that are adapted to the type of roletype and rolegrouptype
+  const [existForms, setExistForms] = useState([])//Questionnaires that are adapted to the type of roletype and rolegrouptype
   const [sendExistForms, setSendExistForms] = useState(false)//An indication that we can get questionnaires from the server that are adapted to the type of roletype and rolegrouptype
   const [chosenParameters, setChosenParameters] = useState({});
   const location = useLocation();
@@ -68,7 +69,6 @@ export default function Evalues() {
         .then(
           (result) => {
             console.log("success");
-
             settempQuestionArray(result);
           },
           (error) => {
@@ -87,7 +87,7 @@ export default function Evalues() {
   // Post a new questions using Post api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("postQuestion", postQuestion);
+    // console.log("postQuestion", postQuestion);
     if (postQuestion.quesContent !== undefined) {
       fetch(apiQuestionrUrl, {
         method: "POST",
@@ -113,7 +113,7 @@ export default function Evalues() {
         .then(
           (result) => {
             console.log("success");
-            console.log(result);
+            // console.log(result);
             const index = tempQuestionArray.findIndex(
               (obj) => obj.quesGroup_Desc === postQuestion.quesGroup_Desc
             );
@@ -155,9 +155,9 @@ export default function Evalues() {
   // Post a new Evaluation using Post api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("myCheckedArray", myCheckedArray);
+    // console.log("myCheckedArray", myCheckedArray);
     if (myCheckedArray.length !== 0) {
-      console.log("hereagain");
+      // console.log("hereagain");
       fetch(
         apiEvaluationQues,
         {
@@ -184,7 +184,6 @@ export default function Evalues() {
         .then(
           (result) => {
             console.log("success");
-            console.log(result);
             setMyArray([]);
             setMsg("סיימת למלא את טופס ההערכה");
             setRouteMsg("חזרה לדף הבית");
@@ -212,21 +211,21 @@ export default function Evalues() {
   // Gat all questionnaires that fit the roletype and grouptype using GET api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("chocen",chosenParameters);
+    // console.log("chocen", chosenParameters);
     if (chosenParameters.roleType !== undefined) {
-      console.log(chosenParameters.roleType);
-      console.log(chosenParameters.groupType);
-      console.log("hereere");
+      // console.log(chosenParameters.roleType);
+      // console.log(chosenParameters.groupType);
+      // console.log("hereere");
       fetch(
-        apiQuestionnaire + ( chosenParameters.roleType === 1 ? true : false) +"&roleGroup_Type="+ chosenParameters.groupType, 
+        apiQuestionnaire + (chosenParameters.roleType === 1 ? true : false) + "&roleGroup_Type=" + chosenParameters.groupType,
         {
-        method: "GET",
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "application/json; charset=UTF-8",
-        }),
-        signal: abortController.signal,
-      })
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          signal: abortController.signal,
+        })
         .then(async (response) => {
           const data = await response.json();
           console.log(response);
@@ -242,7 +241,7 @@ export default function Evalues() {
         .then(
           (result) => {
             console.log("success");
-            console.log(result);
+            // console.log(result);
             setExistForms(result);
           },
           (error) => {
@@ -258,11 +257,15 @@ export default function Evalues() {
     }
   }, [chosenParameters]);
 
-    // Bring all questions using GET api
-    useEffect(() => {
-      const abortController = new AbortController();
-      if (!isOldForms) {
-        fetch(apiQuestionrUrl, {
+  // Bring all questions of a specific questionnaire using GET api
+  useEffect(() => {
+    const abortController = new AbortController();
+    console.log("ani");
+    // console.log(myFormTypes.chosenForm);
+    if (myFormTypes.chosenForm !== undefined && isOldForms) {
+      fetch(
+        apiQuestionnaireQuestiones + myFormTypes.chosenForm,
+        {
           method: "GET",
           headers: new Headers({
             "Content-Type": "application/json; charset=UTF-8",
@@ -270,40 +273,45 @@ export default function Evalues() {
           }),
           signal: abortController.signal,
         })
-          .then(async (response) => {
-            const data = await response.json();
-            console.log(response);
-  
-            if (!response.ok) {
-              // get error message from body or default to response statusText
-              const error = (data && data.message) || response.statusText;
-              return Promise.reject(error);
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("bani");
+            console.log("success");
+            if (result.questionnaireNum === myFormTypes.chosenForm) // make sure the correct questionnaire arrived
+            {
+              console.log(result.questionsList);
+              setGlobalQuestionsArray(result.questionsList);
             }
-  
-            return data;
-          })
-          .then(
-            (result) => {
-              console.log("success");
-  
-              settempQuestionArray(result);
-            },
-            (error) => {
-              if (error.name === "AbortError") return;
-              console.log("err get=", error);
-              throw error;
-            }
-          );
-        return () => {
-          abortController.abort();
-          // stop the query by aborting on the AbortController on unmount
-        };
-      }
-    }, [isOldForms]);
+            else console.log("something went wrong");
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err get=", error);
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, [myFormTypes]);
 
   // set the globalQuestionArray with the relevant question by the user decision
   useEffect(() => {
-    if (myFormTypes.roleType !== undefined) {
+    if (!isOldForms && myFormTypes.roleType !== undefined) {
       if (myFormTypes.roleType === 0) {
         const filteredArray = tempQuestionArray.filter(
           (item) => (item.groupType ? 1 : 0) === myFormTypes.roleType
@@ -315,19 +323,27 @@ export default function Evalues() {
     }
   }, [myFormTypes]);
 
+    // set the 
+    useEffect(() => {
+      if (isOldForms && globalQuestionArray.length !== 0) {
+        setShowFormComponent(true); // show form with questions only if all required fields
+      }
+    }, [globalQuestionArray]);
+
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
     return () => setDirection(dispatch, "ltr");
   }, []);
 
+  console.log(globalQuestionArray);
+
   // function handleDataFromHeader(obj) {
   //   setChosenParameters(obj);
   //   console.log(obj+"testttt")
   //   console.log(chosenParameters+"test")
   // }
-  console.log(myNewForm);
-  console.log(JSON.stringify(myNewForm));
+  // console.log(JSON.stringify(myNewForm));
   // function updateObject(myFormTypes) {
   //   // receive the form user type
   //   setMyObject(myFormTypes);
@@ -362,7 +378,7 @@ export default function Evalues() {
       )}
 
       <QuestionsContext.Provider value={{ globalQuestionArray, setGlobalQuestionsArray }}>
-        {console.log(isOldForms)}
+        {/* {console.log(isOldForms)} */}
 
         <CreateQuestionsDialog
           open={showCreateQuestionDialog}//Open the add question dialog
@@ -380,7 +396,7 @@ export default function Evalues() {
           setSendExistForms={setSendExistForms}//An indication that you can receive questionnaires from the server that are adapted to the type of position and rank
           setChosenParameters={setChosenParameters}
         />
-        {console.log(sendExistForms)}
+        {/* {console.log(sendExistForms)} */}
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
       <FinishDialog

@@ -22,9 +22,6 @@ export default function FormBuilder({ setMyArray }) {
   const [expanded, setExpanded] = useState(globalQuestionArray[0].quesGroup_ID);
   const [, dispatch] = useMaterialUIController();
   const [checkedItems, setCheckedItems] = useState([]);
-  // const [showCloseDialog, setShowCloseDialog] = useState(false);
-  // const [statusMsg, setMsg] = useState("");
-  // const [finishRouteMsg, setRouteMsg] = useState("");
   const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const handleChange = (panel) => (event, newExpanded) => {
