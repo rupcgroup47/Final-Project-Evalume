@@ -4,6 +4,7 @@ namespace Final_Server.Models
 {
     public class Rel_Questions_EvaluQues
     {
+        //EvaluationQues fields
         int questionnaireNum;
         int quesInsertDate;
         bool quesType;
@@ -11,6 +12,7 @@ namespace Final_Server.Models
         int roleGroup_Type;
         int evalu_Part_Type;
 
+        //Questions fields
         int questionNum;
         string quesContent;
         //DateTime insert_date = new DateTime();
@@ -21,6 +23,7 @@ namespace Final_Server.Models
         int numericAnswer;
         string verbalAnswer;
 
+        //Employee Fildes
         string userEmail;
         int userNum;
         string userFName;
@@ -35,6 +38,9 @@ namespace Final_Server.Models
         string managerEmail;
         string userRoleGroupDesc;
 
+        //Goals fields
+        int goalNum;
+        DateTime goalCreateDate = new DateTime();
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
 
         public bool QuesType { get => quesType; set => quesType = value; }
@@ -64,6 +70,8 @@ namespace Final_Server.Models
         public int Evalu_Part_Type { get => evalu_Part_Type; set => evalu_Part_Type = value; }
         public int NumericAnswer { get => numericAnswer; set => numericAnswer = value; }
         public string VerbalAnswer { get => verbalAnswer; set => verbalAnswer = value; }
+        public int GoalNum { get => goalNum; set => goalNum = value; }
+        public DateTime GoalCreateDate { get => goalCreateDate; set => goalCreateDate = value; }
 
         public static List<Object> ReadEvaluQuesByType(bool quesType, int roleGroup_Type) //gets the all the EvaluQues that fit the QuesType and RoleType
         {
@@ -213,20 +221,50 @@ namespace Final_Server.Models
         }
 
 
-        //static public int insertNewAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<dynamic> answers) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
-        //{
-        //    try
-        //    {
-        //        DBservices dbs = new DBservices();
-        //        return dbs.InserEvaluationAnswers(userNum, evalu_Part_Type, questionnaireNum, answers);
-        //    }
-        //    catch (Exception)
-        //    {
+        static public int insertNewEmployeeAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.InserEvaluationAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
+            }
+            catch (Exception)
+            {
 
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
 
+        static public int insertNewManagerAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.InserEvaluationAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        static public int insertNewSummeryAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, string managerOpinion, string employeeOpinion, List<int> goalsList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.InserEvaluationSummeryAnswers(userNum, evalu_Part_Type, questionnaireNum, managerOpinion, employeeOpinion, goalsList);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        
     }
 }
 

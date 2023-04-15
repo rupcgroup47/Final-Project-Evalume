@@ -110,58 +110,153 @@ namespace Final_Server.Controllers
 
 
 
-        //[HttpPost("/EvaluationAnswers")]
-        //public IActionResult PostAnswers([FromBody] JsonElement data) // post a new evaluation form to the database
+        [HttpPost("/EvaluationEmployeeAnswers")]
+        public IActionResult PostEmployeeAnswers([FromBody] JsonElement data) // post a new evaluation form by employeeto the database
+        {
+            try
+            {
+                JsonDocument document = JsonDocument.Parse(data.ToString());
+                JsonElement answers = document.RootElement.GetProperty("answers");
+
+
+                int userNum = Convert.ToInt32(data.GetProperty("userNum").GetInt32());
+                int evalu_Part_Type = Convert.ToInt32(data.GetProperty("evalu_Part_Type").GetInt32());
+                int questionnaireNum = Convert.ToInt32(data.GetProperty("questionnaireNum").GetInt32());
+
+                List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList = new List<(int, int, string)>();
+
+                //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
+
+                 foreach (JsonElement answersElement in answers.EnumerateArray())
+                 {
+                    int questionNum = Convert.ToInt32(answersElement.GetProperty("questionNum").GetInt32());
+                    int numericAnswer = Convert.ToInt32(answersElement.GetProperty("numericAnswer").GetString());
+                    string verbalAnswer = (answersElement.GetProperty("verbalAnswer").GetString()).ToString();
+                    
+                    answersList.Add((questionNum, numericAnswer, verbalAnswer));
+
+                 };
+
+                int numEffected = Rel_Questions_EvaluQues.insertNewEmployeeAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
+
+                if (numEffected != 0)
+                {
+                    return Ok("Answers succesfully inserted");
+                }
+                else
+                {
+                    return NotFound("Error in insert this Answers");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        [HttpPost("/EvaluationManagerAnswers")]
+        public IActionResult PostManagerAnswers([FromBody] JsonElement data) // post a evaluation form by manager to the database
+        {
+            try
+            {
+                JsonDocument document = JsonDocument.Parse(data.ToString());
+                JsonElement answers = document.RootElement.GetProperty("answers");
+
+
+                int userNum = Convert.ToInt32(data.GetProperty("userNum").GetInt32());
+                int evalu_Part_Type = Convert.ToInt32(data.GetProperty("evalu_Part_Type").GetInt32());
+                int questionnaireNum = Convert.ToInt32(data.GetProperty("questionnaireNum").GetInt32());
+
+                List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList = new List<(int, int, string)>();
+
+                //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
+
+                foreach (JsonElement answersElement in answers.EnumerateArray())
+                {
+                    int questionNum = Convert.ToInt32(answersElement.GetProperty("questionNum").GetInt32());
+                    int numericAnswer = Convert.ToInt32(answersElement.GetProperty("numericAnswer").GetString());
+                    string verbalAnswer = (answersElement.GetProperty("verbalAnswer").GetString()).ToString();
+
+                    answersList.Add((questionNum, numericAnswer, verbalAnswer));
+
+                };
+
+                int numEffected = Rel_Questions_EvaluQues.insertNewManagerAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
+
+                if (numEffected != 0)
+                {
+                    return Ok("Answers succesfully inserted");
+                }
+                else
+                {
+                    return NotFound("Error in insert this Answers");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("/EvaluationSummeryAnswers")]
+        public IActionResult PostSummaryAnswers([FromBody] JsonElement data) // post a evaluation summery ques by manager and employee
+        {
+            try
+            {
+                JsonDocument document = JsonDocument.Parse(data.ToString());
+                JsonElement allGoals = document.RootElement.GetProperty("allGoals");
+
+
+                int userNum = Convert.ToInt32(data.GetProperty("userNum").GetInt32());
+                int evalu_Part_Type = Convert.ToInt32(data.GetProperty("evalu_Part_Type").GetInt32());
+                int questionnaireNum = Convert.ToInt32(data.GetProperty("questionnaireNum").GetInt32());
+                string managerOpinion = (data.GetProperty("managerOpinion")).ToString();
+                string employeeOpinion = (data.GetProperty("employeeOpinion")).ToString();
+
+                List <int> goalsList = new List<int>();
+
+                //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
+
+                foreach (JsonElement answersElement in allGoals.EnumerateArray())
+                {
+                    int goalNum = Convert.ToInt32(answersElement.GetProperty("goalNum").GetInt32());
+
+
+                    goalsList.Add(goalNum);
+                };
+
+                int numEffected = Rel_Questions_EvaluQues.insertNewSummeryAnswers(userNum, evalu_Part_Type, questionnaireNum, managerOpinion, employeeOpinion, goalsList);
+
+                if (numEffected != 0)
+                {
+                    return Ok("Answers succesfully inserted");
+                }
+                else
+                {
+                    return NotFound("Error in insert this Answers");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        //[HttpPost]
+        //public IActionResult PostSummaryAnswers([FromBody] Rel_EmployeeGoal rel_EmployeeGoal) // post a evaluation summery ques by manager and employee
         //{
         //    try
         //    {
-        //        //JsonDocument document = JsonDocument.Parse(data.ToString());
-        //        //JsonElement answers = document.RootElement.GetProperty("answers");
-
-        //        List<(int, int, string)> answerList = new List<(int, int, string)>();
-
-        //        if (data.TryGetProperty("list", out JsonElement list))
-        //        {
-        //            foreach (JsonElement element in list.EnumerateArray())
-        //            {
-        //                if (element.TryGetProperty("question", out JsonElement questionNum) && 
-        //                    element.TryGetProperty("selectedValue", out JsonElement numericAnswer)
-        //                    element.TryGetProperty("textFieldValue", out JsonElement verbalAnswer))
-                        
-        //                {
-        //                    answerList.Add((questionNum.GetInt32(), numericAnswer.GetInt32(), verbalAnswer.GetString()));
-        //                }
-        //                int questionNum = item.question;
-        //                int numericAnswer = item.selectedValue;
-        //                string verbalAnswer = item.textFieldValue;
-
-        //                dynamic answer = new ExpandoObject();
-        //                answer.questionNum = questionNum;
-        //                answer.numericAnswer = numericAnswer;
-        //                answer.verbalAnswer = verbalAnswer;
-
-        //                answers.Add(answer);
-        //            }
-
-        //        }
-
-
-        //        int userNum = data.employeeId;
-        //        int evalu_Part_Type = data.step;
-        //        int questionnaireNum = data.surveyId;
-
-
-            
-
-        //        int numEffected = Rel_Questions_EvaluQues.insertNewAnswers(userNum, evalu_Part_Type, questionnaireNum, answers);
-
+        //        int numEffected = rel_EmployeeGoal.InsertEmployeeGoal();
         //        if (numEffected != 0)
         //        {
-        //            return Ok("Answers succesfully inserted");
+        //            return Ok("goal succesfully inserted");
         //        }
         //        else
         //        {
-        //            return NotFound("Error in insert this Answers");
+        //            return NotFound("Error in insert this goal");
         //        }
         //    }
         //    catch (Exception)
@@ -169,10 +264,6 @@ namespace Final_Server.Controllers
         //        throw;
         //    }
         //}
-
-
-
-
         //// PUT api/<Rel_Questions_EvaluQuesController>/5
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody] string value)
