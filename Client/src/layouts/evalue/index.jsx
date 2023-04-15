@@ -337,17 +337,7 @@ export default function Evalues() {
   }, []);
 
   console.log(globalQuestionArray);
-
-  // function handleDataFromHeader(obj) {
-  //   setChosenParameters(obj);
-  //   console.log(obj+"testttt")
-  //   console.log(chosenParameters+"test")
-  // }
   console.log(JSON.stringify(myNewForm));
-  // function updateObject(myFormTypes) {
-  //   // receive the form user type
-  //   setMyObject(myFormTypes);
-  // }
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
