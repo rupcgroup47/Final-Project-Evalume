@@ -9,16 +9,19 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { useMaterialUIController, setDirection } from "context";
 import PDFFile from "layouts/evaluation/components/PDFFile";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Button } from "@mui/material";
+import { MainStateContext } from "App";
+import { ContactSupportOutlined } from "@mui/icons-material";
 
 const evalues = [
-  { id: 1, name: "שנת 2022" },
-  { id: 2, name: "שנת 2024" },
+  { id: 1, year: 2022 },
+  { id: 2, year: 2023 },
 ];
+
 export default function MyEvalues() {
   const [tableHead, setTableHead] = useState({
     id: "evalueYear",
@@ -28,9 +31,11 @@ export default function MyEvalues() {
     label: "שאלוני הערכה",
     show: true,
   });
+  const mainState = useContext(MainStateContext);
+  const userId = mainState.mainState.userNum; //The employee who is now connected to the system
   const [items, setItems] = useState(evalues);
   const [, dispatch] = useMaterialUIController();
-
+  const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   useEffect(() => {
@@ -40,6 +45,32 @@ export default function MyEvalues() {
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
+  function calculateData(userId, year) {
+    ///data is the array i pass to the pdf file component
+    let data;
+    if (userId === 2 && year === 2022) {
+      data = [
+        { id: 1, name: "שלום" },
+        { id: 2, name: "הייי" },
+      ];
+    } else {
+      data = [
+        { id: 1, name: "עכגיחג" },
+        { id: 2, name: "ערקאקעא" },
+      ];
+    }
+    return data;
+  }
+
+  function updateData(year) {
+    const newData = calculateData(userId, year);
+    setData(newData);
+    console.log("nenew" + newData);
+  }
+  useEffect(() => {
+    // This code will be executed whenever the `data` state changes
+    console.log(data);
+  }, [data]);
   return (
     <Paper sx={{ boxShadow: "none", minWidth: 300, maxWidth: 900, margin: "auto" }}>
       <TableContainer component={Paper}>
@@ -65,15 +96,15 @@ export default function MyEvalues() {
                 hover
               >
                 {" "}
-                <TableCell align="left" >
-                  {console.log(evalue.name)}
-                  {evalue.name}
-                </TableCell>
-                <TableCell align="center" >
-                  {console.log(evalue.name)}
-                  <PDFDownloadLink document={<PDFFile />} fileName="טופס הערכה">
+                <TableCell align="left">{evalue.year}</TableCell>
+                <TableCell align="center">
+                  <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה">
                     {({ loading }) =>
-                      loading ? <Button>שגיאה</Button> : <Button>הורד קובץ כPFD</Button>
+                      loading ? (
+                        <Button>שגיאה</Button>
+                      ) : (
+                        <Button onClick={() => updateData(evalue.year)}>הורד קובץ כPFD</Button>
+                      )
                     }
                   </PDFDownloadLink>{" "}
                 </TableCell>
