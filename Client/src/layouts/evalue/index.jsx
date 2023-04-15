@@ -10,7 +10,7 @@ import { useMaterialUIController, setDirection } from "context";
 import HeaderFrom from "./components/header";
 import CreateQuestionsDialog from "dialog/CreateQuestionsDialog";
 import { QuestionsContext } from "context/globalVariables";
-import { MainStateContext } from "App";
+// import { MainStateContext } from "App";
 import swal from "sweetalert";
 import { useLocation } from "react-router-dom";
 import FinishDialog from "./components/FinishDialog";
@@ -28,7 +28,7 @@ export default function Evalues() {
   const apiEvaluationQues = "https://localhost:7079/api/Rel_Questions_EvaluQues";
   const apiQuestionnaire = "https://localhost:7079/quesType/roleGroup_Type?quesType=";
   const apiQuestionnaireQuestiones = "https://localhost:7079/questionnaireNum?questionnaireNum="
-  const { mainState, setMainState } = useContext(MainStateContext);
+  // const { mainState, setMainState } = useContext(MainStateContext);
   const [globalQuestionArray, setGlobalQuestionsArray] = useState([]);
   const [tempQuestionArray, settempQuestionArray] = useState([]);
   const [postQuestion, setPostQuestion] = useState({});
@@ -343,7 +343,7 @@ export default function Evalues() {
   //   console.log(obj+"testttt")
   //   console.log(chosenParameters+"test")
   // }
-  // console.log(JSON.stringify(myNewForm));
+  console.log(JSON.stringify(myNewForm));
   // function updateObject(myFormTypes) {
   //   // receive the form user type
   //   setMyObject(myFormTypes);

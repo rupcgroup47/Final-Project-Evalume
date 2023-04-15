@@ -1,7 +1,9 @@
 ﻿using Final_Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -105,6 +107,71 @@ namespace Final_Server.Controllers
                 throw;
             }
         }
+
+
+
+        //[HttpPost("/EvaluationAnswers")]
+        //public IActionResult PostAnswers([FromBody] JsonElement data) // post a new evaluation form to the database
+        //{
+        //    try
+        //    {
+        //        //JsonDocument document = JsonDocument.Parse(data.ToString());
+        //        //JsonElement answers = document.RootElement.GetProperty("answers");
+
+        //        List<(int, int, string)> answerList = new List<(int, int, string)>();
+
+        //        if (data.TryGetProperty("list", out JsonElement list))
+        //        {
+        //            foreach (JsonElement element in list.EnumerateArray())
+        //            {
+        //                if (element.TryGetProperty("question", out JsonElement questionNum) && 
+        //                    element.TryGetProperty("selectedValue", out JsonElement numericAnswer)
+        //                    element.TryGetProperty("textFieldValue", out JsonElement verbalAnswer))
+                        
+        //                {
+        //                    answerList.Add((questionNum.GetInt32(), numericAnswer.GetInt32(), verbalAnswer.GetString()));
+        //                }
+        //                int questionNum = item.question;
+        //                int numericAnswer = item.selectedValue;
+        //                string verbalAnswer = item.textFieldValue;
+
+        //                dynamic answer = new ExpandoObject();
+        //                answer.questionNum = questionNum;
+        //                answer.numericAnswer = numericAnswer;
+        //                answer.verbalAnswer = verbalAnswer;
+
+        //                answers.Add(answer);
+        //            }
+
+        //        }
+
+
+        //        int userNum = data.employeeId;
+        //        int evalu_Part_Type = data.step;
+        //        int questionnaireNum = data.surveyId;
+
+
+            
+
+        //        int numEffected = Rel_Questions_EvaluQues.insertNewAnswers(userNum, evalu_Part_Type, questionnaireNum, answers);
+
+        //        if (numEffected != 0)
+        //        {
+        //            return Ok("Answers succesfully inserted");
+        //        }
+        //        else
+        //        {
+        //            return NotFound("Error in insert this Answers");
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+
+
 
         //// PUT api/<Rel_Questions_EvaluQuesController>/5
         //[HttpPut("{id}")]
