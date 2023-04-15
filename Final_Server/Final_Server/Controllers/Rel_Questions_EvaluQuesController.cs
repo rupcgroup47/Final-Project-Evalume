@@ -16,7 +16,7 @@ namespace Final_Server.Controllers
     {
 
         [HttpGet("/quesType/roleGroup_Type")]
-        public IEnumerable<Object> GetEvaluQuesByType(bool quesType, int roleGroup_Type) //gets the all the EvaluQues that fit the QuesType and RoleType
+        public IEnumerable<Object> GetEvaluQuesByType(bool quesType, int roleGroup_Type) //gets all the EvaluQues that fit the QuesType and RoleType
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Final_Server.Controllers
         //}
 
         [HttpGet("/userNum")]
-        public IEnumerable<Object> GetEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
+        public Object GetEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
         {
             try
             {

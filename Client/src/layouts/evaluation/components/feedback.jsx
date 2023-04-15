@@ -20,7 +20,7 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
 registerLocale("he", he);
 
-export default function Feedback({ employeeId, managerId }) {
+export default function Feedback({ userNum, managerId }) {
   const [, dispatch] = useMaterialUIController();
   const classes = useStyles();
   const goalNames = [
@@ -36,8 +36,8 @@ export default function Feedback({ employeeId, managerId }) {
   const [feedbackEmployee, setfeedbackEmployee] = useState("");
   const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
   const [allGoals, setAllGoals] = useState([]); //Format to send to the server
-  const [surveyId, setSurveyId] = useState(1);
-  const step =2;
+  const [questionnaireNum, setQuestionnaireNum] = useState(1);
+  const evalu_Part_Typ =2;
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -66,7 +66,7 @@ export default function Feedback({ employeeId, managerId }) {
   };
 
   function sendFeedbackToServer() {
-    return { surveyId, managerId, employeeId,step, feedbackEmployee, feedbackManager, allGoals };
+    return { questionnaireNum, managerId, userNum,evalu_Part_Typ, feedbackEmployee, feedbackManager, allGoals };
   }
 
   function handleSubmit() {
