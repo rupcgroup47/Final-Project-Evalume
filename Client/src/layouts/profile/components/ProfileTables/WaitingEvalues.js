@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Link } from "react-router-dom";
+import { EvalueContext } from "context/evalueVariables";
 
 const WaitingEvalues = ({ data }) => {
+  //evaluations that are waiting for an administrator's feedback
   const [selectedRow, setSelectedRow] = useState(null);
-  const [currentStep, setStep] = useState(1);
-  const [currentStep1, setStep1] = useState(2);
-
+  const adminStep = 1; //Awaiting admin feedback
+  const adminEmployeeStep = 2; //Awaiting manager and  employee  feedback
+  const { setChosenEmployee } = useContext(EvalueContext);
   const handleRowClick = (row) => {
-    setSelectedRow(row);
-    console.log(row.status);
+    setChosenEmployee(row.id); //send chosen employee data to the global context
+    setSelectedRow(row); //css
   };
 
   return (
@@ -34,11 +36,11 @@ const WaitingEvalues = ({ data }) => {
             <TableCell style={{ width: "25%" }}>{row.status}</TableCell>
             <TableCell style={{ width: "25%" }}>
               {row.status === "ממתין למישוב מנהל" ? (
-                <Link to="/ManagerEvalues" state={currentStep}>
+                <Link to="/ManagerEvalues" state={adminStep}>
                   מעבר לשאלון
                 </Link>
               ) : (
-                <Link to="/ManagerEvalues" state={currentStep1}>
+                <Link to="/ManagerEvalues" state={adminEmployeeStep}>
                   מעבר לשאלון
                 </Link>
               )}

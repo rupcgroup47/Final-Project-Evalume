@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import PersonalGoals from "components/ProfileTables/PersonalGoals";
+import PersonalGoals from "./ProfileTables/PersonalGoals";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";

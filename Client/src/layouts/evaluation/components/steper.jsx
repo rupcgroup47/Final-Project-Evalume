@@ -11,13 +11,11 @@ import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
 import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector";
 import { useState, useContext } from "react";
-import { StepperContext } from "context/globalVariables";
 
 const steps = ["משוב עצמי", "משוב מנהל", "שיחת משוב והצבת יעדים"];
 
 export default function CustomizedSteppers(props) {
 const {currentStep} = props;
-    // const {currentStep,setCurrentStep} = useContext(StepperContext)
     return (
         <Stack sx={{ width: "100%" }} spacing={4}>
                     {console.log(currentStep)}

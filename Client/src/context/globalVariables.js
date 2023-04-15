@@ -1,6 +1,6 @@
-import { createContext } from "react";
+import { React, createContext } from "react";
+import { useState } from "react";
 
-export const StepperContext = createContext();
 export const QuestionsContext = createContext();
 export const DepartmentStateContext = createContext();
-export const employeeFinishStep1Context = createContext();
+export const chosenUserContext = createContext();

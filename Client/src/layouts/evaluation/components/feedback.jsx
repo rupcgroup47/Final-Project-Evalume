@@ -20,7 +20,7 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
 registerLocale("he", he);
 
-export default function Feedback() {
+export default function Feedback({ employeeId, managerId }) {
   const [, dispatch] = useMaterialUIController();
   const classes = useStyles();
   const goalNames = [
@@ -34,9 +34,10 @@ export default function Feedback() {
   const [notFormattedDate, setNotFormattedData] = useState();
   const [feedbackManager, setFeedbackManager] = useState("");
   const [feedbackEmployee, setfeedbackEmployee] = useState("");
-  const [finalFeedbackForm, setFinalfeedbackForm] = useState();
+  const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
   const [allGoals, setAllGoals] = useState([]); //Format to send to the server
-  // setName("");
+  const [surveyId, setSurveyId] = useState(1);
+  const step =2;
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -55,8 +56,8 @@ export default function Feedback() {
   };
 
   const handleAddRow = () => {
+    ///adding new goal to employee
     const selectedId = goalNames.find((option) => option.name === name)?.id; //checking the  id of the chosen goal
-
     setRows([...rows, { name: name, date: date }]); //Format to display table
     setAllGoals([...allGoals, { id: selectedId, date: date }]); //Format to send to the server
     setName("");
@@ -64,21 +65,16 @@ export default function Feedback() {
     console.log(allGoals);
   };
 
-  const sendFeedbackToServer = () => {
-    console.log("hi??");
-    console.log(allGoals);
-    const feedbackObj = {
-      surveyID: 1,
-      managerId: 2,
-      userId: 3,
-      managerfeedback: feedbackManager,
-      employeefeedback: feedbackEmployee,
-      employeeGoals: allGoals
-    };
-    setFinalfeedbackForm(feedbackObj);
-    console.log(finalFeedbackForm + "finished!!!!");
-    console.log(feedbackObj + "finished!!!!");
-  };
+  function sendFeedbackToServer() {
+    return { surveyId, managerId, employeeId,step, feedbackEmployee, feedbackManager, allGoals };
+  }
+
+  function handleSubmit() {
+    //create feedback obj form
+    const newObj = sendFeedbackToServer();
+    setFinalfeedbackForm({ ...newObj });
+    console.log(newObj)
+  }
 
   return (
     <Paper
@@ -147,12 +143,17 @@ export default function Feedback() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell style={{ width: "50%" }}>{row.name}</TableCell>
-                      <TableCell style={{ width: "50%" }}>{row.date}</TableCell>
-                    </TableRow>
-                  ))}
+                  {rows.map(
+                    (
+                      row,
+                      index //render all the added goals
+                    ) => (
+                      <TableRow key={index}>
+                        <TableCell style={{ width: "50%" }}>{row.name}</TableCell>
+                        <TableCell style={{ width: "50%" }}>{row.date}</TableCell>
+                      </TableRow>
+                    )
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -161,7 +162,7 @@ export default function Feedback() {
       </Grid>
       <br />
       <Box textAlign="center">
-        <Button variant="contained" color="white" onClick={sendFeedbackToServer}>
+        <Button variant="contained" color="white" onClick={handleSubmit}>
           סיום הערכה שנתית
         </Button>
       </Box>

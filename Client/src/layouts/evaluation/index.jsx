@@ -24,9 +24,9 @@ const [currentStep,setCurrentStep] = useState(0)
     return (
 
         <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-            <StepperContext.Provider value={{currentStep,setCurrentStep}}>
+            {/* <StepperContext.Provider value={{currentStep,setCurrentStep}}> */}
             <CustomizedSteppers />
-            </StepperContext.Provider>
+            {/* </StepperContext.Provider> */}
             <SurveyForm />    
         </Container>
 
