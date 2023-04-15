@@ -82,39 +82,41 @@ const test = [
 export default function CreateYearlyProcessDialog({
   open,
   setOpen,
-  rowHeaders,
-  columnHeaders,
-  cellData,
 }) {
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const [openProcess, setOpenProcess] = useState({});
   const [finishDate, setfinishDate] = useState(new Date());
-  const [tableData, setTableData] = useState(() => {
-    return cellData.map((row) => [...row]);
-  });
-  const updateCell = (rowIndex, columnIndex, value, ddlKey) => {
-    const updatedTableData = [...tableData];
-    updatedTableData[rowIndex][columnIndex] = value;
-    setTableData(updatedTableData); //shows the chosen value in
-    const index = selectedOptions.findIndex((obj) => obj.key === ddlKey);
-    if (index !== -1) {
-      // If the ddlKey exists, update the value of the corresponding object
-      const updatedChoices = [...selectedOptions];
-      updatedChoices[index].value = value;
-      setSelectedOptions(updatedChoices);
-    } else {
-      // If the ddlKey doesn't exist, add a new object to the selectedOptions array
-      setSelectedOptions([
-        ...selectedOptions,
-        { roleGroupType: columnHeaders[columnIndex], roleType: rowHeaders[rowIndex], value: value },
-      ]);
-    }
-    console.log(selectedOptions);
-    console.log(updatedTableData);
-  };
+  const [testData, setTestData] = useState(test);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [lastSelectedOptions, setLastSelectedOptions] = useState([]);
 
+  // const handleChange = (event) => {
+  //   const index = event.target.name;
+  //   const value = event.target.value;
+  
+  //   // Update the selectedOptions object
+  //   setSelectedOptions((prevState) => {
+  //     // If the index already exists in the object, update the value
+  //     if (prevState.hasOwnProperty(index)) {
+  //       return {
+  //         ...prevState,
+  //         [index]: value,
+  //       };
+  //     }
+  //     // Otherwise, add a new key-value pair to the object
+  //     else {
+  //       return {
+  //         ...prevState,
+  //         [index]: value,
+  //       };
+  //     }
+  //   });
+  // };
+ 
   const handleFinish = () => {
-    if (selectedOptions.length != columnHeaders.length * rowHeaders.length) {
+    // console.log(savedValues)
+    // const optionsArray = Object.values(selectedOptions);
+    // setLastSelectedOptions(optionsArray);
+    if (lastSelectedOptions.length != test.length) {
       addNotification({
         title: "אזהרה",
         subtitle: "לא בחרת בכל האפשרויות",
@@ -123,11 +125,12 @@ export default function CreateYearlyProcessDialog({
         closeButton: "X",
       });
     } else {
-      setOpenProcess((prevObject) => ({ ...prevObject, selectedOptions, date: finishDate }));
+      setOpenProcess((prevObject) => ({ ...prevObject, lastSelectedOptions, date: finishDate }));
       console.log(openProcess);
       setOpen(false);
     }
   };
+
   return (
     <Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
       <Typography sx={{ fontFamily: "Rubik", fontSize: "50px", textAlign: "center" }}>
@@ -154,64 +157,22 @@ export default function CreateYearlyProcessDialog({
       }}
     >
         <Typography>בחירת שאלונים</Typography>
-        <TableContainer sx={{ backgroundColor: "#e6f2ff" }}>
-          <Table>
-            <TableHead sx={{ display: "table-header-group" }}>
-              <TableRow>
-                <TableCell></TableCell>
-                {columnHeaders.map((header, columnIndex) => {
-                  return (
-                    <TableCell
-                      key={columnIndex}
-                      // align={columnIndex.textAlign || ""}
-                      padding={ "normal"}
-                      sx={{ fontWeight: 600 }}
-                    >
-                      {header}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {console.log(tableData+"tableData")}
-              {tableData.map((row, rowIndex) => (
-                <TableRow key={rowIndex}>
-                  <TableHead>{rowHeaders[rowIndex]}</TableHead>
-                  {row.map((cellValue, columnIndex) => (
-                    <TableCell key={columnIndex}>
-                                  {console.log(cellData[rowIndex][columnIndex])}
-                      {Array.isArray(cellData[rowIndex][columnIndex]) ? (
-                        <Select
-                          label="בחירת שאלון"
-                          value={cellValue}
-                          onChange={(event) =>
-                            updateCell(
-                              rowIndex,
-                              columnIndex,
-                              event.target.value,
-                              cellData[rowIndex][columnIndex]
-                            )
-                          }
-                        >
 
-                          {cellData[rowIndex][columnIndex].map((optionValue, optionIndex) => (
-                            <MenuItem key={optionIndex} value={optionValue}>
-                              {optionValue}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      ) : (
-                        cellValue
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
           <Notifications />
-        </TableContainer>
+
+        <div>
+      {testData.map((testObject, index) => (
+        <div key={index}>
+          <h2>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h2>
+          <select  key= {index} name={index} onChange={handleChange}>
+            <option value="">בחירת שאלון מתאים</option>
+            {testObject.forms.map((form) => (
+              <option key={form.id} value={form.year}>שאלון {form.year} </option>
+            ))}
+          </select>
+        </div>
+      ))}
+    </div>
         <Typography>בחירת תאריך סיום</Typography>
 
         <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
