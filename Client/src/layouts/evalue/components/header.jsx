@@ -70,8 +70,8 @@ export default function HeaderFrom(props) {
   };
 
   const handleButtonClick = () => {
-    console.log(roleGroupType)
-    console.log(roleType)
+    // console.log(roleGroupType)
+    // console.log(roleType)
     if (roleGroupType !== undefined && roleType !== undefined) {
       const selectedTypes = {
         groupType: roleGroupType,
@@ -79,7 +79,7 @@ export default function HeaderFrom(props) {
       };
       setChosenParameters(selectedTypes);//pass data to index 
       setChosenTypes(selectedTypes);
-      console.log(selectedTypes);
+      // console.log(selectedTypes);
       setShowSelect(true);
       setShowButton(true);
       setSendExistForms(true);
@@ -92,7 +92,6 @@ export default function HeaderFrom(props) {
     setShowAddQuestion(true);
     setShowFormSelect(true);
   };
-
 
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5, background: "white", borderRadius: "15px" }}>
@@ -171,7 +170,7 @@ export default function HeaderFrom(props) {
             </FormControl>
           )}
           {isOld && showButton && (
-            <Button onClick={handleClick}  type="submit">
+            <Button onClick={handleClick} type="submit">
               המשך
             </Button>
           )}

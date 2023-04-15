@@ -18,6 +18,7 @@ import { Container } from "@mui/material";
 import { useState, useContext, useEffect, createContext, useMemo } from "react";
 import { MainStateContext } from "App";
 import { DepartmentStateContext } from "context/globalVariables";
+// import ApiFetcher from "components/ApiFetcher";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
@@ -31,7 +32,24 @@ function Users() {
   const apiUserUrl = "https://localhost:7079/api/Employee";
   const apiDeprUrl = "https://localhost:7079/api/Department";
 
+  // bring all the users using GET api
   useEffect(() => {
+    // const abortController = new AbortController();
+    // const signal = abortController.signal;
+
+    // ApiFetcher({
+    //   api: "https://localhost:7079/api/Employee",
+    //   method: "GET",
+    //   body: null,
+    //   signal: signal,
+    //   onFetchComplete: setUsers,
+    //   onFetchError: (error)=>console.log("err get=", error),
+    // });
+
+    // return () => {
+    //   abortController.abort();
+    //   // stop the query by aborting on the AbortController on unmount
+    // };
     const abortController = new AbortController()
     if (mainState.is_Admin) {
       fetch(
