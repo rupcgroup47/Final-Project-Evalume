@@ -35,11 +35,11 @@ const questionsResp = [
     quesGroup_Desc: "איכותיות", // Section name
     questions: [
       {
-        questionNum: 1,
+        questionNum: 3,
         quesContent: `גג`, // Question name
       },
       {
-        questionNum: 2,
+        questionNum: 4,
         quesContent: `בבב`, // Question name
       },
     ],
@@ -98,7 +98,7 @@ export default function surveyForm({employeeId,employeesManager, step}) {
       console.log("here");
       const item = {
         id: itemId,
-        title: groupId,
+        // title: groupId,
         question: questionId,
         selectedValue: value,
       };
@@ -139,10 +139,12 @@ export default function surveyForm({employeeId,employeesManager, step}) {
 
 
   function sendDataToServer() {
+    const answers = items.map(({ id, ...rest }) => rest);
+    setItems(answers);
     if(step === 0) {//If the input is self evaluation then the object that will be returned is that the employee filled in and evalue himself
-      return { surveyId, employeeId, employeeId,step, items };
+      return { surveyId, employeeId, employeeId,step, answers };
     } else if(step===1){
-      return { surveyId, employeesManager, employeeId,step, items };// employees manager is the current user which evalue the employee id 
+      return { surveyId, employeesManager, employeeId,step, answers };// employees manager is the current user which evalue the employee id 
 
     }
   }
