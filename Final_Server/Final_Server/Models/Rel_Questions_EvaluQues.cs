@@ -170,19 +170,29 @@ namespace Final_Server.Models
             }
         }
 
-        public static List<Object> ReadEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
+        public static Object ReadEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
         {
             DBservices dbs = new DBservices();
             List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetEvaluQuesByUserId(userNum);
-            var maxGroup = tempQustionList.Max(X => X.QuesGroup_ID);
+            int counter = 0;
+            int currentNumber = 0;
+            List<int> quesTypeOptions = new List<int>();
+            foreach (Rel_Questions_EvaluQues item in tempQustionList)
+            {
+                if (currentNumber != item.QuesGroup_ID)
+                {
+                    currentNumber = item.QuesGroup_ID;
+                    quesTypeOptions.Add(currentNumber);
+                    counter++;
+                }
+            }
             List<Object> QuestionsList = new List<Object>();
-            List<Object> FinalList = new List<Object>();
-            for (int i = 1; i <= maxGroup; i++)
+            for (int i = 0; i < counter; i++)
             {
                 List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
                 foreach (Rel_Questions_EvaluQues item in tempQustionList)
                 {
-                    if (item.QuesGroup_ID == i)
+                    if (item.QuesGroup_ID == quesTypeOptions[i])
                     {
                         tmpList.Add(item);
                     }
@@ -209,7 +219,7 @@ namespace Final_Server.Models
 
             }
 
-            FinalList.Add(new
+            Object FinalObject = (new
             {
                 UserNum = tempQustionList[0].UserNum,
                 UserManagerNum = tempQustionList[0].UserManagerNum,
@@ -217,7 +227,7 @@ namespace Final_Server.Models
                 QuestionsList = QuestionsList
             });
 
-            return FinalList;
+            return FinalObject;
         }
 
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
@@ -15,49 +15,50 @@ import Grid from "@mui/material/Grid";
 import DialogSurvey from "./DialogSurvey";
 import RadioButtons from "./survey-component/RadioButtons";
 
-const questionsResp = [
-  {
-    quesGroup_ID: 1,
-    quesGroup_Desc: "שירותיות", // Section name
-    questions: [
-      {
-        questionNum: 1,
-        quesContent: `אאא`, // Question name
-      },
-      {
-        questionNum: 2,
-        quesContent: `בבב`, // Question name
-      },
-    ],
-  },
-  {
-    quesGroup_ID: 2,
-    quesGroup_Desc: "איכותיות", // Section name
-    questions: [
-      {
-        questionNum: 3,
-        quesContent: `גג`, // Question name
-      },
-      {
-        questionNum: 4,
-        quesContent: `בבב`, // Question name
-      },
-    ],
-  },
-];
+// const questionsResp = [
+//   {
+//     quesGroup_ID: 1,
+//     quesGroup_Desc: "שירותיות", // Section name
+//     questions: [
+//       {
+//         questionNum: 1,
+//         quesContent: `אאא`, // Question name
+//       },
+//       {
+//         questionNum: 2,
+//         quesContent: `בבב`, // Question name
+//       },
+//     ],
+//   },
+//   {
+//     quesGroup_ID: 2,
+//     quesGroup_Desc: "איכותיות", // Section name
+//     questions: [
+//       {
+//         questionNum: 3,
+//         quesContent: `גג`, // Question name
+//       },
+//       {
+//         questionNum: 4,
+//         quesContent: `בבב`, // Question name
+//       },
+//     ],
+//   },
+// ];
 
 
-export default function surveyForm({employeeId,employeesManager, step}) {
-  const [expanded, setExpanded] = useState(questionsResp[0].id);
+export default function surveyForm({ userNum, employeesManager, evalu_Part_Typ, questionsResp, questionnaireNum }) {
+  const [expanded, setExpanded] = useState(1);
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
-  const flatQuestions = questionsResp.flatMap((group) => group.questions);
+  const flatQuestions = questionsResp?.flatMap((group) => group.questions);
+  const apiEvaluationQues = "https://localhost:7079/EvaluationAnswers";
   const totalQuestions = flatQuestions.length;//Checking how many questions there are in the array to make sure all the questions were answered at the end
-  const surveyId=1;
-  const [finalSelfEvaluation,setFinalSelfEvaluation] = useState()
+  // const surveyId=questionnaireNum;
+  const [finalSelfEvaluation,setFinalSelfEvaluation] = useState();
   const criterias = [
     "לא רלוונטי לתפקיד",
     "לא עומד בציפיות",
@@ -81,7 +82,7 @@ export default function surveyForm({employeeId,employeesManager, step}) {
         console.log("item.name");
         return {
           ...item,
-          selectedValue: value,
+          numericAnswer: value,
         };
       }
       return item;
@@ -99,8 +100,8 @@ export default function surveyForm({employeeId,employeesManager, step}) {
       const item = {
         id: itemId,
         // title: groupId,
-        question: questionId,
-        selectedValue: value,
+        questionNum: questionId,
+        numericAnswer: value,
       };
       setItems((prevArray) => [...prevArray, item]);//Inserting a new answer into the array
     }
@@ -111,7 +112,7 @@ export default function surveyForm({employeeId,employeesManager, step}) {
     // Get text field value for answer
     const newItems = items.map((item) => {
       if (item.id === id) {
-        return { ...item, textFieldValue: event.target.value };
+        return { ...item, verbalAnswer: event.target.value };
       }
       return item;
     });
@@ -131,9 +132,6 @@ export default function surveyForm({employeeId,employeesManager, step}) {
       const selfEvaluationObj = sendDataToServer();
       setFinalSelfEvaluation({ ...selfEvaluationObj });
       console.log(selfEvaluationObj)
-      setShowCloseDialog((e) => !e); // Error dialog message
-      setMsg("ענית על כל השאלות, מנהל ייצור איתך קשר לפגישת הערכה");
-      setRouteMsg("חזרה לדף הבית");
     }
   };
 
@@ -141,13 +139,68 @@ export default function surveyForm({employeeId,employeesManager, step}) {
   function sendDataToServer() {
     const answers = items.map(({ id, ...rest }) => rest);
     setItems(answers);
-    if(step === 0) {//If the input is self evaluation then the object that will be returned is that the employee filled in and evalue himself
-      return { surveyId, employeeId, employeeId,step, answers };
-    } else if(step===1){
-      return { surveyId, employeesManager, employeeId,step, answers };// employees manager is the current user which evalue the employee id 
+    if(evalu_Part_Typ === 0) {//If the input is self evaluation then the object that will be returned is that the employee filled in and evalue himself
+      return { questionnaireNum, userNum, userNum,evalu_Part_Typ, answers };
+    } else if(evalu_Part_Typ===1){
+      return { questionnaireNum, employeesManager, userNum,evalu_Part_Typ, answers };// employees manager is the current user which evalue the employee id 
 
     }
   }
+
+    // Post a new finished Evaluation using Post api
+    useEffect(() => {
+      const abortController = new AbortController();
+      console.log(finalSelfEvaluation);
+      if (finalSelfEvaluation !== undefined) {
+        console.log("hereagain");
+        fetch(
+          apiEvaluationQues,
+          {
+            method: "POST",
+            headers: new Headers({
+              "Content-Type": "application/json; charset=UTF-8",
+              Accept: "application/json; charset=UTF-8",
+            }),
+            body: JSON.stringify(finalSelfEvaluation),
+            signal: abortController.signal,
+          })
+          .then(async response => {
+            const data = await response.json();
+            console.log(response);
+  
+            if (!response.ok) {
+              // get error message from body or default to response statusText
+              const error = (data && data.message) || response.statusText;
+              return Promise.reject(error);
+            }
+  
+            return data;
+          })
+          .then(
+            (result) => {
+              console.log("success",result);
+              setMsg("ענית על כל השאלות, מנהל ייצור איתך קשר לפגישת הערכה");
+              setRouteMsg("חזרה לדף הבית");
+              setShowCloseDialog((e) => !e); // Error dialog message
+            },
+            (error) => {
+              if (error.name === 'AbortError') return;
+              console.log("err get=", error);
+              swal({
+                title: "קרתה תקלה!",
+                text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+                icon: "error",
+                button: "סגור"
+              });
+              throw error;
+            }
+          );
+        return () => {
+          abortController.abort();
+          // stop the query by aborting on the AbortController on unmount
+        };
+      };
+    }, [finalSelfEvaluation]);
 
   const onError = (errors, event) => {
     event.preventDefault();
@@ -164,7 +217,7 @@ export default function surveyForm({employeeId,employeesManager, step}) {
           TransitionProps={{ unmountOnExit: true }}
         >
           <AccordionSummary id={`${quesGroup_ID}-header`}>
-            <Typography>{quesGroup_Desc}</Typography>
+            <Typography >{quesGroup_Desc}</Typography>
           </AccordionSummary>
 
           <AccordionDetails>
@@ -181,7 +234,7 @@ export default function surveyForm({employeeId,employeesManager, step}) {
               </Grid>
               <Grid item style={gridItems2} xs={7}>
                 {criterias.map((criteria) => (
-                  <Typography style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                  <Typography key={criteria} style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
                     {criteria}{" "}
                   </Typography>
                 ))}
@@ -209,10 +262,10 @@ export default function surveyForm({employeeId,employeesManager, step}) {
                     groupId={quesGroup_ID}
                     questionId={questionNum}
                     onselectedValueChange={handleselectedValueChange}
-                    selectedValue={
+                    numericAnswer={
                       items.length > 0
                         ? items?.find((item) => item.id === "q-" + quesGroup_ID + "-" + questionNum)
-                            ?.selectedValue
+                            ?.numericAnswer
                         : ""
                     }
                   />
@@ -220,8 +273,7 @@ export default function surveyForm({employeeId,employeesManager, step}) {
                 <Grid item xs={2}>
                   <TextField
                     label="הוסף הערה"
-                    //   key={"q-" + id + "-" + questionId}
-                    value={items.textFieldValue}
+                    value={items.verbalAnswer}
                     onChange={(event) =>
                       handleTextFieldChange("q-" + quesGroup_ID + "-" + questionNum, event)
                     }
