@@ -221,7 +221,7 @@ namespace Final_Server.Models
         }
 
 
-        static public int insertNewEmployeeAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
+        static public int insertNewAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
         {
             try
             {
@@ -235,19 +235,19 @@ namespace Final_Server.Models
             }
         }
 
-        static public int insertNewManagerAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
-        {
-            try
-            {
-                DBservices dbs = new DBservices();
-                return dbs.InserEvaluationAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
-            }
-            catch (Exception)
-            {
+        //static public int insertNewManagerAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
+        //{
+        //    try
+        //    {
+        //        DBservices dbs = new DBservices();
+        //        return dbs.InserEvaluationAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
 
         static public int insertNewSummeryAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, string managerOpinion, string employeeOpinion, List<int> goalsList) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
