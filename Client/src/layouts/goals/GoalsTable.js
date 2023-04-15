@@ -7,17 +7,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import GoalsData from "./GoalsData";
-import { useEffect } from "react";
 import Collapse from '@mui/material/Collapse';
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 import TableToolbarGoal from "./TableToolBarGoal";
 import { Box, TablePagination, TableSortLabel } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { visuallyHidden } from "@mui/utils";
 import { useDebounce } from "use-debounce";
 import GoalItem from "./GoalItem";
-
+import { MainStateContext } from "App";
 
 const _goals = [
   {
@@ -80,6 +79,8 @@ export default function GoalsTable() {
   const [goals, setGoals] = useState([_goals]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { mainState, setMainState } = useContext(MainStateContext);
+  // const apiGoals = "https://localhost:7079/api/Goal/"
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -89,9 +90,55 @@ export default function GoalsTable() {
   }, []);
 
   useEffect(() => {
-    // Update the goals array
     setItems(_goals);
   }, [_goals]);
+
+  // bring all the goals of the employees under a manager
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+  //   console.log("ani");
+  //   // console.log(myFormTypes.chosenForm);
+  //   if (mainState.userType) {
+  //     fetch(
+  //       apiGoals + mainState.userNum,
+  //       {
+  //         method: "GET",
+  //         headers: new Headers({
+  //           "Content-Type": "application/json; charset=UTF-8",
+  //           Accept: "application/json; charset=UTF-8",
+  //         }),
+  //         signal: abortController.signal,
+  //       })
+  //       .then(async (response) => {
+  //         const data = await response.json();
+  //         console.log(response);
+
+  //         if (!response.ok) {
+  //           // get error message from body or default to response statusText
+  //           const error = (data && data.message) || response.statusText;
+  //           return Promise.reject(error);
+  //         }
+
+  //         return data;
+  //       })
+  //       .then(
+  //         (result) => {
+  //           console.log("bani");
+  //           console.log("success");
+  //           setItems(result);
+  //         },
+  //         (error) => {
+  //           if (error.name === "AbortError") return;
+  //           console.log("err get=", error);
+  //           throw error;
+  //         }
+  //       );
+  //     return () => {
+  //       abortController.abort();
+  //       // stop the query by aborting on the AbortController on unmount
+  //     };
+  //   }
+  // }, []);
 
   // handleSearch - start
   const [searchInput, setSearchInput] = useState("");
@@ -148,9 +195,9 @@ export default function GoalsTable() {
                       padding={item.disablePadding ? "none" : "normal"}
                       sx={{ fontWeight: 600 }}
                     >
-                        {" "}
-                        {item.label}
-                      </TableCell>
+                      {" "}
+                      {item.label}
+                    </TableCell>
                   )
                 );
               })}
@@ -199,6 +246,10 @@ export default function GoalsTable() {
           setRowsPerPage(parseInt(event.target.value, 10));
           setPage(0);
         }}
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
+        }
+        labelRowsPerPage="מספר שורות להציג:"
       />
     </Paper>
   );

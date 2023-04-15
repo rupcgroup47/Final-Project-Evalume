@@ -31,6 +31,8 @@ export default function MyEvalues() {
   const [items, setItems] = useState(evalues);
   const [, dispatch] = useMaterialUIController();
 
+  
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   useEffect(() => {
@@ -52,7 +54,9 @@ export default function MyEvalues() {
               padding={tableHead.disablePadding ? "none" : "normal"}
               sx={{ fontWeight: 600 }}
             >
-              {tableHead.label}
+              <TableCell align="left" >
+                {tableHead.label}
+              </TableCell>
             </TableRow>
             <TableRow height="50px" />
           </TableHead>
@@ -64,7 +68,7 @@ export default function MyEvalues() {
                 sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
                 hover
               >
-                {" "}
+                {/* {" "} */}
                 <TableCell align="left" >
                   {console.log(evalue.name)}
                   {evalue.name}
@@ -106,6 +110,10 @@ export default function MyEvalues() {
           setRowsPerPage(parseInt(event.target.value, 5));
           setPage(0);
         }}
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
+        }
+        labelRowsPerPage="מספר שורות להציג:"
       />
     </Paper>
   );
