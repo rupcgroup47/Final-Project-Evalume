@@ -35,7 +35,7 @@ const WaitingEvalues = ({ data }) => {
             <TableCell style={{ width: "25%" }}>{row.date}</TableCell>
             <TableCell style={{ width: "25%" }}>{row.status}</TableCell>
             <TableCell style={{ width: "25%" }}>
-              {row.status === "ממתין למישוב מנהל" ? (
+              {row.status === "ממתין למישוב מנהל" ? (//send current step according to which form i redirect to
                 <Link to="/ManagerEvalues" state={adminStep}>
                   מעבר לשאלון
                 </Link>
