@@ -26,7 +26,7 @@ function ManagerEvalues() {
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep}/>
-      {currentStep === 1 && <SurveyForm/>}
+      {currentStep === 1 && <SurveyForm employeeId={chosenEmployee} employeesManager={userId} step={currentStep}/>}
       {currentStep === 2 && <Feedback employeeId={chosenEmployee} managerId={userId}/>}
       {/* <SurveyForm /> */}
     </Container>
