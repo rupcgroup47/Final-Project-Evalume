@@ -91,18 +91,29 @@ namespace Final_Server.Models
             }
         }
 
-        public static List<Object> ReadQuesByEvaluId(int questionnaireNum) //gets the questions that part of this corrent evaluQues
+        public static Object ReadQuesByEvaluId(int questionnaireNum) //gets the questions that part of this corrent evaluQues
         {
             DBservices dbs = new DBservices();
             List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetQuesByEvaluId(questionnaireNum);
-            var maxGroup = tempQustionList.Max(X => X.QuesGroup_ID);
+            int counter = 0;
+            int currentNumber = 0;
+            List<int> quesTypeOptions = new List<int>();
+            foreach (Rel_Questions_EvaluQues item in tempQustionList)
+            {
+                if (currentNumber != item.QuesGroup_ID)
+                {
+                    currentNumber = item.QuesGroup_ID;
+                    quesTypeOptions.Add(currentNumber);
+                    counter++;
+                }
+            }
             List<Object> QuestionsList = new List<Object>();
-            for (int i = 1; i <= maxGroup; i++)
+            for (int i = 0; i < counter; i++)
             {
                 List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
                 foreach (Rel_Questions_EvaluQues item in tempQustionList)
                 {
-                    if (item.QuesGroup_ID == i)
+                    if (item.QuesGroup_ID == quesTypeOptions[i])
                     {
                         tmpList.Add(item);
                     }
@@ -122,14 +133,18 @@ namespace Final_Server.Models
 
                 QuestionsList.Add(new
                 {
-                    QuestionnaireNum = tmpList[0].QuestionnaireNum,
                     QuesGroup_ID = tmpList[0].QuesGroup_ID,
                     QuesGroup_Desc = tmpList[0].QuesGroup_Desc,
                     Questions = Questions,
                 });
             }
+            Object evaleQuesObject = (new
+            {
+                QuestionnaireNum = tempQustionList[0].QuestionnaireNum,
+                QuestionsList = QuestionsList,
+            });
 
-            return QuestionsList;
+            return evaleQuesObject;
         }
 
         static public int insertNewForm(dynamic newForm)

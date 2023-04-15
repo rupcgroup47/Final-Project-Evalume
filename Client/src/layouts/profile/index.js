@@ -8,7 +8,7 @@ import { MainStateContext } from "App";
 import { useMaterialUIController, setDirection } from "context";
 import OpenEvaluation from "./components/Header/openEvaluation";
 // Data
-import ProfileAlerts from "./data/ProfileAlerts";
+import ProfileAlerts from "./components/ProfileAlerts";
 import ProfileGrid from "./components/ProfileGrid";
 function Overview() {
   const [, dispatch] = useMaterialUIController();

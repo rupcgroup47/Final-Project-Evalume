@@ -8,7 +8,7 @@ import MDTypography from "components/MDTypography";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Dialog, DialogContent, Button } from "@mui/material";
-import WaitingEvalues from "components/ProfileTables/WaitingEvalues";
+import WaitingEvalues from "./ProfileTables/WaitingEvalues";
 import Card from "@mui/material/Card";
 
 export default function ProfileAlerts(props) {
@@ -16,21 +16,21 @@ export default function ProfileAlerts(props) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [data, setData] = useState([
     {
-      id: 1,
+      id: 1,//user id
       name: 'שיר זיו',
       date: '2022-03-01',
       status:"ממתין למישוב מנהל",
       link: '/managerEvalues'
     },
     {
-      id: 2,
+      id: 2,//user id
       name: 'נועה פרקש',
       date: '2022-04-15',
       status:"ממתין למישוב מנהל",
       link: '/managerEvalues'
     },
     {
-      id: 3,
+      id: 3,//user id
       name: 'יהל שבח',
       date: '2022-05-20',
       status:"ממתין למישוב משותף",

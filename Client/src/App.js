@@ -57,7 +57,7 @@ import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
+import EvalueContextProvider from "context/evalueVariables";
 export const MainStateContext = createContext();
 
 export default function App() {
@@ -206,6 +206,7 @@ export default function App() {
 
   return (
     <MainStateContext.Provider value={value}>
+      <EvalueContextProvider>
       {direction === "rtl" ? (
         <CacheProvider value={rtlCache}>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -257,6 +258,7 @@ export default function App() {
           </Routes>
         </ThemeProvider>
       )}
+      </EvalueContextProvider>
     </MainStateContext.Provider>
   );
 }
