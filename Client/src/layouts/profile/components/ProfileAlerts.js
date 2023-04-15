@@ -16,13 +16,6 @@ export default function ProfileAlerts(props) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [data, setData] = useState([
     {
-      id: 1,//user id
-      name: 'שיר זיו',
-      date: '2022-03-01',
-      status:"ממתין למישוב מנהל",
-      link: '/managerEvalues'
-    },
-    {
       id: 2,//user id
       name: 'נועה פרקש',
       date: '2022-04-15',
@@ -30,10 +23,10 @@ export default function ProfileAlerts(props) {
       link: '/managerEvalues'
     },
     {
-      id: 3,//user id
-      name: 'יהל שבח',
+      id: 14,//user id
+      name: 'דורית שבח',
       date: '2022-05-20',
-      status:"ממתין למישוב משותף",
+      status:"ממתין למישוב מנהל",
       link: '/managerEvalues'
     }
   ]);

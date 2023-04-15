@@ -47,7 +47,7 @@ import RadioButtons from "./survey-component/RadioButtons";
 // ];
 
 
-export default function surveyForm({ userNum, employeesManager, evalu_Part_Typ, questionsResp, questionnaireNum }) {
+export default function surveyForm({ userNum, employeesManager, evalu_Part_Type, questionsResp, questionnaireNum }) {
   const [expanded, setExpanded] = useState(1);
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
@@ -58,7 +58,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Typ, 
   const apiEvaluationQues = "https://localhost:7079/EvaluationAnswers";
   const totalQuestions = flatQuestions.length;//Checking how many questions there are in the array to make sure all the questions were answered at the end
   // const surveyId=questionnaireNum;
-  const [finalSelfEvaluation,setFinalSelfEvaluation] = useState();
+  const [finalSelfEvaluation, setFinalSelfEvaluation] = useState();
   const criterias = [
     "לא רלוונטי לתפקיד",
     "לא עומד בציפיות",
@@ -139,74 +139,81 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Typ, 
   function sendDataToServer() {
     const answers = items.map(({ id, ...rest }) => rest);
     setItems(answers);
-    if(evalu_Part_Typ === 0) {//If the input is self evaluation then the object that will be returned is that the employee filled in and evalue himself
-      return { questionnaireNum, userNum, userNum,evalu_Part_Typ, answers };
-    } else if(evalu_Part_Typ===1){
-      return { questionnaireNum, employeesManager, userNum,evalu_Part_Typ, answers };// employees manager is the current user which evalue the employee id 
+    if (evalu_Part_Type === 0) {//If the input is self evaluation then the object that will be returned is that the employee filled in and evalue himself
+      return { questionnaireNum, userNum, userNum, evalu_Part_Type, answers };
+    } else if (evalu_Part_Type === 1) {
+      return { questionnaireNum, employeesManager, userNum, evalu_Part_Type, answers };// employees manager is the current user which evalue the employee id 
 
     }
   }
 
-    // Post a new finished Evaluation using Post api
-    useEffect(() => {
-      const abortController = new AbortController();
-      console.log(finalSelfEvaluation);
-      if (finalSelfEvaluation !== undefined) {
-        console.log("hereagain");
-        fetch(
-          apiEvaluationQues,
-          {
-            method: "POST",
-            headers: new Headers({
-              "Content-Type": "application/json; charset=UTF-8",
-              Accept: "application/json; charset=UTF-8",
-            }),
-            body: JSON.stringify(finalSelfEvaluation),
-            signal: abortController.signal,
-          })
-          .then(async response => {
-            const data = await response.json();
-            console.log(response);
-  
-            if (!response.ok) {
-              // get error message from body or default to response statusText
-              const error = (data && data.message) || response.statusText;
-              return Promise.reject(error);
-            }
-  
-            return data;
-          })
-          .then(
-            (result) => {
-              console.log("success",result);
+  // Post a new finished Evaluation using Post api
+  useEffect(() => {
+    const abortController = new AbortController();
+    console.log(finalSelfEvaluation);
+    if (finalSelfEvaluation !== undefined) {
+      console.log("hereagain");
+      fetch(
+        apiEvaluationQues,
+        {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: JSON.stringify(finalSelfEvaluation),
+          signal: abortController.signal,
+        })
+        .then(async response => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success", result);
+            if (evalu_Part_Type === 0) {
               setMsg("ענית על כל השאלות, מנהל ייצור איתך קשר לפגישת הערכה");
               setRouteMsg("חזרה לדף הבית");
               setShowCloseDialog((e) => !e); // Error dialog message
-            },
-            (error) => {
-              if (error.name === 'AbortError') return;
-              console.log("err get=", error);
-              swal({
-                title: "קרתה תקלה!",
-                text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-                icon: "error",
-                button: "סגור"
-              });
-              throw error;
             }
-          );
-        return () => {
-          abortController.abort();
-          // stop the query by aborting on the AbortController on unmount
-        };
+            if (evalu_Part_Type === 1) {
+              setMsg("ענית על כל השאלות, זה הזמן לתאם פגישת הערכה");
+              setRouteMsg("חזרה לדף הבית");
+              setShowCloseDialog((e) => !e); // Error dialog message
+            }
+          },
+          (error) => {
+            if (error.name === 'AbortError') return;
+            console.log("err get=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
       };
-    }, [finalSelfEvaluation]);
+    };
+  }, [finalSelfEvaluation]);
 
   const onError = (errors, event) => {
     event.preventDefault();
     console.log(errors, event);
   };
-  console.log(items);
+  // console.log(items);
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
       {questionsResp.map(({ quesGroup_ID, quesGroup_Desc, questions }) => (
@@ -265,7 +272,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Typ, 
                     numericAnswer={
                       items.length > 0
                         ? items?.find((item) => item.id === "q-" + quesGroup_ID + "-" + questionNum)
-                            ?.numericAnswer
+                          ?.numericAnswer
                         : ""
                     }
                   />
