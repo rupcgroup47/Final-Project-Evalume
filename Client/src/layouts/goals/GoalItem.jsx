@@ -1,25 +1,9 @@
-/*
-This is a React functional component that renders a table row with user information. The component takes in several props:
-
-user: an object containing user information (such as first name, last name, email, gender, department, and job).
-tableHead: an array of objects that define the table header, including which columns to show.
-onRemoveButtonClick: a function to be called when the "Delete" button is clicked.
-
-The component uses the useState hook to manage the state of the showCloseDialog variable, which controls whether or not the "Delete" confirmation dialog is shown.
-
-The component then renders a TableRow component with several TableCell components containing user information. The IconButton components with the "Edit" and "Delete" icons allow the user to edit or delete the user information. Clicking the "Delete" button sets the showCloseDialog state to true, which shows the "Delete" confirmation dialog.
-
-The CloseDialog component is rendered outside of the TableRow component, and is conditionally shown when showCloseDialog is true. The CloseDialog component shows a confirmation dialog asking the user if they are sure they want to delete the user, and provides two buttons: "Cancel" and "Delete". If the user clicks the "Delete" button, the onRemoveButtonClick function is called (which presumably removes the user from the table), and showCloseDialog is set to false, hiding the dialog.
-*/
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
@@ -81,17 +65,6 @@ export default function GoalItem({
                       <TableCell align="right">הושלם?</TableCell>
                     </TableRow>
                   </TableHead>
-                  {/* <TableBody>
-                    {rowGoals.history.map((historyRow) => (
-                      <TableRow key={historyRow.date}>
-                        <TableCell component="th" scope="row" align="right" style={{display: "-webkit-inline-box"}}>
-                          {historyRow.date}
-                        </TableCell>
-                        <TableCell align="right" style={{display: "-webkit-inline-box"}}>{historyRow.customerId}</TableCell>
-                        <TableCell align="right" style={{display: "-webkit-inline-box"}}>{historyRow.amount}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody> */}
                 </Table>
               </Box>
             </Collapse>

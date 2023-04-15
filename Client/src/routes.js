@@ -40,7 +40,6 @@ import Dashboard from "layouts/dashboard";
 import Users from "layouts/users";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
-import SystemInfo from "layouts/info/SystemInfo";
 import SignIn from "layouts/authentication/sign-in";
 import Goals from "layouts/goals/Goals";
 import Evaluations from "layouts/evaluation";

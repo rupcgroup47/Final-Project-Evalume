@@ -38,7 +38,6 @@ import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
-import SystemInfo from "layouts/info/SystemInfo";
 // Material Dashboard 2 React context
 import {
   useMaterialUIController,
@@ -182,11 +181,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       />
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
-        <LinkDom to="layouts/info/SystemInfo">
+        {/* <LinkDom to="layouts/info/SystemInfo"> */}
           <MDButton rel="noreferrer" variant="gradient" color={sidenavColor} fullWidth>
             מידע למשתמש
           </MDButton>
-        </LinkDom>
+        {/* </LinkDom> */}
       </MDBox>
     </SidenavRoot>
   );

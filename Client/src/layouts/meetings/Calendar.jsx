@@ -48,7 +48,7 @@ function MeetingCalendar() {
       if (selectedDate === null) {
         return [];
       }
-      const inTheSameDayMeetings = meetings.filter((meeting) => {
+      const inTheSameDayMeetings = meetings.filter((meeting) => {//show all meetings schedule in the same day
         console.log(meeting);
         const d1 = new Date(selectedDate);
         const d2 = new Date(meeting.date);
