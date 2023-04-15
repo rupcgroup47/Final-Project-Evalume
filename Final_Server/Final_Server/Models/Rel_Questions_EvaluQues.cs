@@ -9,6 +9,7 @@ namespace Final_Server.Models
         bool quesType;
         DateTime quesLimitDate = new DateTime();
         int roleGroup_Type;
+        int evalu_Part_Type;
 
         int questionNum;
         string quesContent;
@@ -16,6 +17,9 @@ namespace Final_Server.Models
         int quesGroup_ID;
         string quesGroup_Desc;
         bool groupType; //define if the quesGroup belongs to employee or manager
+
+        int numericAnswer;
+        string verbalAnswer;
 
         string userEmail;
         int userNum;
@@ -57,6 +61,9 @@ namespace Final_Server.Models
 
         public DateTime QuesLimitDate { get => quesLimitDate; set => quesLimitDate = value; }
         public int QuesInsertDate { get => quesInsertDate; set => quesInsertDate = value; }
+        public int Evalu_Part_Type { get => evalu_Part_Type; set => evalu_Part_Type = value; }
+        public int NumericAnswer { get => numericAnswer; set => numericAnswer = value; }
+        public string VerbalAnswer { get => verbalAnswer; set => verbalAnswer = value; }
 
         public static List<Object> ReadEvaluQuesByType(bool quesType, int roleGroup_Type) //gets the all the EvaluQues that fit the QuesType and RoleType
         {
@@ -188,7 +195,22 @@ namespace Final_Server.Models
             });
 
             return FinalList;
-        } 
+        }
+
+
+        //static public int insertNewAnswers(int userNum, int evalu_Part_Type, int questionnaireNum, List<dynamic> answers) //Insert the EvaluQues details, filled by employee or manager (Evalu parts = 0 or 1)
+        //{
+        //    try
+        //    {
+        //        DBservices dbs = new DBservices();
+        //        return dbs.InserEvaluationAnswers(userNum, evalu_Part_Type, questionnaireNum, answers);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
     }
 }
