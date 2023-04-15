@@ -27,7 +27,7 @@ namespace Final_Server.Controllers
         }
 
         [HttpGet("/questionnaireNum")]
-        public IEnumerable<Object> GetQuesByEvaluId(int questionnaireNum) //gets the questions that part of this corrent evaluQues
+        public Object GetQuesByEvaluId(int questionnaireNum) //gets the questions that part of this corrent evaluQues
         {
             try
             {
