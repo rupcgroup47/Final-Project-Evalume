@@ -38,7 +38,7 @@ export default function ProfileAlerts(props) {
   };
   return (
     <>
-    <Card sx={{ height: "100%", backgroundColor: "#e6f2ff", paddingTop:"10%", width:"fit-content"}}>
+    <Card sx={{ height: "100%", backgroundColor: "#e6f2ff", paddingTop:"80px", width:"fit-content"}}>
       <MDBox p={2}>
         {alerts.map((item, index) => (
           // <MDTypography variant="h2" color="secondary" key={index} component={Link} to={item.route}>

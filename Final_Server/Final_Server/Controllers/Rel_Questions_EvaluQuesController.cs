@@ -55,6 +55,10 @@ namespace Final_Server.Controllers
             {
                 return Rel_Questions_EvaluQues.ReadEvaluQuesByUserId(userNum);
             }
+            catch (ArgumentException ex)
+            {
+                return (new {exption=ex.Message});
+            }
             catch (Exception ex)
             {
                 throw ex;

@@ -101,58 +101,70 @@ namespace Final_Server.Models
 
         public static Object ReadQuesByEvaluId(int questionnaireNum) //gets the questions that part of this corrent evaluQues
         {
-            DBservices dbs = new DBservices();
-            List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetQuesByEvaluId(questionnaireNum);
-            int counter = 0;
-            int currentNumber = 0;
-            List<int> quesTypeOptions = new List<int>();
-            foreach (Rel_Questions_EvaluQues item in tempQustionList)
+            try
             {
-                if (currentNumber != item.QuesGroup_ID)
-                {
-                    currentNumber = item.QuesGroup_ID;
-                    quesTypeOptions.Add(currentNumber);
-                    counter++;
-                }
-            }
-            List<Object> QuestionsList = new List<Object>();
-            for (int i = 0; i < counter; i++)
-            {
-                List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
+                DBservices dbs = new DBservices();
+                List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetQuesByEvaluId(questionnaireNum);
+                int counter = 0;
+                int currentNumber = 0;
+                List<int> quesTypeOptions = new List<int>();
                 foreach (Rel_Questions_EvaluQues item in tempQustionList)
                 {
-                    if (item.QuesGroup_ID == quesTypeOptions[i])
+                    if (currentNumber != item.QuesGroup_ID)
                     {
-                        tmpList.Add(item);
+                        currentNumber = item.QuesGroup_ID;
+                        quesTypeOptions.Add(currentNumber);
+                        counter++;
                     }
                 }
-
-                List<Object> Questions = new List<Object>();
-
-                foreach (Rel_Questions_EvaluQues item in tmpList)
+                List<Object> QuestionsList = new List<Object>();
+                for (int i = 0; i < counter; i++)
                 {
-                    Questions.Add(new
+                    List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
+                    foreach (Rel_Questions_EvaluQues item in tempQustionList)
                     {
-                        QuestionNum = item.QuestionNum,
-                        QuesContent = item.QuesContent,
+                        if (item.QuesGroup_ID == quesTypeOptions[i])
+                        {
+                            tmpList.Add(item);
+                        }
+                    }
 
+                    List<Object> Questions = new List<Object>();
+
+                    foreach (Rel_Questions_EvaluQues item in tmpList)
+                    {
+                        Questions.Add(new
+                        {
+                            QuestionNum = item.QuestionNum,
+                            QuesContent = item.QuesContent,
+
+                        });
+                    }
+
+                    QuestionsList.Add(new
+                    {
+                        QuesGroup_ID = tmpList[0].QuesGroup_ID,
+                        QuesGroup_Desc = tmpList[0].QuesGroup_Desc,
+                        Questions = Questions,
                     });
                 }
-
-                QuestionsList.Add(new
+                Object evaleQuesObject = (new
                 {
-                    QuesGroup_ID = tmpList[0].QuesGroup_ID,
-                    QuesGroup_Desc = tmpList[0].QuesGroup_Desc,
-                    Questions = Questions,
+                    QuestionnaireNum = tempQustionList[0].QuestionnaireNum,
+                    QuestionsList = QuestionsList,
                 });
-            }
-            Object evaleQuesObject = (new
-            {
-                QuestionnaireNum = tempQustionList[0].QuestionnaireNum,
-                QuestionsList = QuestionsList,
-            });
 
-            return evaleQuesObject;
+                return evaleQuesObject;
+            }
+            catch (ArgumentException ex)
+            {
+                throw ex;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         static public int insertNewForm(dynamic newForm)
