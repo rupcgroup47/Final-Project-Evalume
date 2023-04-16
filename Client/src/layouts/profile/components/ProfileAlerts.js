@@ -42,13 +42,13 @@ export default function ProfileAlerts(props) {
       <MDBox p={2}>
         {alerts.map((item, index) => (
           // <MDTypography variant="h2" color="secondary" key={index} component={Link} to={item.route}>
-          <MDTypography variant="h2" color="secondary" key={index} onClick={handleTypographyClick}>
+          <MDTypography variant="h2" color="secondary" key={index}>
             {index === 0 ? (
-              <AssignmentIndIcon fontSize="large" />
+              <AssignmentIndIcon fontSize="large"/>
             ) : index === 1 ? (
               <AccessAlarmIcon fontSize="large" />
             ) : index === 2 ? (
-              <CalendarToday fontSize="large" />
+              <CalendarToday onClick={handleTypographyClick} fontSize="large" />
             ) : (
               <Subject fontSize="large" />
             )}
