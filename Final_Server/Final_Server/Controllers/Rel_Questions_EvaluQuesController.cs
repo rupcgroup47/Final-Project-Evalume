@@ -48,12 +48,12 @@ namespace Final_Server.Controllers
         //{
         //}
 
-        [HttpGet("/userNum")]
-        public Object GetEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
+        [HttpGet("/userNum/evalu_Part_Type")]
+        public Object GetEvaluQuesByUserId(int userNum, int evalu_Part_Type) //get the appropriate EvaluQues for the current employee
         {
             try
             {
-                return Rel_Questions_EvaluQues.ReadEvaluQuesByUserId(userNum);
+                return Rel_Questions_EvaluQues.ReadEvaluQuesByUserId(userNum, evalu_Part_Type);
             }
             catch (ArgumentException ex)
             {
@@ -74,7 +74,7 @@ namespace Final_Server.Controllers
 
         // POST api/<Rel_Questions_EvaluQuesController>
         [HttpPost]
-        public IActionResult Post([FromBody] JsonElement data) // post a new evaluation form to the database
+        public IActionResult Post([FromBody] JsonElement data) // post a new evaluation to the database
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Final_Server.Controllers
 
 
         [HttpPost("/EvaluationAnswers")]
-        public IActionResult PostEmployeeAnswers([FromBody] JsonElement data) // post a new evaluation form by employee\manager the database
+        public IActionResult PostEmployeeAnswers([FromBody] JsonElement data) // post a new evaluation form by employee\manager to the database
         {
             try
             {
