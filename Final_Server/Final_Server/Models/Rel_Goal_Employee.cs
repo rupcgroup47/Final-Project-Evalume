@@ -53,7 +53,7 @@
         public string DepName { get => depName; set => depName = value; }
         public int UserManager { get => userManager; set => userManager = value; }
 
-        public int InsertEmployeeGoal(int userNum, int goalNum, string goalStatus) //insert new goal to corent employee
+        public int InsertEmployeeGoal(int userNum, int goalNum, string goalStatus) //insert new goal to current employee
         {
             DBservices tmp = new DBservices();
             return tmp.InsertGoalToUser(userNum, goalNum, goalStatus);

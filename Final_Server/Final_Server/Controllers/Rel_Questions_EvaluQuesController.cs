@@ -159,50 +159,6 @@ namespace Final_Server.Controllers
         }
 
 
-        //[HttpPost("/EvaluationManagerAnswers")]
-        //public IActionResult PostManagerAnswers([FromBody] JsonElement data) // post a evaluation form by manager to the database
-        //{
-        //    try
-        //    {
-        //        JsonDocument document = JsonDocument.Parse(data.ToString());
-        //        JsonElement answers = document.RootElement.GetProperty("answers");
-
-
-        //        int userNum = Convert.ToInt32(data.GetProperty("userNum").GetInt32());
-        //        int evalu_Part_Type = Convert.ToInt32(data.GetProperty("evalu_Part_Type").GetInt32());
-        //        int questionnaireNum = Convert.ToInt32(data.GetProperty("questionnaireNum").GetInt32());
-
-        //        List<(int questionNum, int numericAnswer, string verbalAnswer)> answersList = new List<(int, int, string)>();
-
-        //        //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
-
-        //        foreach (JsonElement answersElement in answers.EnumerateArray())
-        //        {
-        //            int questionNum = Convert.ToInt32(answersElement.GetProperty("questionNum").GetInt32());
-        //            int numericAnswer = Convert.ToInt32(answersElement.GetProperty("numericAnswer").GetString());
-        //            string verbalAnswer = (answersElement.GetProperty("verbalAnswer").GetString()).ToString();
-
-        //            answersList.Add((questionNum, numericAnswer, verbalAnswer));
-
-        //        };
-
-        //        int numEffected = Rel_Questions_EvaluQues.insertNewManagerAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
-
-        //        if (numEffected != 0)
-        //        {
-        //            return Ok("Answers succesfully inserted");
-        //        }
-        //        else
-        //        {
-        //            return NotFound("Error in insert this Answers");
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
         [HttpPost("/EvaluationSummeryAnswers")]
         public IActionResult PostSummaryAnswers([FromBody] JsonElement data) // post a evaluation summery ques by manager and employee
         {
@@ -219,8 +175,6 @@ namespace Final_Server.Controllers
                 string employeeOpinion = (data.GetProperty("employeeOpinion")).ToString();
 
                 List <int> goalsList = new List<int>();
-
-                //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
 
                 foreach (JsonElement answersElement in allGoals.EnumerateArray())
                 {

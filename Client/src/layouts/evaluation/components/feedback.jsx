@@ -22,24 +22,20 @@ import { EvalueContext } from "context/evalueVariables";
 
 registerLocale("he", he);
 
-export default function Feedback({ userNum, managerId }) {
+export default function Feedback({ userNum, managerId, questionnaireNum }) {
   const [, dispatch] = useMaterialUIController();
   const classes = useStyles();
   const { API } = useContext(EvalueContext);
-  const goalNames = [
-    { id: 1, name: "קורס אקסל" },
-    { id: 2, name: "קורס נגרות" },
-  ];
+  const [goalNames, setGoalNames] = useState([]);
 
   const [rows, setRows] = useState([]); //Format to display table
-  const [name, setName] = useState("");
+  const [goalName, setGoalName] = useState("");
   const [date, setDate] = useState();
   const [notFormattedDate, setNotFormattedData] = useState();
-  const [feedbackManager, setFeedbackManager] = useState("");
-  const [feedbackEmployee, setfeedbackEmployee] = useState("");
+  const [managerOpinion, setManagerOpinion] = useState("");
+  const [employeeOpinion, setEmployeeOpinion] = useState("");
   const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
   const [allGoals, setAllGoals] = useState([]); //Format to send to the server
-  const [questionnaireNum, setQuestionnaireNum] = useState(1);
   const evalu_Part_Type = 2;
   // Changing the direction to rtl
   useEffect(() => {
@@ -48,8 +44,113 @@ export default function Feedback({ userNum, managerId }) {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
+  // GET the all avaliable goals
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (evalu_Part_Type === 2) {
+      fetch(
+        API.apiGetAllGoals,
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          signal: abortController.signal,
+        })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            if (result.exption === "user has already filled his survey") {
+              console.log("not supposed to happand once the list come from the database");
+            }
+            else {
+              setGoalNames(result);
+            }
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err get=", error);
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, []);
+  console.log('id' + userNum);
+  // Post a new finished Evaluation process using Post api
+  useEffect(() => {
+    const abortController = new AbortController();
+    console.log(JSON.stringify(finalFeedbackForm));
+    if (finalFeedbackForm !== null) {
+      console.log("tbb");
+      // fetch(
+      //   API.apiPostFinishAll,
+      //   {
+      //     method: "POST",
+      //     headers: new Headers({
+      //       "Content-Type": "application/json; charset=UTF-8",
+      //       Accept: "application/json; charset=UTF-8",
+      //     }),
+      //     body: JSON.stringify(finalFeedbackForm),
+      //     signal: abortController.signal,
+      //   })
+      //   .then(async response => {
+      //     const data = await response.json();
+      //     console.log(response);
+
+      //     if (!response.ok) {
+      //       // get error message from body or default to response statusText
+      //       const error = (data && data.message) || response.statusText;
+      //       return Promise.reject(error);
+      //     }
+
+      //     return data;
+      //   })
+      //   .then(
+      //     (result) => {
+      //       console.log("success", result);
+      //       setMsg("תהליך הערכה הסתיים בהצלחה!");
+      //       setRouteMsg("חזרה לדף הבית");
+      //       setShowCloseDialog((e) => !e); // Error dialog message
+
+      //     },
+      //     (error) => {
+      //       if (error.name === 'AbortError') return;
+      //       console.log("err get=", error);
+      //       swal({
+      //         title: "קרתה תקלה!",
+      //         text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+      //         icon: "error",
+      //         button: "סגור"
+      //       });
+      //       throw error;
+      //     }
+      //   );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    };
+  }, [finalFeedbackForm]);
+
   const handleNameChange = (event) => {
-    setName(event.target.value);
+    setGoalName(event.target.value);
   };
 
   const handleDateChange = (newValue) => {
@@ -60,16 +161,16 @@ export default function Feedback({ userNum, managerId }) {
 
   const handleAddRow = () => {
     ///adding new goal to employee
-    const selectedId = goalNames.find((option) => option.name === name)?.id; //checking the  id of the chosen goal
-    setRows([...rows, { name: name, date: date }]); //Format to display table
-    setAllGoals([...allGoals, { id: selectedId, date: date }]); //Format to send to the server
-    setName("");
+    const selectedId = goalNames.find((option) => option.goalName === goalName)?.goalNum; //checking the  id of the chosen goal
+    setRows([...rows, { goalName: goalName, date: date }]); //Format to display table
+    setAllGoals([...allGoals, { goalNum: selectedId, date: date }]); //Format to send to the server
+    setGoalName("");
     setDate("");
     console.log(allGoals);
   };
 
   function sendFeedbackToServer() {
-    return { questionnaireNum, managerId, userNum, evalu_Part_Type, feedbackEmployee, feedbackManager, allGoals };
+    return { questionnaireNum, userNum, evalu_Part_Type, employeeOpinion, managerOpinion, allGoals };
   }
 
   function handleSubmit() {
@@ -94,8 +195,8 @@ export default function Feedback({ userNum, managerId }) {
               }}
               multiline
               maxRows={3}
-              value={feedbackManager}
-              onChange={(event) => setFeedbackManager(event.target.value)}
+              value={managerOpinion}
+              onChange={(event) => setManagerOpinion(event.target.value)}
             />
           </Box>
         </Grid>
@@ -109,8 +210,8 @@ export default function Feedback({ userNum, managerId }) {
               }}
               multiline
               maxRows={3}
-              value={feedbackEmployee}
-              onChange={(event) => setfeedbackEmployee(event.target.value)}
+              value={employeeOpinion}
+              onChange={(event) => setEmployeeOpinion(event.target.value)}
             />
           </Box>
         </Grid>{" "}
@@ -118,11 +219,11 @@ export default function Feedback({ userNum, managerId }) {
           <Typography textAlign="center">הצבת יעדים</Typography>
           <Box textAlign="center">
             <div>
-              <select value={name} onChange={handleNameChange}>
+              <select value={goalName} onChange={handleNameChange}>
                 <option value="">---בחירת יעד---</option>
                 {goalNames.map((goal) => (
-                  <option key={goal.id} value={goal.name}>
-                    {goal.name}
+                  <option key={goal.goalNum} value={goal.goalName}>
+                    {goal.goalName}
                   </option>
                 ))}
               </select>
@@ -152,7 +253,7 @@ export default function Feedback({ userNum, managerId }) {
                       index //render all the added goals
                     ) => (
                       <TableRow key={index}>
-                        <TableCell style={{ width: "50%" }}>{row.name}</TableCell>
+                        <TableCell style={{ width: "50%" }}>{row.goalName}</TableCell>
                         <TableCell style={{ width: "50%" }}>{row.date}</TableCell>
                       </TableRow>
                     )

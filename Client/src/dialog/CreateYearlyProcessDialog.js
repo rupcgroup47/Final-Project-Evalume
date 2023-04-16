@@ -79,6 +79,7 @@ const test = [
     ],
   }
 ];
+
 export default function CreateYearlyProcessDialog({
   open,
   setOpen,
@@ -128,35 +129,35 @@ export default function CreateYearlyProcessDialog({
         textAlign="center"
         width="60%"
       >
-         <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "whitesmoke",
-        overflow: "visible",
-        textAlign: "center",
-        padding:"30px"
-      }}
-    >
-        <Typography>בחירת שאלונים</Typography>
+        <Card
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: "whitesmoke",
+            overflow: "visible",
+            textAlign: "center",
+            padding: "30px"
+          }}
+        >
+          <Typography>בחירת שאלונים</Typography>
 
           <Notifications />
 
-      {testData.map((testObject, index) => (
-        <div key={index}>
-          <h4>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h4>
-          <select  key= {index} name={index} onChange={handleChange}>
-            <option value="">בחירת שאלון מתאים</option>
-            {testObject.forms.map((form) => (//Go through all the questionnaires appropriate for role type & group type
-              <option key={form.id} value={form.id}>שאלון {form.year} </option>
-            ))}
-          </select>
-        </div>
-      ))}
-        <Typography>בחירת תאריך סיום</Typography>
+          {testData.map((testObject, index) => (
+            <div key={index}>
+              <h4>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h4>
+              <select key={index} name={index} onChange={handleChange}>
+                <option value="">בחירת שאלון מתאים</option>
+                {testObject.forms.map((form) => (//Go through all the questionnaires appropriate for role type & group type
+                  <option key={form.id} value={form.id}>שאלון {form.year} </option>
+                ))}
+              </select>
+            </div>
+          ))}
+          <Typography>בחירת תאריך סיום</Typography>
 
-        <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
-      {/* </Box> */}</Card>
+          <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
+          {/* </Box> */}</Card>
       </Box>
       <Box textAlign="center" marginBottom={3}>
         <Grid container spacing={2} justifyContent="center">
