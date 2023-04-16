@@ -23,7 +23,7 @@ export const meetings = [
     {
       id: 4,
       title: "שיחת מישוב עם מאיה",
-      date: new Date(2023, 3, 17, 14, 0), // April 10, 2023 at 11:00 AM
+      date: new Date(2023, 3, 23, 14, 0), // April 10, 2023 at 11:00 AM
       time: "13:30",
       location: "חדר ישיבות א",
     },

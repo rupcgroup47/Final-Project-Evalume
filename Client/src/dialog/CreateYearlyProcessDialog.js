@@ -77,7 +77,7 @@ const test = [
         year: 4572,
       },
     ],
-  },
+  }
 ];
 export default function CreateYearlyProcessDialog({
   open,
@@ -86,37 +86,19 @@ export default function CreateYearlyProcessDialog({
   const [openProcess, setOpenProcess] = useState({});
   const [finishDate, setfinishDate] = useState(new Date());
   const [testData, setTestData] = useState(test);
-  const [selectedOptions, setSelectedOptions] = useState({});
-  const [lastSelectedOptions, setLastSelectedOptions] = useState([]);
+  const [selectedForms, setSelectedForms] = useState([]);//selected values for each select
 
-  const handleChange = (event) => {
+  const handleChange = (event) => {//called every time a select element changes, and it will update the selectedForms array with the new selected value
     const index = event.target.name;
-    const value = event.target.value;
-  
-    // Update the selectedOptions object
-    setSelectedOptions((prevState) => {
-      // If the index already exists in the object, update the value
-      if (prevState.hasOwnProperty(index)) {
-        return {
-          ...prevState,
-          [index]: value,
-        };
-      }
-      // Otherwise, add a new key-value pair to the object
-      else {
-        return {
-          ...prevState,
-          [index]: value,
-        };
-      }
-    });
+    const value = event.target.value;//form id
+    const newSelectedForms = [...selectedForms];
+    newSelectedForms[index] = value;
+    setSelectedForms(newSelectedForms);
   };
- 
   const handleFinish = () => {
-    // console.log(savedValues)
-    // const optionsArray = Object.values(selectedOptions);
-    // setLastSelectedOptions(optionsArray);
-    if (lastSelectedOptions.length != test.length) {
+    console.log(selectedForms)
+
+    if (selectedForms.length != test.length) {//Check that all questionnaires have been selected
       addNotification({
         title: "אזהרה",
         subtitle: "לא בחרת בכל האפשרויות",
@@ -125,7 +107,7 @@ export default function CreateYearlyProcessDialog({
         closeButton: "X",
       });
     } else {
-      setOpenProcess((prevObject) => ({ ...prevObject, lastSelectedOptions, date: finishDate }));
+      setOpenProcess((prevObject) => ({ ...prevObject, selectedForms, date: finishDate }));//Connecting the selected date and the set of questionnaires to one object
       console.log(openProcess);
       setOpen(false);
     }
@@ -160,19 +142,17 @@ export default function CreateYearlyProcessDialog({
 
           <Notifications />
 
-        <div>
       {testData.map((testObject, index) => (
         <div key={index}>
-          <h2>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h2>
+          <h4>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h4>
           <select  key= {index} name={index} onChange={handleChange}>
             <option value="">בחירת שאלון מתאים</option>
-            {testObject.forms.map((form) => (
-              <option key={form.id} value={form.year}>שאלון {form.year} </option>
+            {testObject.forms.map((form) => (//Go through all the questionnaires appropriate for role type & group type
+              <option key={form.id} value={form.id}>שאלון {form.year} </option>
             ))}
           </select>
         </div>
       ))}
-    </div>
         <Typography>בחירת תאריך סיום</Typography>
 
         <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
