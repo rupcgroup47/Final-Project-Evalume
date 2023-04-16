@@ -26,7 +26,7 @@ export default function ProfileAlerts(props) {
       id: 14,//user id
       name: 'דורית שבח',
       date: '2022-05-20',
-      status:"ממתין למישוב מנהל",
+      status:"ממתין למישוב משותף",
       link: '/managerEvalues'
     }
   ]);

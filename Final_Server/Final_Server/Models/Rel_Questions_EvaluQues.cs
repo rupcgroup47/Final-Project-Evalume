@@ -182,10 +182,10 @@ namespace Final_Server.Models
             }
         }
 
-        public static Object ReadEvaluQuesByUserId(int userNum) //get the appropriate EvaluQues for the current employee
+        public static Object ReadEvaluQuesByUserId(int userNum, int evalu_Part_Type) //get the appropriate EvaluQues for the current employee
         {
             DBservices dbs = new DBservices();
-            List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetEvaluQuesByUserId(userNum);
+            List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetEvaluQuesByUserId(userNum, evalu_Part_Type);
             int counter = 0;
             int currentNumber = 0;
             List<int> quesTypeOptions = new List<int>();
@@ -286,7 +286,7 @@ namespace Final_Server.Models
             }
         }
 
-        
+
     }
 }
 

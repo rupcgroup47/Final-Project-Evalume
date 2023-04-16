@@ -27,9 +27,9 @@ function ManagerEvalues() {
   useEffect(() => {
     const abortController = new AbortController();
     console.log(mainState);
-    if (mainState.mainState.userNum) {
+    if (currentStep === 1) {
       fetch(
-        API.evaluationApi + mainState.mainState.userNum,
+        API.evaluationApi + mainState.mainState.userNum + "&evalu_Part_Type=" + currentStep,
         {
           method: "GET",
           headers: new Headers({
@@ -83,7 +83,7 @@ function ManagerEvalues() {
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />
-      {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm}/>}
+      {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />}
       {currentStep === 2 && <Feedback userNum={chosenEmployee} managerId={userId} />}
       {/* <SurveyForm /> */}
     </Container>

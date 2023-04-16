@@ -24,7 +24,7 @@ function QuestionnaireForm() {
     const abortController = new AbortController();
     if (mainState.mainState.userNum) {
       fetch(
-        API.evaluationApi + mainState.mainState.userNum,
+        API.evaluationApi + mainState.mainState.userNum + "&evalu_Part_Type=" + evalu_Part_Type,
         {
           method: "GET",
           headers: new Headers({

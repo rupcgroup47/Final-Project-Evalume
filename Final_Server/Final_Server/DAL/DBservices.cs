@@ -1960,7 +1960,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method gets the all the EvaluQues that fit the QuesType and RoleType
     ////--------------------------------------------------------------------------------------------------
-    public List<Rel_Questions_EvaluQues> GetEvaluQuesByUserId(int userNum)
+    public List<Rel_Questions_EvaluQues> GetEvaluQuesByUserId(int userNum, int evalu_Part_Type)
     {
 
         SqlConnection con;
@@ -1976,7 +1976,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetUserEvaluQues("spCheckExistEvalu", con, userNum);            // create the command
+        cmd = CreateCommandWithSPGetUserEvaluQues("spCheckExistEvalu", con, userNum, evalu_Part_Type);            // create the command
 
         List<Rel_Questions_EvaluQues> rel_Ques = new List<Rel_Questions_EvaluQues>();
 
@@ -2031,7 +2031,7 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure for get with no conditions
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetUserEvaluQues(String spName, SqlConnection con, int userNum)
+    private SqlCommand CreateCommandWithSPGetUserEvaluQues(String spName, SqlConnection con, int userNum, int evalu_Part_Type)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -2045,7 +2045,7 @@ public class DBservices
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
         cmd.Parameters.AddWithValue("@UserNum", userNum); //insert all the parameters we got from the user
-
+        cmd.Parameters.AddWithValue("@Evalu_Part_Type", evalu_Part_Type);
 
         return cmd;
     }
