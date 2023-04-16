@@ -10,10 +10,10 @@ export default function OpenEvaluation() {
         color="white"
         size="large"
         sx={{
-          borderRadius: 50,
-          height: "100px",
-          width: "300px",
+          height: "60px",
+          width: "200px",
         }}
+        style={{ position:"absolute", left:"50px", top: "30px", borderRadius:"20px"}}
         onClick={() => setShowCreateOpenEvalueDialog((e) => !e)}
       >
         פתיחת תהליך הערכה

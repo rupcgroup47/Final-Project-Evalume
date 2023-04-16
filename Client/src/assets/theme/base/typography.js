@@ -28,18 +28,18 @@ import pxToRem from "assets/theme/functions/pxToRem";
 const { dark } = colors;
 
 const baseProperties = {
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  fontWeightLighter: 100,
-  fontWeightLight: 300,
-  fontWeightRegular: 400,
-  fontWeightMedium: 600,
-  fontWeightBold: 700,
-  fontSizeXXS: pxToRem(10.4),
-  fontSizeXS: pxToRem(12),
-  fontSizeSM: pxToRem(14),
-  fontSizeMD: pxToRem(16),
-  fontSizeLG: pxToRem(18),
-  fontSizeXL: pxToRem(20),
+  fontFamily: '"Rubik","Roboto", "Helvetica", "Arial", sans-serif',
+  fontWeightLighter: 200,
+  fontWeightLight: 400,
+  fontWeightRegular: 500,
+  fontWeightMedium: 700,
+  fontWeightBold: 800,
+  fontSizeXXS: pxToRem(12),
+  fontSizeXS: pxToRem(14),
+  fontSizeSM: pxToRem(16),
+  fontSizeMD: pxToRem(18),
+  fontSizeLG: pxToRem(20),
+  fontSizeXL: pxToRem(22),
   fontSize2XL: pxToRem(24),
   fontSize3XL: pxToRem(30),
 };
@@ -84,19 +84,19 @@ const typography = {
   },
 
   h4: {
-    fontSize: pxToRem(24),
+    fontSize: pxToRem(26),
     lineHeight: 1.375,
     ...baseHeadingProperties,
   },
 
   h5: {
-    fontSize: pxToRem(20),
+    fontSize: pxToRem(24),
     lineHeight: 1.375,
     ...baseHeadingProperties,
   },
 
   h6: {
-    fontSize: pxToRem(16),
+    fontSize: pxToRem(20),
     lineHeight: 1.625,
     ...baseHeadingProperties,
   },
