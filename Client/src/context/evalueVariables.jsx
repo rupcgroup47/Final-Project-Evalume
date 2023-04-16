@@ -6,8 +6,8 @@ export const EvalueContext = createContext();
 export default function EvalueContextProvider({ children }) {
 
   const [API, setAPI] = useState({
-    evaluationApi: "https://localhost:7079/userNum/evalu_Part_Type?userNum=",
-    // evaluationApi: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/evalu_Part_Type?userNum=", //server
+    // evaluationApi: "https://localhost:7079/userNum/evalu_Part_Type?userNum=",
+    evaluationApi: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/evalu_Part_Type?userNum=", //server
     // apiEvaluationQues: "https://localhost:7079/EvaluationAnswers",
     apiEvaluationQues: "https://proj.ruppin.ac.il/cgroup47/prod/EvaluationAnswers", //server
     // apiUserUrl: "https://localhost:7079/api/Employee",

@@ -229,7 +229,10 @@ export default function App() {
             <Routes>
               {getRoutes(routes)}
               {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
+              {/* if main state (user logged in) initialize go to profile */}
               {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
+                            {/* if  user  not logged in  go to sign in */}
+
             </Routes>
           </ThemeProvider>
         </CacheProvider>
