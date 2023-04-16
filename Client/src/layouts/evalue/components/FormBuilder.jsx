@@ -66,8 +66,6 @@ export default function FormBuilder({ setMyArray }) {
     ); // group by titles and questions
     console.log(groupedData);
     setMyArray(groupedData);
-    // setMsg("סיימת למלא את טופס ההערכה");
-    // setRouteMsg("חזרה לדף הבית");
   };
   
   return (

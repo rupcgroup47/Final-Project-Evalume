@@ -70,8 +70,6 @@ export default function HeaderFrom(props) {
   };
 
   const handleButtonClick = () => {
-    // console.log(roleGroupType)
-    // console.log(roleType)
     if (roleGroupType !== undefined && roleType !== undefined) {
       const selectedTypes = {
         groupType: roleGroupType,
@@ -79,7 +77,6 @@ export default function HeaderFrom(props) {
       };
       setChosenParameters(selectedTypes);//pass data to index 
       setChosenTypes(selectedTypes);
-      // console.log(selectedTypes);
       setShowSelect(true);
       setShowButton(true);
       setSendExistForms(true);

@@ -14,21 +14,17 @@ import { QuestionsContext } from "context/globalVariables";
 import swal from "sweetalert";
 import { useLocation } from "react-router-dom";
 import FinishDialog from "./components/FinishDialog";
+import { EvalueContext } from "context/evalueVariables";
 // import {featchAPI} from "fetchAPI";
 
 export default function Evalues() {
   const [, dispatch] = useMaterialUIController();
   const [showFormComponent, setShowFormComponent] = useState(false);
-  // const [surveyId, setSurveyId] = useState("1")
   const [myCheckedArray, setMyArray] = useState([]);
   const [myFormTypes, setMyObject] = useState({});
   const myNewForm = { myCheckedArray, myFormTypes }; // The final form the user created - Object with roleType, groupType and the checked answers
   const [showCreateQuestionDialog, setShowCreateQuestionDialog] = useState(false);
-  const apiQuestionrUrl = "https://localhost:7079/api/Question";
-  const apiEvaluationQues = "https://localhost:7079/api/Rel_Questions_EvaluQues";
-  const apiQuestionnaire = "https://localhost:7079/quesType/roleGroup_Type?quesType=";
-  const apiQuestionnaireQuestiones = "https://localhost:7079/questionnaireNum?questionnaireNum="
-  // const { mainState, setMainState } = useContext(MainStateContext);
+  const { API } = useContext(EvalueContext);
   const [globalQuestionArray, setGlobalQuestionsArray] = useState([]);
   const [tempQuestionArray, settempQuestionArray] = useState([]);
   const [postQuestion, setPostQuestion] = useState({});
@@ -46,14 +42,16 @@ export default function Evalues() {
   useEffect(() => {
     const abortController = new AbortController();
     if (!isOldForms) {
-      fetch(apiQuestionrUrl, {
-        method: "GET",
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "application/json; charset=UTF-8",
-        }),
-        signal: abortController.signal,
-      })
+      fetch(
+        API.apiQuestionrUrl,
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          signal: abortController.signal,
+        })
         .then(async (response) => {
           const data = await response.json();
           console.log(response);
@@ -87,17 +85,18 @@ export default function Evalues() {
   // Post a new questions using Post api
   useEffect(() => {
     const abortController = new AbortController();
-    // console.log("postQuestion", postQuestion);
     if (postQuestion.quesContent !== undefined) {
-      fetch(apiQuestionrUrl, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "application/json; charset=UTF-8",
-        }),
-        body: JSON.stringify(postQuestion),
-        signal: abortController.signal,
-      })
+      fetch(
+        API.apiQuestionrUrl,
+        {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: JSON.stringify(postQuestion),
+          signal: abortController.signal,
+        })
         .then(async (response) => {
           const data = await response.json();
           console.log(response);
@@ -113,7 +112,6 @@ export default function Evalues() {
         .then(
           (result) => {
             console.log("success");
-            // console.log(result);
             const index = tempQuestionArray.findIndex(
               (obj) => obj.quesGroup_Desc === postQuestion.quesGroup_Desc
             );
@@ -155,11 +153,9 @@ export default function Evalues() {
   // Post a new Evaluation using Post api
   useEffect(() => {
     const abortController = new AbortController();
-    // console.log("myCheckedArray", myCheckedArray);
     if (myCheckedArray.length !== 0) {
-      // console.log("hereagain");
       fetch(
-        apiEvaluationQues,
+        API.apinewEvaluationQues,
         {
           method: "POST",
           headers: new Headers({
@@ -211,13 +207,9 @@ export default function Evalues() {
   // Gat all questionnaires that fit the roletype and grouptype using GET api
   useEffect(() => {
     const abortController = new AbortController();
-    // console.log("chocen", chosenParameters);
     if (chosenParameters.roleType !== undefined) {
-      // console.log(chosenParameters.roleType);
-      // console.log(chosenParameters.groupType);
-      // console.log("hereere");
       fetch(
-        apiQuestionnaire + (chosenParameters.roleType === 1 ? true : false) + "&roleGroup_Type=" + chosenParameters.groupType,
+        API.apiQuestionnaire + (chosenParameters.roleType === 1 ? true : false) + "&roleGroup_Type=" + chosenParameters.groupType,
         {
           method: "GET",
           headers: new Headers({
@@ -260,11 +252,9 @@ export default function Evalues() {
   // Bring all questions of a specific questionnaire using GET api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("ani");
-    // console.log(myFormTypes.chosenForm);
     if (myFormTypes.chosenForm !== undefined && isOldForms) {
       fetch(
-        apiQuestionnaireQuestiones + myFormTypes.chosenForm,
+        API.apiQuestionnaireQuestiones + myFormTypes.chosenForm,
         {
           method: "GET",
           headers: new Headers({
@@ -323,12 +313,12 @@ export default function Evalues() {
     }
   }, [myFormTypes]);
 
-    // set the 
-    useEffect(() => {
-      if (isOldForms && globalQuestionArray.length !== 0) {
-        setShowFormComponent(true); // show form with questions only if all required fields
-      }
-    }, [globalQuestionArray]);
+  // set the globalQuestionArray with the relevant questions
+  useEffect(() => {
+    if (isOldForms && globalQuestionArray.length !== 0) {
+      setShowFormComponent(true); // show form with questions only if all required fields
+    }
+  }, [globalQuestionArray]);
 
   // Changing the direction to rtl
   useEffect(() => {

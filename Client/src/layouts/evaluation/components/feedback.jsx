@@ -18,11 +18,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
+import { EvalueContext } from "context/evalueVariables";
+
 registerLocale("he", he);
 
 export default function Feedback({ userNum, managerId }) {
   const [, dispatch] = useMaterialUIController();
   const classes = useStyles();
+  const { API } = useContext(EvalueContext);
   const goalNames = [
     { id: 1, name: "קורס אקסל" },
     { id: 2, name: "קורס נגרות" },

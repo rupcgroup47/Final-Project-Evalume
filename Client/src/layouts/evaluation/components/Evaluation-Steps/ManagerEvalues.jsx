@@ -11,10 +11,10 @@ import { EvalueContext } from "context/evalueVariables";
 function ManagerEvalues() {
   const [, dispatch] = useMaterialUIController();
   const mainState = useContext(MainStateContext);
-  const { chosenEmployee } = useContext(EvalueContext);
-  const evaluationApi = "https://localhost:7079/userNum?userNum=";
+  const { chosenEmployee, API } = useContext(EvalueContext);
   const [questionsResp, setQuestionsResp] = useState([]);
   const [questionnaireNum, setQuestionnaireNum] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -26,11 +26,10 @@ function ManagerEvalues() {
   // GET the evaluation form of the user
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("ani");
     console.log(mainState);
     if (mainState.mainState.userNum) {
       fetch(
-        evaluationApi + mainState.mainState.userNum,
+        API.evaluationApi + mainState.mainState.userNum,
         {
           method: "GET",
           headers: new Headers({
@@ -53,11 +52,15 @@ function ManagerEvalues() {
         })
         .then(
           (result) => {
-            console.log("bani");
             console.log("success");
-            setQuestionnaireNum(result.questionnaireNum);
-            setQuestionsResp(result.questionsList);
-            console.log(result.questionsList);
+            if (result.exption === "user has already filled his survey") {
+              console.log("pue");
+            }
+            else {
+              setQuestionnaireNum(result.questionnaireNum);
+              setQuestionsResp(result.questionsList);
+              setShowForm(true);
+            }
           },
           (error) => {
             if (error.name === "AbortError") return;
@@ -80,7 +83,7 @@ function ManagerEvalues() {
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />
-      {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} />}
+      {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm}/>}
       {currentStep === 2 && <Feedback userNum={chosenEmployee} managerId={userId} />}
       {/* <SurveyForm /> */}
     </Container>

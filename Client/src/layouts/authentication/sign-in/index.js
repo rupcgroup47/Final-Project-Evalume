@@ -37,12 +37,13 @@ import { useEffect, useContext, useState } from "react";
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 import { MainStateContext } from "App";
+import { EvalueContext } from "context/evalueVariables";
 
 function Basic() {
   const [, dispatch] = useMaterialUIController(); // rtl
   const [validationsMsg, setMsg] = useState("");
   const navigate = useNavigate();
-  const apiUserUrl = "https://localhost:7079/userEmail/userpassword?";
+  const { API } = useContext(EvalueContext);
   const [userData, setUserData] = useState({
     // User details temp object
     email: "",
@@ -53,7 +54,7 @@ function Basic() {
 
   useEffect(() => {
     if (userDetailsValidation){
-      fetch(apiUserUrl + "userEmail=" + userData.email + "&userpassword=" + userData.password, {
+      fetch(API.apiUserUrllogin + "userEmail=" + userData.email + "&userpassword=" + userData.password, {
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json; charset=UTF-8",

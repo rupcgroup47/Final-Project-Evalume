@@ -26,10 +26,10 @@ import {
   TableRow,
   // TableSortLabel,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 // import { visuallyHidden } from "@mui/utils";
 import { useDebounce } from "use-debounce";
-
+import { EvalueContext } from "context/evalueVariables";
 import TableItem from "components/TableItem";
 import TableToolbar from "components/TableToolbar";
 import { tableHeadArr } from "./tableHeaderArr";
@@ -40,6 +40,7 @@ export default function UsersTable({ users, setUsers }) {
   const [items, setItems] = useState([users]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { API } = useContext(EvalueContext);
 
   useEffect(() => {
     // Update the users array
@@ -119,7 +120,6 @@ export default function UsersTable({ users, setUsers }) {
   // handleFilter - end
 
   // handleRemoveUser - start
-  const apiPutUserUrl = "https://localhost:7079/userEmail/is_Active/";
   const [putUser, setPutUser] = useState("");
 
   const handleRemoveUser = (user) => {
@@ -144,15 +144,17 @@ export default function UsersTable({ users, setUsers }) {
     // Update is active for a user ("delete")
     const abortController = new AbortController();
     if (putUser !== "") {
-      fetch(apiPutUserUrl + putUser.userNum, {
-        method: "PUT",
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "application/json; charset=UTF-8",
-        }),
-        body: JSON.stringify(!putUser.is_Active),
-        signal: abortController.signal,
-      })
+      fetch(
+        API.apiPutUserUrl + putUser.userNum,
+        {
+          method: "PUT",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: JSON.stringify(!putUser.is_Active),
+          signal: abortController.signal,
+        })
         .then(async (response) => {
           const data = await response.json();
           console.log(response);
