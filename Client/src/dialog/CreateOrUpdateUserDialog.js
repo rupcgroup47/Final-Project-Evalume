@@ -33,6 +33,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import { DepartmentStateContext } from "context/globalVariables";
+import { EvalueContext } from "context/evalueVariables";
 import swal from 'sweetalert';
 
 export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setItems, user }) {
@@ -68,8 +69,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   const genders = ["זכר", "נקבה", "אחר"];
   const roleTypes = ["מנהל", "עובד"];
   const roleGroups = ["כללי", "תפעולי", "משרדי"];
-  const apiPutUserUrl = "https://localhost:7079/api/Employee/";
-  const apiPostUserUrl = "https://localhost:7079/api/Employee";
+  const { API } = useContext(EvalueContext);
 
   // Use state to store the selected value
   const [gender, setGender] = useState("");
@@ -114,8 +114,8 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
     // Update details
     const abortController = new AbortController();
     if (putUser !== "") {
-      console.log("here 22");
-      fetch(apiPutUserUrl + user?.userNum, {
+      fetch(
+        API.apiUserUrl + "/" + user?.userNum, {
         method: "PUT",
         headers: new Headers({
           "Content-Type": "application/json; charset=UTF-8",
@@ -179,10 +179,10 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   useEffect(() => {
     // Update details
     if (postUser !== "") {
-      console.log('here hey 2');
-      console.log(postUser);
       const abortController = new AbortController();
-      fetch(apiPostUserUrl, {
+      fetch(
+        API.apiUserUrl, 
+        {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json; charset=UTF-8",
@@ -239,21 +239,16 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
     console.log('here');
     const newUser = {
       userEmail: data?.email,
-      // userpassword: (user ? user?.userpassword+"p" : null),
-      // userNum: (user ? user?.userNum : null),
       userId: parseInt(data?.id),
       userFName: data?.firstName,
       userLName: data?.lastName,
       userGender: data?.gender,
-      // userInsertDate: (user ? user?.userInsertDate : null),
       is_Active: (data?.isActive === "true" ? true : false),
       is_Admin: (data?.isAdmin === "true" ? true : false),
       userType: (data?.roleType === "מנהל" ? true : false),
       userRole: data?.job,
-      // userRoleGroup: (user ? user?.userRoleGroup : null),
       userDepartment: data?.department,
       userPhoneNum: parseInt(data?.phone),
-      // userManagerNum: (user ? user?.userManagerNum : null),
       managerFname: data?.managerFname,
       managerLName: data?.managerLName,
       managerEmail: data?.managerEmail,

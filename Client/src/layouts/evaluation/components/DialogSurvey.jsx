@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 export default function DialogSurvey({ open, setOpen, msg, finishRouteMsg }) {
   const navigate = useNavigate();
 

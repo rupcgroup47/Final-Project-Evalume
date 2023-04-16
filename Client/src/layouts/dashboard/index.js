@@ -38,6 +38,7 @@ import { useEffect } from "react";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
@@ -14,40 +14,9 @@ import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import DialogSurvey from "./DialogSurvey";
 import RadioButtons from "./survey-component/RadioButtons";
+import { EvalueContext } from "context/evalueVariables";
 
-// const questionsResp = [
-//   {
-//     quesGroup_ID: 1,
-//     quesGroup_Desc: "שירותיות", // Section name
-//     questions: [
-//       {
-//         questionNum: 1,
-//         quesContent: `אאא`, // Question name
-//       },
-//       {
-//         questionNum: 2,
-//         quesContent: `בבב`, // Question name
-//       },
-//     ],
-//   },
-//   {
-//     quesGroup_ID: 2,
-//     quesGroup_Desc: "איכותיות", // Section name
-//     questions: [
-//       {
-//         questionNum: 3,
-//         quesContent: `גג`, // Question name
-//       },
-//       {
-//         questionNum: 4,
-//         quesContent: `בבב`, // Question name
-//       },
-//     ],
-//   },
-// ];
-
-
-export default function surveyForm({ userNum, employeesManager, evalu_Part_Type, questionsResp, questionnaireNum }) {
+export default function surveyForm({ userNum, employeesManager, evalu_Part_Type, questionsResp, questionnaireNum, showForm }) {
   const [expanded, setExpanded] = useState(1);
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
@@ -55,9 +24,8 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
   const [statusMsg, setMsg] = useState("");
   const [finishRouteMsg, setRouteMsg] = useState("");
   const flatQuestions = questionsResp?.flatMap((group) => group.questions);
-  const apiEvaluationQues = "https://localhost:7079/EvaluationAnswers";
-  const totalQuestions = flatQuestions.length;//Checking how many questions there are in the array to make sure all the questions were answered at the end
-  // const surveyId=questionnaireNum;
+  const { API } = useContext(EvalueContext);
+  const totalQuestions = flatQuestions?.length;//Checking how many questions there are in the array to make sure all the questions were answered at the end
   const [finalSelfEvaluation, setFinalSelfEvaluation] = useState();
   const criterias = [
     "לא רלוונטי לתפקיד",
@@ -99,7 +67,6 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
       console.log("here");
       const item = {
         id: itemId,
-        // title: groupId,
         questionNum: questionId,
         numericAnswer: value,
       };
@@ -152,9 +119,8 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     const abortController = new AbortController();
     console.log(finalSelfEvaluation);
     if (finalSelfEvaluation !== undefined) {
-      console.log("hereagain");
       fetch(
-        apiEvaluationQues,
+        API.apiEvaluationQues,
         {
           method: "POST",
           headers: new Headers({
@@ -213,47 +179,24 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     event.preventDefault();
     console.log(errors, event);
   };
-  // console.log(items);
+  
   return (
     <div>
       {
-        (questionsResp.length !== 0) ? (
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
-          {questionsResp.map(({ quesGroup_ID, quesGroup_Desc, questions }) => (
-            <Accordion
-              key={"q" + quesGroup_ID}
-              expanded={expanded === quesGroup_ID}
-              onChange={handleChange(quesGroup_ID)}
-              TransitionProps={{ unmountOnExit: true }}
-            >
-              <AccordionSummary id={`${quesGroup_ID}-header`}>
-                <Typography >{quesGroup_Desc}</Typography>
-              </AccordionSummary>
+        showForm ? (
+          <form onSubmit={handleSubmit(onSubmit, onError)}>
+            {questionsResp?.map(({ quesGroup_ID, quesGroup_Desc, questions }) => (
+              <Accordion
+                key={"q" + quesGroup_ID}
+                expanded={expanded === quesGroup_ID}
+                onChange={handleChange(quesGroup_ID)}
+                TransitionProps={{ unmountOnExit: true }}
+              >
+                <AccordionSummary id={`${quesGroup_ID}-header`}>
+                  <Typography >{quesGroup_Desc}</Typography>
+                </AccordionSummary>
 
-              <AccordionDetails>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-around"
-                  alignItems="baseline"
-                  spacing={3}
-                  marginTop="-10px"
-                >
-                  <Grid item xs={3}>
-                    <Typography> </Typography>
-                  </Grid>
-                  <Grid item style={gridItems2} xs={7}>
-                    {criterias.map((criteria) => (
-                      <Typography key={criteria} style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
-                        {criteria}{" "}
-                      </Typography>
-                    ))}
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Typography> </Typography>
-                  </Grid>
-                </Grid>
-                {questions.map(({ questionNum, quesContent }) => (
+                <AccordionDetails>
                   <Grid
                     container
                     direction="row"
@@ -261,62 +204,85 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
                     alignItems="baseline"
                     spacing={3}
                     marginTop="-10px"
-                    key={"q-" + quesGroup_ID + "-" + questionNum}
                   >
                     <Grid item xs={3}>
-                      <Typography>{quesContent}</Typography>
+                      <Typography> </Typography>
                     </Grid>
-                    <Grid item style={gridItems} xs={7}>
-                      <RadioButtons
-                        itemId={"q-" + quesGroup_ID + "-" + questionNum}
-                        groupId={quesGroup_ID}
-                        questionId={questionNum}
-                        onselectedValueChange={handleselectedValueChange}
-                        numericAnswer={
-                          items.length > 0
-                            ? items?.find((item) => item.id === "q-" + quesGroup_ID + "-" + questionNum)
-                              ?.numericAnswer
-                            : ""
-                        }
-                      />
+                    <Grid item style={gridItems2} xs={7}>
+                      {criterias.map((criteria) => (
+                        <Typography key={criteria} style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                          {criteria}{" "}
+                        </Typography>
+                      ))}
                     </Grid>
                     <Grid item xs={2}>
-                      <TextField
-                        label="הוסף הערה"
-                        value={items.verbalAnswer}
-                        onChange={(event) =>
-                          handleTextFieldChange("q-" + quesGroup_ID + "-" + questionNum, event)
-                        }
-                        multiline
-                        maxRows={3}
-                      />
+                      <Typography> </Typography>
                     </Grid>
                   </Grid>
-                ))}
-              </AccordionDetails>
-            </Accordion>
-          ))}
-          <Stack
-            direction="row"
-            spacing={8}
-            alignItems="baseline"
-            justifyContent="space-evenly"
-            marginTop={"20px"}
-          >
-            <Button type={"submit"} label="סיים" variant="contained" color="white">
-              סיום
-            </Button>
-          </Stack>
-          <DialogSurvey
-            open={showCloseDialog}
-            setOpen={setShowCloseDialog}
-            msg={statusMsg}
-            finishRouteMsg={finishRouteMsg}
-            onClick={() => {
-              setShowCloseDialog((e) => !e);
-            }}
-          />
-        </form>
+                  {questions.map(({ questionNum, quesContent }) => (
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-around"
+                      alignItems="baseline"
+                      spacing={3}
+                      marginTop="-10px"
+                      key={"q-" + quesGroup_ID + "-" + questionNum}
+                    >
+                      <Grid item xs={3}>
+                        <Typography>{quesContent}</Typography>
+                      </Grid>
+                      <Grid item style={gridItems} xs={7}>
+                        <RadioButtons
+                          itemId={"q-" + quesGroup_ID + "-" + questionNum}
+                          groupId={quesGroup_ID}
+                          questionId={questionNum}
+                          onselectedValueChange={handleselectedValueChange}
+                          numericAnswer={
+                            items.length > 0
+                              ? items?.find((item) => item.id === "q-" + quesGroup_ID + "-" + questionNum)
+                                ?.numericAnswer
+                              : ""
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextField
+                          label="הוסף הערה"
+                          value={items.verbalAnswer}
+                          onChange={(event) =>
+                            handleTextFieldChange("q-" + quesGroup_ID + "-" + questionNum, event)
+                          }
+                          multiline
+                          maxRows={3}
+                        />
+                      </Grid>
+                    </Grid>
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+            ))}
+            <Stack
+              direction="row"
+              spacing={8}
+              alignItems="baseline"
+              justifyContent="space-evenly"
+              marginTop={"20px"}
+            >
+              <Button type={"submit"} label="סיים" variant="contained" color="white">
+                סיום
+              </Button>
+            </Stack>
+            <DialogSurvey
+              open={showCloseDialog}
+              setOpen={setShowCloseDialog}
+              msg={statusMsg}
+              finishRouteMsg={finishRouteMsg}
+              onClick={() => {
+                setShowCloseDialog((e) => !e);
+              }}
+            />
+          </form>
         ) : null
       }
     </div>

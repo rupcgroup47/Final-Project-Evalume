@@ -15,9 +15,11 @@ Coded by www.creative-tim.com
 
 import UsersTable from "./UsersTable";
 import { Container } from "@mui/material";
-import { useState, useContext, useEffect, createContext, useMemo } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import { MainStateContext } from "App";
 import { DepartmentStateContext } from "context/globalVariables";
+import { EvalueContext } from "context/evalueVariables";
+
 // import ApiFetcher from "components/ApiFetcher";
 
 // Material Dashboard 2 React contexts
@@ -29,31 +31,14 @@ function Users() {
   // const [validationsMsg, setMsg] = useState("");
   const { mainState, setMainState } = useContext(MainStateContext);
   const [depState, setDepState] = useState([]);
-  const apiUserUrl = "https://localhost:7079/api/Employee";
-  const apiDeprUrl = "https://localhost:7079/api/Department";
+  const { API } = useContext(EvalueContext);
 
   // bring all the users using GET api
   useEffect(() => {
-    // const abortController = new AbortController();
-    // const signal = abortController.signal;
-
-    // ApiFetcher({
-    //   api: "https://localhost:7079/api/Employee",
-    //   method: "GET",
-    //   body: null,
-    //   signal: signal,
-    //   onFetchComplete: setUsers,
-    //   onFetchError: (error)=>console.log("err get=", error),
-    // });
-
-    // return () => {
-    //   abortController.abort();
-    //   // stop the query by aborting on the AbortController on unmount
-    // };
     const abortController = new AbortController()
     if (mainState.is_Admin) {
       fetch(
-        apiUserUrl,
+        API.apiUserUrl,
         {
           method: "GET",
           headers: new Headers({
@@ -96,14 +81,16 @@ function Users() {
   useEffect(() => {
     // Get importent details and set the main context
     const abortController = new AbortController();
-    fetch(apiDeprUrl, {
-      method: "GET",
-      headers: new Headers({
-        "Content-Type": "application/json; charset=UTF-8",
-        Accept: "application/json; charset=UTF-8",
-      }),
-      signal: abortController.signal,
-    })
+    fetch(
+      API.apiDeprUrl,
+      {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        signal: abortController.signal,
+      })
       .then(async (response) => {
         const data = await response.json();
         console.log(response);
@@ -160,3 +147,20 @@ function Users() {
 }
 
 export default Users;
+
+    // const abortController = new AbortController();
+    // const signal = abortController.signal;
+
+    // ApiFetcher({
+    //   api: "https://localhost:7079/api/Employee",
+    //   method: "GET",
+    //   body: null,
+    //   signal: signal,
+    //   onFetchComplete: setUsers,
+    //   onFetchError: (error)=>console.log("err get=", error),
+    // });
+
+    // return () => {
+    //   abortController.abort();
+    //   // stop the query by aborting on the AbortController on unmount
+    // };
