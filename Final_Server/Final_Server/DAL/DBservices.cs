@@ -1976,7 +1976,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetUserEvaluQues("spGetUserEvaluQues", con, userNum);            // create the command
+        cmd = CreateCommandWithSPGetUserEvaluQues("spCheckExistEvalu", con, userNum);            // create the command
 
         List<Rel_Questions_EvaluQues> rel_Ques = new List<Rel_Questions_EvaluQues>();
 
@@ -1988,17 +1988,24 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
+                if (dataReader.FieldCount > 1)
+                {
+                    Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
 
-                r.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                r.UserManagerNum = Convert.ToInt32(dataReader["UserManager"]);
-                r.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
-                r.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
-                r.QuesContent = dataReader["QuesContent"].ToString();
-                r.QuesGroup_ID = Convert.ToInt32(dataReader["QuesGroup_Type"]);
-                r.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
+                    r.UserNum = Convert.ToInt32(dataReader["UserNum"]);
+                    r.UserManagerNum = Convert.ToInt32(dataReader["UserManager"]);
+                    r.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+                    r.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
+                    r.QuesContent = dataReader["QuesContent"].ToString();
+                    r.QuesGroup_ID = Convert.ToInt32(dataReader["QuesGroup_Type"]);
+                    r.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
 
-                rel_Ques.Add(r);
+                    rel_Ques.Add(r);
+                }
+                if (dataReader.FieldCount == 1)
+                {
+                    throw new ArgumentException("user has already filled his survey");
+                }
             }
 
             return rel_Ques;

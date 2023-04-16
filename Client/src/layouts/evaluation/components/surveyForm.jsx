@@ -215,105 +215,111 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
   };
   // console.log(items);
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)}>
-      {questionsResp.map(({ quesGroup_ID, quesGroup_Desc, questions }) => (
-        <Accordion
-          key={"q" + quesGroup_ID}
-          expanded={expanded === quesGroup_ID}
-          onChange={handleChange(quesGroup_ID)}
-          TransitionProps={{ unmountOnExit: true }}
-        >
-          <AccordionSummary id={`${quesGroup_ID}-header`}>
-            <Typography >{quesGroup_Desc}</Typography>
-          </AccordionSummary>
-
-          <AccordionDetails>
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-around"
-              alignItems="baseline"
-              spacing={3}
-              marginTop="-10px"
+    <div>
+      {
+        (questionsResp.length !== 0) ? (
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
+          {questionsResp.map(({ quesGroup_ID, quesGroup_Desc, questions }) => (
+            <Accordion
+              key={"q" + quesGroup_ID}
+              expanded={expanded === quesGroup_ID}
+              onChange={handleChange(quesGroup_ID)}
+              TransitionProps={{ unmountOnExit: true }}
             >
-              <Grid item xs={3}>
-                <Typography> </Typography>
-              </Grid>
-              <Grid item style={gridItems2} xs={7}>
-                {criterias.map((criteria) => (
-                  <Typography key={criteria} style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
-                    {criteria}{" "}
-                  </Typography>
+              <AccordionSummary id={`${quesGroup_ID}-header`}>
+                <Typography >{quesGroup_Desc}</Typography>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-around"
+                  alignItems="baseline"
+                  spacing={3}
+                  marginTop="-10px"
+                >
+                  <Grid item xs={3}>
+                    <Typography> </Typography>
+                  </Grid>
+                  <Grid item style={gridItems2} xs={7}>
+                    {criterias.map((criteria) => (
+                      <Typography key={criteria} style={{ maxWidth: "50px", fontSize: "14px", fontWeight: "600" }}>
+                        {criteria}{" "}
+                      </Typography>
+                    ))}
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Typography> </Typography>
+                  </Grid>
+                </Grid>
+                {questions.map(({ questionNum, quesContent }) => (
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-around"
+                    alignItems="baseline"
+                    spacing={3}
+                    marginTop="-10px"
+                    key={"q-" + quesGroup_ID + "-" + questionNum}
+                  >
+                    <Grid item xs={3}>
+                      <Typography>{quesContent}</Typography>
+                    </Grid>
+                    <Grid item style={gridItems} xs={7}>
+                      <RadioButtons
+                        itemId={"q-" + quesGroup_ID + "-" + questionNum}
+                        groupId={quesGroup_ID}
+                        questionId={questionNum}
+                        onselectedValueChange={handleselectedValueChange}
+                        numericAnswer={
+                          items.length > 0
+                            ? items?.find((item) => item.id === "q-" + quesGroup_ID + "-" + questionNum)
+                              ?.numericAnswer
+                            : ""
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <TextField
+                        label="הוסף הערה"
+                        value={items.verbalAnswer}
+                        onChange={(event) =>
+                          handleTextFieldChange("q-" + quesGroup_ID + "-" + questionNum, event)
+                        }
+                        multiline
+                        maxRows={3}
+                      />
+                    </Grid>
+                  </Grid>
                 ))}
-              </Grid>
-              <Grid item xs={2}>
-                <Typography> </Typography>
-              </Grid>
-            </Grid>
-            {questions.map(({ questionNum, quesContent }) => (
-              <Grid
-                container
-                direction="row"
-                justifyContent="space-around"
-                alignItems="baseline"
-                spacing={3}
-                marginTop="-10px"
-                key={"q-" + quesGroup_ID + "-" + questionNum}
-              >
-                <Grid item xs={3}>
-                  <Typography>{quesContent}</Typography>
-                </Grid>
-                <Grid item style={gridItems} xs={7}>
-                  <RadioButtons
-                    itemId={"q-" + quesGroup_ID + "-" + questionNum}
-                    groupId={quesGroup_ID}
-                    questionId={questionNum}
-                    onselectedValueChange={handleselectedValueChange}
-                    numericAnswer={
-                      items.length > 0
-                        ? items?.find((item) => item.id === "q-" + quesGroup_ID + "-" + questionNum)
-                          ?.numericAnswer
-                        : ""
-                    }
-                  />
-                </Grid>
-                <Grid item xs={2}>
-                  <TextField
-                    label="הוסף הערה"
-                    value={items.verbalAnswer}
-                    onChange={(event) =>
-                      handleTextFieldChange("q-" + quesGroup_ID + "-" + questionNum, event)
-                    }
-                    multiline
-                    maxRows={3}
-                  />
-                </Grid>
-              </Grid>
-            ))}
-          </AccordionDetails>
-        </Accordion>
-      ))}
-      <Stack
-        direction="row"
-        spacing={8}
-        alignItems="baseline"
-        justifyContent="space-evenly"
-        marginTop={"20px"}
-      >
-        <Button type={"submit"} label="סיים" variant="contained" color="white">
-          סיום
-        </Button>
-      </Stack>
-      <DialogSurvey
-        open={showCloseDialog}
-        setOpen={setShowCloseDialog}
-        msg={statusMsg}
-        finishRouteMsg={finishRouteMsg}
-        onClick={() => {
-          setShowCloseDialog((e) => !e);
-        }}
-      />
-    </form>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+          <Stack
+            direction="row"
+            spacing={8}
+            alignItems="baseline"
+            justifyContent="space-evenly"
+            marginTop={"20px"}
+          >
+            <Button type={"submit"} label="סיים" variant="contained" color="white">
+              סיום
+            </Button>
+          </Stack>
+          <DialogSurvey
+            open={showCloseDialog}
+            setOpen={setShowCloseDialog}
+            msg={statusMsg}
+            finishRouteMsg={finishRouteMsg}
+            onClick={() => {
+              setShowCloseDialog((e) => !e);
+            }}
+          />
+        </form>
+        ) : null
+      }
+    </div>
   );
 }
 
