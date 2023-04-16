@@ -89,28 +89,28 @@ export default function CreateYearlyProcessDialog({
   const [selectedOptions, setSelectedOptions] = useState({});
   const [lastSelectedOptions, setLastSelectedOptions] = useState([]);
 
-  // const handleChange = (event) => {
-  //   const index = event.target.name;
-  //   const value = event.target.value;
+  const handleChange = (event) => {
+    const index = event.target.name;
+    const value = event.target.value;
   
-  //   // Update the selectedOptions object
-  //   setSelectedOptions((prevState) => {
-  //     // If the index already exists in the object, update the value
-  //     if (prevState.hasOwnProperty(index)) {
-  //       return {
-  //         ...prevState,
-  //         [index]: value,
-  //       };
-  //     }
-  //     // Otherwise, add a new key-value pair to the object
-  //     else {
-  //       return {
-  //         ...prevState,
-  //         [index]: value,
-  //       };
-  //     }
-  //   });
-  // };
+    // Update the selectedOptions object
+    setSelectedOptions((prevState) => {
+      // If the index already exists in the object, update the value
+      if (prevState.hasOwnProperty(index)) {
+        return {
+          ...prevState,
+          [index]: value,
+        };
+      }
+      // Otherwise, add a new key-value pair to the object
+      else {
+        return {
+          ...prevState,
+          [index]: value,
+        };
+      }
+    });
+  };
  
   const handleFinish = () => {
     // console.log(savedValues)

@@ -74,8 +74,8 @@ function ProfileGrid({ title, description, type }) {
             </>
           )}
         </MDBox>
-        <MDBox mb={3} lineHeight={0}>
-          <MDTypography variant="button" fontWeight="light" color="text">
+        <MDBox m={2} lineHeight={0}>
+          <MDTypography variant="h6" fontWeight="light" color="text">
             {description}
           </MDTypography>
         </MDBox>

@@ -65,7 +65,7 @@ function Header({ children }) {
           </Grid>
           <Grid item xs={6}>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
-              <MDTypography variant="h5" fontWeight="medium">
+              <MDTypography variant="h3" fontWeight="medium">
                 {"ברוך הבא "}
                 {mainState.userFName}
               </MDTypography>

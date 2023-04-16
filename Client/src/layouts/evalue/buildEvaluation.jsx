@@ -23,14 +23,14 @@ export default function BuildEvaluation() {
         <Grid item xs={6}>
           <Link to="/evalue" state={isNotOldForms}>
             <Card sx={{ height: "250px", backgroundColor:"whitesmoke" }}>
-              <CardContent sx={{textAlign: "center", fontSize:"40px", fontFamily: "Rubik", margin:"auto" }}>יצירת טופס חדש ממאגר השאלות</CardContent>
+              <CardContent sx={{textAlign: "center", fontSize:"35px", fontFamily: "Rubik", margin:"auto" }}>יצירת טופס חדש ממאגר השאלות</CardContent>
             </Card>
           </Link>
         </Grid>
         <Grid item xs={6}>
           <Link to="/evalue" state={isOldForms}>
             <Card sx={{ height: "250px",backgroundColor:"whitesmoke"  }}>
-              <CardContent sx={{textAlign: "center", fontSize:"40px", fontFamily: "Rubik", margin:"auto"}}>יצירת טופס חדש מבוסס על שאלונים קיימים</CardContent>
+              <CardContent sx={{textAlign: "center", fontSize:"35px", fontFamily: "Rubik", margin:"auto"}}>יצירת טופס חדש מבוסס על שאלונים קיימים</CardContent>
             </Card>
           </Link>
         </Grid>

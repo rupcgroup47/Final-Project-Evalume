@@ -67,15 +67,15 @@ function ProfileInfoCard({ title, info, action, shadow }) {
         <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
           {title}
         </MDTypography>
-        <MDTypography component={Link} to={action.route} variant="body2" color="secondary">
+        {/* <MDTypography component={Link} to={action.route} variant="body2" color="secondary">
           <Tooltip title={action.tooltip} placement="top">
             <Icon>edit</Icon>
           </Tooltip>
-        </MDTypography>
+        </MDTypography> */}
       </MDBox>
-      <MDBox p={2}>
+      <MDBox p={1}>
         <MDBox opacity={0.3}>
-          <Divider />
+          <Divider style={{margin:"0.5px"}}/>
         </MDBox>
         <MDBox>
           {renderItems}
