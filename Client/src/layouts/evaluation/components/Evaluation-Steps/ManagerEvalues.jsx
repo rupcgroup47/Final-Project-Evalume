@@ -27,7 +27,7 @@ function ManagerEvalues() {
   useEffect(() => {
     const abortController = new AbortController();
     console.log(mainState);
-    if (currentStep === 1) {
+    if (currentStep === 1) { // צריכה להחזיר את המספר שאלון המלא כדי להעביר אותו לשלב הפידבק אז צריך לשנות בפרוצדורה במקום להחזיר סתם מספר להחזיר את מספר השאלון ולשנות את הזרימה בהתאם
       fetch(
         API.evaluationApi + mainState.mainState.userNum + "&evalu_Part_Type=" + currentStep,
         {
@@ -54,7 +54,7 @@ function ManagerEvalues() {
           (result) => {
             console.log("success");
             if (result.exption === "user has already filled his survey") {
-              console.log("pue");
+              console.log("not supposed to happand once the list come from the database");
             }
             else {
               setQuestionnaireNum(result.questionnaireNum);
@@ -84,7 +84,7 @@ function ManagerEvalues() {
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />
       {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />}
-      {currentStep === 2 && <Feedback userNum={chosenEmployee} managerId={userId} />}
+      {currentStep === 2 && <Feedback userNum={chosenEmployee} managerId={userId} evalu_Part_Type={currentStep} questionnaireNum={questionnaireNum}/>}
       {/* <SurveyForm /> */}
     </Container>
   );

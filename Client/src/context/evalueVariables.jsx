@@ -26,6 +26,10 @@ export default function EvalueContextProvider({ children }) {
     apiQuestionnaireQuestiones: "https://proj.ruppin.ac.il/cgroup47/prod/questionnaireNum?questionnaireNum=", //server
     // apiUserUrllogin: "https://localhost:7079/userEmail/userpassword?",
     apiUserUrllogin: "https://proj.ruppin.ac.il/cgroup47/prod/userEmail/userpassword?", //server
+    // apiGetAllGoals: "https://localhost:7079/api/Goal",
+    apiGetAllGoals: "https://proj.ruppin.ac.il/cgroup47/prod/api/Goal", //server
+    // apiPostFinishAll: "https://localhost:7079/EvaluationSummeryAnswers",
+    apiPostFinishAll: "https://proj.ruppin.ac.il/cgroup47/prod/EvaluationSummeryAnswers", //server
   });
 
   //   const InitNotesContext = [ 
@@ -63,7 +67,7 @@ export default function EvalueContextProvider({ children }) {
   //   const InitCategoryArrContext = [ "Work", "Personal", "Ideas","Lists"]
   //   const [CategoryArrContext, SetCategoryArrContext] = useState(InitCategoryArrContext)
   //   const [currentCat, setCurrentCat] = useState("")
-  const [chosenEmployee, setChosenEmployee] = useState("")
+  const [chosenEmployee, setChosenEmployee] = useState("") //need to set to loacl storage beacuse it is not saved when refreshing
 
   const values = {
     // CategoryArrContext,

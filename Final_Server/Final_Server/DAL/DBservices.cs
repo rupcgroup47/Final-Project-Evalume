@@ -258,7 +258,6 @@ public class DBservices
                 employee.UserFName = dataReader["UserFName"].ToString();
                 employee.UserLName = dataReader["UserLName"].ToString();
                 employee.UserGender = dataReader["UserGender"].ToString();
-                //employee.UserInsertDate = Convert.ToDateTime(dataReader["UserInsertDate"]);
                 employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
                 employee.Is_Admin = Convert.ToBoolean(dataReader["Is_Admin"]);
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
@@ -642,7 +641,6 @@ public class DBservices
                 goal.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
 
                 GoalsList.Add(goal);
-
             }
 
             return GoalsList;
@@ -1126,75 +1124,6 @@ public class DBservices
 
         return cmd;
     }
-
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method inserts new employee goal
-    ////--------------------------------------------------------------------------------------------------
-    public int InsertEmployeeGoal(Rel_EmployeeGoal rel_EmployeeGoal)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPEmployeeUser("spInsertUserGoal", con, rel_EmployeeGoal);            // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPEmployeeUser(String spName, SqlConnection con, Rel_EmployeeGoal rel_EmployeeGoal)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@UserEmail", rel_EmployeeGoal.UserEmail); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@GoalNum", rel_EmployeeGoal.GoalNum);
-        cmd.Parameters.AddWithValue("@GoalStatus", rel_EmployeeGoal.GoalStatus);
-
-
-        return cmd;
-    }
-
 
     ////--------------------------------------------------------------------------------------------------
     //// This method inserts new goal for corent user
