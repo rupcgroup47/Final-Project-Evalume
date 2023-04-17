@@ -26,16 +26,20 @@ export default function GoalItem({
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [open, setOpen] = useState(false);
+const arr = goal.employees;
 
   return (
     <>
       <TableRow hover role="checkbox" tabIndex={-1}>
+      {console.log(tableHead+"lll")}
+
         {tableHead.find((i) => i.id === "goalName").show && (
           <>           
             <TableCell component="th" scope="row" padding="none">
             <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                 {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
+              {/* // receive the goal name from the goals array */}
               {goal.goalName}
             </TableCell>
           </>
@@ -46,7 +50,7 @@ export default function GoalItem({
             <EditRoundedIcon />
           </IconButton>
           <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
-            <DeleteRoundedIcon />
+            {/* <DeleteRoundedIcon /> */}
           </IconButton>
         </TableCell>
       </TableRow>
@@ -64,6 +68,18 @@ export default function GoalItem({
                       <TableCell align="right">שם משתמש</TableCell>
                       <TableCell align="right">הושלם?</TableCell>
                     </TableRow>
+                    {console.log(arr)}
+                    {console.log(arr)}
+                     {arr.map((item)=>{
+    <TableRow key={item.date}>
+      <TableCell align="right">{item.date}</TableCell>
+      <TableCell align="right">{item.userFName}</TableCell>
+      <TableCell align="right">{item.status}</TableCell>
+    </TableRow>
+})}
+  
+                    
+                    
                   </TableHead>
                 </Table>
               </Box>

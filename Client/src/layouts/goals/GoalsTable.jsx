@@ -17,53 +17,62 @@ import GoalItem from "./GoalItem";
 
 const _goals = [
   {
-    id: 1,
-    goalId: "a",
+    goalNum: 1,
     goalName: "קורס אקסל",
-    history: [
+    employees: [
       {
         date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
+        userNum: 1,
+        userLName:"נועה",
+        userFName:"פרקש",
+        status: "חדש",
       },
       {
         date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
+        userNum: 2,
+        userLName:"נועה",
+        userFName:"פרקש",
+        status: "חדש",
       },
     ],
   },
   {
-    id: 2,
-    goalId: "b",
+    goalNum: 2,
     goalName: "קורס פריוריטי",
-    history: [
+    employees: [
       {
         date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
+        userNum: 4,
+        userLName:"נועה",
+        userFName:"פרקש",
+        status: "חדש",
       },
       {
         date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
+        userNum: 5,
+        userLName:"נועה",
+        userFName:"פרקש",
+        status: "חדש",
       },
     ],
   },
   {
-    id: 3,
-    goalId: "c",
+    goalNum: 3,
     goalName: "קורס חשבשבת",
-    history: [
+    employees: [
       {
         date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
+        userNum: 14,
+                userLName:"נועה",
+        userFName:"פרקש",
+        status: "חדש",
       },
       {
         date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
+        userNum: 13,
+        userLName:"נועה",
+        userFName:"פרקש",
+        status: "בוצע",
       },
     ],
   },
@@ -131,7 +140,7 @@ export default function GoalsTable() {
             <TableRow>
               <TableCell align="right" width={40} />
 
-              {tableHead.map((item) => {
+              {tableHead.map((item) => {//header
                 return (
                   item.show && (
                     <TableCell
@@ -156,7 +165,7 @@ export default function GoalsTable() {
               .map((goal, index) => (
                 <GoalItem
                   key={index}
-                  goal={goal}
+                  goal={goal}//each goal in the goals array
                   goals={goals}
                   setGoals={setGoals}
                   setItems={setItems}
