@@ -181,7 +181,7 @@ export default function Evalues() {
           (result) => {
             console.log("success");
             setMyArray([]);
-            setMsg("סיימת למלא את טופס ההערכה");
+            setMsg("סיימת ליצור טופס ההערכה");
             setRouteMsg("חזרה לדף הבית");
             setShowCloseDialog((e) => !e); // Error dialog message
           },

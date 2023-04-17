@@ -59,7 +59,7 @@ export default function CloseDialog({ open, setOpen, onClick }) {
           onClick={onClick}
           autoFocus
         >
-          מחיקה
+          אישור
         </Button>
       </DialogActions>
     </Dialog>

@@ -47,7 +47,6 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     // Update radio button answer if the answer was marked allready in the same question
     const updatedItems = items.map((item) => {
       if (item.id === itemId) {
-        console.log("item.name");
         return {
           ...item,
           numericAnswer: value,
@@ -96,7 +95,6 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     } else {
       const selfEvaluationObj = sendDataToServer();
       setFinalSelfEvaluation({ ...selfEvaluationObj });
-      console.log(selfEvaluationObj)
     }
   };
 
@@ -115,7 +113,6 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
   // Post a new finished Evaluation using Post api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log(finalSelfEvaluation);
     if (finalSelfEvaluation !== undefined) {
       fetch(
         API.apiEvaluationQues,
@@ -177,7 +174,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     event.preventDefault();
     console.log(errors, event);
   };
-  
+
   return (
     <div>
       {

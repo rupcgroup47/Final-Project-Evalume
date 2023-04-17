@@ -95,7 +95,7 @@ namespace Final_Server.Models
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -156,10 +156,6 @@ namespace Final_Server.Models
 
                 return evaleQuesObject;
             }
-            catch (ArgumentException ex)
-            {
-                throw ex;
-            }
             catch (Exception)
             {
                 throw;
@@ -184,62 +180,80 @@ namespace Final_Server.Models
 
         public static Object ReadEvaluQuesByUserId(int userNum, int evalu_Part_Type) //get the appropriate EvaluQues for the current employee
         {
-            DBservices dbs = new DBservices();
-            List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetEvaluQuesByUserId(userNum, evalu_Part_Type);
-            int counter = 0;
-            int currentNumber = 0;
-            List<int> quesTypeOptions = new List<int>();
-            foreach (Rel_Questions_EvaluQues item in tempQustionList)
+            try
             {
-                if (currentNumber != item.QuesGroup_ID)
+                DBservices dbs = new DBservices();
+                List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetEvaluQuesByUserId(userNum, evalu_Part_Type);
+                if (tempQustionList.Count == 1)
                 {
-                    currentNumber = item.QuesGroup_ID;
-                    quesTypeOptions.Add(currentNumber);
-                    counter++;
-                }
-            }
-            List<Object> QuestionsList = new List<Object>();
-            for (int i = 0; i < counter; i++)
-            {
-                List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
-                foreach (Rel_Questions_EvaluQues item in tempQustionList)
-                {
-                    if (item.QuesGroup_ID == quesTypeOptions[i])
+                    return (new
                     {
-                        tmpList.Add(item);
-                    }
-                }
-
-                List<Object> Questions = new List<Object>();
-
-                foreach (Rel_Questions_EvaluQues item in tmpList)
-                {
-                    Questions.Add(new
-                    {
-                        QuestionNum = item.QuestionNum,
-                        QuesContent = item.QuesContent,
-
+                        questionnaireNum = tempQustionList[0].QuestionnaireNum,
                     });
                 }
-
-                QuestionsList.Add(new
+                else
                 {
-                    QuesGroup_ID = tmpList[0].QuesGroup_ID,
-                    QuesGroup_Desc = tmpList[0].QuesGroup_Desc,
-                    Questions = Questions,
-                });
+                    int counter = 0;
+                    int currentNumber = 0;
+                    List<int> quesTypeOptions = new List<int>();
+                    foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                    {
+                        if (currentNumber != item.QuesGroup_ID)
+                        {
+                            currentNumber = item.QuesGroup_ID;
+                            quesTypeOptions.Add(currentNumber);
+                            counter++;
+                        }
+                    }
+                    List<Object> QuestionsList = new List<Object>();
+                    for (int i = 0; i < counter; i++)
+                    {
+                        List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
+                        foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                        {
+                            if (item.QuesGroup_ID == quesTypeOptions[i])
+                            {
+                                tmpList.Add(item);
+                            }
+                        }
 
+                        List<Object> Questions = new List<Object>();
+
+                        foreach (Rel_Questions_EvaluQues item in tmpList)
+                        {
+                            Questions.Add(new
+                            {
+                                QuestionNum = item.QuestionNum,
+                                QuesContent = item.QuesContent,
+
+                            });
+                        }
+
+                        QuestionsList.Add(new
+                        {
+                            QuesGroup_ID = tmpList[0].QuesGroup_ID,
+                            QuesGroup_Desc = tmpList[0].QuesGroup_Desc,
+                            Questions = Questions,
+                        });
+
+                    }
+
+                    Object FinalObject = (new
+                    {
+                        UserNum = tempQustionList[0].UserNum,
+                        UserManagerNum = tempQustionList[0].UserManagerNum,
+                        QuestionnaireNum = tempQustionList[0].QuestionnaireNum,
+                        QuestionsList = QuestionsList
+                    });
+
+                    return FinalObject;
+                }
             }
-
-            Object FinalObject = (new
+            catch (Exception)
             {
-                UserNum = tempQustionList[0].UserNum,
-                UserManagerNum = tempQustionList[0].UserManagerNum,
-                QuestionnaireNum = tempQustionList[0].QuestionnaireNum,
-                QuestionsList = QuestionsList
-            });
 
-            return FinalObject;
+                throw;
+            }
         }
 
 
@@ -271,8 +285,6 @@ namespace Final_Server.Models
                 throw;
             }
         }
-
-
     }
 }
 

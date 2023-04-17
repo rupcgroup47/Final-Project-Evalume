@@ -17,17 +17,17 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 export default function FinishDialog({ open, setOpen, msg, finishRouteMsg }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log(msg);
     navigate("layouts/profile");
   };
 
   return (
     <Dialog maxWidth="xs" fullWidth onClose={() => setOpen((e) => !e)} open={open}>
-      <DialogTitle>הודעה</DialogTitle>
+      <DialogTitle>הצלחנו!</DialogTitle>
 
       <DialogContent>
         <Typography variant="body1">{msg}</Typography>

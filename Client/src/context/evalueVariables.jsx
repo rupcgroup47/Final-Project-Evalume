@@ -1,6 +1,6 @@
 
 import React, { createContext } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const EvalueContext = createContext();
 export default function EvalueContextProvider({ children }) {
@@ -68,6 +68,21 @@ export default function EvalueContextProvider({ children }) {
   //   const [CategoryArrContext, SetCategoryArrContext] = useState(InitCategoryArrContext)
   //   const [currentCat, setCurrentCat] = useState("")
   const [chosenEmployee, setChosenEmployee] = useState("") //need to set to loacl storage beacuse it is not saved when refreshing
+
+  useEffect(() => {
+    const exisiting = localStorage.getItem("chosenEmployee");
+    if(exisiting === null && chosenEmployee !== ""){
+      localStorage.setItem("chosenEmployee", JSON.stringify(chosenEmployee)); // Set chosenEmployee details in local storage
+    }
+    if (exisiting !== null && chosenEmployee !== ""){
+      if(JSON.parse(exisiting) !== chosenEmployee){
+        localStorage.setItem("chosenEmployee", JSON.stringify(chosenEmployee)); // update chosenEmployee details in local storage
+      }
+      else{
+        setChosenEmployee(JSON.parse(exisiting));
+      }
+    }
+  }, [chosenEmployee])
 
   const values = {
     // CategoryArrContext,

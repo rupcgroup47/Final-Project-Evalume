@@ -1842,15 +1842,11 @@ public class DBservices
 
             return rel_Ques;
         }
-        //catch (NullReferenceException)
-        //{
-        //    return 0;
-        //}
         catch (Exception ex)
         {
             // write to log
             Console.WriteLine(ex.Message);
-            throw (ex);
+            throw;
         }
 
         finally
@@ -1917,6 +1913,13 @@ public class DBservices
 
             while (dataReader.Read())
             {
+                if (dataReader.FieldCount == 1)
+                {
+                    Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
+                    r.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+
+                    rel_Ques.Add(r);
+                }
                 if (dataReader.FieldCount > 1)
                 {
                     Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
@@ -1931,10 +1934,6 @@ public class DBservices
 
                     rel_Ques.Add(r);
                 }
-                if (dataReader.FieldCount == 1)
-                {
-                    throw new ArgumentException("user has already filled his survey");
-                }
             }
 
             return rel_Ques;
@@ -1943,7 +1942,7 @@ public class DBservices
         {
             // write to log
             Console.WriteLine(ex.Message);
-            throw (ex);
+            throw;
         }
 
         finally

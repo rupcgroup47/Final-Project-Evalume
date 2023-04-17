@@ -4,10 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { MainStateContext } from "App";
 import CustomizedSteppers from "./components/steper";
 import SurveyForm from "./components/surveyForm";
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import { EvalueContext } from "context/evalueVariables";
-// import { ThumbsUp } from "../../assets/images/Thumbs-Up-cartoon-drawing.png"
 
 function QuestionnaireForm() {
   const [, dispatch] = useMaterialUIController();
@@ -48,7 +45,9 @@ function QuestionnaireForm() {
         .then(
           (result) => {
             console.log("success");
-            if (result.exption === "user has already filled his survey") {
+            console.log(result.userNum);
+            console.log(result);
+            if (result.userNum == undefined) {
               setFinishState(true);
             }
             else {
@@ -83,22 +82,22 @@ function QuestionnaireForm() {
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={evalu_Part_Type} />
-      <SurveyForm userNum={userId} employeesManager={userManagerId} evalu_Part_Type={evalu_Part_Type} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm}/>
+      <SurveyForm userNum={userId} employeesManager={userManagerId} evalu_Part_Type={evalu_Part_Type} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />
       <div>
         {
           finishState ? (
-            <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-              <Card sx={{ maxWidth: 500}} style={{alignSelf:"center"}}>
-                <CardMedia
-                  sx={{ height: 140 }}
-                  image="src\assets\images\Thumbs-Up-cartoon-drawing.jpg"
-                  title="Thumbs-Up"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div" >
+            <Container maxWidth="xl" sx={{ pt: 5, pb: 5, display: "flex" }}>
+              <Card sx={{ maxWidth: 400, minHeight: "400px", margin: "auto" }}>
+                <CardContent sx={{ padding: "8px" }}>
+                  <Typography gutterBottom component="div" variant="h3" style={{ textAlign: "center" }}>
                     מילאת את ההערכה השנתית עבור שנה זאת
                   </Typography>
                 </CardContent>
+                <CardMedia
+                  sx={{height:"auto", minHeight:"350px",width:"auto", minWidth:"350px",mb:"10px" }}
+                  image={require("../../assets/images/Thumbs-Up-cartoon-drawing.jpg")}
+                  title="Thumbs-Up"
+                />
               </Card>
             </Container>
           ) : null
