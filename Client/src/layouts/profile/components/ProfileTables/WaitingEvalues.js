@@ -27,13 +27,13 @@ const WaitingEvalues = ({ data }) => {
       <TableBody>
         {data.map((row) => (
           <TableRow
-            key={row.id}
+            key={row.userNum}
             onClick={() => handleRowClick(row)}
             style={{ backgroundColor: selectedRow === row ? "lightgray" : "white" }}
           >
-            <TableCell style={{ width: "25%" }}>{row.name}</TableCell>
-            <TableCell style={{ width: "25%" }}>{row.date}</TableCell>
-            <TableCell style={{ width: "25%" }}>{row.status}</TableCell>
+            <TableCell style={{ width: "25%" }}>{row.userFName + " " + row.userLName}</TableCell>
+            <TableCell style={{ width: "25%" }}>{row.answerInsertDate.slice(0, 10).replace(/-/g, "/")}</TableCell>
+            <TableCell style={{ width: "25%" }}>{row.evalu_Part_Type === 0 ? "ממתין למישוב מנהל" : "ממתין למישוב משותף"}</TableCell>
             <TableCell style={{ width: "25%" }}>
               {row.status === "ממתין למישוב מנהל" ? (//send current step according to which form i redirect to
                 <Link to="/ManagerEvalues" state={adminStep}>

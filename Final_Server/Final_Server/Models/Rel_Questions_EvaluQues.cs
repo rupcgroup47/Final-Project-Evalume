@@ -93,7 +93,20 @@ namespace Final_Server.Models
                 }
                 return EvaleQuesList;
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<Object> ReadEmployeeStatus(int userNum) //gets the employee status under a manager
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetEmployeeStatus(userNum);
+            }
+            catch (Exception)
             {
                 throw;
             }

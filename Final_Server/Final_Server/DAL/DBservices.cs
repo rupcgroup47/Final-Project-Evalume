@@ -78,7 +78,6 @@ public class DBservices
                 employee.UserFName = dataReader["UserFName"].ToString();
                 employee.UserLName = dataReader["UserLName"].ToString();
                 employee.UserGender = dataReader["UserGender"].ToString();
-                //employee.UserInsertDate = Convert.ToDateTime(dataReader["UserInsertDate"]);
                 employee.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
                 employee.Is_Admin = Convert.ToBoolean(dataReader["Is_Admin"]);
                 employee.UserType = Convert.ToBoolean(dataReader["UserType"]);
@@ -1561,163 +1560,6 @@ public class DBservices
 
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method delete a user bt his user number
-    ////--------------------------------------------------------------------------------------------------
-    //public int DeleteUser(int UserNum)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    cmd = CreateCommandWithSPDeleteUser("spDeleteUser", con, UserNum);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand using a stored procedure
-    ////---------------------------------------------------------------------------------
-    //private SqlCommand CreateCommandWithSPDeleteUser(String spName, SqlConnection con, int UserNum)
-    //{
-
-    //    SqlCommand cmd = new SqlCommand(); // create the command object
-
-    //    cmd.Connection = con;              // assign the connection to the command object
-
-    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-    //    cmd.Parameters.AddWithValue("@UserNum", UserNum); //insert all the parameters we got from the user
-
-    //    return cmd;
-    //}
-
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method gets all Goals
-    ////--------------------------------------------------------------------------------------------------
-    //public List<object> GetGoals(int userNum)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    cmd = CreateCommandWithSPGetGoalsByManager("spGetQuesByManagerNum", con, userNum);            // create the command
-
-    //    List<Object> List = new List<Object>();
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-    //        //dt.Load(dataReader);
-
-    //        while (dataReader.Read())
-    //        {
-
-    //            Object goal = new Object();
-
-    //            List.Add(new
-    //            {
-
-    //                GoalNum = dataReader["GoalNum"],
-    //                GoalName = dataReader["GoalName"],
-    //                GoalGroup_Type = dataReader["GoalGroup_Type"],
-    //                GoalGroup_Desc = dataReader["GoalGroup_Desc"],
-
-    //                GoalCreateDate = dataReader["GoalCreateDate"],
-    //                UserManagerNum = dataReader["UserManagerNum"],
-    //                UserNum = dataReader["UserNum"],
-    //                UserFName = dataReader["UserFName"],
-    //                UserLName = dataReader["UserLName"],
-    //                GoalStatus = dataReader["GoalStatus"]
-    //            }) ;
-    //        }
-
-    //        return List;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand using a stored procedure to get all Goals
-    ////---------------------------------------------------------------------------------
-    //private SqlCommand CreateCommandWithSPGetGoalsByManager(String spName, SqlConnection con, int userNum)
-    //{
-
-    //    SqlCommand cmd = new SqlCommand(); // create the command object
-
-    //    cmd.Connection = con;              // assign the connection to the command object
-
-    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-    //    cmd.Parameters.AddWithValue("@UserNum", userNum); //insert all the parameters we got from the user
-
-
-    //    return cmd;
-    //}
-
-
-    ////--------------------------------------------------------------------------------------------------
     //// This method gets the all the EvaluQues that fit the QuesType and RoleType
     ////--------------------------------------------------------------------------------------------------
     public List<Rel_Questions_EvaluQues> GetQuesByType(bool quesType, int roleGroup_Type)
@@ -2148,5 +1990,88 @@ public class DBservices
 
         return cmd;
 
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get all users goals that under this corent manager
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> GetEmployeeStatus(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetEmployeeStatus("spCheckExistEvaluStep", con, userNum);            // create the command
+
+        List<Object> EmployeeStatusList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Object uses = (new
+                {
+                    UserNum = Convert.ToInt32(dataReader["UserNum"]),
+                    UserFName = dataReader["UserFName"].ToString(),
+                    UserLName = dataReader["UserLName"].ToString(),
+                    AnswerInsertDate = dataReader["AnswerInsertDate"].ToString(),
+                    QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]),
+                    Evalu_Part_Type = Convert.ToInt32(dataReader["Evalu_Part_Type"])
+                });
+
+                EmployeeStatusList.Add(uses);
+            }
+
+            return EmployeeStatusList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand for get user details
+    ////---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGetEmployeeStatus(string spName, SqlConnection con, int userNum)
+    {
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@userNum", userNum); //insert all the parameters we got from the user
+
+        return cmd;
     }
 }

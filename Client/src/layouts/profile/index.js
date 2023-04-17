@@ -22,13 +22,21 @@ function Overview() {
       route: "/evaluation",
     },
     {
-      alertNum: 3,
-      alertSub: "הערכות ממתינות למישוב",
+      alertNum: 1,
+      alertSub: "הערכות ממתינות למישוב שלך",
+      forManager: true,
+      route: "/managerEvalues",
+    },
+    {
+      alertNum: 1,
+      alertSub: "פגישות הערכה ממתינות",
+      forManager: true,
       route: "/managerEvalues",
     },
     {
       alertNum: waitingToEvalue,
       alertSub: "פגישות ממתינות לקביעה",
+      forManager: true,
       route: "/evaluation",
     },
   ];

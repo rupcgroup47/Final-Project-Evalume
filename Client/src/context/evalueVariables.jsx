@@ -30,6 +30,8 @@ export default function EvalueContextProvider({ children }) {
     apiGetAllGoals: "https://proj.ruppin.ac.il/cgroup47/prod/api/Goal", //server
     // apiPostFinishAll: "https://localhost:7079/EvaluationSummeryAnswers",
     apiPostFinishAll: "https://proj.ruppin.ac.il/cgroup47/prod/EvaluationSummeryAnswers", //server
+    apiGetEmployeeStatus: "https://localhost:7079/userNum?userNum=",
+    // apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //server
   });
 
   //   const InitNotesContext = [ 
@@ -82,12 +84,6 @@ export default function EvalueContextProvider({ children }) {
   }, [chosenEmployee])
 
   const values = {
-    // CategoryArrContext,
-    // notesArrContext,
-    // SetCategoryArrContext,
-    // SetNotesArrContext,
-    // currentCat,
-    // setCurrentCat
     API,
     setAPI,
     chosenEmployee,

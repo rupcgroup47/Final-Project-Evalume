@@ -41,12 +41,19 @@ namespace Final_Server.Controllers
             }
         }
 
+        [HttpGet("/userNum")]
+        public IEnumerable<Object> GetEmployeeStatus(int userNum) //gets the employee status under a manager
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadEmployeeStatus(userNum);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-        //// POST api/<Rel_Questions_EvaluQuesController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
 
         [HttpGet("/userNum/evalu_Part_Type")]
         public Object GetEvaluQuesByUserId(int userNum, int evalu_Part_Type) //get the appropriate EvaluQues for the current employee
