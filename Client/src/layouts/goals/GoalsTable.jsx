@@ -6,85 +6,88 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useEffect } from "react";
 import { useMaterialUIController, setDirection } from "context";
 import TableToolbarGoal from "./TableToolBarGoal";
-import {TablePagination } from "@mui/material";
-import { useState } from "react";
+import { TablePagination } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
 import { useDebounce } from "use-debounce";
 import GoalItem from "./GoalItem";
+import { EvalueContext } from "context/evalueVariables";
+import { MainStateContext } from "App";
 
 
-const _goals = [
-  {
-    goalNum: 1,
-    goalName: "קורס אקסל",
-    employees: [
-      {
-        date: "2020-01-05",
-        userNum: 1,
-        userLName:"יעל",
-        userFName:"פרקש",
-        status: "חדש",
-      },
-      {
-        date: "2020-01-02",
-        userNum: 2,
-        userLName:"ריקי",
-        userFName:"פרקש",
-        status: "חדש",
-      },
-    ],
-  },
-  {
-    goalNum: 2,
-    goalName: "קורס פריוריטי",
-    employees: [
-      {
-        date: "2020-01-05",
-        userNum: 4,
-        userLName:"לי",
-        userFName:"פרקש",
-        status: "חדש",
-      },
-      {
-        date: "2020-01-02",
-        userNum: 5,
-        userLName:"מאי",
-        userFName:"פרקש",
-        status: "חדש",
-      },
-    ],
-  },
-  {
-    goalNum: 3,
-    goalName: "קורס חשבשבת",
-    employees: [
-      {
-        date: "2020-01-05",
-        userNum: 14,
-                userLName:"נועה",
-        userFName:"פרקש",
-        status: "חדש",
-      },
-      {
-        date: "2020-01-02",
-        userNum: 13,
-        userLName:"דני",
-        userFName:"פרקש",
-        status: "בוצע",
-      },
-    ],
-  },
-];
+// const _goals = [
+//   {
+//     goalNum: 1,
+//     goalName: "קורס אקסל",
+//     employees: [
+//       {
+//         date: "2020-01-05",
+//         userNum: 1,
+//         userLName:"יעל",
+//         userFName:"פרקש",
+//         status: "חדש",
+//       },
+//       {
+//         date: "2020-01-02",
+//         userNum: 2,
+//         userLName:"ריקי",
+//         userFName:"פרקש",
+//         status: "חדש",
+//       },
+//     ],
+//   },
+//   {
+//     goalNum: 2,
+//     goalName: "קורס פריוריטי",
+//     employees: [
+//       {
+//         date: "2020-01-05",
+//         userNum: 4,
+//         userLName:"לי",
+//         userFName:"פרקש",
+//         status: "חדש",
+//       },
+//       {
+//         date: "2020-01-02",
+//         userNum: 5,
+//         userLName:"מאי",
+//         userFName:"פרקש",
+//         status: "חדש",
+//       },
+//     ],
+//   },
+//   {
+//     goalNum: 3,
+//     goalName: "קורס חשבשבת",
+//     employees: [
+//       {
+//         date: "2020-01-05",
+//         userNum: 14,
+//                 userLName:"נועה",
+//         userFName:"פרקש",
+//         status: "חדש",
+//       },
+//       {
+//         date: "2020-01-02",
+//         userNum: 13,
+//         userLName:"דני",
+//         userFName:"פרקש",
+//         status: "בוצע",
+//       },
+//     ],
+//   },
+// ];
 
 export default function GoalsTable() {
   const [, dispatch] = useMaterialUIController();
   const [tableHead, setTableHead] = useState(_tableHead);
-  const [items, setItems] = useState([_goals]);
-  const [goals, setGoals] = useState([_goals]);
+  const [items, setItems] = useState([]);
+  const [goals, setGoals] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { API } = useContext(EvalueContext);
+  const { mainState, setMainState } = useContext(MainStateContext);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -93,12 +96,65 @@ export default function GoalsTable() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
+  // bring all the goals under manager using GET api
   useEffect(() => {
-    // Update the goals array
-    setItems(_goals);
-  }, [_goals]);
+    const abortController = new AbortController()
+    if (mainState.userType) {
+      fetch(
+        API.apiGoalsEmployee + mainState.userNum,
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          signal: abortController.signal
+        })
+        .then(async response => {
+          const data = await response.json();
+          console.log(response);
 
-//search goal 
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            setGoals(result);
+            setItems(result);
+          },
+          (error) => {
+            if (error.name === 'AbortError') return
+            console.log("err get=", error);
+            throw error
+          }
+        );
+      return () => {
+        abortController.abort()
+        // stop the query by aborting on the AbortController on unmount
+      }
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   // Update the goals array
+  //   const newArray = [...goals];
+  //   const newQuestion = {
+  //     quesContent: postQuestion.quesContent,
+  //     questionNum: result,
+  //     is_Active: true,
+  //   };
+  //   newArray[index].questions.push(newQuestion);
+  //   if (globalQuestionArray !== null) setGlobalQuestionsArray(newArray);
+  //   else settempQuestionArray(newArray);
+  // }, [goals]);
+
+  //search goal 
   const [searchInput, setSearchInput] = useState("");
   const [searchDebounce] = useDebounce(searchInput, 500);
   useEffect(() => {
@@ -108,11 +164,11 @@ export default function GoalsTable() {
   const handleSearch = (value) => {
     setSearchInput(value);
 
-    let sx = _goals.filter((item) =>
+    let sx = goals.filter((item) =>
       `${item.goalName}`.toLowerCase().includes(value.toLowerCase())
     );
 
-    setItems(value?.length > 0 ? sx : _goals);
+    setItems(value?.length > 0 ? sx : goals);
   };
   const handleRemoveGoal = (goal) => {
     setGoals((i) => i.filter((item) => item.goalName !== goal.goalName));
@@ -125,7 +181,7 @@ export default function GoalsTable() {
   return (
     <Paper sx={{ boxShadow: "none" }}>
       <TableToolbarGoal
-        goals={_goals}
+        goals={goals}
         setGoals={setGoals}
         setItems={setItems}
         searchInput={searchInput}
@@ -149,9 +205,9 @@ export default function GoalsTable() {
                       padding={item.disablePadding ? "none" : "normal"}
                       sx={{ fontWeight: 600 }}
                     >
-                        {" "}
-                        {item.label}
-                      </TableCell>
+                      {" "}
+                      {item.label}
+                    </TableCell>
                   )
                 );
               })}
