@@ -68,18 +68,16 @@ const arr = goal.employees;
                       <TableCell align="right">שם משתמש</TableCell>
                       <TableCell align="right">הושלם?</TableCell>
                     </TableRow>
-                    {console.log(arr)}
-                    {console.log(arr)}
-                     {arr.map((item)=>{
-    <TableRow key={item.date}>
-      <TableCell align="right">{item.date}</TableCell>
-      <TableCell align="right">{item.userFName}</TableCell>
-      <TableCell align="right">{item.status}</TableCell>
-    </TableRow>
-})}
-  
-                    
-                    
+                     {console.log(arr)}
+
+                      {goal.employees?.map((employee) => (
+                        <TableRow key={employee.userNum}>
+                        
+                          <TableCell align="right">{employee.date}</TableCell>
+                          <TableCell align="right">{employee.userLName} {employee.userFName}</TableCell>
+                          <TableCell align="right">{employee.status}</TableCell>
+                        </TableRow>
+                      ))}   
                   </TableHead>
                 </Table>
               </Box>

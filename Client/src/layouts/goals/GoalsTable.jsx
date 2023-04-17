@@ -23,14 +23,14 @@ const _goals = [
       {
         date: "2020-01-05",
         userNum: 1,
-        userLName:"נועה",
+        userLName:"יעל",
         userFName:"פרקש",
         status: "חדש",
       },
       {
         date: "2020-01-02",
         userNum: 2,
-        userLName:"נועה",
+        userLName:"ריקי",
         userFName:"פרקש",
         status: "חדש",
       },
@@ -43,14 +43,14 @@ const _goals = [
       {
         date: "2020-01-05",
         userNum: 4,
-        userLName:"נועה",
+        userLName:"לי",
         userFName:"פרקש",
         status: "חדש",
       },
       {
         date: "2020-01-02",
         userNum: 5,
-        userLName:"נועה",
+        userLName:"מאי",
         userFName:"פרקש",
         status: "חדש",
       },
@@ -70,7 +70,7 @@ const _goals = [
       {
         date: "2020-01-02",
         userNum: 13,
-        userLName:"נועה",
+        userLName:"דני",
         userFName:"פרקש",
         status: "בוצע",
       },
