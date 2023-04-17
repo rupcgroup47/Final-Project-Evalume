@@ -15,11 +15,37 @@ import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
 
 export default function ProfileAlerts(props) {
-  const { alerts } = props;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { API } = useContext(EvalueContext);
   const mainState = useContext(MainStateContext);
   const [tempResualt, setTempResualt] = useState([]);
+  const [waitingToEvalue, setWaitingToEvalue] = useState(3);
+  const arrAlerts = [
+    {
+      alertNum: 0,
+      alertSub: "הערכה עצמית ממתינה לביצוע",
+      route: "/evaluation",
+    },
+    {
+      alertNum: 1,
+      alertSub: "הערכות ממתינות למישוב שלך",
+      forManager: true,
+      route: "/managerEvalues",
+    },
+    {
+      alertNum: 1,
+      alertSub: "פגישות הערכה ממתינות",
+      forManager: true,
+      route: "/managerEvalues",
+    },
+    {
+      alertNum: waitingToEvalue,
+      alertSub: "פגישות ממתינות לקביעה",
+      forManager: true,
+      route: "/evaluation",
+    },
+  ];
+  const [alerts, setAlerts] = useState(arrAlerts);
     // {
     //   userNum: 2,//user id
     //   userFName: "נועה ",
@@ -78,6 +104,7 @@ export default function ProfileAlerts(props) {
         .then(
           (result) => {
             console.log("success");
+            console.log(result);
             setTempResualt(result);
           },
           (error) => {
@@ -95,12 +122,12 @@ export default function ProfileAlerts(props) {
   }, []);
 
   const handleAlarmClick = () => {
-    setData(tempResualt.filter((item) => item.evalu_Part_Type === 0));
+    setData(tempResualt?.filter((item) => item.evalu_Part_Type === 0));
     setIsPopupOpen(true);
   };
 
   const handleMeetingClick = () => {
-    setData(tempResualt.filter((item) => item.evalu_Part_Type === 1));
+    setData(tempResualt?.filter((item) => item.evalu_Part_Type === 1));
     setIsPopupOpen(true);
   };
 
@@ -110,7 +137,7 @@ export default function ProfileAlerts(props) {
 
   return (
     <>
-      <Card sx={{ height: "100%", backgroundColor: "#e6f2ff", paddingTop: "80px", width: "fit-content" }}>
+      <Card sx={{ height: "100%", backgroundColor: "#e6f2ff", paddingTop: "50px", width: "fit-content" }}>
         <MDBox p={2}>
           {filteredAlerts?.map((item, index) => (
             <MDTypography variant="h2" color="secondary" key={index}>

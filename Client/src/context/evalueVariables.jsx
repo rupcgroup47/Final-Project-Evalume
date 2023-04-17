@@ -30,17 +30,16 @@ export default function EvalueContextProvider({ children }) {
     apiGetAllGoals: "https://proj.ruppin.ac.il/cgroup47/prod/api/Goal", //server
     // apiPostFinishAll: "https://localhost:7079/EvaluationSummeryAnswers",
     apiPostFinishAll: "https://proj.ruppin.ac.il/cgroup47/prod/EvaluationSummeryAnswers", //server
-    apiGetEmployeeStatus: "https://localhost:7079/userNum?userNum=",
-    // apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //server
+    // apiGetEmployeeStatus: "https://localhost:7079/userNum?userNum=",
+    apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //server
   });
 
   
   const [chosenEmployee, setChosenEmployee] = useState("") //need to set to loacl storage beacuse it is not saved when refreshing
 
   useEffect(() => {
-    const exisiting = JSON.parse(localStorage.getItem("chosenEmployee"));
-    if ((exisiting === null && chosenEmployee !== "") || (exisiting !== null && chosenEmployee !== "" && exisiting !== chosenEmployee)) {
-
+    const exisiting = localStorage.getItem("chosenEmployee");
+    if (exisiting === null && chosenEmployee !== undefined || (exisiting !== null && chosenEmployee !== undefined && exisiting !== chosenEmployee)) {
       localStorage.setItem("chosenEmployee", JSON.stringify(chosenEmployee)); // Set chosenEmployee details in local storage
     }
     if (exisiting !== null && chosenEmployee === "") {
