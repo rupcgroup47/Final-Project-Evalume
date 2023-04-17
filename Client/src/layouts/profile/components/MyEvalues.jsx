@@ -47,18 +47,92 @@ export default function MyEvalues() {
 
   function calculateData(userId, year) {
     ///data is the array i pass to the pdf file component
-    let data;
-    if (userId === 2 && year === 2022) {
-      data = [
-        { id: 1, name: "שלום" },
-        { id: 2, name: "הייי" },
-      ];
-    } else {
-      data = [
-        { id: 1, name: "עכגיחג" },
-        { id: 2, name: "ערקאקעא" },
-      ];
-    }
+    let data = [{id:1, year:222}, {id:2,year:333}]
+    // let data = {
+    //   questionnaireNum:1,
+    //   userNum:14,
+    //   roleGroup:0,
+    //   filledOn:1,
+    //   parts:[{
+    //     quesGroup:1,
+    //     quesGroup_Desc:"שירותיות",
+    //     questions:[
+    //       {
+    //         questionNum:1,
+    //         questionContent:"הייי",
+    //         numericAnswer:1,
+    //         verbalAnswer:"שלום"
+    //       },
+    //       {
+    //         questionNum:2,
+    //         questionContent:"עדע",
+    //         numericAnswer:1,
+    //         verbalAnswer:"יכגיג"
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     quesGroup:2,
+    //     quesGroup_Desc:"אכפתיות",
+    //     questions:[
+    //       {
+    //         questionNum:3,
+    //         questionContent:"אאא",
+    //         numericAnswer:1,
+    //         verbalAnswer:"בבב"
+    //       },
+    //       {
+    //         questionNum:4,
+    //         questionContent:"קק",
+    //         numericAnswer:1,
+    //         verbalAnswer:"עעע"
+    //       }
+    //     ]
+    //   },
+    //   [
+    //     {
+    //       quesGroup:1,
+    //       quesGroup_Desc:"שירותיות",
+    //       questions:[
+    //         {
+    //           questionNum:1,
+    //           questionContent:"הייי",
+    //           numericAnswer:1,
+    //           verbalAnswer:"שלום"
+    //         },
+    //         {
+    //           questionNum:2,
+    //           questionContent:"עדע",
+    //           numericAnswer:1,
+    //           verbalAnswer:"יכגיג"
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       quesGroup:2,
+    //       quesGroup_Desc:"אכפתיות",
+    //       questions:[
+    //         {
+    //           questionNum:3,
+    //           questionContent:"אאא",
+    //           numericAnswer:1,
+    //           verbalAnswer:"בבב"
+    //         },
+    //         {
+    //           questionNum:4,
+    //           questionContent:"קק",
+    //           numericAnswer:1,
+    //           verbalAnswer:"עעע"
+    //         }
+    //       ]
+    //     }
+
+    //   ]
+    //   ]
+
+
+    //   }
+    // }
     return data;
   }
 
@@ -69,7 +143,7 @@ export default function MyEvalues() {
   }
   useEffect(() => {
     // This code will be executed whenever the `data` state changes
-    console.log(data);
+    console.log(data); 
   }, [data]);
   return (
     <Paper sx={{ boxShadow: "none", minWidth: 300, maxWidth: 900, margin: "auto" }}>
@@ -100,11 +174,11 @@ export default function MyEvalues() {
                 {/* {" "} */}
                 <TableCell align="left" >
                   {console.log(evalue.name)}
-                  {evalue.name}
+                  {evalue.year}
                 </TableCell>
                 <TableCell align="center" >
                   {console.log(evalue.name)}
-                  <PDFDownloadLink document={<PDFFile />} fileName="טופס הערכה">
+                  <PDFDownloadLink document={<PDFFile data = {data}/>} fileName="טופס הערכה">
                     {({ loading }) =>
                       loading ? (
                         <Button>שגיאה</Button>

@@ -59,6 +59,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
 
   const handleselectedValueChange = (itemId, questionId, value) => {
     // Update radio button answer if the answer was marked allready in the same question  or add the answer to the questions array
+    console.log(items)
     if (items.length > 0 && itemExists(itemId)) {
       updateItem(itemId, value);//If the question has already been answered then update the answer to the latest answer
     } else {
