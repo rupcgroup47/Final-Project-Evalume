@@ -13,34 +13,6 @@ import ProfileGrid from "./components/ProfileGrid";
 function Overview() {
   const [, dispatch] = useMaterialUIController();
   const { mainState, setMainState } = useContext(MainStateContext);
-  const [waitingToEvalue, setWaitingToEvalue] = useState(3);
-
-  const arrAlerts = [
-    {
-      alertNum: 0,
-      alertSub: "הערכה עצמית ממתינה לביצוע",
-      route: "/evaluation",
-    },
-    {
-      alertNum: 1,
-      alertSub: "הערכות ממתינות למישוב שלך",
-      forManager: true,
-      route: "/managerEvalues",
-    },
-    {
-      alertNum: 1,
-      alertSub: "פגישות הערכה ממתינות",
-      forManager: true,
-      route: "/managerEvalues",
-    },
-    {
-      alertNum: waitingToEvalue,
-      alertSub: "פגישות ממתינות לקביעה",
-      forManager: true,
-      route: "/evaluation",
-    },
-  ];
-  const [alerts, setAlerts] = useState(arrAlerts);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -82,7 +54,8 @@ function Overview() {
             xl={8}
             sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
           >
-            <ProfileAlerts title="conversations" alerts={alerts} />
+            <ProfileAlerts title="conversations" /> 
+            {/* alerts={alerts} */}
           </Grid>
         </Grid>
       </MDBox>

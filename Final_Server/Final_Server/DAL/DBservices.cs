@@ -1421,19 +1421,15 @@ public class DBservices
                 Rel_Goal_Employee Managergoal = new Rel_Goal_Employee();
 
                 Managergoal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                Managergoal.UserEmail = dataReader["UserEmail"].ToString();
                 Managergoal.UserFName = dataReader["UserFName"].ToString();
                 Managergoal.UserLName = dataReader["UserLName"].ToString();
-                Managergoal.UserRole = dataReader["UserRole"].ToString();
-                Managergoal.DepName = dataReader["DepName"].ToString();
                 Managergoal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
                 Managergoal.GoalName = dataReader["GoalName"].ToString();
                 Managergoal.GoalStatus = dataReader["GoalStatus"].ToString();
-                Managergoal.GoalGroup_Desc = dataReader["GoalGroup_Desc"].ToString();
+                Managergoal.GoalCreateDate = (dataReader["GoalCreateDate"].ToString());
 
 
                 ManagerGoalsList.Add(Managergoal);
-
             }
 
             return ManagerGoalsList;

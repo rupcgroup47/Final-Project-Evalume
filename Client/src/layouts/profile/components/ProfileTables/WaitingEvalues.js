@@ -10,7 +10,8 @@ const WaitingEvalues = ({ data }) => {
   const adminEmployeeStep = 2; //Awaiting manager and  employee  feedback
   const { setChosenEmployee } = useContext(EvalueContext);
   const handleRowClick = (row) => {
-    setChosenEmployee(row.id); //send chosen employee data to the global context
+    console.log(row);
+    setChosenEmployee(row.userNum); //send chosen employee data to the global context
     setSelectedRow(row); //css
   };
 
@@ -25,7 +26,7 @@ const WaitingEvalues = ({ data }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((row) => (
+        {data.map((row,index) => (
           <TableRow
             key={row.userNum}
             onClick={() => handleRowClick(row)}
@@ -35,7 +36,7 @@ const WaitingEvalues = ({ data }) => {
             <TableCell style={{ width: "25%" }}>{row.answerInsertDate.slice(0, 10).replace(/-/g, "/")}</TableCell>
             <TableCell style={{ width: "25%" }}>{row.evalu_Part_Type === 0 ? "ממתין למישוב מנהל" : "ממתין למישוב משותף"}</TableCell>
             <TableCell style={{ width: "25%" }}>
-              {row.status === "ממתין למישוב מנהל" ? (//send current step according to which form i redirect to
+              {row.evalu_Part_Type === 0 ? (//send current step according to which form i redirect to
                 <Link to="/ManagerEvalues" state={adminStep}>
                   מעבר לשאלון
                 </Link>
