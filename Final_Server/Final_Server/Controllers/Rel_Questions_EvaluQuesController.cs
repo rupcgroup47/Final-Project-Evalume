@@ -55,10 +55,6 @@ namespace Final_Server.Controllers
             {
                 return Rel_Questions_EvaluQues.ReadEvaluQuesByUserId(userNum, evalu_Part_Type);
             }
-            catch (ArgumentException ex)
-            {
-                return (new {exption=ex.Message});
-            }
             catch (Exception ex)
             {
                 throw ex;
@@ -175,6 +171,8 @@ namespace Final_Server.Controllers
                 string employeeOpinion = (data.GetProperty("employeeOpinion")).ToString();
 
                 List <int> goalsList = new List<int>();
+
+                //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
 
                 foreach (JsonElement answersElement in allGoals.EnumerateArray())
                 {

@@ -63,7 +63,6 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
       roleGroup: "",
     },
   });
-  console.log(errors);
 
   // setup variables 
   const genders = ["זכר", "נקבה", "אחר"];
@@ -236,7 +235,6 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
 
   //creating a new user when submiting the form at the targeted varibles type and set the relevant state
   const onSubmit = (data) => {
-    console.log('here');
     const newUser = {
       userEmail: data?.email,
       userId: parseInt(data?.id),
@@ -254,15 +252,12 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
       managerEmail: data?.managerEmail,
       userRoleGroupDesc: data?.roleGroup,
     };
-    console.log(newUser);
 
     if (user) {
       // Update a user
-      console.log('here?');
       setPutUser(newUser);
     } else {
       // Add new user at the end of the array
-      console.log('here??');
       setPostUser(newUser);
     }
 

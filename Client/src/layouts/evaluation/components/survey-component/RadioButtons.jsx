@@ -1,9 +1,9 @@
 import * as React from "react";
 import Radio from "@mui/material/Radio";
 
-export default function RadioButtons({ itemId,groupId,questionId, numericAnswer, onselectedValueChange }) {
+export default function RadioButtons({ itemId, questionId, numericAnswer, onselectedValueChange }) {
   const handleChange = (event) => {
-    onselectedValueChange(itemId,groupId,questionId, event.target.value); // Get question row and the selected value
+    onselectedValueChange(itemId, questionId, event.target.value); // Get question row and the selected value
   };
 
   return (

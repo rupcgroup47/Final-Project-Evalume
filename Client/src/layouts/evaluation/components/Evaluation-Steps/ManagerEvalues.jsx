@@ -1,4 +1,3 @@
-import { Container } from "@mui/material";
 import { useMaterialUIController, setDirection } from "context";
 import React, { useState, useEffect, useContext } from "react";
 import { MainStateContext } from "App";
@@ -7,6 +6,7 @@ import SurveyForm from "../surveyForm";
 import { useLocation } from "react-router-dom";
 import Feedback from "../feedback"
 import { EvalueContext } from "context/evalueVariables";
+import { Card, Container, CardMedia, CardContent, Typography } from "@mui/material";
 
 function ManagerEvalues() {
   const [, dispatch] = useMaterialUIController();
@@ -15,6 +15,7 @@ function ManagerEvalues() {
   const [questionsResp, setQuestionsResp] = useState([]);
   const [questionnaireNum, setQuestionnaireNum] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [finishState, setFinishState] = useState(false);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -26,10 +27,9 @@ function ManagerEvalues() {
   // GET the evaluation form of the user
   useEffect(() => {
     const abortController = new AbortController();
-    console.log(mainState);
-    if (currentStep === 1) { // צריכה להחזיר את המספר שאלון המלא כדי להעביר אותו לשלב הפידבק אז צריך לשנות בפרוצדורה במקום להחזיר סתם מספר להחזיר את מספר השאלון ולשנות את הזרימה בהתאם
+    if (mainState.mainState) {
       fetch(
-        API.evaluationApi + mainState.mainState.userNum + "&evalu_Part_Type=" + currentStep,
+        API.evaluationApi + chosenEmployee + "&evalu_Part_Type=" + currentStep,
         {
           method: "GET",
           headers: new Headers({
@@ -53,8 +53,11 @@ function ManagerEvalues() {
         .then(
           (result) => {
             console.log("success");
-            if (result.exption === "user has already filled his survey") {
-              console.log("not supposed to happand once the list come from the database");
+            if (result.userNum == undefined && currentStep === 2) {
+              setQuestionnaireNum(result.questionnaireNum);
+            }
+            else if (result.userNum == undefined && currentStep === 1) { //once the list will be dynamic shouldn't be happened
+              setFinishState(true);
             }
             else {
               setQuestionnaireNum(result.questionnaireNum);
@@ -77,15 +80,33 @@ function ManagerEvalues() {
 
   const location = useLocation();
   const currentStep = location.state;
-  console.log(currentStep);
   const userId = mainState.mainState.userNum;//The employee who is now connected to the system
   // const userManagerId=mainState.mainState.userManagerNum;//The manager of the employee who is now connected to the system
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />
       {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />}
-      {currentStep === 2 && <Feedback userNum={chosenEmployee} managerId={userId} evalu_Part_Type={currentStep} questionnaireNum={questionnaireNum}/>}
-      {/* <SurveyForm /> */}
+      {currentStep === 2 && <Feedback userNum={chosenEmployee} evalu_Part_Type={currentStep} questionnaireNum={questionnaireNum} />}
+      <div>
+        {
+          finishState ? (
+            <Container maxWidth="xl" sx={{ pt: 5, pb: 5, display: "flex" }}>
+              <Card sx={{ maxWidth: 400, minHeight: "400px", margin: "auto" }}>
+                <CardContent sx={{ padding: "8px" }}>
+                  <Typography gutterBottom component="div" variant="h3" style={{ textAlign: "center" }}>
+                    מילאת את ההערכה השנתית עבור שנה זאת
+                  </Typography>
+                </CardContent>
+                <CardMedia
+                  sx={{ height: "auto", minHeight: "350px", width: "auto", minWidth: "350px", mb: "10px" }}
+                  image={require("../../../../assets/images/Thumbs-Up-cartoon-drawing.jpg")}
+                  title="Thumbs-Up"
+                />
+              </Card>
+            </Container>
+          ) : null
+        }
+      </div>
     </Container>
   );
 }
