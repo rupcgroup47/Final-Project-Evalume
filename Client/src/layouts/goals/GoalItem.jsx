@@ -26,7 +26,7 @@ export default function GoalItem({
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [open, setOpen] = useState(false);
-const arr = goal.employees;
+
 
   return (
     <>
@@ -64,18 +64,16 @@ const arr = goal.employees;
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="right">תאריך</TableCell>
-                      <TableCell align="right">שם משתמש</TableCell>
-                      <TableCell align="right">הושלם?</TableCell>
+                      <TableCell align="left">תאריך</TableCell>
+                      <TableCell align="left">שם משתמש</TableCell>
+                      <TableCell align="left">סטטוס</TableCell>
                     </TableRow>
-                     {console.log(arr)}
-
                       {goal.employees?.map((employee) => (
                         <TableRow key={employee.userNum}>
                         
-                          <TableCell align="right">{employee.date}</TableCell>
-                          <TableCell align="right">{employee.userLName} {employee.userFName}</TableCell>
-                          <TableCell align="right">{employee.status}</TableCell>
+                          <TableCell align="left">{employee.date}</TableCell>
+                          <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
+                          <TableCell align="left">{employee.goalStatus}</TableCell>
                         </TableRow>
                       ))}   
                   </TableHead>

@@ -256,6 +256,10 @@ export default function GoalsTable() {
           setRowsPerPage(parseInt(event.target.value, 10));
           setPage(0);
         }}
+        labelDisplayedRows={({ from, to, count }) =>
+        `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
+      }
+      labelRowsPerPage="מספר שורות להציג:"
       />
     </Paper>
   );
