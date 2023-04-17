@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // react-router-dom components
 import { useLocation, NavLink, Link as LinkDom } from "react-router-dom";
@@ -53,6 +53,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
   const { mainState, setMainState } = useContext(MainStateContext);
+  const [filteredRoutes, setFilteredRoutes] = useState();
 
   let textColor = "white";
 
@@ -84,8 +85,20 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
 
+  useEffect(() => { // make user type validation
+    if (!mainState?.is_Admin && mainState?.userType) {
+      setFilteredRoutes(routes.filter(({ forAdmin }) => !forAdmin));
+    }
+    if (!mainState?.is_Admin && !mainState?.userType) {
+      setFilteredRoutes(routes.filter(({ forAdmin }) => !forAdmin).filter(({ forManager }) => !forManager));
+    }
+    else{
+      setFilteredRoutes(routes);
+    }
+  }, []);
+
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.filter(({ isHiddenFromSideNav }) => !isHiddenFromSideNav).map(({ type, name, icon, title, noCollapse, key, href, route }) => {
+  const renderRoutes = filteredRoutes?.filter(({ isHiddenFromSideNav }) => !isHiddenFromSideNav).map(({ type, name, icon, title, noCollapse, key, href, route }) => {
     let returnValue;
 
     if (type === "collapse") {
@@ -182,9 +195,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
         {/* <LinkDom to="layouts/info/SystemInfo"> */}
-          <MDButton rel="noreferrer" variant="gradient" color={sidenavColor} fullWidth>
-            מידע למשתמש
-          </MDButton>
+        <MDButton rel="noreferrer" variant="gradient" color={sidenavColor} fullWidth>
+          מידע למשתמש
+        </MDButton>
         {/* </LinkDom> */}
       </MDBox>
     </SidenavRoot>

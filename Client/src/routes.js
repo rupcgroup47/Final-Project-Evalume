@@ -116,23 +116,6 @@ const routes = [
     icon: <Icon fontSize="small">poll</Icon>,
     route: "/evaluation",
     component: <Evaluations />,
-    // children: [
-    //   {
-    //     name: "מישוב ",
-    //     key: "evaluationMain",
-    //     icon: <Icon fontSize="small">form</Icon>,
-    //     route: "",
-    //     component: <Dashboard />
-    //   },
-    //   {
-    //     name: "מישוב עצמי",
-    //     key: "evaluationPersonal",
-    //     icon: <Icon fontSize="small">form</Icon>,
-    //     route: "step1",
-    //     component: <Goals />
-    //   },
-
-    // ]
   },
   {
     type: "collapse",

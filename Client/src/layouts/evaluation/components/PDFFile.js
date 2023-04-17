@@ -43,7 +43,7 @@ const PDFFile = (props) => {//receive the selected form by year and user
     return(
         <Document>
         <Page style={styles.body}>
-        {props.data.map((item, index) => (
+        {props?.data?.map((item, index) => (
           <View key={index}>
             <Text style={styles.header} fixed>{item.id}</Text>
             <Text style={styles.text}>{item.name}</Text>
