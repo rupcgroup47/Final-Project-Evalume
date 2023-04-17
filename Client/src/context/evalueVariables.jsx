@@ -31,7 +31,10 @@ export default function EvalueContextProvider({ children }) {
     // apiPostFinishAll: "https://localhost:7079/EvaluationSummeryAnswers",
     apiPostFinishAll: "https://proj.ruppin.ac.il/cgroup47/prod/EvaluationSummeryAnswers", //server
     // apiGetEmployeeStatus: "https://localhost:7079/userNum?userNum=",
-    apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //server
+    apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //
+    // apiGoalsEmployee: "https://localhost:7079/userManager?userManager=",
+    apiGoalsEmployee: "https://proj.ruppin.ac.il/cgroup47/prod/userManager?userManager=", //server
+
   });
 
   //   const InitNotesContext = [ 
