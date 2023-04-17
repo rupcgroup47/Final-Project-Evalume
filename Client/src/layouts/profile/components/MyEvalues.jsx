@@ -22,6 +22,7 @@ const evalues = [
   { id: 2, year: 2023 },
 ];
 
+
 export default function MyEvalues() {
   const [tableHead, setTableHead] = useState({
     id: "evalueYear",
@@ -47,94 +48,59 @@ export default function MyEvalues() {
 
   function calculateData(userId, year) {
     ///data is the array i pass to the pdf file component
-    let data = [{id:1, year:222}, {id:2,year:333}]
-    // let data = {
-    //   questionnaireNum:1,
-    //   userNum:14,
-    //   roleGroup:0,
-    //   filledOn:1,
-    //   parts:[{
-    //     quesGroup:1,
-    //     quesGroup_Desc:"שירותיות",
-    //     questions:[
-    //       {
-    //         questionNum:1,
-    //         questionContent:"הייי",
-    //         numericAnswer:1,
-    //         verbalAnswer:"שלום"
-    //       },
-    //       {
-    //         questionNum:2,
-    //         questionContent:"עדע",
-    //         numericAnswer:1,
-    //         verbalAnswer:"יכגיג"
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     quesGroup:2,
-    //     quesGroup_Desc:"אכפתיות",
-    //     questions:[
-    //       {
-    //         questionNum:3,
-    //         questionContent:"אאא",
-    //         numericAnswer:1,
-    //         verbalAnswer:"בבב"
-    //       },
-    //       {
-    //         questionNum:4,
-    //         questionContent:"קק",
-    //         numericAnswer:1,
-    //         verbalAnswer:"עעע"
-    //       }
-    //     ]
-    //   },
-    //   [
-    //     {
-    //       quesGroup:1,
-    //       quesGroup_Desc:"שירותיות",
-    //       questions:[
-    //         {
-    //           questionNum:1,
-    //           questionContent:"הייי",
-    //           numericAnswer:1,
-    //           verbalAnswer:"שלום"
-    //         },
-    //         {
-    //           questionNum:2,
-    //           questionContent:"עדע",
-    //           numericAnswer:1,
-    //           verbalAnswer:"יכגיג"
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       quesGroup:2,
-    //       quesGroup_Desc:"אכפתיות",
-    //       questions:[
-    //         {
-    //           questionNum:3,
-    //           questionContent:"אאא",
-    //           numericAnswer:1,
-    //           verbalAnswer:"בבב"
-    //         },
-    //         {
-    //           questionNum:4,
-    //           questionContent:"קק",
-    //           numericAnswer:1,
-    //           verbalAnswer:"עעע"
-    //         }
-    //       ]
-    //     }
+    // let data = [{id:1, year:222}, {id:2,year:333}]
+    let data = {
+      questionnaireNum:1,
+      userNum:14,
+      roleGroup:0,
+      filledOn:1,
+      parts:[{
+        part:0,
+        answerInsertDate:"14/4/2022",
+        quesGroup_Desc:"שירותיות",
+        questions:[
+          {
+            questionNum:1,
+            questionContent:"הייי",
+            numericAnswer:1,
+            verbalAnswer:"שלום"
+          },
+          {
+            questionNum:2,
+            questionContent:"עדע",
+            numericAnswer:1,
+            verbalAnswer:"יכגיג"
+          }
+        ]
+      }
+      ,
+    
+        {
+          part:1,
+        answerInsertDate:"19/4/2022",
+          quesGroup_Desc:"שירותיות",
+          questions:[
+            {
+              questionNum:1,
+              questionContent:"הייי",
+              numericAnswer:1,
+              verbalAnswer:"שלום"
+            },
+            {
+              questionNum:2,
+              questionContent:"עדע",
+              numericAnswer:1,
+              verbalAnswer:"יכגיג"
+            }
+          ]
+        }
+      ]
 
-    //   ]
-    //   ]
+ }
+ return data;
 
-
-    //   }
-    // }
-    return data;
-  }
+    }
+  
 
   function updateData(year) {
     const newData = calculateData(userId, year);
@@ -178,7 +144,7 @@ export default function MyEvalues() {
                 </TableCell>
                 <TableCell align="center" >
                   {console.log(evalue.name)}
-                  <PDFDownloadLink document={<PDFFile data = {data}/>} fileName="טופס הערכה">
+                  <PDFDownloadLink document={<PDFFile data = {data} />} fileName="טופס הערכה">
                     {({ loading }) =>
                       loading ? (
                         <Button>שגיאה</Button>

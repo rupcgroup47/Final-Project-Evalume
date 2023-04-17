@@ -16,7 +16,20 @@ const styles = StyleSheet.create({
   text: {
     margin: 12,
     fontSize: 14,
-    textAlign: "justify",
+    textAlign: "center",
+    fontFamily: 'Rubik',
+    color:"blue"
+
+  },
+  text1: {
+    margin: 14,
+    fontSize: 16,
+    textAlign: "right",
+    fontFamily: 'Rubik'
+    },text2: {
+    margin: 12,
+    fontSize: 10,
+    textAlign: "right",
     fontFamily: 'Rubik'
   },
   header: {
@@ -38,17 +51,20 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const PDFFile = (props) => {//receive the selected form by year and user 
     return(
         <Document>
         <Page style={styles.body}>
-        {props?.data?.map((item, index) => (
-          <View key={index}>
-            <Text style={styles.header} fixed>{item.id}</Text>
-            <Text style={styles.text}>{item.name}</Text>
-          </View>
-        ))}
+            <Text style={styles.header} fixed>1- 2023 שאלון מספר </Text>
+            <Text style={styles.header} fixed>עובד: נועה פרקש מנהל: יהל שבח</Text>
+            <Text style={styles.text}>מקרא 1-5, 1 שלילי 5 חיובי</Text>
+            <Text style={styles.text1}>מישוב עצמי </Text>
+            <Text style={styles.text2}> האם אני מרגיש בנוח? 5 </Text>
+            <Text style={styles.text2}> האם אני מרגיש עובד טוב? 4 </Text>
+            <Text style={styles.text2}> האם אני מרגיש מסופק? 4 כן העבודה מספקת אותי מאוד</Text>
+            <Text style={styles.text2}> האם אני מרגיש בנוח עם העמיתים? 4 חברים טובים</Text>
+
+
           <Text style={styles.pageNumber} render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages}`} fixed></Text>
         </Page>
       </Document>
