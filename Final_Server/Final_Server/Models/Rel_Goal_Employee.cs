@@ -8,8 +8,7 @@
         bool goal_Is_Active;
         string goalStatus;
         string goalGroup_Desc;
-        DateTime goalCreateDate = new DateTime();
-
+        string goalCreateDate;
         int userNum;
         string userEmail;
         int userId;
@@ -27,6 +26,7 @@
         string userDepartment;
         int userPhone;
         int userManager;
+
 
         public int GoalNum { get => goalNum; set => goalNum = value; }
         public string GoalName { get => goalName; set => goalName = value; }
@@ -48,7 +48,7 @@
         public string UserDepartment { get => userDepartment; set => userDepartment = value; }
         public int UserPhone { get => userPhone; set => userPhone = value; }
         public string GoalStatus { get => goalStatus; set => goalStatus = value; }
-        public DateTime GoalCreateDate { get => goalCreateDate; set => goalCreateDate = value; }
+        public string GoalCreateDate { get => goalCreateDate; set => goalCreateDate = value; }
         public string GoalGroup_Desc { get => goalGroup_Desc; set => goalGroup_Desc = value; }
         public string DepName { get => depName; set => depName = value; }
         public int UserManager { get => userManager; set => userManager = value; }
@@ -79,12 +79,59 @@
         }
 
 
-        public static List<Rel_Goal_Employee> ReadManagerGoals(int userManager)//get all users goals that under this corent manager
+        public static List<Object> ReadManagerGoals(int userManager)//get all users goals that under this corent manager
         {
             DBservices dbs = new DBservices();
 
             List<Rel_Goal_Employee> ManagerGoalsList = dbs.GetManagerGoals(userManager);
-            return ManagerGoalsList;
+            int counter = 0;
+            int currentNumber = 0;
+            List<int> goalOptions = new List<int>();
+            foreach (Rel_Goal_Employee item in ManagerGoalsList)
+            {
+                if (currentNumber != item.GoalNum)
+                {
+                    currentNumber = item.GoalNum;
+                    goalOptions.Add(currentNumber);
+                    counter++;
+                }
+            }
+            List<Object> GoalsList = new List<Object>();
+            for (int i = 0; i < counter; i++)
+            {
+                List<Rel_Goal_Employee> tmpList = new List<Rel_Goal_Employee>();
+                foreach (Rel_Goal_Employee item in ManagerGoalsList)
+                {
+                    if (item.GoalNum == goalOptions[i])
+                    {
+                        tmpList.Add(item);
+                    }
+                }
+
+                List<Object> employeesList = new List<Object>();
+
+                foreach (Rel_Goal_Employee item in tmpList)
+                {
+                    employeesList.Add(new
+                    {
+                        date = item.GoalCreateDate,
+                        userNum = item.UserNum,
+                        userFName = item.UserFName,
+                        userLName = item.UserLName,
+                        goalStatus = item.GoalStatus,
+                    });
+                }
+
+                GoalsList.Add(new
+                {
+                    goalNum = tmpList[0].GoalNum,
+                    goalName = tmpList[0].GoalName,
+                    employees = employeesList,
+                });
+            }
+
+            return GoalsList;
+
         }
     }
 }

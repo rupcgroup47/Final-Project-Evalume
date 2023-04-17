@@ -20,18 +20,18 @@ namespace Final_Server.Controllers
 
         // GET api/<Rel_Goal_EmployeeController>/5
         [HttpGet("/userManager")]
-        public IActionResult GetManagerGoals(int userManager) //get all users goals that under this corent manager
+        public IEnumerable<Object> GetManagerGoals(int userManager) //get all users goals that under this corent manager
         {
-            List<Rel_Goal_Employee> ManagerGoalsList = Rel_Goal_Employee.ReadManagerGoals(userManager);
+            try
+            {
+                return Rel_Goal_Employee.ReadManagerGoals(userManager);
+            }
+            catch (Exception)
+            {
 
-            if (ManagerGoalsList.Count != 0)
-            {
-                return Ok(ManagerGoalsList);
+                throw;
             }
-            else
-            {
-                return NotFound("Error");
-            }
+
         }
 
 

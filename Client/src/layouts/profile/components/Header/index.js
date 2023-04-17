@@ -12,6 +12,7 @@ import breakpoints from "assets/theme/base/breakpoints";
 import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/packages.jpg";
 import OpenEvaluation from "./openEvaluation";
+
 function Header({ children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
@@ -72,11 +73,17 @@ function Header({ children }) {
             </MDBox>
           </Grid>
           <Grid item>
-          <MDBox height="100%" mt={0.5} lineHeight={1}>
-              <MDTypography variant="h5" fontWeight="medium">
-              <OpenEvaluation/>
-              </MDTypography>
-            </MDBox>
+            <div>
+              {
+                mainState.is_Admin ? (
+                  <MDBox height="100%" mt={0.5} lineHeight={1}>
+                    <MDTypography variant="h5" fontWeight="medium">
+                      <OpenEvaluation />
+                    </MDTypography>
+                  </MDBox>
+                ) : null
+              }
+            </div>
           </Grid>
         </Grid>
         {children}
