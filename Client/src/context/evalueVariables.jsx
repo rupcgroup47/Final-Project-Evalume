@@ -70,17 +70,14 @@ export default function EvalueContextProvider({ children }) {
   const [chosenEmployee, setChosenEmployee] = useState("") //need to set to loacl storage beacuse it is not saved when refreshing
 
   useEffect(() => {
-    const exisiting = localStorage.getItem("chosenEmployee");
-    if(exisiting === null && chosenEmployee !== ""){
+    const exisiting = JSON.parse(localStorage.getItem("chosenEmployee"));
+    if ((exisiting === null && chosenEmployee !== "") || (exisiting !== null && chosenEmployee !== "" && exisiting !== chosenEmployee)) {
+
       localStorage.setItem("chosenEmployee", JSON.stringify(chosenEmployee)); // Set chosenEmployee details in local storage
     }
-    if (exisiting !== null && chosenEmployee !== ""){
-      if(JSON.parse(exisiting) !== chosenEmployee){
-        localStorage.setItem("chosenEmployee", JSON.stringify(chosenEmployee)); // update chosenEmployee details in local storage
-      }
-      else{
-        setChosenEmployee(JSON.parse(exisiting));
-      }
+    if (exisiting !== null && chosenEmployee === "") {
+
+      setChosenEmployee(JSON.parse(exisiting));
     }
   }, [chosenEmployee])
 

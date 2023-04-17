@@ -18,16 +18,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
+import DialogSurvey from "./DialogSurvey";
 import { EvalueContext } from "context/evalueVariables";
 
 registerLocale("he", he);
 
-export default function Feedback({ userNum, managerId, questionnaireNum }) {
+export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum }) {
   const [, dispatch] = useMaterialUIController();
   const classes = useStyles();
   const { API } = useContext(EvalueContext);
   const [goalNames, setGoalNames] = useState([]);
-
+  const [showCloseDialog, setShowCloseDialog] = useState(false);
+  const [statusMsg, setMsg] = useState("");
+  const [finishRouteMsg, setRouteMsg] = useState("");
   const [rows, setRows] = useState([]); //Format to display table
   const [goalName, setGoalName] = useState("");
   const [date, setDate] = useState();
@@ -36,7 +39,7 @@ export default function Feedback({ userNum, managerId, questionnaireNum }) {
   const [employeeOpinion, setEmployeeOpinion] = useState("");
   const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
   const [allGoals, setAllGoals] = useState([]); //Format to send to the server
-  const evalu_Part_Type = 2;
+
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -92,56 +95,56 @@ export default function Feedback({ userNum, managerId, questionnaireNum }) {
       };
     }
   }, []);
-  console.log('id' + userNum);
+
   // Post a new finished Evaluation process using Post api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log(JSON.stringify(finalFeedbackForm));
+    console.log("ze?" + JSON.stringify(finalFeedbackForm));
     if (finalFeedbackForm !== null) {
       console.log("tbb");
-      // fetch(
-      //   API.apiPostFinishAll,
-      //   {
-      //     method: "POST",
-      //     headers: new Headers({
-      //       "Content-Type": "application/json; charset=UTF-8",
-      //       Accept: "application/json; charset=UTF-8",
-      //     }),
-      //     body: JSON.stringify(finalFeedbackForm),
-      //     signal: abortController.signal,
-      //   })
-      //   .then(async response => {
-      //     const data = await response.json();
-      //     console.log(response);
+      fetch(
+        API.apiPostFinishAll,
+        {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: JSON.stringify(finalFeedbackForm),
+          signal: abortController.signal,
+        })
+        .then(async response => {
+          const data = await response.json();
+          console.log(response);
 
-      //     if (!response.ok) {
-      //       // get error message from body or default to response statusText
-      //       const error = (data && data.message) || response.statusText;
-      //       return Promise.reject(error);
-      //     }
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
 
-      //     return data;
-      //   })
-      //   .then(
-      //     (result) => {
-      //       console.log("success", result);
-      //       setMsg("תהליך הערכה הסתיים בהצלחה!");
-      //       setRouteMsg("חזרה לדף הבית");
-      //       setShowCloseDialog((e) => !e); // Error dialog message
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success", result);
+            setMsg("תהליך הערכה הסתיים בהצלחה!");
+            setRouteMsg("חזרה לדף הבית");
+            setShowCloseDialog((e) => !e); // Error dialog message
 
-      //     },
-      //     (error) => {
-      //       if (error.name === 'AbortError') return;
-      //       console.log("err get=", error);
-      //       swal({
-      //         title: "קרתה תקלה!",
-      //         text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-      //         icon: "error",
-      //         button: "סגור"
-      //       });
-      //       throw error;
-      //     }
-      //   );
+          },
+          (error) => {
+            if (error.name === 'AbortError') return;
+            console.log("err get=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
       return () => {
         abortController.abort();
         // stop the query by aborting on the AbortController on unmount
@@ -166,7 +169,6 @@ export default function Feedback({ userNum, managerId, questionnaireNum }) {
     setAllGoals([...allGoals, { goalNum: selectedId, date: date }]); //Format to send to the server
     setGoalName("");
     setDate("");
-    console.log(allGoals);
   };
 
   function sendFeedbackToServer() {
@@ -177,7 +179,6 @@ export default function Feedback({ userNum, managerId, questionnaireNum }) {
     //create feedback obj form
     const newObj = sendFeedbackToServer();
     setFinalfeedbackForm({ ...newObj });
-    console.log(newObj)
   }
 
   return (
@@ -191,7 +192,7 @@ export default function Feedback({ userNum, managerId, questionnaireNum }) {
             <TextField
               label="הוסף מלל"
               InputProps={{
-                style: { fontSize: 20, height: "150px", width: "550px" },
+                style: { fontSize: 20, height: "150px", width: "550px", alignItems: "baseline" },
               }}
               multiline
               maxRows={3}
@@ -206,7 +207,7 @@ export default function Feedback({ userNum, managerId, questionnaireNum }) {
             <TextField
               label="הוסף מלל"
               InputProps={{
-                style: { fontSize: 20, height: "150px", width: "550px" },
+                style: { fontSize: 20, height: "150px", width: "550px", alignItems: "baseline" },
               }}
               multiline
               maxRows={3}
@@ -271,6 +272,15 @@ export default function Feedback({ userNum, managerId, questionnaireNum }) {
         </Button>
       </Box>
       <br />
+      <DialogSurvey
+        open={showCloseDialog}
+        setOpen={setShowCloseDialog}
+        msg={statusMsg}
+        finishRouteMsg={finishRouteMsg}
+        onClick={() => {
+          setShowCloseDialog((e) => !e);
+        }}
+      />
     </Paper>
   );
 }

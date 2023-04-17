@@ -53,7 +53,6 @@ function ManagerEvalues() {
         .then(
           (result) => {
             console.log("success");
-            console.log(result);
             if (result.userNum == undefined && currentStep === 2) {
               setQuestionnaireNum(result.questionnaireNum);
             }
@@ -87,7 +86,7 @@ function ManagerEvalues() {
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />
       {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />}
-      {currentStep === 2 && <Feedback userNum={chosenEmployee} managerId={userId} evalu_Part_Type={currentStep} questionnaireNum={questionnaireNum} />}
+      {currentStep === 2 && <Feedback userNum={chosenEmployee} evalu_Part_Type={currentStep} questionnaireNum={questionnaireNum} />}
       <div>
         {
           finishState ? (
