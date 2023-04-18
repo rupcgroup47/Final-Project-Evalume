@@ -87,12 +87,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   useEffect(() => { // make user type validation
     if (!mainState?.is_Admin && mainState?.userType) {
+      // console.log("admin"+ mainState?.is_Admin);
+      // console.log("user"+mainState?.userType);
       setFilteredRoutes(routes.filter(({ forAdmin }) => !forAdmin));
     }
     if (!mainState?.is_Admin && !mainState?.userType) {
       setFilteredRoutes(routes.filter(({ forAdmin }) => !forAdmin).filter(({ forManager }) => !forManager));
     }
-    else{
+    if(mainState?.is_Admin){
       setFilteredRoutes(routes);
     }
   }, []);

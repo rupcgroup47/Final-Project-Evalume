@@ -79,7 +79,7 @@
         }
 
 
-        public static List<Object> ReadManagerGoals(int userManager)//get all users goals that under this corent manager
+        public static List<Object> ReadManagerGoals(int userManager)//get all users goals that under this current manager
         {
             DBservices dbs = new DBservices();
 
