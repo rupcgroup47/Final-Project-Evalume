@@ -53,14 +53,14 @@ export const tableHeadArr = [
         id: "userRoleGroupDesc",
         textAlign: "center",
         disablePadding: false,
-        label: "סוג תפקיד",
-        show: true,
+        label: "אופי תפקיד",
+        show: false,
     },
     {
         id: "userType",
         textAlign: "center",
         disablePadding: false,
-        label: "סוג תפקידן",
+        label: "דרג",
         show: true,
     },
     {

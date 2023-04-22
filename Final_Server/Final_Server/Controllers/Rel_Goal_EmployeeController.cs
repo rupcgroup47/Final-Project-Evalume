@@ -12,7 +12,7 @@ namespace Final_Server.Controllers
     {
         // GET: api/<Rel_Goal_EmployeeController>
         [HttpGet]
-        public IEnumerable<Rel_Goal_Employee> Get() //get all corent user goals
+        public IEnumerable<Rel_Goal_Employee> Get() //get all current user goals
         {
             return Rel_Goal_Employee.ReadAllUserGoals();
         }
@@ -20,7 +20,7 @@ namespace Final_Server.Controllers
 
         // GET api/<Rel_Goal_EmployeeController>/5
         [HttpGet("/userManager")]
-        public IEnumerable<Object> GetManagerGoals(int userManager) //get all users goals that under this corent manager
+        public IEnumerable<Object> GetManagerGoals(int userManager) //get all users goals that under this current manager
         {
             try
             {

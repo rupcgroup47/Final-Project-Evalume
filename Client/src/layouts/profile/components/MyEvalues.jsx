@@ -16,11 +16,13 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Button } from "@mui/material";
 import { MainStateContext } from "App";
 import { ContactSupportOutlined } from "@mui/icons-material";
+import ApiFetcher from "components/ApiFetcher";
+import { EvalueContext } from "context/evalueVariables";
 
-const evalues = [
-  { id: 1, year: 2022 },
-  { id: 2, year: 2023 },
-];
+// const evalues = [
+//   { id: 1, year: 2022 },
+//   { id: 2, year: 2023 },
+// ];
 
 
 export default function MyEvalues() {
@@ -34,11 +36,31 @@ export default function MyEvalues() {
   });
   const mainState = useContext(MainStateContext);
   const userId = mainState.mainState.userNum; //The employee who is now connected to the system
-  const [items, setItems] = useState(evalues);
+  const { API } = useContext(EvalueContext);
+  const [items, setItems] = useState([]);
   const [, dispatch] = useMaterialUIController();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [state, setState] = useState({
+    fetch: {
+      api: "",
+      method: "",
+      body: "",
+      onFetchComplete: setItems,
+      onFetchError: "",
+    }
+
+  });
+
+  useEffect(() => {
+    console.log("here?")
+    if (state?.fetch.onFetchError != null)
+      console.log("err get=", state.fetch.onFetchError)
+  }, [state?.fetch.onFetchError])
+
+
   useEffect(() => {
     setDirection(dispatch, "rtl");
     return () => setDirection(dispatch, "ltr");
@@ -50,69 +72,89 @@ export default function MyEvalues() {
     ///data is the array i pass to the pdf file component
     // let data = [{id:1, year:222}, {id:2,year:333}]
     let data = {
-      questionnaireNum:1,
-      userNum:14,
-      roleGroup:0,
-      filledOn:1,
-      parts:[{
-        part:0,
-        answerInsertDate:"14/4/2022",
-        quesGroup_Desc:"שירותיות",
-        questions:[
+      questionnaireNum: 1,
+      userNum: 14,
+      roleGroup: 0,
+      filledOn: 1,
+      parts: [{
+        part: 0,
+        answerInsertDate: "14/4/2022",
+        quesGroup_Desc: "שירותיות",
+        questions: [
           {
-            questionNum:1,
-            questionContent:"הייי",
-            numericAnswer:1,
-            verbalAnswer:"שלום"
+            questionNum: 1,
+            questionContent: "הייי",
+            numericAnswer: 1,
+            verbalAnswer: "שלום"
           },
           {
-            questionNum:2,
-            questionContent:"עדע",
-            numericAnswer:1,
-            verbalAnswer:"יכגיג"
+            questionNum: 2,
+            questionContent: "עדע",
+            numericAnswer: 1,
+            verbalAnswer: "יכגיג"
           }
         ]
       }
-      ,
-    
-        {
-          part:1,
-        answerInsertDate:"19/4/2022",
-          quesGroup_Desc:"שירותיות",
-          questions:[
-            {
-              questionNum:1,
-              questionContent:"הייי",
-              numericAnswer:1,
-              verbalAnswer:"שלום"
-            },
-            {
-              questionNum:2,
-              questionContent:"עדע",
-              numericAnswer:1,
-              verbalAnswer:"יכגיג"
-            }
-          ]
-        }
+        ,
+
+      {
+        part: 1,
+        answerInsertDate: "19/4/2022",
+        quesGroup_Desc: "שירותיות",
+        questions: [
+          {
+            questionNum: 1,
+            questionContent: "הייי",
+            numericAnswer: 1,
+            verbalAnswer: "שלום"
+          },
+          {
+            questionNum: 2,
+            questionContent: "עדע",
+            numericAnswer: 1,
+            verbalAnswer: "יכגיג"
+          }
+        ]
+      }
       ]
 
- }
- return data;
-
     }
-  
+    return data;
+
+  }
+
+  useEffect(() => {
+    if (userId) {
+      setState({
+        fetch: {
+          api: API.apiGetEvaluationsByUserNum + userId,
+          method: "GET",
+          body: undefined,
+        }
+      })
+    }
+  }, [])
+
 
   function updateData(year) {
     const newData = calculateData(userId, year);
     setData(newData);
     console.log("nenew" + newData);
   }
+
   useEffect(() => {
     // This code will be executed whenever the `data` state changes
-    console.log(data); 
+    console.log(data);
   }, [data]);
+
   return (
     <Paper sx={{ boxShadow: "none", minWidth: 300, maxWidth: 900, margin: "auto" }}>
+      {
+        userId ?
+          (
+            <ApiFetcher props={state.fetch} />
+          ) : null
+      }
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300, maxWidth: 900 }} aria-labelledby="tableTitle" size="small">
           <TableHead sx={{ display: "table-header-group" }}>
@@ -144,7 +186,7 @@ export default function MyEvalues() {
                 </TableCell>
                 <TableCell align="center" >
                   {console.log(evalue.name)}
-                  <PDFDownloadLink document={<PDFFile data = {data} />} fileName="טופס הערכה">
+                  <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה">
                     {({ loading }) =>
                       loading ? (
                         <Button>שגיאה</Button>
@@ -163,7 +205,7 @@ export default function MyEvalues() {
                 }}
               >
                 <TableCell colSpan={12} sx={{ textAlign: "inherit" }}>
-                  {evalues.length > 0
+                  {items?.length > 0
                     ? items.length <= 0 && "לא נמצאו רשומות מתאימות"
                     : "הרשימה ריקה"}
                 </TableCell>
@@ -180,7 +222,7 @@ export default function MyEvalues() {
         page={page}
         onPageChange={(event, newPage) => setPage(newPage)}
         onRowsPerPageChange={(event) => {
-          setRowsPerPage(parseInt(event.target.value, 5));
+          setRowsPerPage(parseInt(event.target.value, 10));
           setPage(0);
         }}
         labelDisplayedRows={({ from, to, count }) =>

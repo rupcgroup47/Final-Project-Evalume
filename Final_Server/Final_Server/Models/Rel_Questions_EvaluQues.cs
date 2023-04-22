@@ -42,9 +42,7 @@ namespace Final_Server.Models
         int goalNum;
         DateTime goalCreateDate = new DateTime();
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
-
         public bool QuesType { get => quesType; set => quesType = value; }
-
         public int RoleGroup_Type { get => roleGroup_Type; set => roleGroup_Type = value; }
         public int QuestionNum { get => questionNum; set => questionNum = value; }
         public string QuesContent { get => quesContent; set => quesContent = value; }
@@ -64,7 +62,6 @@ namespace Final_Server.Models
         public string ManagerEmail { get => managerEmail; set => managerEmail = value; }
         public string UserRoleGroupDesc { get => userRoleGroupDesc; set => userRoleGroupDesc = value; }
         public int QuesGroup_ID { get => quesGroup_ID; set => quesGroup_ID = value; }
-
         public DateTime QuesLimitDate { get => quesLimitDate; set => quesLimitDate = value; }
         public int QuesInsertDate { get => quesInsertDate; set => quesInsertDate = value; }
         public int Evalu_Part_Type { get => evalu_Part_Type; set => evalu_Part_Type = value; }
@@ -105,6 +102,20 @@ namespace Final_Server.Models
             {
                 DBservices dbs = new DBservices();
                 return dbs.GetEmployeeStatus(userNum);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<Object> ReadEvaluQuesByUserNum(int userNum) // get the right evaluations of a user by his user number
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetEvaluQuesByUserNum(userNum);
+
             }
             catch (Exception)
             {
