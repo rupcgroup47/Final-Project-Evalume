@@ -20,6 +20,7 @@ export default function ProfileAlerts({tmpResult}) {
   const mainState = useContext(MainStateContext);
   const [tempResualt, setTempResualt] = useState(tmpResult);
   const [waitingToEvalue, setWaitingToEvalue] = useState(3);
+
   const arrAlerts = [
     {
       alertNum: 0,
@@ -107,15 +108,19 @@ export default function ProfileAlerts({tmpResult}) {
   // }, [mainState.mainState.userNum]);
 
   const handleAlarmClick = () => {
-    setData(tempResualt?.filter((item) => item.evalu_Part_Type === 0));
-    if (data.length !== 0) {
+    let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 0);
+    console.log(tmp);
+    setData(tmp);
+    if (tmp.length !== 0) {
       setIsPopupOpen(true);
     }
   };
 
   const handleMeetingClick = () => {
-    setData(tempResualt?.filter((item) => item.evalu_Part_Type === 1));
-    if (data.length !== 0) {
+    let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 1);
+    console.log(tmp);
+    setData(tmp);
+    if (tmp.length !== 0) {
       setIsPopupOpen(true);
     }
   };

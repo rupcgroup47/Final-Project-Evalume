@@ -58,7 +58,6 @@ function Overview() {
     const abortController = new AbortController();
     console.log(evalus.length);
     if (evalus.length === 0 && mainState.userNum) {
-      console.log("here555e?");
       fetch(
         API.apiGetEvaluationsByUserNum + mainState.userNum,
         {
@@ -85,13 +84,10 @@ function Overview() {
         .then(
           (result) => {
             console.log("success");
-            console.log("פה?");
-            console.log(result);
             if (result[0].text !== undefined) {
               console.log(result[0].text);
             }
             else {
-              console.log("פה?");
               setEvalus(result);
               // setState({ evalus: result });
             }
@@ -112,7 +108,6 @@ function Overview() {
   useEffect(() => {
     const abortController = new AbortController()
     if (goals.length === 0 && mainState.userNum) {
-      console.log("heree?");
       fetch(
         API.apiGetGoalsByUserNum + mainState.userNum,
         {
@@ -139,7 +134,6 @@ function Overview() {
         .then(
           (result) => {
             console.log("success");
-            console.log(result);
             setGoals(result);
             // setState({ goals: result });
           },
@@ -210,6 +204,7 @@ function Overview() {
 
     return () => setDirection(dispatch, "ltr");
   }, []);
+
 
   return (
     <Header>

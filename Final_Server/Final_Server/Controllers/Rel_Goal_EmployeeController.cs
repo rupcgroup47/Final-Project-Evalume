@@ -17,7 +17,6 @@ namespace Final_Server.Controllers
             try
             {
                 return Rel_Goal_Employee.ReadAllUserGoals(userNum);
-
             }
             catch (Exception)
             {

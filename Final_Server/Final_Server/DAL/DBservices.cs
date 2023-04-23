@@ -1282,7 +1282,7 @@ public class DBservices
             {
                 Object goal = (new
                 {
-                    id = Convert.ToInt32(dataReader["UserNum"]),
+                    id = Convert.ToInt32(dataReader["GoalNum"]),
                     name = dataReader["GoalName"].ToString(),
                     date = dataReader["GoalCreateDate"].ToString(),
                     isDone = dataReader["GoalStatus"].ToString(),
