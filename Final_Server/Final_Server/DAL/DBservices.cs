@@ -169,13 +169,6 @@ public class DBservices
                 department.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
 
                 DepList.Add(department);
-                //var row= dt.NewRow();
-                //for (int i = 0; i < dataReader.FieldCount; i++)
-                //{
-                //    row[i] = dataReader.GetValue(i);
-                //}
-
-                //dt.Rows.Add(row);
             }
 
             return DepList;
@@ -1261,7 +1254,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method gets all User Goals
     ////--------------------------------------------------------------------------------------------------
-    public List<Rel_Goal_Employee> GetAllUserGoals()
+    public List<Object> GetAllUserGoals(int userNum)
     {
 
         SqlConnection con;
@@ -1277,29 +1270,31 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGet("spGetUserGoals", con);            // create the command
+        cmd = CreateCommandWithSPGetByUserNum("spGetUserGoals", con, userNum);            // create the command
 
-        List<Rel_Goal_Employee> UserGoalsList = new List<Rel_Goal_Employee>();
+        List<Object> UserGoalsList = new List<Object>();
 
         try
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            //dt.Load(dataReader);
-
 
             while (dataReader.Read())
             {
-                Rel_Goal_Employee goal = new Rel_Goal_Employee();
-
-                goal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                goal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
-                goal.GoalName = dataReader["GoalName"].ToString();
-                goal.GoalStatus = dataReader["GoalStatus"].ToString();
-                goal.GoalGroup_Desc = dataReader["GoalGroup_Desc"].ToString();
-
+                Object goal = (new
+                {
+                    id = Convert.ToInt32(dataReader["UserNum"]),
+                    name = dataReader["GoalName"].ToString(),
+                    date = dataReader["GoalCreateDate"].ToString(),
+                    isDone = dataReader["GoalStatus"].ToString(),
+                });
 
                 UserGoalsList.Add(goal);
 
+                //goal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
+                //goal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
+                //goal.GoalName = dataReader["GoalName"].ToString();
+                //goal.GoalStatus = dataReader["GoalStatus"].ToString();
+                //goal.GoalGroup_Desc = dataReader["GoalGroup_Desc"].ToString();
             }
 
             return UserGoalsList;

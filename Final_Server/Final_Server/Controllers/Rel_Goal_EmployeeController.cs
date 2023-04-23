@@ -12,9 +12,18 @@ namespace Final_Server.Controllers
     {
         // GET: api/<Rel_Goal_EmployeeController>
         [HttpGet]
-        public IEnumerable<Rel_Goal_Employee> Get() //get all current user goals
+        public IEnumerable<Object> Get(int userNum) //get all current user goals
         {
-            return Rel_Goal_Employee.ReadAllUserGoals();
+            try
+            {
+                return Rel_Goal_Employee.ReadAllUserGoals(userNum);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 
@@ -39,7 +48,7 @@ namespace Final_Server.Controllers
         [HttpPost("/userNum/goalNum/goalStatus")]
         public IActionResult Post([FromBody] int userNum, int goalNum, string goalStatus) //Insert new goal to user
         {
-            Rel_Goal_Employee goal= new Rel_Goal_Employee();
+            Rel_Goal_Employee goal = new Rel_Goal_Employee();
             int numEffected = goal.InsertEmployeeGoal(userNum, goalNum, goalStatus);
             if (numEffected != 0)
             {

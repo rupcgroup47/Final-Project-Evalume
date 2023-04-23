@@ -15,11 +15,11 @@ import PDFFile from "layouts/evaluation/components/PDFFile";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Button } from "@mui/material";
 import { MainStateContext } from "App";
-import { ContactSupportOutlined } from "@mui/icons-material";
+// import { ContactSupportOutlined } from "@mui/icons-material";
 // import ApiFetcher from "components/ApiFetcher";
-import { EvalueContext } from "context/evalueVariables";
-import swal from 'sweetalert';
-import CircularProgress from "@mui/material/CircularProgress";
+// import { EvalueContext } from "context/evalueVariables";
+// import swal from 'sweetalert';
+// import CircularProgress from "@mui/material/CircularProgress";
 
 
 // const evalues = [
@@ -28,7 +28,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 // ];
 
 
-export default function MyEvalues() {
+export default function MyEvalues({evalus}) {
   const [tableHead, setTableHead] = useState({
     id: "evalueYear",
     align: "center",
@@ -39,104 +39,19 @@ export default function MyEvalues() {
   });
   const mainState = useContext(MainStateContext);
   const userId = mainState.mainState.userNum; //The employee who is now connected to the system
-  const { API } = useContext(EvalueContext);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(evalus);
   const [, dispatch] = useMaterialUIController();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [state, setState] = useState({
-    fetch: {
-      api: "",
-      method: "",
-      body: null,
-    },
-  });
-
-  // function handleFetchComplete(data) {
-  //   setItems(data);
-  // }
-
-  // function handleFetchError(error) {
-  //   console.log("error = " + error)
-  // }
-
-  useEffect(() => {
-    if (userId) {
-      setState({
-        fetch: {
-          api: API.apiGetEvaluationsByUserNum + userId,
-          method: "GET",
-          body: undefined,
-        }
-      })
-    }
-  }, [])
-
-
-  // bring all the users using GET api
-  useEffect(() => {
-    const abortController = new AbortController()
-    if (state.fetch.api != "") {
-      fetch(
-        state.fetch.api,
-        {
-          method: "GET",
-          headers: new Headers({
-            "Content-Type": "application/json; charset=UTF-8",
-            Accept: "application/json; charset=UTF-8",
-          }),
-          body: state.fetch.body,
-          signal: abortController.signal
-        })
-        .then(async response => {
-          const data = await response.json();
-          console.log(response);
-
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
-
-          return data;
-        })
-        .then(
-          (result) => {
-            console.log("success");
-            console.log(result);
-            setItems(result);
-          },
-          (error) => {
-            if (error.name === 'AbortError') return
-            console.log("err get=", error);
-            throw error;
-          }
-        );
-      return () => {
-        abortController.abort()
-        // stop the query by aborting on the AbortController on unmount
-      }
-    }
-  }, [state.fetch.api]);
-
-  // function fetchData(){
-  //   ApiFetcher({
-  //     api: state.fetch.api,
-  //     method: state.fetch.method,
-  //     body: state.fetch.body,
-  //     onFetchComplete: handleFetchComplete,
-  //     onFetchError: handleFetchError,
-  //   });
-  // }
-
+ 
 
   useEffect(() => {
     setDirection(dispatch, "rtl");
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
+  const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items?.length);
 
   function calculateData(userId, year) {
     ///data is the array i pass to the pdf file component
@@ -197,7 +112,6 @@ export default function MyEvalues() {
   function updateData(year) {
     const newData = calculateData(userId, year);
     setData(newData);
-    console.log("nenew" + newData);
   }
 
   useEffect(() => {
@@ -225,7 +139,7 @@ export default function MyEvalues() {
             <TableRow height="50px" />
           </TableHead>
           <TableBody>
-            {items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((evalue) => (
+            {items?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((evalue) => (
               <TableRow
                 key={`${evalue.id} `}
                 tabIndex={-1}
@@ -259,7 +173,7 @@ export default function MyEvalues() {
               >
                 <TableCell colSpan={12} sx={{ textAlign: "inherit" }}>
                   {items?.length > 0
-                    ? items.length <= 0 && "לא נמצאו רשומות מתאימות"
+                    ? items?.length <= 0 && "לא נמצאו רשומות מתאימות"
                     : "הרשימה ריקה"}
                 </TableCell>
               </TableRow>
@@ -270,7 +184,7 @@ export default function MyEvalues() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={items.length}
+        count={items?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={(event, newPage) => setPage(newPage)}
@@ -287,8 +201,8 @@ export default function MyEvalues() {
   );
 }
 
-{/* <div> */}
-  {/* {
+{/* <div> */ }
+{/* {
         state.fetch.api != null ? (
           <ApiFetcher props={state.fetch} onFetchComplete={handleFetchComplete} onFetchError={handleFetchError} >
             {
@@ -334,3 +248,19 @@ export default function MyEvalues() {
         ) : null
       }
     </div > */}
+  // function handleFetchComplete(data) {
+  //   setItems(data);
+  // }
+
+  // function handleFetchError(error) {
+  //   console.log("error = " + error)
+  // }
+    // function fetchData(){
+  //   ApiFetcher({
+  //     api: state.fetch.api,
+  //     method: state.fetch.method,
+  //     body: state.fetch.body,
+  //     onFetchComplete: handleFetchComplete,
+  //     onFetchError: handleFetchError,
+  //   });
+  // }
