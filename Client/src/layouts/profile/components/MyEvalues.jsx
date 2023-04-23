@@ -1,5 +1,5 @@
 import {
-  // Box,
+  Box,
   Paper,
   Table,
   TableBody,
@@ -16,8 +16,11 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Button } from "@mui/material";
 import { MainStateContext } from "App";
 import { ContactSupportOutlined } from "@mui/icons-material";
-import ApiFetcher from "components/ApiFetcher";
+// import ApiFetcher from "components/ApiFetcher";
 import { EvalueContext } from "context/evalueVariables";
+import swal from 'sweetalert';
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 // const evalues = [
 //   { id: 1, year: 2022 },
@@ -42,23 +45,90 @@ export default function MyEvalues() {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
   const [state, setState] = useState({
     fetch: {
       api: "",
       method: "",
-      body: "",
-      onFetchComplete: setItems,
-      onFetchError: "",
-    }
-
+      body: null,
+    },
   });
 
+  // function handleFetchComplete(data) {
+  //   setItems(data);
+  // }
+
+  // function handleFetchError(error) {
+  //   console.log("error = " + error)
+  // }
+
   useEffect(() => {
-    console.log("here?")
-    if (state?.fetch.onFetchError != null)
-      console.log("err get=", state.fetch.onFetchError)
-  }, [state?.fetch.onFetchError])
+    if (userId) {
+      setState({
+        fetch: {
+          api: API.apiGetEvaluationsByUserNum + userId,
+          method: "GET",
+          body: undefined,
+        }
+      })
+    }
+  }, [])
+
+
+  // bring all the users using GET api
+  useEffect(() => {
+    const abortController = new AbortController()
+    if (state.fetch.api != "") {
+      fetch(
+        state.fetch.api,
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: state.fetch.body,
+          signal: abortController.signal
+        })
+        .then(async response => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            console.log(result);
+            setItems(result);
+          },
+          (error) => {
+            if (error.name === 'AbortError') return
+            console.log("err get=", error);
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort()
+        // stop the query by aborting on the AbortController on unmount
+      }
+    }
+  }, [state.fetch.api]);
+
+  // function fetchData(){
+  //   ApiFetcher({
+  //     api: state.fetch.api,
+  //     method: state.fetch.method,
+  //     body: state.fetch.body,
+  //     onFetchComplete: handleFetchComplete,
+  //     onFetchError: handleFetchError,
+  //   });
+  // }
 
 
   useEffect(() => {
@@ -123,18 +193,6 @@ export default function MyEvalues() {
 
   }
 
-  useEffect(() => {
-    if (userId) {
-      setState({
-        fetch: {
-          api: API.apiGetEvaluationsByUserNum + userId,
-          method: "GET",
-          body: undefined,
-        }
-      })
-    }
-  }, [])
-
 
   function updateData(year) {
     const newData = calculateData(userId, year);
@@ -147,14 +205,9 @@ export default function MyEvalues() {
     console.log(data);
   }, [data]);
 
+  // console.log("fetch" + state);
   return (
     <Paper sx={{ boxShadow: "none", minWidth: 300, maxWidth: 900, margin: "auto" }}>
-      {
-        userId ?
-          (
-            <ApiFetcher props={state.fetch} />
-          ) : null
-      }
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300, maxWidth: 900 }} aria-labelledby="tableTitle" size="small">
           <TableHead sx={{ display: "table-header-group" }}>
@@ -233,3 +286,51 @@ export default function MyEvalues() {
     </Paper>
   );
 }
+
+{/* <div> */}
+  {/* {
+        state.fetch.api != null ? (
+          <ApiFetcher props={state.fetch} onFetchComplete={handleFetchComplete} onFetchError={handleFetchError} >
+            {
+              (data, error) => {
+                if (error) {
+                  return (
+                    <div>
+                      {
+                        swal({
+                          title: "קרתה תקלה!",
+                          text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+                          icon: "error",
+                          button: "סגור"
+                        })
+                      }
+                    </div>
+                  )
+                }
+                else if (!data) {
+                  return (
+                    <Box
+                      sx={{
+                        display: "block",
+                        alignSelf: "center",
+                        alignItems: "center",
+                        height: "100%",
+                        backgroundColor: "white",
+                      }}
+                    >
+                      <CircularProgress size={300} sx={{ alignSelf: "center", margin: 50 }} />
+                    </Box>
+                  )
+                }
+                else {
+                  return (
+                    
+                  )
+                }
+              }
+            }
+          </ApiFetcher>
+
+        ) : null
+      }
+    </div > */}

@@ -1862,8 +1862,8 @@ public class DBservices
                 {
                     Object obj = (new
                     {
-                        QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]),
-                        Ques_Insert_Year = dataReader["Ques_Insert_Year"].ToString()
+                        id = Convert.ToInt32(dataReader["QuestionnaireNum"]),
+                        year = dataReader["Ques_Insert_Year"].ToString()
                     });
 
                     rel_Ques.Add(obj);
