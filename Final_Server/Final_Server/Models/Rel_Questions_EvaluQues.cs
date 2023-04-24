@@ -70,6 +70,68 @@ namespace Final_Server.Models
         public int GoalNum { get => goalNum; set => goalNum = value; }
         public DateTime GoalCreateDate { get => goalCreateDate; set => goalCreateDate = value; }
 
+        public static List<Object> ReadAllQuestionnaires() //gets all the Questionnaires
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetAllQuestionnaires();
+                int counter = 0;
+                int currentNumber = 0;
+                List<int> quesTypeOptions = new List<int>();
+                foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                {
+                    if (currentNumber != item.RoleGroup_Type)
+                    {
+                        currentNumber = item.RoleGroup_Type;
+                        quesTypeOptions.Add(currentNumber);
+                        counter++;
+                    }
+                }
+                List<Object> QuestionnairesList = new List<Object>();
+                for (int i = 0; i < counter; i++)
+                {
+                    List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
+                    foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                    {
+                        if (item.RoleGroup_Type == quesTypeOptions[i])
+                        {
+                            tmpList.Add(item);
+                        }
+                    }
+
+                    List<Object> Questionnaires = new List<Object>();
+                    for (int j = 0; j < 2; j++)
+                    {
+                        foreach (Rel_Questions_EvaluQues item in tmpList)
+                        {
+                            if ((item.QuesType?1:0) == j)
+                                Questionnaires.Add(new
+                                {
+                                    id = item.QuestionnaireNum,
+                                    year = item.QuesInsertDate,
+
+                                });
+                        }
+
+                        QuestionnairesList.Add(new
+                        {
+                            roleGrouptype = (tmpList[0].RoleGroup_Type == 1 ? "כללי" : (tmpList[0].RoleGroup_Type == 2 ? "תפעולי" : "משרדי")),
+                            roletype = (j == 1 ? "מנהל" : "עובד"),
+                            forms = Questionnaires,
+                        });
+                    }
+                }
+
+                return QuestionnairesList;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         public static List<Object> ReadEvaluQuesByType(bool quesType, int roleGroup_Type) //gets the all the EvaluQues that fit the QuesType and RoleType
         {
             try

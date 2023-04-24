@@ -14,39 +14,79 @@ import Card from "@mui/material/Card";
 import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
 
-export default function ProfileAlerts({tmpResult}) {
+export default function ProfileAlerts({ tmpResult }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { API } = useContext(EvalueContext);
   const mainState = useContext(MainStateContext);
-  const [tempResualt, setTempResualt] = useState(tmpResult);
-  const [waitingToEvalue, setWaitingToEvalue] = useState(3);
+  const [tempResualt, setTempResualt] = useState([]);
+  // const [waitingToEvalue, setWaitingToEvalue] = useState(3);
+  const [state, setState] = useState({
+    selfEvalu: 0,
+    employeeEvalu: 0,
+    employeeMeet: 0,
+    employeeCalender: 0,
+  });
 
-  const arrAlerts = [
-    {
-      alertNum: 0,
-      alertSub: "הערכה עצמית ממתינה לביצוע",
-      route: "/evaluation",
-    },
-    {
-      alertNum: 1,
-      alertSub: "הערכות ממתינות למישוב שלך",
-      forManager: true,
-      route: "/managerEvalues",
-    },
-    {
-      alertNum: 1,
-      alertSub: "פגישות הערכה ממתינות",
-      forManager: true,
-      route: "/managerEvalues",
-    },
-    {
-      alertNum: waitingToEvalue,
-      alertSub: "פגישות ממתינות לקביעה",
-      forManager: true,
-      route: "/evaluation",
-    },
-  ];
-  const [alerts, setAlerts] = useState(arrAlerts);
+  useEffect(() => {
+    setTempResualt(tmpResult);
+  }, [tmpResult])
+
+  useEffect(() => {
+    if (tempResualt?.length !== 0)
+      setState({
+        selfEvalu: 0,
+        employeeEvalu: tempResualt?.filter((item) => item.evalu_Part_Type === 0).length,
+        employeeMeet: tempResualt?.filter((item) => item.evalu_Part_Type === 1).length,
+        employeeCalender: 0,
+      })
+  }, [tempResualt])
+
+  const [arrAlerts, setArrAlerts] = useState(
+    [
+      {
+        id: "selfEvalu",
+        alertNum: state?.selfEvalu,
+        alertSub: "הערכה עצמית ממתינה לביצוע",
+        route: "/evaluation",
+      },
+      {
+        id: "employeeEvalu",
+        alertNum: state?.employeeEvalu,
+        alertSub: "הערכות ממתינות למישוב שלך",
+        forManager: true,
+        route: "/managerEvalues",
+      },
+      {
+        id: "employeeMeet",
+        alertNum: state?.employeeMeet,
+        alertSub: "פגישות הערכה ממתינות",
+        forManager: true,
+        route: "/managerEvalues",
+      },
+      {
+        id: "employeeCalender",
+        alertNum: state?.employeeCalender,
+        alertSub: "פגישות ממתינות לקביעה",
+        forManager: true,
+        route: "/evaluation",
+      },
+    ]
+  );
+
+  useEffect(() => {
+    const updateArr = arrAlerts.map((item) => {
+      const keyValue = state[item.id];
+      const updateValue = keyValue;
+      return {...item, alertNum: updateValue}
+    })
+    setArrAlerts(updateArr);
+  }, [state]);
+
+  useEffect(() => {
+    setAlerts(arrAlerts);
+  }, [arrAlerts]);
+
+  const [alerts, setAlerts] = useState([]);
 
   const [filteredAlerts, setFilteredAlerts] = useState([]);
 
@@ -59,7 +99,7 @@ export default function ProfileAlerts({tmpResult}) {
     else {
       setFilteredAlerts(alerts);
     }
-  }, [])
+  }, [alerts])
 
   // // GET the employee status under a manager
   // useEffect(() => {
@@ -109,7 +149,6 @@ export default function ProfileAlerts({tmpResult}) {
 
   const handleAlarmClick = () => {
     let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 0);
-    console.log(tmp);
     setData(tmp);
     if (tmp.length !== 0) {
       setIsPopupOpen(true);
@@ -118,7 +157,6 @@ export default function ProfileAlerts({tmpResult}) {
 
   const handleMeetingClick = () => {
     let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 1);
-    console.log(tmp);
     setData(tmp);
     if (tmp.length !== 0) {
       setIsPopupOpen(true);

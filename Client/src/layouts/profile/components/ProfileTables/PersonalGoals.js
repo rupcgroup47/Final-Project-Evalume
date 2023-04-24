@@ -46,7 +46,7 @@ const PersonalGoals = ({ goals }) => {///receive all user goals and their data
                 style={{ backgroundColor: selectedRow === row ? "lightgray" : "white" }}
               >
                 <TableCell style={{ width: "33%" }}>{row.name}</TableCell>
-                <TableCell style={{ width: "33%" }}>{row.date}</TableCell>
+                <TableCell style={{ width: "33%" }}>{row.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
                 <TableCell style={{ width: "33%" }}>{row.isDone} </TableCell>
               </TableRow>
             ))}

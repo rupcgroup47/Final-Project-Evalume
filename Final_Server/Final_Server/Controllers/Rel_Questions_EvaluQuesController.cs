@@ -14,6 +14,18 @@ namespace Final_Server.Controllers
     [ApiController]
     public class Rel_Questions_EvaluQuesController : ControllerBase
     {
+        [HttpGet]
+        public IEnumerable<Object> GetAllQuestionnaires() //gets all the Questionnaires
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadAllQuestionnaires();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         [HttpGet("/quesType/roleGroup_Type")]
         public IEnumerable<Object> GetEvaluQuesByType(bool quesType, int roleGroup_Type) //gets all the EvaluQues that fit the QuesType and RoleType

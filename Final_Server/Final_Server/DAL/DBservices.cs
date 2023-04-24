@@ -2138,4 +2138,63 @@ public class DBservices
 
         return cmd;
     }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method gets all the Questionnaires
+    ////--------------------------------------------------------------------------------------------------
+    public List<Rel_Questions_EvaluQues> GetAllQuestionnaires()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetDepatments("spGetAllQuestionnaires", con);            // create the command
+                                                                                    //DataTable dt = new DataTable();
+        List<Rel_Questions_EvaluQues> QuestionnairesList = new List<Rel_Questions_EvaluQues>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Rel_Questions_EvaluQues Questionnaire = new Rel_Questions_EvaluQues();
+                Questionnaire.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+                Questionnaire.QuesInsertDate = Convert.ToInt32(dataReader["yearInsert"]);
+                Questionnaire.RoleGroup_Type = Convert.ToInt32(dataReader["RoleGroup_Type"]);
+                Questionnaire.QuesType = Convert.ToBoolean(dataReader["QuesType"]);
+
+                QuestionnairesList.Add(Questionnaire);
+            }
+
+            return QuestionnairesList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 }

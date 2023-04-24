@@ -71,7 +71,7 @@ export default function GoalItem({
                       {goal.employees?.map((employee) => (
                         <TableRow key={employee.userNum}>
                         
-                          <TableCell align="left">{employee.date}</TableCell>
+                          <TableCell align="left">{employee.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
                           <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
                           <TableCell align="left">{employee.goalStatus}</TableCell>
                         </TableRow>

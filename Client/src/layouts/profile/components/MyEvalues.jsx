@@ -148,11 +148,11 @@ export default function MyEvalues({evalus}) {
               >
                 {/* {" "} */}
                 <TableCell align="left" >
-                  {console.log(evalue.name)}
+                  {/* {console.log(evalue.name)} */}
                   {evalue.year}
                 </TableCell>
                 <TableCell align="center" >
-                  {console.log(evalue.name)}
+                  {/* {console.log(evalue.name)} */}
                   <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה">
                     {({ loading }) =>
                       loading ? (

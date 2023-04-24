@@ -56,7 +56,6 @@ function Overview() {
   // bring all the user eveluations using GET api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log(evalus.length);
     if (evalus.length === 0 && mainState.userNum) {
       fetch(
         API.apiGetEvaluationsByUserNum + mainState.userNum,
@@ -103,7 +102,7 @@ function Overview() {
         // stop the query by aborting on the AbortController on unmount
       }
     }
-  }, [mainState.userNum]);
+  }, []);
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -148,13 +147,12 @@ function Overview() {
         // stop the query by aborting on the AbortController on unmount
       }
     }
-  }, [mainState.userNum]);
+  }, []);
 
   // // GET the employee status under a manager
   useEffect(() => {
     const abortController = new AbortController();
     if (tmpResult.length === 0 && mainState.userNum) {
-      console.log("hehhhhree?");
       fetch(
         API.apiGetEmployeeStatus + mainState.userNum,
         {
@@ -180,7 +178,6 @@ function Overview() {
         .then(
           (result) => {
             console.log("success");
-            console.log(result);
             setTmpResult(result);
             // setState({ tmpResult: result });
           },
@@ -196,7 +193,7 @@ function Overview() {
         // stop the query by aborting on the AbortController on unmount
       };
     }
-  }, [mainState.userNum]);
+  }, []);
 
   // Changing the direction to rtl
   useEffect(() => {
