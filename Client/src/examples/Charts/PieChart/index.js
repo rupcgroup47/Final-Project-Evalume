@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 
 // react-chartjs-2 components
 import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -31,6 +32,7 @@ import MDTypography from "components/MDTypography";
 
 // PieChart configurations
 import configs from "examples/Charts/PieChart/configs";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function PieChart({ icon, title, description, height, chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
@@ -42,7 +44,7 @@ function PieChart({ icon, title, description, height, chart }) {
           {icon.component && (
             <MDBox
               width="4rem"
-              height="4rem"
+              height="30rem"
               bgColor={icon.color || "info"}
               variant="gradient"
               coloredShadow={icon.color || "info"}

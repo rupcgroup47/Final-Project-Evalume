@@ -133,7 +133,7 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
-    isHiddenFromSideNav: true,
+    // isHiddenFromSideNav: true,
   },
   {
     type: "collapse",

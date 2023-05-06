@@ -15,8 +15,8 @@ Coded by www.creative-tim.com
 
 export default {
   sales: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Mobile apps", data: [50, 40, 300, 320, 500, 350, 200, 230, 500] },
+    labels: [2018,2019,2020,2021,2022,2023],
+    datasets: { label: "ציון ממוצע", data: [2,1,5,3,3.5,5] },
   },
   tasks: {
     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],

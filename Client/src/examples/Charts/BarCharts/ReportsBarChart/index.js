@@ -49,7 +49,7 @@ function ReportsBarChart({ color, title, description, date, chart }) {
               py={2}
               pr={0.5}
               mt={-5}
-              height="12.5rem"
+              height="20rem"
             >
               <Bar data={data} options={options} />
             </MDBox>
