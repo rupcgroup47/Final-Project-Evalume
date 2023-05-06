@@ -1,5 +1,9 @@
 import React from "react";
 import { Page, Text, Document, StyleSheet, Font, View } from "@react-pdf/renderer";
+import Table from '@mui/material/Table';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import { TableBody } from "@mui/material";
 import "@fontsource/rubik";
 Font.register({ family: 'Rubik', src: "http://fonts.gstatic.com/s/rubik/v3/4sMyW_teKWHB3K8Hm-Il6A.ttf" });// The only font works for Hebrew!
 
@@ -49,25 +53,50 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "grey",
   },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    alignItems: 'center',
+    height: 24,
+    fontFamily: 'Rubik',
+    color: "grey",
+
+  },
+  tableCell: {
+    margin: 'auto',
+    fontSize: 12,
+    fontFamily: 'Rubik',
+    color: "grey",
+
+  },
 });
-
-const PDFFile = (props) => {//receive the selected form by year and user 
+const objects = [
+  { name: 'John Doe', age: 30, email: 'john.doe@example.com' },
+  { name: 'Jane Smith', age: 25, email: 'jane.smith@example.com' },
+  { name: 'Bob Johnson', age: 40, email: 'bob.johnson@example.com' },
+];
+const PDFFile = () => {//receive the selected form by year and user 
     return(
-        <Document>
-        <Page style={styles.body}>
-            <Text style={styles.header} fixed>1- 2023 שאלון מספר </Text>
-            <Text style={styles.header} fixed>עובד: נועה פרקש מנהל: יהל שבח</Text>
-            <Text style={styles.text}>מקרא 1-5, 1 שלילי 5 חיובי</Text>
-            <Text style={styles.text1}>מישוב עצמי </Text>
-            <Text style={styles.text2}> האם אני מרגיש בנוח? 5 </Text>
-            <Text style={styles.text2}> האם אני מרגיש עובד טוב? 4 </Text>
-            <Text style={styles.text2}> האם אני מרגיש מסופק? 4 כן העבודה מספקת אותי מאוד</Text>
-            <Text style={styles.text2}> האם אני מרגיש בנוח עם העמיתים? 4 חברים טובים</Text>
-
-
-          <Text style={styles.pageNumber} render={({pageNumber, totalPages}) => `${pageNumber} / ${totalPages}`} fixed></Text>
-        </Page>
-      </Document>
+      <Document>
+      <Page>
+        <View>
+          <Table>
+            {console.log(objects)}
+            <TableBody>
+              {objects.map((object, index) => (
+                <TableRow style={styles.tableRow} key={index}>
+                  <TableCell style={styles.tableCell}>{object.name}</TableCell>
+                  {console.log(object.name)}
+                  <TableCell style={styles.tableCell}>{object.age}</TableCell>
+                  <TableCell style={styles.tableCell}>{object.email}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </View>
+      </Page>
+    </Document>
     )
 
 };

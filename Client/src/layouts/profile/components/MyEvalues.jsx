@@ -22,10 +22,10 @@ import { MainStateContext } from "App";
 // import CircularProgress from "@mui/material/CircularProgress";
 
 
-// const evalues = [
-//   { id: 1, year: 2022 },
-//   { id: 2, year: 2023 },
-// ];
+const evalues = [
+  { id: 1, year: 2022 },
+  { id: 2, year: 2023 },
+];
 
 
 export default function MyEvalues({evalus}) {
@@ -39,7 +39,7 @@ export default function MyEvalues({evalus}) {
   });
   const mainState = useContext(MainStateContext);
   const userId = mainState.mainState.userNum; //The employee who is now connected to the system
-  const [items, setItems] = useState(evalus);
+  const [items, setItems] = useState(evalues);
   const [, dispatch] = useMaterialUIController();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
