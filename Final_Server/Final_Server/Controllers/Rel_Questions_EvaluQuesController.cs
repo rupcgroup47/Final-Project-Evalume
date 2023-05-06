@@ -68,6 +68,19 @@ namespace Final_Server.Controllers
             }
         }
 
+        [HttpGet("/userNum/questionnaireNum")]
+        public Object GetPDFdetails(int userNum, int questionnaireNum) //get the selected questionnaire PDF details
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadPDFdetails(userNum, questionnaireNum);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         // GET api/<Rel_Questions_EvaluQuesController>/5
         [HttpGet("{id}")]
         public string Get(int id)

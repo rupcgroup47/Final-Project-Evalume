@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Final_Server.Models
 {
@@ -41,6 +42,13 @@ namespace Final_Server.Models
         //Goals fields
         int goalNum;
         DateTime goalCreateDate = new DateTime();
+
+        string managerOpinion;
+        string employeeOpinion;
+        DateTime opinionInsertDate = new DateTime();
+
+
+
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
 
         public bool QuesType { get => quesType; set => quesType = value; }
@@ -72,6 +80,9 @@ namespace Final_Server.Models
         public string VerbalAnswer { get => verbalAnswer; set => verbalAnswer = value; }
         public int GoalNum { get => goalNum; set => goalNum = value; }
         public DateTime GoalCreateDate { get => goalCreateDate; set => goalCreateDate = value; }
+        public string ManagerOpinion { get => managerOpinion; set => managerOpinion = value; }
+        public string EmployeeOpinion { get => employeeOpinion; set => employeeOpinion = value; }
+        public DateTime OpinionInsertDate { get => opinionInsertDate; set => opinionInsertDate = value; }
 
         public static List<Object> ReadEvaluQuesByType(bool quesType, int roleGroup_Type) //gets the all the EvaluQues that fit the QuesType and RoleType
         {
@@ -118,9 +129,11 @@ namespace Final_Server.Models
             {
                 DBservices dbs = new DBservices();
                 List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetQuesByEvaluId(questionnaireNum);
+
                 int counter = 0;
                 int currentNumber = 0;
                 List<int> quesTypeOptions = new List<int>();
+
                 foreach (Rel_Questions_EvaluQues item in tempQustionList)
                 {
                     if (currentNumber != item.QuesGroup_ID)
@@ -295,6 +308,78 @@ namespace Final_Server.Models
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+    
+
+
+        public static Object ReadPDFdetails(int userNum, int questionnaireNum) //get the selected questionnaire PDF details
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetPDFdetails(userNum, questionnaireNum);
+
+
+                List<Object> part0List = new List<Object>();
+                List<Object> part1List = new List<Object>();
+                List<Object> part2List = new List<Object>();
+
+                foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                {
+                    if (item.evalu_Part_Type == 0)
+                    {
+                        part0List.Add(new {
+
+                            QuesGroup_Desc=item.QuesGroup_Desc,
+                            QuestionNum=item.QuestionNum,
+                            QuesContent=item.QuesContent,
+                            NumericAnswer=item.NumericAnswer,
+                            VerbalAnswer= item.VerbalAnswer,
+
+                        });
+                    }
+
+                    if (item.evalu_Part_Type == 1)
+                    {
+                        part1List.Add(new {
+
+                            QuesGroup_Desc = item.QuesGroup_Desc,
+                            QuestionNum = item.QuestionNum,
+                            QuesContent = item.QuesContent,
+                            NumericAnswer = item.NumericAnswer,
+                            VerbalAnswer = item.VerbalAnswer,
+
+                        });
+                    }
+
+                    if (item.evalu_Part_Type == 2)
+                    {
+                        part2List.Add(new {
+                            ManagerOpinion=item.ManagerOpinion,
+                            EmployeeOpinion=item.EmployeeOpinion,
+                            OpinionInsertDate = item.OpinionInsertDate,
+                        });
+                    } 
+
+                }
+
+
+
+                Object EvaluPart = (new
+                {
+                    part0List = part0List,
+                    part1List = part1List,
+                    part2List = part2List,
+                });
+
+
+                return EvaluPart;
+            }
+
+            catch (Exception)
+            {
                 throw;
             }
         }

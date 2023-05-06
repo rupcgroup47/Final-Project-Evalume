@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Xml.Linq;
 using System.Text.Json.Nodes;
 using System.Reflection.Metadata;
+using Microsoft.VisualBasic;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -1989,7 +1990,7 @@ public class DBservices
     }
 
     //--------------------------------------------------------------------------------------------------
-    // This method get all users goals that under this corent manager
+    // This method get all users goals that under this current manager
     //--------------------------------------------------------------------------------------------------
     public List<Object> GetEmployeeStatus(int userNum)
     {
@@ -2019,7 +2020,7 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                Object uses = (new
+                Object users = (new
                 {
                     UserNum = Convert.ToInt32(dataReader["UserNum"]),
                     UserFName = dataReader["UserFName"].ToString(),
@@ -2029,7 +2030,7 @@ public class DBservices
                     Evalu_Part_Type = Convert.ToInt32(dataReader["Evalu_Part_Type"])
                 });
 
-                EmployeeStatusList.Add(uses);
+                EmployeeStatusList.Add(users);
             }
 
             return EmployeeStatusList;
@@ -2070,4 +2071,685 @@ public class DBservices
 
         return cmd;
     }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get the selected questionnaire PDF Header
+    //--------------------------------------------------------------------------------------------------
+    //public List<Rel_Questions_EvaluQues> GetPDFdetails(int userNum, int questionnaireNum)
+    //{
+
+    //    SqlConnection con;
+    //    SqlCommand cmd;
+
+    //    try
+    //    {
+    //        con = connect("myProjDB"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    cmd = CreateCommandWithSPGetPDFdetails("spPDFdetails", con, userNum, questionnaireNum);            // create the command
+
+    //    List<Rel_Questions_EvaluQues> answerslist = new List<Rel_Questions_EvaluQues>();
+
+
+    //    try
+    //    {
+    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+    //        //dt.Load(dataReader);
+
+
+    //        while (dataReader.Read())
+    //        {
+    //            Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
+
+    //            r.Evalu_Part_Type = Convert.ToInt32(dataReader["Evalu_Part_Type"]);
+    //            r.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
+    //            r.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
+    //            r.QuesContent = dataReader["QuesContent"].ToString();
+    //            r.NumericAnswer = Convert.ToInt32(dataReader["NumericAnswer"]);
+    //            r.VerbalAnswer = dataReader["VerbalAnswer"].ToString();
+    //            r.ManagerOpinion = dataReader["ManagerOpinion"].ToString();
+    //            r.EmployeeOpinion = dataReader["EmployeeOpinion"].ToString();
+    //            r.OpinionInsertDate = (DateTime)dataReader["OpinionInsertDate"];
+
+    //            answerslist.Add(r);
+    //        }
+
+    //        return answerslist;
+    //    }
+
+
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
+
+    //}
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand using a stored procedure for get with no conditions
+    ////---------------------------------------------------------------------------------
+    //private SqlCommand CreateCommandWithSPGetPDFdetails(String spName, SqlConnection con, int userNum, int questionnaireNum)
+    //{
+
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
+
+    //    cmd.Connection = con;              // assign the connection to the command object
+
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+    //    cmd.Parameters.AddWithValue("@UserNum", userNum); //insert all the parameters we got from the user
+    //    cmd.Parameters.AddWithValue("@QuestionnaireNum", questionnaireNum);
+
+    //    return cmd;
+    //}
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get the selected questionnaire PDF details
+    //--------------------------------------------------------------------------------------------------
+    public List<Rel_Questions_EvaluQues> GetPDFdetails(int userNum, int questionnaireNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetPDFdetails("spPDFdetails", con, userNum, questionnaireNum);            // create the command
+
+        List<Rel_Questions_EvaluQues> answerslist = new List<Rel_Questions_EvaluQues>();
+
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
+
+                r.Evalu_Part_Type = Convert.ToInt32(dataReader["Evalu_Part_Type"]);
+                r.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
+                r.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
+                r.QuesContent = dataReader["QuesContent"].ToString();
+                r.NumericAnswer = Convert.ToInt32(dataReader["NumericAnswer"]);
+                r.VerbalAnswer = dataReader["VerbalAnswer"].ToString();
+                r.ManagerOpinion = dataReader["ManagerOpinion"].ToString();
+                r.EmployeeOpinion = dataReader["EmployeeOpinion"].ToString();
+                r.OpinionInsertDate = (DateTime)dataReader["OpinionInsertDate"];
+
+                answerslist.Add(r);
+            }
+
+            return answerslist;
+        }
+    
+    
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+          if (con != null)
+           {
+              // close the db connection
+             con.Close();
+           }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure for get with no conditions
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGetPDFdetails(String spName, SqlConnection con, int userNum, int questionnaireNum)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@UserNum", userNum); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@QuestionnaireNum", questionnaireNum);
+
+        return cmd;
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get num of employees in each dep
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> GetNumOfEmployees()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetNum("sp_NumOfEmployeesInDep", con);            // create the command
+
+        List<Object> DepEmployeesList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Object dep = (new
+                {
+                    DepNum = Convert.ToInt32(dataReader["DepNum"]),
+                    DepName = dataReader["DepName"].ToString(),
+                    Num_of_people = Convert.ToInt32(dataReader["Num_of_people"])
+                });
+
+                DepEmployeesList.Add(dep);
+            }
+
+            return DepEmployeesList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand for get
+    ////---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGetNum(string spName, SqlConnection con)
+    {
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+   //insert all the parameters we got from the user
+
+        return cmd;
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get num of managers
+    //--------------------------------------------------------------------------------------------------
+    public object GetNumOfManagers()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetNum("sp_GetNumOfManagers", con);            // create the command
+
+
+        BI bi = new BI();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+            while (dataReader.Read())
+            {
+                bi.Num_of_manager = Convert.ToInt32(dataReader["Num_of_manager"]);
+
+            }
+
+            return bi;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get num of deps
+    //--------------------------------------------------------------------------------------------------
+    public object GetNumOfDeps()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetNum("sp_GetNumOfDep", con);            // create the command
+
+
+        BI bi = new BI();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+            while (dataReader.Read())
+            {
+                bi.Num_of_dep = Convert.ToInt32(dataReader["Num_of_dep"]);
+
+            }
+
+            return bi;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get num goals by statuses
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> GetGoalsStatuses()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetNum("sp_GetStatuses", con);            // create the command
+
+        List<Object> statusesList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Object status = (new
+                {
+                    Num_of_statuses = Convert.ToInt32(dataReader["Num_of_statuses"]),
+                    GoalStatus = dataReader["GoalStatus"].ToString()
+                });
+
+                statusesList.Add(status);
+            }
+
+            return statusesList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method gets the status of specific goal
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> GetGoalStatus()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetNum("sp_GetNumOfStatusesPerGoal", con);            // create the command
+
+        List<Object> GoalstatusList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Object goalStatus = (new
+                {
+                    GoalStatus = dataReader["GoalStatus"].ToString(),
+                    GoalNum = Convert.ToInt32(dataReader["GoalNum"]),
+                    GoalName = dataReader["GoalName"].ToString(),
+                    Num_of_statuses_byGoal = Convert.ToInt32(dataReader["Num_of_statuses_byGoal"])
+                });
+
+                GoalstatusList.Add(goalStatus);
+            }
+
+            return GoalstatusList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get the avg score of the employee VS to the avg score of the manager by current year
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> GetEmployeeNManagerScore(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetS("sp_GetEmployeeScoreVSManagerScore", con, userNum);            // create the command
+
+        List<Object> scoreList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Object score = (new
+                {
+                    UserNum = Convert.ToInt32(dataReader["UserNum"]),
+                    evalu_part_type = Convert.ToInt32(dataReader["evalu_part_type"]),
+                    Rounded_avg = Convert.ToInt32(dataReader["Rounded_avg"])
+                });
+
+                scoreList.Add(score);
+            }
+
+            return scoreList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand for get
+    ////---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGetS(string spName, SqlConnection con, int userNum)
+    {
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@UserNum", userNum);//insert all the parameters we got from the user
+
+        return cmd;
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method gets the goals per user
+    //--------------------------------------------------------------------------------------------------
+    public object GetNumOfUserGoals(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetS("sp_GetNumOfDep", con, userNum);            // create the command
+
+
+        BI bi = new BI();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+            while (dataReader.Read())
+            {
+                bi.Num_of_goals = Convert.ToInt32(dataReader["Num_of_goals"]);
+            }
+
+            return bi;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get get the num of evaluQues for this userNum
+    //--------------------------------------------------------------------------------------------------
+    public object GetNumOfUserEvlauQues(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetS("sp_GetNumOfDep", con, userNum);            // create the command
+
+
+        BI bi = new BI();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+            while (dataReader.Read())
+            {
+                bi.User_num_of_evaluQues = Convert.ToInt32(dataReader["User_num_of_evaluQues"]);
+            }
+
+            return bi;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
 }
