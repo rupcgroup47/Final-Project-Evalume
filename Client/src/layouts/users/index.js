@@ -17,7 +17,7 @@ import UsersTable from "./UsersTable";
 import { Container } from "@mui/material";
 import { useState, useContext, useEffect, useMemo } from "react";
 import { MainStateContext } from "App";
-import { DepartmentStateContext } from "context/globalVariables";
+// import { DepartmentStateContext } from "context/globalVariables";
 import { EvalueContext } from "context/evalueVariables";
 
 // import ApiFetcher from "components/ApiFetcher";
@@ -30,8 +30,8 @@ function Users() {
   const [, dispatch] = useMaterialUIController();
   // const [validationsMsg, setMsg] = useState("");
   const { mainState, setMainState } = useContext(MainStateContext);
-  const [depState, setDepState] = useState([]);
-  const { API } = useContext(EvalueContext);
+  // const [depState, setDepState] = useState([]);
+  const { API, depState, setDepState } = useContext(EvalueContext);
 
   // bring all the users using GET api
   useEffect(() => {
@@ -129,38 +129,21 @@ function Users() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  const value = useMemo(
-    () => ({
-      depState,
-      setDepState,
-    }),
-    [depState]
-  );
+  // const value = useMemo(
+  //   () => ({
+  //     depState,
+  //     setDepState,
+  //   }),
+  //   [depState]
+  // );
 
   return (
-    <DepartmentStateContext.Provider value={value}>
-      <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
-        <UsersTable users={users} setUsers={setUsers} />
-      </Container>
-    </DepartmentStateContext.Provider>
+    // <DepartmentStateContext.Provider value={value}>
+    <Container maxWidth="xl" sx={{ pt: 3, pb: 3 }}>
+      <UsersTable users={users} setUsers={setUsers} />
+    </Container>
+    // </DepartmentStateContext.Provider>
   );
 }
 
 export default Users;
-
-    // const abortController = new AbortController();
-    // const signal = abortController.signal;
-
-    // ApiFetcher({
-    //   api: "https://localhost:7079/api/Employee",
-    //   method: "GET",
-    //   body: null,
-    //   signal: signal,
-    //   onFetchComplete: setUsers,
-    //   onFetchError: (error)=>console.log("err get=", error),
-    // });
-
-    // return () => {
-    //   abortController.abort();
-    //   // stop the query by aborting on the AbortController on unmount
-    // };

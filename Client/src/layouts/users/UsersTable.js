@@ -39,7 +39,7 @@ export default function UsersTable({ users, setUsers }) {
   const [tableHead, setTableHead] = useState(tableHeadArr);
   const [items, setItems] = useState([users]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const { API } = useContext(EvalueContext);
 
   useEffect(() => {
@@ -202,7 +202,7 @@ export default function UsersTable({ users, setUsers }) {
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
   return (
-    <Paper sx={{ boxShadow: "none" }}>
+    <Paper sx={{ boxShadow: "none" }} style={{overflowY:"scroll"}}>
       <TableToolbar
         // Users
         users={users}
@@ -239,7 +239,7 @@ export default function UsersTable({ users, setUsers }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 1200 }} aria-labelledby="tableTitle" size="small">
           {/* Table Head - Start */}
-          <TableHead sx={{ display: "table-header-group" }}>
+          <TableHead sx={{ display: "table-header-group" }} style={{ position: "sticky", top: 0 }}>
             <TableRow>
               {tableHead.map((item) => {
                 return (

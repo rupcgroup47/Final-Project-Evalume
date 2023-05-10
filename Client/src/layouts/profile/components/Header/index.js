@@ -46,7 +46,7 @@ function Header({ children }) {
         display="flex"
         alignItems="center"
         position="relative"
-        minHeight="18.75rem"
+        minHeight="15.75rem"
         borderRadius="xl"
         sx={{
           backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
@@ -59,7 +59,7 @@ function Header({ children }) {
           overflow: "hidden",
         }}
       />
-      <Card sx={{ position: "relative", mt: -8, mx: 3, py: 2, px: 2 }}>
+      <Card sx={{ position: "relative", mt: -20, mx: 3, py: 1, px: 2 }}>
         <Grid container spacing={3} alignItems="center">
           <Grid item>
             <MDAvatar src={burceMars} alt="profile-image" size="xl" shadow="sm" />

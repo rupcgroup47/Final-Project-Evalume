@@ -14,54 +14,80 @@ import Card from "@mui/material/Card";
 import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
 
-export default function ProfileAlerts(props) {
+export default function ProfileAlerts({ tmpResult }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { API } = useContext(EvalueContext);
   const mainState = useContext(MainStateContext);
   const [tempResualt, setTempResualt] = useState([]);
-  const [waitingToEvalue, setWaitingToEvalue] = useState(3);
-  const arrAlerts = [
-    {
-      alertNum: 0,
-      alertSub: "הערכה עצמית ממתינה לביצוע",
-      route: "/evaluation",
-    },
-    {
-      alertNum: 1,
-      alertSub: "הערכות ממתינות למישוב שלך",
-      forManager: true,
-      route: "/managerEvalues",
-    },
-    {
-      alertNum: 1,
-      alertSub: "פגישות הערכה ממתינות",
-      forManager: true,
-      route: "/managerEvalues",
-    },
-    {
-      alertNum: waitingToEvalue,
-      alertSub: "פגישות ממתינות לקביעה",
-      forManager: true,
-      route: "/evaluation",
-    },
-  ];
-  const [alerts, setAlerts] = useState(arrAlerts);
-    // {
-    //   userNum: 2,//user id
-    //   userFName: "נועה ",
-    //   userLName: "פרקש",
-    //   answerInsertDate: "2022-04-15 00:00",
-    //   evalu_Part_Type: 0,
-    //   questionnaireNum: 15,
-    // },
-    // {
-    //   userNum: 14,//user id
-    //   userFName: "דורית ",
-    //   userLName: "שבח",
-    //   answerInsertDate: "2022-04-15 00:00",
-    //   evalu_Part_Type: 1,
-    //   questionnaireNum: 15,
-    // }
+  // const [waitingToEvalue, setWaitingToEvalue] = useState(3);
+  const [state, setState] = useState({
+    selfEvalu: 0,
+    employeeEvalu: 0,
+    employeeMeet: 0,
+    employeeCalender: 0,
+  });
+
+  useEffect(() => {
+    setTempResualt(tmpResult);
+  }, [tmpResult])
+
+  useEffect(() => {
+    if (tempResualt?.length !== 0)
+      setState({
+        selfEvalu: 0,
+        employeeEvalu: tempResualt?.filter((item) => item.evalu_Part_Type === 0).length,
+        employeeMeet: tempResualt?.filter((item) => item.evalu_Part_Type === 1).length,
+        employeeCalender: 0,
+      })
+  }, [tempResualt])
+
+  const [arrAlerts, setArrAlerts] = useState(
+    [
+      {
+        id: "selfEvalu",
+        alertNum: state?.selfEvalu,
+        alertSub: "הערכה עצמית ממתינה לביצוע",
+        route: "/evaluation",
+      },
+      {
+        id: "employeeEvalu",
+        alertNum: state?.employeeEvalu,
+        alertSub: "הערכות ממתינות למישוב שלך",
+        forManager: true,
+        route: "/managerEvalues",
+      },
+      {
+        id: "employeeMeet",
+        alertNum: state?.employeeMeet,
+        alertSub: "פגישות הערכה ממתינות",
+        forManager: true,
+        route: "/managerEvalues",
+      },
+      {
+        id: "employeeCalender",
+        alertNum: state?.employeeCalender,
+        alertSub: "פגישות ממתינות לקביעה",
+        forManager: true,
+        route: "/evaluation",
+      },
+    ]
+  );
+
+  useEffect(() => {
+    const updateArr = arrAlerts.map((item) => {
+      const keyValue = state[item.id];
+      const updateValue = keyValue;
+      return {...item, alertNum: updateValue}
+    })
+    setArrAlerts(updateArr);
+  }, [state]);
+
+  useEffect(() => {
+    setAlerts(arrAlerts);
+  }, [arrAlerts]);
+
+  const [alerts, setAlerts] = useState([]);
+
   const [filteredAlerts, setFilteredAlerts] = useState([]);
 
   const [data, setData] = useState([]);
@@ -73,62 +99,68 @@ export default function ProfileAlerts(props) {
     else {
       setFilteredAlerts(alerts);
     }
-  }, [])
+  }, [alerts])
 
   // // GET the employee status under a manager
-  useEffect(() => {
-    const abortController = new AbortController();
-    if (mainState.mainState.userNum) {
-      fetch(
-        API.apiGetEmployeeStatus + mainState.mainState.userNum,
-        {
-          method: "GET",
-          headers: new Headers({
-            "Content-Type": "application/json; charset=UTF-8",
-            Accept: "application/json; charset=UTF-8",
-          }),
-          signal: abortController.signal,
-        })
-        .then(async (response) => {
-          const data = await response.json();
-          console.log(response);
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+  //   if (mainState.mainState.userNum) {
+  //     fetch(
+  //       API.apiGetEmployeeStatus + mainState.mainState.userNum,
+  //       {
+  //         method: "GET",
+  //         headers: new Headers({
+  //           "Content-Type": "application/json; charset=UTF-8",
+  //           Accept: "application/json; charset=UTF-8",
+  //         }),
+  //         signal: abortController.signal,
+  //       })
+  //       .then(async (response) => {
+  //         const data = await response.json();
+  //         console.log(response);
 
-          if (!response.ok) {
-            // get error message from body or default to response statusText
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-          }
+  //         if (!response.ok) {
+  //           // get error message from body or default to response statusText
+  //           const error = (data && data.message) || response.statusText;
+  //           return Promise.reject(error);
+  //         }
 
-          return data;
-        })
-        .then(
-          (result) => {
-            console.log("success");
-            console.log(result);
-            setTempResualt(result);
-          },
-          (error) => {
-            console.log(error);
-            if (error.name === "AbortError") return;
-            console.log("err get=", error);
-            throw error;
-          }
-        );
-      return () => {
-        abortController.abort();
-        // stop the query by aborting on the AbortController on unmount
-      };
-    }
-  }, []);
+  //         return data;
+  //       })
+  //       .then(
+  //         (result) => {
+  //           console.log("success");
+  //           console.log(result);
+  //           setTempResualt(result);
+  //         },
+  //         (error) => {
+  //           console.log(error);
+  //           if (error.name === "AbortError") return;
+  //           console.log("err get=", error);
+  //           throw error;
+  //         }
+  //       );
+  //     return () => {
+  //       abortController.abort();
+  //       // stop the query by aborting on the AbortController on unmount
+  //     };
+  //   }
+  // }, [mainState.mainState.userNum]);
 
   const handleAlarmClick = () => {
-    setData(tempResualt?.filter((item) => item.evalu_Part_Type === 0));
-    setIsPopupOpen(true);
+    let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 0);
+    setData(tmp);
+    if (tmp.length !== 0) {
+      setIsPopupOpen(true);
+    }
   };
 
   const handleMeetingClick = () => {
-    setData(tempResualt?.filter((item) => item.evalu_Part_Type === 1));
-    setIsPopupOpen(true);
+    let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 1);
+    setData(tmp);
+    if (tmp.length !== 0) {
+      setIsPopupOpen(true);
+    }
   };
 
   const handleCloseDialog = () => {
@@ -137,18 +169,18 @@ export default function ProfileAlerts(props) {
 
   return (
     <>
-      <Card sx={{ height: "100%", backgroundColor: "#e6f2ff", paddingTop: "50px", width: "fit-content" }}>
+      <Card sx={{ backgroundColor: "#effafb82", minWidth: "600px" }}>
         <MDBox p={2}>
           {filteredAlerts?.map((item, index) => (
-            <MDTypography variant="h2" color="secondary" key={index}>
+            <MDTypography variant="h3" color="secondary" key={index}>
               {index === 0 ? (
                 <AssignmentIndIcon fontSize="large" />
               ) : index === 1 ? (
-                <AccessAlarmIcon onClick={handleAlarmClick} fontSize="large" />
+                <AccessAlarmIcon onClick={handleAlarmClick} fontSize="large" style={{ cursor: "pointer" }} />
               ) : index === 2 ? (
-                <PeopleIcon onClick={handleMeetingClick} fontSize="large" />
+                <PeopleIcon onClick={handleMeetingClick} fontSize="large" style={{ cursor: "pointer" }} />
               ) : index === 3 ? (
-                <CalendarToday fontSize="large" />
+                <CalendarToday fontSize="large" style={{ cursor: "pointer" }} />
               ) : (
                 <Subject fontSize="large" />
               )}

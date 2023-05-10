@@ -170,13 +170,6 @@ public class DBservices
                 department.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
 
                 DepList.Add(department);
-                //var row= dt.NewRow();
-                //for (int i = 0; i < dataReader.FieldCount; i++)
-                //{
-                //    row[i] = dataReader.GetValue(i);
-                //}
-
-                //dt.Rows.Add(row);
             }
 
             return DepList;
@@ -1262,7 +1255,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method gets all User Goals
     ////--------------------------------------------------------------------------------------------------
-    public List<Rel_Goal_Employee> GetAllUserGoals()
+    public List<Object> GetAllUserGoals(int userNum)
     {
 
         SqlConnection con;
@@ -1278,29 +1271,31 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGet("spGetUserGoals", con);            // create the command
+        cmd = CreateCommandWithSPGetByUserNum("spGetUserGoals", con, userNum);            // create the command
 
-        List<Rel_Goal_Employee> UserGoalsList = new List<Rel_Goal_Employee>();
+        List<Object> UserGoalsList = new List<Object>();
 
         try
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            //dt.Load(dataReader);
-
 
             while (dataReader.Read())
             {
-                Rel_Goal_Employee goal = new Rel_Goal_Employee();
-
-                goal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                goal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
-                goal.GoalName = dataReader["GoalName"].ToString();
-                goal.GoalStatus = dataReader["GoalStatus"].ToString();
-                goal.GoalGroup_Desc = dataReader["GoalGroup_Desc"].ToString();
-
+                Object goal = (new
+                {
+                    id = Convert.ToInt32(dataReader["GoalNum"]),
+                    name = dataReader["GoalName"].ToString(),
+                    date = dataReader["GoalCreateDate"].ToString(),
+                    isDone = dataReader["GoalStatus"].ToString(),
+                });
 
                 UserGoalsList.Add(goal);
 
+                //goal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
+                //goal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
+                //goal.GoalName = dataReader["GoalName"].ToString();
+                //goal.GoalStatus = dataReader["GoalStatus"].ToString();
+                //goal.GoalGroup_Desc = dataReader["GoalGroup_Desc"].ToString();
             }
 
             return UserGoalsList;
@@ -1817,6 +1812,79 @@ public class DBservices
         return cmd;
     }
 
+    ////--------------------------------------------------------------------------------------------------
+    //// This method gets the all the EvaluQues that fit the QuesType and RoleType
+    ////--------------------------------------------------------------------------------------------------
+    public List<Object> GetEvaluQuesByUserNum(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetByUserNum("spGetAllEvaluByUserNum", con, userNum);            // create the command
+
+        List<Object> rel_Ques = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                if (dataReader.FieldCount == 1)
+                {
+                    Object obj = (new
+                    {
+                        Text = (dataReader["txt"]).ToString()
+                    });
+
+                    rel_Ques.Add(obj);
+                    return rel_Ques;
+
+                }
+                if (dataReader.FieldCount > 1)
+                {
+                    Object obj = (new
+                    {
+                        id = Convert.ToInt32(dataReader["QuestionnaireNum"]),
+                        year = dataReader["Ques_Insert_Year"].ToString()
+                    });
+
+                    rel_Ques.Add(obj);
+                }
+            }
+
+            return rel_Ques;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
     ////--------------------------------------------------------------------------------------------------
     //// This method inserts new answers on the exists evaluQues
@@ -2008,7 +2076,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetEmployeeStatus("spCheckExistEvaluStep", con, userNum);            // create the command
+        cmd = CreateCommandWithSPGetByUserNum("spCheckExistEvaluStep", con, userNum);            // create the command
 
         List<Object> EmployeeStatusList = new List<Object>();
 
@@ -2055,7 +2123,7 @@ public class DBservices
     ////---------------------------------------------------------------------------------
     //// Create the SqlCommand for get user details
     ////---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetEmployeeStatus(string spName, SqlConnection con, int userNum)
+    private SqlCommand CreateCommandWithSPGetByUserNum(string spName, SqlConnection con, int userNum)
     {
         SqlCommand cmd = new SqlCommand(); // create the command object
 

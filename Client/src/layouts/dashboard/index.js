@@ -26,11 +26,10 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-
+import PieChart from "examples/Charts/PieChart";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
@@ -58,10 +57,11 @@ function Dashboard() {
             <MDBox mb={3}>
               <ReportsBarChart
                 color="info"
-                title="website views"
-                description="Last Campaign Performance"
-                date="campaign sent 2 days ago"
-                chart={reportsBarChartData}
+                title="שביעות רצון"
+                description="המחלקות בעלות שביעות הרצון הגבוהה ביותר"
+                date="עודכן לאחרונה בתאריך 2.2.2023"
+                chart={reportsBarChartData} 
+
               />
             </MDBox>
           </Grid>
@@ -69,25 +69,24 @@ function Dashboard() {
             <MDBox mb={3}>
               <ReportsLineChart
                 color="success"
-                title="daily sales"
-                description={
-                  <>
-                    (<strong>+15%</strong>) increase in today sales.
-                  </>
-                }
-                date="updated 4 min ago"
+                title="משמעת"
+                description="קצב השינוי במשמעת העובדים"
+                date="עודכן לאחרונה בתאריך 2.2.2023"
                 chart={sales}
               />
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={3}>
-              <ReportsLineChart
+            <ComplexStatisticsCard
                 color="dark"
-                title="completed tasks"
-                description="Last Campaign Performance"
-                date="just updated"
-                chart={tasks}
+                title="מספר יעדים ממוצע לעובד"
+                count={2}
+                percentage={{
+                  color: "success",
+                  amount: "+55%",
+                  label: "עלייה משנה שעברה",
+                }}
               />
             </MDBox>
           </Grid>
@@ -95,12 +94,12 @@ function Dashboard() {
       </MDBox>
       <MDBox>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={12} lg={12}>
             <Projects />
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <OrdersOverview />
-          </Grid>
+          </Grid> */}
         </Grid>
       </MDBox>
     </header>

@@ -32,7 +32,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
-import { DepartmentStateContext } from "context/globalVariables";
+// import { DepartmentStateContext } from "context/globalVariables";
 import { EvalueContext } from "context/evalueVariables";
 import swal from 'sweetalert';
 
@@ -68,7 +68,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   const genders = ["זכר", "נקבה", "אחר"];
   const roleTypes = ["מנהל", "עובד"];
   const roleGroups = ["כללי", "תפעולי", "משרדי"];
-  const { API } = useContext(EvalueContext);
+  const { API, depState, setDepState } = useContext(EvalueContext);
 
   // Use state to store the selected value
   const [gender, setGender] = useState("");
@@ -79,7 +79,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   const [isAdminState, setisAdminState] = useState(user ? user?.is_Admin : false);
   const [putUser, setPutUser] = useState("");
   const [postUser, setPostUser] = useState("");
-  const { depState, setDepState } = useContext(DepartmentStateContext);
+  // const { depState, setDepState } = useContext(DepartmentStateContext);
 
   //set the values of the form inputs and the states to be of the selected user if it exist
   useEffect(() => {

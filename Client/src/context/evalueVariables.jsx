@@ -34,11 +34,17 @@ export default function EvalueContextProvider({ children }) {
     apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //
     // apiGoalsEmployee: "https://localhost:7079/userManager?userManager=",
     apiGoalsEmployee: "https://proj.ruppin.ac.il/cgroup47/prod/userManager?userManager=", //server
-
+    apiGetEvaluationsByUserNum: "https://localhost:7079/api/Rel_Questions_EvaluQues/",
+    // apiGetEvaluationsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/", //server
+    apiGetGoalsByUserNum: "https://localhost:7079/api/Rel_Goal_Employee?userNum=",
+    // apiGetGoalsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Goal_Employee?userNum=", //server
   });
 
   
-  const [chosenEmployee, setChosenEmployee] = useState("") //need to set to loacl storage beacuse it is not saved when refreshing
+  const [chosenEmployee, setChosenEmployee] = useState("") 
+
+  const [depState, setDepState] = useState([]);
+
 
   useEffect(() => {
     const exisiting = localStorage.getItem("chosenEmployee");
@@ -55,7 +61,9 @@ export default function EvalueContextProvider({ children }) {
     API,
     setAPI,
     chosenEmployee,
-    setChosenEmployee
+    setChosenEmployee,
+    depState,
+    setDepState
   }
 
   return (

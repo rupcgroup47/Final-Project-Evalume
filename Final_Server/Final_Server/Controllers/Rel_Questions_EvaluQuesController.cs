@@ -14,6 +14,18 @@ namespace Final_Server.Controllers
     [ApiController]
     public class Rel_Questions_EvaluQuesController : ControllerBase
     {
+        [HttpGet]
+        public IEnumerable<Object> GetAllQuestionnaires() //gets all the Questionnaires
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadAllQuestionnaires();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         [HttpGet("/quesType/roleGroup_Type")]
         public IEnumerable<Object> GetEvaluQuesByType(bool quesType, int roleGroup_Type) //gets all the EvaluQues that fit the QuesType and RoleType
@@ -22,22 +34,22 @@ namespace Final_Server.Controllers
             {
                 return Rel_Questions_EvaluQues.ReadEvaluQuesByType(quesType, roleGroup_Type);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
         [HttpGet("/questionnaireNum")]
-        public Object GetQuesByEvaluId(int questionnaireNum) //gets the questions that part of this corrent evaluQues
+        public Object GetQuesByEvaluId(int questionnaireNum) //gets the questions that part of this current evaluQues
         {
             try
             {
                 return Rel_Questions_EvaluQues.ReadQuesByEvaluId(questionnaireNum);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -48,23 +60,23 @@ namespace Final_Server.Controllers
             {
                 return Rel_Questions_EvaluQues.ReadEmployeeStatus(userNum);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
 
         [HttpGet("/userNum/evalu_Part_Type")]
-        public Object GetEvaluQuesByUserId(int userNum, int evalu_Part_Type) //get the appropriate EvaluQues for the current employee
+        public Object GetEvaluQuesByUserId(int userNum, int evalu_Part_Type) //get the right EvaluQues for the current employee
         {
             try
             {
                 return Rel_Questions_EvaluQues.ReadEvaluQuesByUserId(userNum, evalu_Part_Type);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -82,10 +94,17 @@ namespace Final_Server.Controllers
         }
 
         // GET api/<Rel_Questions_EvaluQuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{userNum}")]
+        public List<Object> GetByUserNum(int userNum) // get the right evaluations of a user by his user number
         {
-            return "value";
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadEvaluQuesByUserNum(userNum);
+            }
+            catch (Exception)
+            {
+               throw;
+            }
         }
 
         // POST api/<Rel_Questions_EvaluQuesController>
@@ -219,37 +238,5 @@ namespace Final_Server.Controllers
             }
         }
 
-
-        //[HttpPost]
-        //public IActionResult PostSummaryAnswers([FromBody] Rel_EmployeeGoal rel_EmployeeGoal) // post a evaluation summery ques by manager and employee
-        //{
-        //    try
-        //    {
-        //        int numEffected = rel_EmployeeGoal.InsertEmployeeGoal();
-        //        if (numEffected != 0)
-        //        {
-        //            return Ok("goal succesfully inserted");
-        //        }
-        //        else
-        //        {
-        //            return NotFound("Error in insert this goal");
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-        //// PUT api/<Rel_Questions_EvaluQuesController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<Rel_Questions_EvaluQuesController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

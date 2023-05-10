@@ -14,6 +14,7 @@ import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import UpdateGoalStatus from 'dialog/UpdateGoalStatus';
 
 export default function GoalItem({
   goals,
@@ -26,6 +27,8 @@ export default function GoalItem({
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showUpdateGoalStatusDialog, setShowUpdateGoalStatusDialog] = useState(false);
+  const [openStatus, setOpenStstus]= useState(false);
 
 
   return (
@@ -71,9 +74,16 @@ export default function GoalItem({
                       {goal.employees?.map((employee) => (
                         <TableRow key={employee.userNum}>
                         
-                          <TableCell align="left">{employee.date}</TableCell>
+                          <TableCell align="left">{employee.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
                           <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
                           <TableCell align="left">{employee.goalStatus}</TableCell>
+                          <TableCell align="right">
+          <IconButton color="info" onClick={() => setShowUpdateGoalStatusDialog((e) => !e)}>
+            <EditRoundedIcon />
+          </IconButton>
+          <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
+          </IconButton>
+        </TableCell>
                         </TableRow>
                       ))}   
                   </TableHead>
@@ -82,6 +92,17 @@ export default function GoalItem({
             </Collapse>
           </TableCell>
         </TableRow>
+
+<UpdateGoalStatus
+ open={showUpdateGoalStatusDialog}
+ setOpen={setShowUpdateGoalStatusDialog}
+ goal={goal}
+ goals={goals}
+ setGoals={setGoals}
+ setItems={setItems}
+
+/>
+
 
       <CreateOrUpdateGoalDialog
         open={showUpdateGoalDialog}

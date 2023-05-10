@@ -55,21 +55,44 @@
 
         public int InsertEmployeeGoal(int userNum, int goalNum, string goalStatus) //insert new goal to current employee
         {
-            DBservices tmp = new DBservices();
-            return tmp.InsertGoalToUser(userNum, goalNum, goalStatus);
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.InsertGoalToUser(userNum, goalNum, goalStatus);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public int UpdateGoalStatus(int userNum, int goalNum, string goalStatus) //Update goal status to specific user
         {
-            DBservices tmp = new DBservices();
-            return tmp.UpdateGoalStatus(userNum, goalNum, goalStatus);
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.UpdateGoalStatus(userNum, goalNum, goalStatus);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public static List<Rel_Goal_Employee> ReadAllUserGoals() //Read all user (active + not active)
+        public static List<Object> ReadAllUserGoals(int userNum) //Read all user (active + not active)
         {
-            DBservices dbs = new DBservices();
-            return dbs.GetAllUserGoals();
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetAllUserGoals(userNum);
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
         }
 
         public int DeleteGoal(int goalNum) ////delete goal that connected to users
@@ -81,57 +104,65 @@
 
         public static List<Object> ReadManagerGoals(int userManager)//get all users goals that under this current manager
         {
-            DBservices dbs = new DBservices();
+            try
+            {
+                DBservices dbs = new DBservices();
 
-            List<Rel_Goal_Employee> ManagerGoalsList = dbs.GetManagerGoals(userManager);
-            int counter = 0;
-            int currentNumber = 0;
-            List<int> goalOptions = new List<int>();
-            foreach (Rel_Goal_Employee item in ManagerGoalsList)
-            {
-                if (currentNumber != item.GoalNum)
-                {
-                    currentNumber = item.GoalNum;
-                    goalOptions.Add(currentNumber);
-                    counter++;
-                }
-            }
-            List<Object> GoalsList = new List<Object>();
-            for (int i = 0; i < counter; i++)
-            {
-                List<Rel_Goal_Employee> tmpList = new List<Rel_Goal_Employee>();
+                List<Rel_Goal_Employee> ManagerGoalsList = dbs.GetManagerGoals(userManager);
+                int counter = 0;
+                int currentNumber = 0;
+                List<int> goalOptions = new List<int>();
                 foreach (Rel_Goal_Employee item in ManagerGoalsList)
                 {
-                    if (item.GoalNum == goalOptions[i])
+                    if (currentNumber != item.GoalNum)
                     {
-                        tmpList.Add(item);
+                        currentNumber = item.GoalNum;
+                        goalOptions.Add(currentNumber);
+                        counter++;
                     }
                 }
-
-                List<Object> employeesList = new List<Object>();
-
-                foreach (Rel_Goal_Employee item in tmpList)
+                List<Object> GoalsList = new List<Object>();
+                for (int i = 0; i < counter; i++)
                 {
-                    employeesList.Add(new
+                    List<Rel_Goal_Employee> tmpList = new List<Rel_Goal_Employee>();
+                    foreach (Rel_Goal_Employee item in ManagerGoalsList)
                     {
-                        date = item.GoalCreateDate,
-                        userNum = item.UserNum,
-                        userFName = item.UserFName,
-                        userLName = item.UserLName,
-                        goalStatus = item.GoalStatus,
+                        if (item.GoalNum == goalOptions[i])
+                        {
+                            tmpList.Add(item);
+                        }
+                    }
+
+                    List<Object> employeesList = new List<Object>();
+
+                    foreach (Rel_Goal_Employee item in tmpList)
+                    {
+                        employeesList.Add(new
+                        {
+                            date = item.GoalCreateDate,
+                            userNum = item.UserNum,
+                            userFName = item.UserFName,
+                            userLName = item.UserLName,
+                            goalStatus = item.GoalStatus,
+                        });
+                    }
+
+                    GoalsList.Add(new
+                    {
+                        goalNum = tmpList[0].GoalNum,
+                        goalName = tmpList[0].GoalName,
+                        employees = employeesList,
                     });
                 }
 
-                GoalsList.Add(new
-                {
-                    goalNum = tmpList[0].GoalNum,
-                    goalName = tmpList[0].GoalName,
-                    employees = employeesList,
-                });
+                return GoalsList;
+
             }
+            catch (Exception)
+            {
 
-            return GoalsList;
-
+                throw;
+            }
         }
     }
 }

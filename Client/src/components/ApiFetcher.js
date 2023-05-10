@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 
 function ApiFetcher(props) {
     const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
-        fetch(props.API,
+        const abortController = new AbortController();
+        fetch(props.api,
             {
                 method: props.method,
                 headers: new Headers({
@@ -12,7 +14,7 @@ function ApiFetcher(props) {
                     Accept: "application/json; charset=UTF-8",
                 }),
                 body: props.body,
-                signal: signal,
+                signal: abortController.signal,
             })
             .then(async response => {
                 const data = await response.json();
@@ -29,8 +31,8 @@ function ApiFetcher(props) {
             .then(
                 (result) => {
                     console.log("success");
+                    setData(result);
                     props.onFetchComplete(result);
-                    // setUsers(result);
                 })
             .catch(error => {
                 if (error.name === 'AbortError') { return };
@@ -39,9 +41,17 @@ function ApiFetcher(props) {
                 props.onFetchError(error)
             });
 
-    }, [props.API, props.method, props.body, props.signal, props.onFetchComplete, props.onFetchError]);
+        return () => {
+            abortController.abort()
+            // stop the query by aborting on the AbortController on unmount
+        }
+    }, [props.api, props.method, props.body, props.onFetchComplete, props.onFetchError])
 
-    return (error);
+    return (
+        <div>
+            {props.children(data, error)}
+        </div>
+    );
 }
 
 export default ApiFetcher;

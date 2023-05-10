@@ -50,9 +50,7 @@ namespace Final_Server.Models
 
 
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
-
         public bool QuesType { get => quesType; set => quesType = value; }
-
         public int RoleGroup_Type { get => roleGroup_Type; set => roleGroup_Type = value; }
         public int QuestionNum { get => questionNum; set => questionNum = value; }
         public string QuesContent { get => quesContent; set => quesContent = value; }
@@ -72,7 +70,6 @@ namespace Final_Server.Models
         public string ManagerEmail { get => managerEmail; set => managerEmail = value; }
         public string UserRoleGroupDesc { get => userRoleGroupDesc; set => userRoleGroupDesc = value; }
         public int QuesGroup_ID { get => quesGroup_ID; set => quesGroup_ID = value; }
-
         public DateTime QuesLimitDate { get => quesLimitDate; set => quesLimitDate = value; }
         public int QuesInsertDate { get => quesInsertDate; set => quesInsertDate = value; }
         public int Evalu_Part_Type { get => evalu_Part_Type; set => evalu_Part_Type = value; }
@@ -83,6 +80,68 @@ namespace Final_Server.Models
         public string ManagerOpinion { get => managerOpinion; set => managerOpinion = value; }
         public string EmployeeOpinion { get => employeeOpinion; set => employeeOpinion = value; }
         public DateTime OpinionInsertDate { get => opinionInsertDate; set => opinionInsertDate = value; }
+
+        public static List<Object> ReadAllQuestionnaires() //gets all the Questionnaires
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetAllQuestionnaires();
+                int counter = 0;
+                int currentNumber = 0;
+                List<int> quesTypeOptions = new List<int>();
+                foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                {
+                    if (currentNumber != item.RoleGroup_Type)
+                    {
+                        currentNumber = item.RoleGroup_Type;
+                        quesTypeOptions.Add(currentNumber);
+                        counter++;
+                    }
+                }
+                List<Object> QuestionnairesList = new List<Object>();
+                for (int i = 0; i < counter; i++)
+                {
+                    List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
+                    foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                    {
+                        if (item.RoleGroup_Type == quesTypeOptions[i])
+                        {
+                            tmpList.Add(item);
+                        }
+                    }
+
+                    List<Object> Questionnaires = new List<Object>();
+                    for (int j = 0; j < 2; j++)
+                    {
+                        foreach (Rel_Questions_EvaluQues item in tmpList)
+                        {
+                            if ((item.QuesType?1:0) == j)
+                                Questionnaires.Add(new
+                                {
+                                    id = item.QuestionnaireNum,
+                                    year = item.QuesInsertDate,
+
+                                });
+                        }
+
+                        QuestionnairesList.Add(new
+                        {
+                            roleGrouptype = (tmpList[0].RoleGroup_Type == 1 ? "כללי" : (tmpList[0].RoleGroup_Type == 2 ? "תפעולי" : "משרדי")),
+                            roletype = (j == 1 ? "מנהל" : "עובד"),
+                            forms = Questionnaires,
+                        });
+                    }
+                }
+
+                return QuestionnairesList;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
 
         public static List<Object> ReadEvaluQuesByType(bool quesType, int roleGroup_Type) //gets the all the EvaluQues that fit the QuesType and RoleType
         {
@@ -116,6 +175,20 @@ namespace Final_Server.Models
             {
                 DBservices dbs = new DBservices();
                 return dbs.GetEmployeeStatus(userNum);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<Object> ReadEvaluQuesByUserNum(int userNum) // get the right evaluations of a user by his user number
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetEvaluQuesByUserNum(userNum);
+
             }
             catch (Exception)
             {
