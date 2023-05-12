@@ -13,7 +13,7 @@ import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/packages.jpg";
 import OpenEvaluation from "./openEvaluation";
 
-function Header({ children }) {
+function Header({ children,questionnairesData}) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -78,7 +78,7 @@ function Header({ children }) {
                 mainState.is_Admin ? (
                   <MDBox height="100%" mt={0.5} lineHeight={1}>
                     <MDTypography variant="h5" fontWeight="medium">
-                      <OpenEvaluation />
+                      <OpenEvaluation questionnairesData={questionnairesData}/>
                     </MDTypography>
                   </MDBox>
                 ) : null

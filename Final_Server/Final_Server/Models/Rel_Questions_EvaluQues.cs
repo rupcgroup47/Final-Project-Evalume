@@ -111,12 +111,12 @@ namespace Final_Server.Models
                         }
                     }
 
-                    List<Object> Questionnaires = new List<Object>();
                     for (int j = 0; j < 2; j++)
                     {
+                        List<Object> Questionnaires = new List<Object>();
                         foreach (Rel_Questions_EvaluQues item in tmpList)
                         {
-                            if ((item.QuesType?1:0) == j)
+                            if ((item.QuesType ? 1 : 0) == j)
                                 Questionnaires.Add(new
                                 {
                                     id = item.QuestionnaireNum,
@@ -384,7 +384,20 @@ namespace Final_Server.Models
                 throw;
             }
         }
-    
+
+        static public int insertActive_Evaluations(List<(int questionNum, DateTime quesLimitDate)> evaluationsList) //post all the active evaluations selected by admin
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.InsertActive_Evaluation_Ques(evaluationsList);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
 
         public static Object ReadPDFdetails(int userNum, int questionnaireNum) //get the selected questionnaire PDF details
@@ -403,20 +416,22 @@ namespace Final_Server.Models
                 {
                     if (item.evalu_Part_Type == 0)
                     {
-                        part0List.Add(new {
+                        part0List.Add(new
+                        {
 
-                            QuesGroup_Desc=item.QuesGroup_Desc,
-                            QuestionNum=item.QuestionNum,
-                            QuesContent=item.QuesContent,
-                            NumericAnswer=item.NumericAnswer,
-                            VerbalAnswer= item.VerbalAnswer,
+                            QuesGroup_Desc = item.QuesGroup_Desc,
+                            QuestionNum = item.QuestionNum,
+                            QuesContent = item.QuesContent,
+                            NumericAnswer = item.NumericAnswer,
+                            VerbalAnswer = item.VerbalAnswer,
 
                         });
                     }
 
                     if (item.evalu_Part_Type == 1)
                     {
-                        part1List.Add(new {
+                        part1List.Add(new
+                        {
 
                             QuesGroup_Desc = item.QuesGroup_Desc,
                             QuestionNum = item.QuestionNum,
@@ -429,12 +444,13 @@ namespace Final_Server.Models
 
                     if (item.evalu_Part_Type == 2)
                     {
-                        part2List.Add(new {
-                            ManagerOpinion=item.ManagerOpinion,
-                            EmployeeOpinion=item.EmployeeOpinion,
+                        part2List.Add(new
+                        {
+                            ManagerOpinion = item.ManagerOpinion,
+                            EmployeeOpinion = item.EmployeeOpinion,
                             OpinionInsertDate = item.OpinionInsertDate,
                         });
-                    } 
+                    }
 
                 }
 

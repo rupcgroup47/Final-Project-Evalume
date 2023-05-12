@@ -173,7 +173,6 @@ namespace Final_Server.Controllers
                     string verbalAnswer = (answersElement.GetProperty("verbalAnswer").GetString()).ToString();
                     
                     answersList.Add((questionNum, numericAnswer, verbalAnswer));
-
                  };
 
                 int numEffected = Rel_Questions_EvaluQues.insertNewAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
@@ -230,6 +229,41 @@ namespace Final_Server.Controllers
                 else
                 {
                     return NotFound("Error in insert this Answers");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        [HttpPost("/Active_Evaluations")]
+        public IActionResult PostActive_Evaluations([FromBody] JsonElement data) // post all the active evaluations selected by admin
+        {
+            try
+            {
+                JsonDocument document = JsonDocument.Parse(data.ToString());
+                JsonElement allEvaluations = document.RootElement.GetProperty("selectedForms");
+                DateTime quesLimitDate = DateTime.Parse(data.GetProperty("date").ToString());
+
+                List<(int questionNum, DateTime quesLimitDate)> evaluationsList = new List<(int, DateTime)>();
+
+                foreach (JsonElement item in allEvaluations.EnumerateArray())
+                {
+                    int number = Convert.ToInt32(item.GetString());
+                    evaluationsList.Add((number, quesLimitDate));
+                }
+
+                int numEffected = Rel_Questions_EvaluQues.insertActive_Evaluations(evaluationsList);
+
+                if (numEffected != 0)
+                {
+                    return Ok("evaluations succesfully inserted");
+                }
+                else
+                {
+                    return NotFound("Error in insert this evaluations");
                 }
             }
             catch (Exception)

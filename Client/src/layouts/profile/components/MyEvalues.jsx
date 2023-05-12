@@ -39,7 +39,7 @@ export default function MyEvalues({evalus}) {
   });
   const mainState = useContext(MainStateContext);
   const userId = mainState.mainState.userNum; //The employee who is now connected to the system
-  const [items, setItems] = useState(evalues);
+  const [items, setItems] = useState(evalus);
   const [, dispatch] = useMaterialUIController();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);

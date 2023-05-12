@@ -1,8 +1,10 @@
 import { React, useState, useEffect } from "react";
 import CreateYearlyProcessDialog from "dialog/CreateYearlyProcessDialog";
 import { Button } from "@mui/material";
-export default function OpenEvaluation() {
+
+export default function OpenEvaluation({questionnairesData}) {
   const [showCreateOpenEvalueDialog, setShowCreateOpenEvalueDialog] = useState(false);
+
   return (
     <>
       <Button
@@ -21,6 +23,7 @@ export default function OpenEvaluation() {
       <CreateYearlyProcessDialog
         open={showCreateOpenEvalueDialog}
         setOpen={setShowCreateOpenEvalueDialog}
+        questionnairesData={questionnairesData}
       />
     </>
   );

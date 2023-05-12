@@ -7,7 +7,9 @@ import { useEffect, useState, useContext } from "react";
 import { MainStateContext } from "App";
 import { EvalueContext } from "context/evalueVariables";
 import { useMaterialUIController, setDirection } from "context";
-import OpenEvaluation from "./components/Header/openEvaluation";
+import swal from 'sweetalert';
+
+// import OpenEvaluation from "./components/Header/openEvaluation";
 // Data
 import ProfileAlerts from "./components/ProfileAlerts";
 import ProfileGrid from "./components/ProfileGrid";
@@ -16,9 +18,10 @@ function Overview() {
   const [, dispatch] = useMaterialUIController();
   const { mainState, setMainState } = useContext(MainStateContext);
   const { API } = useContext(EvalueContext);
-  const [evalus,setEvalus] = useState([]);
+  const [evalus, setEvalus] = useState([]);
   const [goals, setGoals] = useState([]);
   const [tmpResult, setTmpResult] = useState([]);
+  const [questionnairesData, setQuestionnairesData] = useState([]);
   const [state, setState] = useState({
     fetch: {
       api: "",
@@ -58,7 +61,7 @@ function Overview() {
     const abortController = new AbortController();
     if (evalus.length === 0 && mainState.userNum) {
       fetch(
-        API.apiGetEvaluationsByUserNum + mainState.userNum,
+        API.apiGetEvaluationsByUserNum + "/" + mainState.userNum,
         {
           method: "GET",
           headers: new Headers({
@@ -104,6 +107,7 @@ function Overview() {
     }
   }, []);
 
+  // GET the employee goals
   useEffect(() => {
     const abortController = new AbortController()
     if (goals.length === 0 && mainState.userNum) {
@@ -149,7 +153,7 @@ function Overview() {
     }
   }, []);
 
-  // // GET the employee status under a manager
+  // GET the employee status under a manager
   useEffect(() => {
     const abortController = new AbortController();
     if (tmpResult.length === 0 && mainState.userNum) {
@@ -195,6 +199,57 @@ function Overview() {
     }
   }, []);
 
+  // GET all the Questionnaires to the button
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (evalus.length === 0) {
+      fetch(
+        API.apiGetEvaluationsByUserNum,
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: state.fetch.body,
+          signal: abortController.signal
+        })
+        .then(async response => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            if (result[0].text !== undefined) {
+              console.log(result[0].text);
+            }
+            else {
+              setQuestionnairesData(result);
+              // setState({ evalus: result });
+            }
+          },
+          (error) => {
+            if (error.name === 'AbortError') return
+            console.log("err get=", error);
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort()
+        // stop the query by aborting on the AbortController on unmount
+      }
+    }
+  }, []);
+
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
@@ -202,9 +257,10 @@ function Overview() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
+  // console.log(questionnairesData);
 
   return (
-    <Header>
+    <Header questionnairesData={questionnairesData}>
       <MDBox mt={3} mb={3}>
         <Grid container spacing={1}>
           {/* //Profile card */}

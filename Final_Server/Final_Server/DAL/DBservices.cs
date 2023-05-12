@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Text.Json.Nodes;
 using System.Reflection.Metadata;
 using Microsoft.VisualBasic;
+using System.Data.SqlTypes;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -152,8 +153,8 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetDepatments("spGetDepartments", con);            // create the command
-                                                                                    //DataTable dt = new DataTable();
+        cmd = CreateCommandWithSPGet("spGetDepartments", con);            // create the command
+                                                                          //DataTable dt = new DataTable();
         List<Department> DepList = new List<Department>();
 
         try
@@ -191,27 +192,27 @@ public class DBservices
 
     }
 
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure to get all departments details
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetDepatments(String spName, SqlConnection con)
-    {
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand using a stored procedure to get all departments details
+    ////---------------------------------------------------------------------------------
+    //private SqlCommand CreateCommandWithSPGetDepatments(String spName, SqlConnection con)
+    //{
 
-        SqlCommand cmd = new SqlCommand(); // create the command object
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
 
-        cmd.Connection = con;              // assign the connection to the command object
+    //    cmd.Connection = con;              // assign the connection to the command object
 
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
 
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
 
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
+    //    /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
 
 
-        return cmd;
-    }
+    //    return cmd;
+    //}
 
     ////--------------------------------------------------------------------------------------------------
     //// This method gets all Users
@@ -1717,7 +1718,7 @@ public class DBservices
     }
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method gets the all the EvaluQues that fit the QuesType and RoleType
+    //// This method gets all the EvaluQues that fit the QuesType and RoleType
     ////--------------------------------------------------------------------------------------------------
     public List<Rel_Questions_EvaluQues> GetEvaluQuesByUserId(int userNum, int evalu_Part_Type)
     {
@@ -2057,6 +2058,84 @@ public class DBservices
 
     }
 
+    ////--------------------------------------------------------------------------------------------------
+    //// This method post all the active evaluations selected by admin
+    ////--------------------------------------------------------------------------------------------------
+    public int InsertActive_Evaluation_Ques(List<(int questionNum, DateTime quesLimitDate)> evaluationsList)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            Console.WriteLine(ex.Message);
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPActive_Evaluation("spInsertActiveEvaluationsQeus", con, evaluationsList);            // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            Console.WriteLine(ex.Message);
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPActive_Evaluation(String spName, SqlConnection con, List<(int questionNum, DateTime quesLimitDate)> evaluationsList)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        var dt = new DataTable();
+        dt.Columns.Add("QuestionnaireNum", typeof(int));
+        dt.Columns.Add("QuesLimitDate", typeof(SqlDateTime));
+
+        foreach (var evaluations in evaluationsList)
+        {
+            dt.Rows.Add(evaluations.questionNum, evaluations.quesLimitDate);
+        }
+
+        SqlParameter ListParam = new SqlParameter("@InputEvaluations", dt);
+        ListParam.SqlDbType = SqlDbType.Structured;
+        ListParam.TypeName = "InputEvaluations";
+        cmd.Parameters.Add(ListParam);
+
+        return cmd;
+    }
+
     //--------------------------------------------------------------------------------------------------
     // This method get all users goals that under this current manager
     //--------------------------------------------------------------------------------------------------
@@ -2280,8 +2359,8 @@ public class DBservices
 
             return answerslist;
         }
-    
-    
+
+
         catch (Exception ex)
         {
             // write to log
@@ -2290,11 +2369,11 @@ public class DBservices
 
         finally
         {
-          if (con != null)
-           {
-              // close the db connection
-             con.Close();
-           }
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
         }
 
     }
@@ -2397,7 +2476,7 @@ public class DBservices
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-   //insert all the parameters we got from the user
+        //insert all the parameters we got from the user
 
         return cmd;
     }
@@ -2802,6 +2881,65 @@ public class DBservices
             }
 
             return bi;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method gets all the Questionnaires
+    ////--------------------------------------------------------------------------------------------------
+    public List<Rel_Questions_EvaluQues> GetAllQuestionnaires()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGet("spGetAllQuestionnaires", con);            // create the command
+                                                                                //DataTable dt = new DataTable();
+        List<Rel_Questions_EvaluQues> QuestionnairesList = new List<Rel_Questions_EvaluQues>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Rel_Questions_EvaluQues Questionnaire = new Rel_Questions_EvaluQues();
+                Questionnaire.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+                Questionnaire.QuesInsertDate = Convert.ToInt32(dataReader["yearInsert"]);
+                Questionnaire.RoleGroup_Type = Convert.ToInt32(dataReader["RoleGroup_Type"]);
+                Questionnaire.QuesType = Convert.ToBoolean(dataReader["QuesType"]);
+
+                QuestionnairesList.Add(Questionnaire);
+            }
+
+            return QuestionnairesList;
         }
         catch (Exception ex)
         {

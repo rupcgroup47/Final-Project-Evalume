@@ -34,10 +34,12 @@ export default function EvalueContextProvider({ children }) {
     apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //
     // apiGoalsEmployee: "https://localhost:7079/userManager?userManager=",
     apiGoalsEmployee: "https://proj.ruppin.ac.il/cgroup47/prod/userManager?userManager=", //server
-    apiGetEvaluationsByUserNum: "https://localhost:7079/api/Rel_Questions_EvaluQues/",
-    // apiGetEvaluationsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/", //server
+    apiGetEvaluationsByUserNum: "https://localhost:7079/api/Rel_Questions_EvaluQues",
+    // apiGetEvaluationsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues", //server
     apiGetGoalsByUserNum: "https://localhost:7079/api/Rel_Goal_Employee?userNum=",
     // apiGetGoalsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Goal_Employee?userNum=", //server
+    apiSetEvaluations: "https://localhost:7079/Active_Evaluations",
+    // apiSetEvaluations: "https://proj.ruppin.ac.il/cgroup47/prod/Active_Evaluations", //server
   });
 
   
