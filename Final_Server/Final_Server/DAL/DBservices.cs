@@ -2377,7 +2377,7 @@ public class DBservices
     //--------------------------------------------------------------------------------------------------
     // This method get the selected header data of questionnaire PDF details
     //--------------------------------------------------------------------------------------------------
-    public List<Rel_Questions_EvaluQues> GetPDFdetailsHeader(int userNum, int questionnaireNum)
+    public Rel_Questions_EvaluQues GetPDFdetailsHeader(int userNum, int questionnaireNum)
     {
 
         SqlConnection con;
@@ -2395,7 +2395,7 @@ public class DBservices
 
         cmd = CreateCommandWithSPGetPDFdetails("spPDFheader", con, userNum, questionnaireNum);            // create the command
 
-        List<Rel_Questions_EvaluQues> detailslist = new List<Rel_Questions_EvaluQues>();
+        Rel_Questions_EvaluQues details = new Rel_Questions_EvaluQues();
 
         try
         {
@@ -2405,25 +2405,21 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
-
-                r.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
-                r.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                r.UserFName = dataReader["UserFName"].ToString();
-                r.UserLName = dataReader["UserLName"].ToString();
-                r.UserRole = dataReader["UserRole"].ToString();
-                r.UserDepartment = dataReader["UserDep"].ToString();
-                r.UserManagerNum = Convert.ToInt32(dataReader["ManagerNum"]);
-                r.ManagerFname = dataReader["ManagerFName"].ToString();
-                r.ManagerLName = dataReader["ManagerLName"].ToString();
-                r.ManagerRole = dataReader["ManagerRole"].ToString();
-                r.ManagerDepartment = dataReader["ManagerDep"].ToString();
+                details.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+                details.UserNum = Convert.ToInt32(dataReader["UserNum"]);
+                details.UserFName = dataReader["UserFName"].ToString();
+                details.UserLName = dataReader["UserLName"].ToString();
+                details.UserRole = dataReader["UserRole"].ToString();
+                details.UserDepartment = dataReader["UserDep"].ToString();
+                details.UserManagerNum = Convert.ToInt32(dataReader["ManagerNum"]);
+                details.ManagerFname = dataReader["ManagerFName"].ToString();
+                details.ManagerLName = dataReader["ManagerLName"].ToString();
+                details.ManagerRole = dataReader["ManagerRole"].ToString();
+                details.ManagerDepartment = dataReader["ManagerDep"].ToString();
                 //r.OpinionInsertDate = (DateTime)dataReader["OpinionInsertDate"];
-
-                detailslist.Add(r);
             }
 
-            return detailslist;
+            return details;
         }
         catch (Exception ex)
         {

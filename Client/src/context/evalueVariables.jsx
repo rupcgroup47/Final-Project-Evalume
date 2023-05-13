@@ -43,7 +43,7 @@ export default function EvalueContextProvider({ children }) {
   });
 
 
-  const [chosenEmployee, setChosenEmployee] = useState("")
+  const [chosenEmployee, setChosenEmployee] = useState("");
 
   const [depState, setDepState] = useState([]);
 
