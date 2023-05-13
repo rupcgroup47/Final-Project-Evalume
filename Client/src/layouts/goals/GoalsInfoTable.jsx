@@ -11,16 +11,12 @@ import TableToolbarGoal from "./TableToolBarGoal";
 import { TablePagination } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import { useDebounce } from "use-debounce";
-import GoalItem from "./GoalItem";
-import { EvalueContext } from "context/evalueVariables";
-import { MainStateContext } from "App";
 import IconButton from '@mui/material/IconButton';
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import { Edit, Delete } from '@mui/icons-material';
 import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
+import Checkbox from '@mui/material/Checkbox';
+
 const _goals = [
   {
     goalNum: 1,
@@ -45,10 +41,11 @@ export default function GoalsInfoTable() {
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
-
-  // Function to handle the click event and update the selected goal
+const [goalName, setGoalName]= useState(null);
+//   // Function to handle the click event and update the selected goal
   const handleEditClick = (goal) => {
     setSelectedGoal(goal);
+    setGoalName(goal.goalName);
     setShowUpdateGoalDialog(true);
   };
   // Changing the direction to rtl
@@ -76,14 +73,7 @@ export default function GoalsInfoTable() {
     setItems(value?.length > 0 ? sx : goals);
 
   };
-//   const handleRemoveGoal = (goal) => {
-//     setGoals((i) => i.filter((item) => item.goalName !== goal.goalName));
-//     setItems((i) => i.filter((item) => item.goalName !== goal.goalName));
-
-//     setSearchInput("");
-//   };
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
-
  
   return (
     <Paper sx={{ boxShadow: "none" }}>
@@ -109,7 +99,9 @@ export default function GoalsInfoTable() {
           {items.map((goal, index) => (
             <TableRow key={index}>
               <TableCell style={{ width: "33%" }}>{goal.goalName}</TableCell>
-              <TableCell style={{ width: "33%" }}>{goal.isActive ? 'פעיל' : 'לא פעיל'}</TableCell>
+              <TableCell style={{ width: "33%" }}>
+                {goal.isActive ? 'פעיל' : 'לא פעיל'}
+                </TableCell>
               <TableCell style={{ width: "33%" }}>
               <IconButton color="primary" onClick={() => handleEditClick(goal)}>
             <EditRoundedIcon />
@@ -155,7 +147,9 @@ export default function GoalsInfoTable() {
         open={showUpdateGoalDialog}
         setOpen={setShowUpdateGoalDialog}
         goal={selectedGoal}
+        initGoalName={goalName}
         goals={goals}
+        condition ={true}
         setGoals={setGoals}
         setItems={setItems}
       />
@@ -164,7 +158,7 @@ export default function GoalsInfoTable() {
         open={showCloseDialog}
         setOpen={setShowCloseDialog}
         onClick={() => {
-          onRemoveButtonClick();
+        //   onRemoveButtonClick(selectedGoal);
           setShowCloseDialog((e) => !e);
         }}
       />

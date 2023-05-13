@@ -23,13 +23,18 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  MenuItem,
+  Select
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal }) {
-  const [newGoalName, setNewGoalName] = useState("")
+export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal,initGoalName, condition }) {
+  const [newGoalName, setNewGoalName] = useState(initGoalName);
+  const goalStatusArr = [{isActive:1,name:"פעיל"},{isActive:0, name:"לא פעיל"}];
+  const [selectedStatus, setSelectedStatus] = useState(1);
+
   const {
     register,
     handleSubmit,
@@ -38,13 +43,20 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
     formState: { errors },
   } = useForm({
     defaultValues: {
-      goalName: "",
+      goalName: initGoalName,
     },
   });
 
+  // Function to handle status change in the dialog
+  const handleStatusChange = (event) => {
+   setSelectedStatus(event.target.value);
+  };
+
+
   useEffect(() => {
     if (open === true) {
-      setValue("goalName",newGoalName);
+      setValue("goalName",initGoalName);
+      setNewGoalName(initGoalName)
     }
   }, [goal, open]);
   const changeHandler = (e) => {
@@ -53,8 +65,8 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
   };
   const onSubmit = () => {
     const newGoal = {
-      id: Math.random().toString(36).substr(2, 9),
       goalName: newGoalName,
+      isActive: selectedStatus
     };
 
     if (goal) {
@@ -106,16 +118,56 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
               gap: 20,
             }}
           >
-            <TextField
-              size="small"
-              id="goalName"
-              label="שם היעד"
-              error={errors.goalName}
-              helperText={errors.goalName && "שם יעד הוא שדה חובה"}
-              {...register("goalName", { required: true, maxLength: 20 })}
-              onChange={changeHandler}
-              sx={{ m: 0, width: "100%" }}
-            />
+            {!goal ? 
+            <><TextField
+                size="small"
+                id="goalName"
+                label="שם היעד"
+                error={errors.goalName}
+
+                helperText={errors.goalName && "שם יעד הוא שדה חובה"}
+                {...register("goalName", { required: true, maxLength: 20 })}
+                onChange={changeHandler}
+                sx={{ m: 0, width: "100%" }} /><Select
+                  labelId="status-label"
+                  id="status"
+                  label="סטטוס"
+                  style={{ height: "2.6375em", alignContent: "center" }}
+                  value={selectedStatus}
+                  onChange={handleStatusChange}
+                >
+                  {goalStatusArr.map((status, index) => (
+                    <MenuItem key={index} value={status.isActive}>
+                      {status.name}
+                    </MenuItem>
+                  ))}
+                </Select></> :
+          <TextField
+          size="small"
+          id="goalName"
+          value={newGoalName}
+          onChange={changeHandler}
+          sx={{ m: 0, width: "100%" }}
+        />
+            }
+            
+
+            {goal && condition ?
+            <Select
+            labelId="status-label"
+            id="status"
+            label="סטטוס"
+            style={{ height: "2.6375em", alignContent: "center" }}
+            value={selectedStatus}
+            onChange={handleStatusChange}
+          >
+            {goalStatusArr.map((status, index) => (
+              <MenuItem key={index} value={status.isActive}>
+                {status.name}
+              </MenuItem>
+            ))}
+          </Select>
+           : ""}
           </div>
           <button id="submitButton" type="submit" style={{ display: "none" }}>
             יצירה

@@ -84,6 +84,7 @@ export default function TableItem({
               checked={user.is_Active}
             />
           </TableCell>
+
         )}
         {tableHead.find((i) => i.id === "is_Admin").show && (
           <TableCell align="center">
@@ -121,6 +122,7 @@ export default function TableItem({
           setShowCloseDialog((e) => !e);
         }}
       />
+      
     </>
   );
 }
