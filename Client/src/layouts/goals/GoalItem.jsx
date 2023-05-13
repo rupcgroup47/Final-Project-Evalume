@@ -35,10 +35,7 @@ export default function GoalItem({
 }) {
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
-
-  const [showUpdateGoalStatusDialog, setShowUpdateGoalStatusDialog] = useState(false);
-  const [openStatus, setOpenStstus] = useState(false);
-
+  const [open, setOpen] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogParticipantIndex, setDialogParticipantIndex] = useState(null);
   const [updatedGoal, setUpdatedGoal] = useState(goal);
@@ -54,20 +51,20 @@ export default function GoalItem({
     setDialogOpen(false);
   };
 
-    // Function to handle status change in the dialog
-    const handleStatusChange = (event) => {
-      setSelectedStatus(event.target.value);
-    };
+  // Function to handle status change in the dialog
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
 
 
-      // Function to save the updated status in the dialog
+  // Function to save the updated status in the dialog
   const handleSaveStatus = (participantIndex) => {
     handleUpdateStatus(participantIndex, selectedStatus);
     setSelectedStatus('');
   };
 
 
-      // Function to update the updated status in employee
+  // Function to update the updated status in employee
   const handleUpdateStatus = (participantIndex, newStatus) => {
     const updatedParticipants = [...goal.employees];
     console.log(...goal.employees)
@@ -76,22 +73,13 @@ export default function GoalItem({
 
     const newGoal = { ...updatedGoal, employees: updatedParticipants };
     setUpdatedGoal(newGoal);
-      handleCloseDialog();
+    handleCloseDialog();
   };
-
-
-
-
-
 
 
   return (
     <>
       <TableRow hover role="checkbox" tabIndex={-1}>
-
-        {console.log(tableHead + "lll")}
-
-
         {tableHead.find((i) => i.id === "goalName").show && (
           <>
             <TableCell component="th" scope="row" padding="none">
@@ -127,54 +115,30 @@ export default function GoalItem({
                     <TableCell align="left">שם משתמש</TableCell>
                     <TableCell align="left">סטטוס</TableCell>
                   </TableRow>
-                  {goal.employees?.map((employee) => (
-                    <TableRow key={employee.userNum}>
-
+                  {goal.employees?.map((employee, index) => (
+                    <TableRow key={index}>
                       <TableCell align="left">{employee.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
                       <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
                       <TableCell align="left">{employee.goalStatus}</TableCell>
                       <TableCell align="right">
-                        <IconButton color="info" onClick={() => setShowUpdateGoalStatusDialog((e) => !e)}>
+                        <IconButton color="info" onClick={() => handleOpenDialog(index)}>
                           <EditRoundedIcon />
                         </IconButton>
                         <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
                         </IconButton>
                       </TableCell>
                     </TableRow>
-
                   ))}
                 </TableHead>
               </Table>
             </Box>
           </Collapse>
-
-                      {goal.employees?.map((employee,index) => (
-                        <TableRow key={index}>
-                          <TableCell align="left">{employee.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
-                          <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
-                          <TableCell align="left">{employee.goalStatus}</TableCell>
-                          <TableCell align="right">
-          <IconButton color="info" onClick={() => handleOpenDialog(index)}>
-            <EditRoundedIcon />
-          </IconButton>
-          <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
-          </IconButton>
-
         </TableCell>
       </TableRow>
 
-      <UpdateGoalStatus
-        open={showUpdateGoalStatusDialog}
-        setOpen={setShowUpdateGoalStatusDialog}
-        goal={goal}
-        goals={goals}
-        setGoals={setGoals}
-        setItems={setItems}
-
-      />
 
 
-        {isDialogOpen && (
+      {isDialogOpen && (
         <Dialog onClose={handleCloseDialog} open={isDialogOpen}>
           <DialogTitle>עריכת סטטוס</DialogTitle>
           <DialogContent>

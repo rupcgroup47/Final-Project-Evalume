@@ -43,13 +43,14 @@ export default function TableToolbarGoal({
   };
 
   const handleCondition = () => {
-    if (condition){
+    if (condition) {
       setShowCreateGoalDialog(true)
     } else {
       setIsPopupOpen(true)
 
     }
   }
+
   return (
     <>
       <Box
@@ -130,27 +131,20 @@ export default function TableToolbarGoal({
         </Box>
       </Box>
 
-     
+
       <CreateOrUpdateGoalDialog
         open={showCreateGoalDialog}
         setOpen={setShowCreateGoalDialog}
         setGoals={setGoals}
-
         setItems={setItems}
       />
 
-        setItems={setItems}/>
- 
       <Dialog open={isPopupOpen} onClose={handleCloseDialog}>
-                <Button onClick={handleCloseDialog}>חזרה לדף הקודם</Button>
-                <DialogContent>
-                  <GoalsInfoTable/>
-                </DialogContent>
-              </Dialog>
-
-      
-      
-
+        <Button onClick={handleCloseDialog}>חזרה לדף הקודם</Button>
+        <DialogContent>
+          <GoalsInfoTable />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

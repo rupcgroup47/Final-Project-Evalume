@@ -40,7 +40,7 @@ namespace Final_Server.Models
         string managerEmail;
         string managerRole;
         string managerDepartment;
-        string userRoleGroupDesc; 
+        string userRoleGroupDesc;
 
         //Goals fields
         int goalNum;
@@ -412,61 +412,155 @@ namespace Final_Server.Models
             {
                 DBservices dbs = new DBservices();
                 List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetPDFdetails(userNum, questionnaireNum);
-                List<Rel_Questions_EvaluQues> tempHeaderList = dbs.GetPDFdetailsHeader(userNum, questionnaireNum);
-
-
-                List<Object> part0List = new List<Object>();
-                List<Object> part1List = new List<Object>();
-                List<Object> part2List = new List<Object>();
-
-                foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                Rel_Questions_EvaluQues tempHeader = dbs.GetPDFdetailsHeader(userNum, questionnaireNum);
+                DateOnly dateOnlyTemp = new DateOnly();
+                List<Object> partaList = new List<Object>();
+                for (int i = 0; i <= 2; i++)
                 {
-                    if (item.evalu_Part_Type == 0)
+                    DateOnly dateOnly = new DateOnly();
+                    int counter = 0;
+                    int currentNumber = 0;
+                    List<int> quesTypeOptions = new List<int>();
+                    List<Rel_Questions_EvaluQues> tmpEvaluList = new List<Rel_Questions_EvaluQues>();
+                    List<Object> QuestionsList = new List<Object>();
+                    foreach (Rel_Questions_EvaluQues item in tempQustionList)
                     {
-                        part0List.Add(new
+                        if (item.evalu_Part_Type == i)
                         {
-                            QuesGroup_Desc = item.QuesGroup_Desc,
-                            QuestionNum = item.QuestionNum,
-                            QuesContent = item.QuesContent,
-                            NumericAnswer = item.NumericAnswer,
-                            VerbalAnswer = item.VerbalAnswer,
+                            if (dateOnly == dateOnlyTemp)
+                            {
+                                dateOnly = DateOnly.FromDateTime(item.OpinionInsertDate);
+                            }
+                            if (currentNumber != item.QuesGroup_ID && item.evalu_Part_Type != 2)
+                            {
+                                currentNumber = item.QuesGroup_ID;
+                                quesTypeOptions.Add(currentNumber);
+                                counter++;
+                            }
+                            tmpEvaluList.Add(item);
+                        }
+                    }
+                    if (tmpEvaluList[0].Evalu_Part_Type != 2)
+                    {
+                        for (int j = 0; j < counter; j++)
+                        {
+                            List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
+                            foreach (Rel_Questions_EvaluQues item1 in tmpEvaluList)
+                            {
+                                if (item1.QuesGroup_ID == quesTypeOptions[i])
+                                {
+                                    tmpList.Add(item1);
+                                }
+                            }
+
+                            List<Object> Questions = new List<Object>();
+
+                            foreach (Rel_Questions_EvaluQues item2 in tmpList)
+                            {
+                                Questions.Add(new
+                                {
+                                    QuestionNum = item2.QuestionNum,
+                                    QuesContent = item2.QuesContent,
+                                    NumericAnswer = item2.NumericAnswer,
+                                    VerbalAnswer = item2.VerbalAnswer,
+                                });
+                            }
+
+                            QuestionsList.Add(new
+                            {
+                                QuesGroup_ID = tmpList[0].QuesGroup_ID,
+                                QuesGroup_Desc = tmpList[0].QuesGroup_Desc,
+                                Questions = Questions,
+                            });
+
+                        }
+                        partaList.Add(new
+                        {
+                            evaluPart = i,
+                            answerInsertDate = dateOnly,
+                            allQuestions = QuestionsList
                         });
                     }
-
-                    if (item.evalu_Part_Type == 1)
+                    else if (tmpEvaluList[0].Evalu_Part_Type == 2)
                     {
-                        part1List.Add(new
+                        partaList.Add(new
                         {
-                            QuesGroup_Desc = item.QuesGroup_Desc,
-                            QuestionNum = item.QuestionNum,
-                            QuesContent = item.QuesContent,
-                            NumericAnswer = item.NumericAnswer,
-                            VerbalAnswer = item.VerbalAnswer,
+                            evaluPart = i,
+                            answerInsertDate = dateOnly,
+                            ManagerOpinion = tmpEvaluList[0].ManagerOpinion,
+                            EmployeeOpinion = tmpEvaluList[0].EmployeeOpinion,
                         });
                     }
-
-                    if (item.evalu_Part_Type == 2)
-                    {
-                        part2List.Add(new
-                        {
-                            ManagerOpinion = item.ManagerOpinion,
-                            EmployeeOpinion = item.EmployeeOpinion,
-                            OpinionInsertDate = item.OpinionInsertDate,
-                        });
-                    }
-
                 }
 
-
-                Object EvaluPart = (new
+                Object PDFdetails = (new
                 {
-                    part0List = part0List,
-                    part1List = part1List,
-                    part2List = part2List,
+                    QuestionnaireNum = tempHeader.QuestionnaireNum,
+                    UserNum = tempHeader.UserNum,
+                    UserFName = tempHeader.UserFName,
+                    UserLName = tempHeader.UserLName,
+                    UserRole = tempHeader.UserRole,
+                    UserDepartment = tempHeader.UserDepartment,
+                    UserManagerNum = tempHeader.UserManagerNum,
+                    ManagerFname = tempHeader.ManagerFname,
+                    ManagerLName = tempHeader.ManagerLName,
+                    ManagerRole = tempHeader.ManagerRole,
+                    ManagerDepartment = tempHeader.ManagerDepartment,
+                    Parts = partaList,
                 });
 
+                //List<Object> part0List = new List<Object>();
+                //List<Object> part1List = new List<Object>();
+                //List<Object> part2List = new List<Object>();
 
-                return EvaluPart;
+                //foreach (Rel_Questions_EvaluQues item in tempQustionList)
+                //{
+                //    if (item.evalu_Part_Type == 0)
+                //    {
+                //        part0List.Add(new
+                //        {
+                //            QuesGroup_Desc = item.QuesGroup_Desc,
+                //            QuestionNum = item.QuestionNum,
+                //            QuesContent = item.QuesContent,
+                //            NumericAnswer = item.NumericAnswer,
+                //            VerbalAnswer = item.VerbalAnswer,
+                //        });
+                //    }
+
+                //    if (item.evalu_Part_Type == 1)
+                //    {
+                //        part1List.Add(new
+                //        {
+                //            QuesGroup_Desc = item.QuesGroup_Desc,
+                //            QuestionNum = item.QuestionNum,
+                //            QuesContent = item.QuesContent,
+                //            NumericAnswer = item.NumericAnswer,
+                //            VerbalAnswer = item.VerbalAnswer,
+                //        });
+                //    }
+
+                //    if (item.evalu_Part_Type == 2)
+                //    {
+                //        part2List.Add(new
+                //        {
+                //            ManagerOpinion = item.ManagerOpinion,
+                //            EmployeeOpinion = item.EmployeeOpinion,
+                //            OpinionInsertDate = item.OpinionInsertDate,
+                //        });
+                //    }
+
+                //}
+
+
+                //Object EvaluPart = (new
+                //{
+                //    part0List = part0List,
+                //    part1List = part1List,
+                //    part2List = part2List,
+                //});
+
+
+                return PDFdetails;
             }
             catch (Exception)
             {
