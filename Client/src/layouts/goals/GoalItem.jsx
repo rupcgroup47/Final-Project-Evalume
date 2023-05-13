@@ -41,6 +41,7 @@ export default function GoalItem({
   const [updatedGoal, setUpdatedGoal] = useState(goal);
   const goalStatusArr = ["בוצע", "בתהליך", "עוד לא התחיל"];
   const [selectedStatus, setSelectedStatus] = useState('');
+const [goalName, setGoalName] = useState(null);
 
   const handleOpenDialog = (participantIndex) => {
     setDialogParticipantIndex(participantIndex);
@@ -76,6 +77,13 @@ export default function GoalItem({
     handleCloseDialog();
   };
 
+const handleEdit = (goalName) => {
+  setShowUpdateGoalDialog(true);
+  setGoalName(goalName);
+}
+
+
+
 
   return (
     <>
@@ -93,7 +101,7 @@ export default function GoalItem({
         )}
 
         <TableCell align="right">
-          <IconButton color="primary" onClick={() => setShowUpdateGoalDialog((e) => !e)}>
+          <IconButton color="primary" onClick={() => handleEdit(goal.goalName)}>
             <EditRoundedIcon />
           </IconButton>
           <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
@@ -170,6 +178,7 @@ export default function GoalItem({
         open={showUpdateGoalDialog}
         setOpen={setShowUpdateGoalDialog}
         goal={goal}
+        initGoalName= {goalName}
         goals={goals}
         setGoals={setGoals}
         setItems={setItems}

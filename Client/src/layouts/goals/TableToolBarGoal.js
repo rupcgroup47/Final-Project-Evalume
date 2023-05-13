@@ -42,8 +42,8 @@ export default function TableToolbarGoal({
     setIsPopupOpen(false);
   };
 
-  const handleCondition = () => {
-    if (condition) {
+  const handleCondition = () => {//Checks if the Add goal is from the managers page or Admin page
+    if (condition){
       setShowCreateGoalDialog(true)
     } else {
       setIsPopupOpen(true)
