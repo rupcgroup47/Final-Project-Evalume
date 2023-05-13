@@ -125,7 +125,7 @@ export default function TableToolbarGoal({
         setOpen={setShowCreateGoalDialog}
         setGoals={setGoals}
         setItems={setItems}
-      /> 
+      />
     </>
   );
 }

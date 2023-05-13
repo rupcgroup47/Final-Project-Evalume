@@ -257,9 +257,9 @@ export default function GoalsTable() {
           setPage(0);
         }}
         labelDisplayedRows={({ from, to, count }) =>
-        `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
-      }
-      labelRowsPerPage="מספר שורות להציג:"
+          `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
+        }
+        labelRowsPerPage="מספר שורות להציג:"
       />
     </Paper>
   );

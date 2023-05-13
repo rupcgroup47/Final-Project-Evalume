@@ -28,18 +28,18 @@ export default function GoalItem({
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [open, setOpen] = useState(false);
   const [showUpdateGoalStatusDialog, setShowUpdateGoalStatusDialog] = useState(false);
-  const [openStatus, setOpenStstus]= useState(false);
+  const [openStatus, setOpenStstus] = useState(false);
 
 
   return (
     <>
       <TableRow hover role="checkbox" tabIndex={-1}>
-      {console.log(tableHead+"lll")}
+        {console.log(tableHead + "lll")}
 
         {tableHead.find((i) => i.id === "goalName").show && (
-          <>           
+          <>
             <TableCell component="th" scope="row" padding="none">
-            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+              <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                 {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
               {/* // receive the goal name from the goals array */}
@@ -58,50 +58,50 @@ export default function GoalItem({
         </TableCell>
       </TableRow>
       <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Typography variant="h6" gutterBottom component="div">
-                  משתתפים
-                </Typography>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="left">תאריך</TableCell>
-                      <TableCell align="left">שם משתמש</TableCell>
-                      <TableCell align="left">סטטוס</TableCell>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div">
+                משתתפים
+              </Typography>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">תאריך</TableCell>
+                    <TableCell align="left">שם משתמש</TableCell>
+                    <TableCell align="left">סטטוס</TableCell>
+                  </TableRow>
+                  {goal.employees?.map((employee) => (
+                    <TableRow key={employee.userNum}>
+
+                      <TableCell align="left">{employee.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
+                      <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
+                      <TableCell align="left">{employee.goalStatus}</TableCell>
+                      <TableCell align="right">
+                        <IconButton color="info" onClick={() => setShowUpdateGoalStatusDialog((e) => !e)}>
+                          <EditRoundedIcon />
+                        </IconButton>
+                        <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
-                      {goal.employees?.map((employee) => (
-                        <TableRow key={employee.userNum}>
-                        
-                          <TableCell align="left">{employee.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
-                          <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
-                          <TableCell align="left">{employee.goalStatus}</TableCell>
-                          <TableCell align="right">
-          <IconButton color="info" onClick={() => setShowUpdateGoalStatusDialog((e) => !e)}>
-            <EditRoundedIcon />
-          </IconButton>
-          <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
-          </IconButton>
+                  ))}
+                </TableHead>
+              </Table>
+            </Box>
+          </Collapse>
         </TableCell>
-                        </TableRow>
-                      ))}   
-                  </TableHead>
-                </Table>
-              </Box>
-            </Collapse>
-          </TableCell>
-        </TableRow>
+      </TableRow>
 
-<UpdateGoalStatus
- open={showUpdateGoalStatusDialog}
- setOpen={setShowUpdateGoalStatusDialog}
- goal={goal}
- goals={goals}
- setGoals={setGoals}
- setItems={setItems}
+      <UpdateGoalStatus
+        open={showUpdateGoalStatusDialog}
+        setOpen={setShowUpdateGoalStatusDialog}
+        goal={goal}
+        goals={goals}
+        setGoals={setGoals}
+        setItems={setItems}
 
-/>
+      />
 
 
       <CreateOrUpdateGoalDialog
