@@ -2333,7 +2333,6 @@ public class DBservices
 
         List<Rel_Questions_EvaluQues> answerslist = new List<Rel_Questions_EvaluQues>();
 
-
         try
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -2346,6 +2345,7 @@ public class DBservices
 
                 r.Evalu_Part_Type = Convert.ToInt32(dataReader["Evalu_Part_Type"]);
                 r.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
+                r.QuesGroup_ID = Convert.ToInt32(dataReader["QuesGroup_Type"]);
                 r.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
                 r.QuesContent = dataReader["QuesContent"].ToString();
                 r.NumericAnswer = Convert.ToInt32(dataReader["NumericAnswer"]);
@@ -2359,14 +2359,11 @@ public class DBservices
 
             return answerslist;
         }
-
-
         catch (Exception ex)
         {
             // write to log
             throw (ex);
         }
-
         finally
         {
             if (con != null)
@@ -2375,7 +2372,72 @@ public class DBservices
                 con.Close();
             }
         }
+    }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method get the selected header data of questionnaire PDF details
+    //--------------------------------------------------------------------------------------------------
+    public List<Rel_Questions_EvaluQues> GetPDFdetailsHeader(int userNum, int questionnaireNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetPDFdetails("spPDFheader", con, userNum, questionnaireNum);            // create the command
+
+        List<Rel_Questions_EvaluQues> detailslist = new List<Rel_Questions_EvaluQues>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
+
+                r.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+                r.UserNum = Convert.ToInt32(dataReader["UserNum"]);
+                r.UserFName = dataReader["UserFName"].ToString();
+                r.UserLName = dataReader["UserLName"].ToString();
+                r.UserRole = dataReader["UserRole"].ToString();
+                r.UserDepartment = dataReader["UserDep"].ToString();
+                r.UserManagerNum = Convert.ToInt32(dataReader["ManagerNum"]);
+                r.ManagerFname = dataReader["ManagerFName"].ToString();
+                r.ManagerLName = dataReader["ManagerLName"].ToString();
+                r.ManagerRole = dataReader["ManagerRole"].ToString();
+                r.ManagerDepartment = dataReader["ManagerDep"].ToString();
+                //r.OpinionInsertDate = (DateTime)dataReader["OpinionInsertDate"];
+
+                detailslist.Add(r);
+            }
+
+            return detailslist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
     }
 
     //---------------------------------------------------------------------------------

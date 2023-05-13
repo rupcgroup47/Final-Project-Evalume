@@ -135,6 +135,10 @@ export default function TableToolbarGoal({
         open={showCreateGoalDialog}
         setOpen={setShowCreateGoalDialog}
         setGoals={setGoals}
+
+        setItems={setItems}
+      />
+
         setItems={setItems}/>
  
       <Dialog open={isPopupOpen} onClose={handleCloseDialog}>
@@ -146,6 +150,7 @@ export default function TableToolbarGoal({
 
       
       
+
     </>
   );
 }

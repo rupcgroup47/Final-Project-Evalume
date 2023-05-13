@@ -42,8 +42,8 @@ export default function EvalueContextProvider({ children }) {
     apiSetEvaluations: "https://proj.ruppin.ac.il/cgroup47/prod/Active_Evaluations", //server
   });
 
-  
-  const [chosenEmployee, setChosenEmployee] = useState("") 
+
+  const [chosenEmployee, setChosenEmployee] = useState("")
 
   const [depState, setDepState] = useState([]);
 

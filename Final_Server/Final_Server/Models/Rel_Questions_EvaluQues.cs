@@ -33,11 +33,14 @@ namespace Final_Server.Models
         bool userType;
         int userRoleGroup;
         string userDepartment;
+        string userRole;
         int userManagerNum;
         string managerFname;
         string managerLName;
         string managerEmail;
-        string userRoleGroupDesc;
+        string managerRole;
+        string managerDepartment;
+        string userRoleGroupDesc; 
 
         //Goals fields
         int goalNum;
@@ -80,6 +83,9 @@ namespace Final_Server.Models
         public string ManagerOpinion { get => managerOpinion; set => managerOpinion = value; }
         public string EmployeeOpinion { get => employeeOpinion; set => employeeOpinion = value; }
         public DateTime OpinionInsertDate { get => opinionInsertDate; set => opinionInsertDate = value; }
+        public string UserRole { get => userRole; set => userRole = value; }
+        public string ManagerRole { get => managerRole; set => managerRole = value; }
+        public string ManagerDepartment { get => managerDepartment; set => managerDepartment = value; }
 
         public static List<Object> ReadAllQuestionnaires() //gets all the Questionnaires
         {
@@ -406,6 +412,7 @@ namespace Final_Server.Models
             {
                 DBservices dbs = new DBservices();
                 List<Rel_Questions_EvaluQues> tempQustionList = dbs.GetPDFdetails(userNum, questionnaireNum);
+                List<Rel_Questions_EvaluQues> tempHeaderList = dbs.GetPDFdetailsHeader(userNum, questionnaireNum);
 
 
                 List<Object> part0List = new List<Object>();
@@ -418,13 +425,11 @@ namespace Final_Server.Models
                     {
                         part0List.Add(new
                         {
-
                             QuesGroup_Desc = item.QuesGroup_Desc,
                             QuestionNum = item.QuestionNum,
                             QuesContent = item.QuesContent,
                             NumericAnswer = item.NumericAnswer,
                             VerbalAnswer = item.VerbalAnswer,
-
                         });
                     }
 
@@ -432,13 +437,11 @@ namespace Final_Server.Models
                     {
                         part1List.Add(new
                         {
-
                             QuesGroup_Desc = item.QuesGroup_Desc,
                             QuestionNum = item.QuestionNum,
                             QuesContent = item.QuesContent,
                             NumericAnswer = item.NumericAnswer,
                             VerbalAnswer = item.VerbalAnswer,
-
                         });
                     }
 
@@ -455,7 +458,6 @@ namespace Final_Server.Models
                 }
 
 
-
                 Object EvaluPart = (new
                 {
                     part0List = part0List,
@@ -466,7 +468,6 @@ namespace Final_Server.Models
 
                 return EvaluPart;
             }
-
             catch (Exception)
             {
                 throw;

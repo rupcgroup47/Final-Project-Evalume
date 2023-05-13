@@ -87,9 +87,9 @@ namespace Final_Server.Controllers
             {
                 return Rel_Questions_EvaluQues.ReadPDFdetails(userNum, questionnaireNum);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
