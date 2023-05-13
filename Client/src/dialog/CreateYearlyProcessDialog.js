@@ -20,8 +20,7 @@ registerLocale("he", he);
 import addNotification from "react-push-notification";
 import { Notifications } from "react-push-notification";
 import { EvalueContext } from "context/evalueVariables";
-
-
+import AllExistForms from "dialog/AllExistForms";
 const test = [
   {
     roleGrouptype: "משרדי",
@@ -85,14 +84,15 @@ export default function CreateYearlyProcessDialog({
   open,
   setOpen,
   questionnairesData
+
 }) {
   const [openProcess, setOpenProcess] = useState({});
   const [finishDate, setfinishDate] = useState(new Date());
   const { API } = useContext(EvalueContext);
   // const [testData, setTestData] = useState(test);
   const [selectedForms, setSelectedForms] = useState([]);//selected values for each select
+  const [showOpenEvalueDialog, setShowOpenEvalueDialog] = useState(false);
 
-  // console.log(questionnairesData);
 
   const handleChange = (event) => {//called every time a select element changes, and it will update the selectedForms array with the new selected value
     const index = event.target.name;
@@ -180,7 +180,7 @@ export default function CreateYearlyProcessDialog({
 
   // console.log(JSON.stringify(openProcess));
   return (
-    <Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
+    <><Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
       <Typography sx={{ fontFamily: "Rubik", fontSize: "50px", textAlign: "center" }}>
         פתיחת תהליך הערכה{" "}
       </Typography>
@@ -205,7 +205,7 @@ export default function CreateYearlyProcessDialog({
           }}
         >
           <Typography>בחירת שאלונים</Typography>
-
+          <Button onClick={() => setShowOpenEvalueDialog((e) => !e)}>צפייה בשאלונים קיימים</Button><br />
           <Notifications />
 
           {questionnairesData?.map((testObject, index) => (
@@ -213,7 +213,7 @@ export default function CreateYearlyProcessDialog({
               <h4>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h4>
               <select key={index} name={index} onChange={handleChange}>
                 <option value="">בחירת שאלון מתאים</option>
-                {testObject.forms.map((form) => (//Go through all the questionnaires appropriate for role type & group type
+                {testObject.forms.map((form) => ( //Go through all the questionnaires appropriate for role type & group type
                   <option key={form.id} value={form.id}>שאלון {form.year} </option>
                 ))}
               </select>
@@ -239,5 +239,12 @@ export default function CreateYearlyProcessDialog({
         </Grid>
       </Box>
     </Dialog>
+    <AllExistForms 
+    open={showOpenEvalueDialog}
+    setOpen={setShowOpenEvalueDialog}
+    questionnairesData={questionnairesData}
+    />
+</>
   );
+  
 }
