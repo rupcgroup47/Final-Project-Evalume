@@ -52,6 +52,7 @@ import ManagerEvalues from "layouts/evaluation/components/Evaluation-Steps/Manag
 import MeetingCalendar from "layouts/meetings/Calendar";
 import Feedback from "layouts/evaluation/components/feedback";
 import BuildEvaluation from "layouts/evalue/buildEvaluation";
+import GoalsInfoTable from "layouts/goals/GoalsInfoTable";
 const routes = [
   {
     type: "collapse",
@@ -60,6 +61,15 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "כל היעדים",
+    route: "/check",
+    component: <GoalsInfoTable />,
+    forAdmin: true,
+    // isHiddenFromSideNav: true
+
   },
   {
     type: "collapse",

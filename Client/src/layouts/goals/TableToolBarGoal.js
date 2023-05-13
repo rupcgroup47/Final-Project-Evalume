@@ -17,30 +17,39 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-
+import { Dialog, DialogContent, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
+import GoalsInfoTable from "./GoalsInfoTable";
 
 export default function TableToolbarGoal({
   // Users
   goals,
   setGoals,
   setItems,
-
-  //Table Head
-  tableHead,
-  setTableHead,
-
   // Search
   searchInput,
   setSearchInput,
+  condition
 
 }) {
   const [showSearchButton, setShowSearchButton] = useState(false);
   const [showCreateGoalDialog, setShowCreateGoalDialog] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const handleCloseDialog = () => {
+    setIsPopupOpen(false);
+  };
 
+  const handleCondition = () => {
+    if (condition){
+      setShowCreateGoalDialog(true)
+    } else {
+      setIsPopupOpen(true)
+
+    }
+  }
   return (
     <>
       <Box
@@ -50,6 +59,7 @@ export default function TableToolbarGoal({
           padding: "16px 16px  8px 16px",
         }}
       >
+        {console.log(condition)}
         <div
           style={{
             position: "relative",
@@ -105,7 +115,7 @@ export default function TableToolbarGoal({
           <Tooltip title="הוספה">
             <IconButton
               color="primary"
-              onClick={() => setShowCreateGoalDialog((e) => !e)}
+              onClick={() => handleCondition()}
             >
               <AddIcon />
             </IconButton>
@@ -120,12 +130,22 @@ export default function TableToolbarGoal({
         </Box>
       </Box>
 
+     
       <CreateOrUpdateGoalDialog
         open={showCreateGoalDialog}
         setOpen={setShowCreateGoalDialog}
         setGoals={setGoals}
-        setItems={setItems}
-      /> 
+        setItems={setItems}/>
+ 
+      <Dialog open={isPopupOpen} onClose={handleCloseDialog}>
+                <Button onClick={handleCloseDialog}>חזרה לדף הקודם</Button>
+                <DialogContent>
+                  <GoalsInfoTable/>
+                </DialogContent>
+              </Dialog>
+
+      
+      
     </>
   );
 }

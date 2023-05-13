@@ -188,6 +188,7 @@ export default function GoalsTable() {
         setSearchInput={setSearchInput}
         tableHead={tableHead}
         setTableHead={setTableHead}
+        condition ={false}
       />
 
       <TableContainer>
