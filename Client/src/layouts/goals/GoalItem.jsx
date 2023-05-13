@@ -14,7 +14,6 @@ import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import UpdateGoalStatus from 'dialog/UpdateGoalStatus';
 import {
   Button,
   Dialog,
@@ -170,17 +169,6 @@ export default function GoalItem({
           </DialogActions>
         </Dialog>
       )}
-
-{/* <UpdateGoalStatus
- open={showUpdateGoalStatusDialog}
- setOpen={setShowUpdateGoalStatusDialog}
- goal={goal}
- goals={goals}
- setGoals={setGoals}
- setItems={setItems}
-
-/> */}
-
 
       <CreateOrUpdateGoalDialog
         open={showUpdateGoalDialog}
