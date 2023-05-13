@@ -15,6 +15,16 @@ import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import UpdateGoalStatus from 'dialog/UpdateGoalStatus';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
+  Select
+} from "@mui/material";
+
 
 export default function GoalItem({
   goals,
@@ -27,15 +37,54 @@ export default function GoalItem({
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [open, setOpen] = useState(false);
-  const [showUpdateGoalStatusDialog, setShowUpdateGoalStatusDialog] = useState(false);
-  const [openStatus, setOpenStstus]= useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [dialogParticipantIndex, setDialogParticipantIndex] = useState(null);
+  const [updatedGoal, setUpdatedGoal] = useState(goal);
+  const goalStatusArr = ["בוצע", "בתהליך", "עוד לא התחיל"];
+  const [selectedStatus, setSelectedStatus] = useState('');
+
+  const handleOpenDialog = (participantIndex) => {
+    setDialogParticipantIndex(participantIndex);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+    // Function to handle status change in the dialog
+    const handleStatusChange = (event) => {
+      setSelectedStatus(event.target.value);
+    };
+
+
+      // Function to save the updated status in the dialog
+  const handleSaveStatus = (participantIndex) => {
+    handleUpdateStatus(participantIndex, selectedStatus);
+    setSelectedStatus('');
+  };
+
+
+      // Function to update the updated status in employee
+  const handleUpdateStatus = (participantIndex, newStatus) => {
+    const updatedParticipants = [...goal.employees];
+    console.log(...goal.employees)
+    console.log(dialogParticipantIndex)
+    updatedParticipants[participantIndex].goalStatus = newStatus;
+
+    const newGoal = { ...updatedGoal, employees: updatedParticipants };
+    setUpdatedGoal(newGoal);
+      handleCloseDialog();
+  };
+
+
+
+
 
 
   return (
     <>
       <TableRow hover role="checkbox" tabIndex={-1}>
-      {console.log(tableHead+"lll")}
-
         {tableHead.find((i) => i.id === "goalName").show && (
           <>           
             <TableCell component="th" scope="row" padding="none">
@@ -71,14 +120,13 @@ export default function GoalItem({
                       <TableCell align="left">שם משתמש</TableCell>
                       <TableCell align="left">סטטוס</TableCell>
                     </TableRow>
-                      {goal.employees?.map((employee) => (
-                        <TableRow key={employee.userNum}>
-                        
+                      {goal.employees?.map((employee,index) => (
+                        <TableRow key={index}>
                           <TableCell align="left">{employee.date.slice(0, 10).replace(/-/g, "/")}</TableCell>
                           <TableCell align="left">{employee.userLName} {employee.userFName}</TableCell>
                           <TableCell align="left">{employee.goalStatus}</TableCell>
                           <TableCell align="right">
-          <IconButton color="info" onClick={() => setShowUpdateGoalStatusDialog((e) => !e)}>
+          <IconButton color="info" onClick={() => handleOpenDialog(index)}>
             <EditRoundedIcon />
           </IconButton>
           <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
@@ -93,7 +141,37 @@ export default function GoalItem({
           </TableCell>
         </TableRow>
 
-<UpdateGoalStatus
+
+
+        {isDialogOpen && (
+        <Dialog onClose={handleCloseDialog} open={isDialogOpen}>
+          <DialogTitle>עריכת סטטוס</DialogTitle>
+          <DialogContent>
+            <Select
+              labelId="status-label"
+              id="status"
+              label="סטטוס"
+              style={{ height: "2.6375em", alignContent: "center" }}
+              value={selectedStatus}
+              onChange={handleStatusChange}
+            >
+              {goalStatusArr.map((status, index) => (
+                <MenuItem key={index} value={status}>
+                  {status}
+                </MenuItem>
+              ))}
+            </Select>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>ביטול</Button>
+            <Button onClick={() => handleSaveStatus(dialogParticipantIndex)}>
+              שמירה
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+
+{/* <UpdateGoalStatus
  open={showUpdateGoalStatusDialog}
  setOpen={setShowUpdateGoalStatusDialog}
  goal={goal}
@@ -101,7 +179,7 @@ export default function GoalItem({
  setGoals={setGoals}
  setItems={setItems}
 
-/>
+/> */}
 
 
       <CreateOrUpdateGoalDialog
