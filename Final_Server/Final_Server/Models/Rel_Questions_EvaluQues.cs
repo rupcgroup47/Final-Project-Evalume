@@ -447,7 +447,7 @@ namespace Final_Server.Models
                             List<Rel_Questions_EvaluQues> tmpList = new List<Rel_Questions_EvaluQues>();
                             foreach (Rel_Questions_EvaluQues item1 in tmpEvaluList)
                             {
-                                if (item1.QuesGroup_ID == quesTypeOptions[i])
+                                if (item1.QuesGroup_ID == quesTypeOptions[j])
                                 {
                                     tmpList.Add(item1);
                                 }
@@ -477,7 +477,7 @@ namespace Final_Server.Models
                         partaList.Add(new
                         {
                             evaluPart = i,
-                            answerInsertDate = dateOnly,
+                            answerInsertDate = dateOnly.ToString(),
                             allQuestions = QuestionsList
                         });
                     }
@@ -486,7 +486,7 @@ namespace Final_Server.Models
                         partaList.Add(new
                         {
                             evaluPart = i,
-                            answerInsertDate = dateOnly,
+                            answerInsertDate = dateOnly.ToString(),
                             ManagerOpinion = tmpEvaluList[0].ManagerOpinion,
                             EmployeeOpinion = tmpEvaluList[0].EmployeeOpinion,
                         });
@@ -508,57 +508,6 @@ namespace Final_Server.Models
                     ManagerDepartment = tempHeader.ManagerDepartment,
                     Parts = partaList,
                 });
-
-                //List<Object> part0List = new List<Object>();
-                //List<Object> part1List = new List<Object>();
-                //List<Object> part2List = new List<Object>();
-
-                //foreach (Rel_Questions_EvaluQues item in tempQustionList)
-                //{
-                //    if (item.evalu_Part_Type == 0)
-                //    {
-                //        part0List.Add(new
-                //        {
-                //            QuesGroup_Desc = item.QuesGroup_Desc,
-                //            QuestionNum = item.QuestionNum,
-                //            QuesContent = item.QuesContent,
-                //            NumericAnswer = item.NumericAnswer,
-                //            VerbalAnswer = item.VerbalAnswer,
-                //        });
-                //    }
-
-                //    if (item.evalu_Part_Type == 1)
-                //    {
-                //        part1List.Add(new
-                //        {
-                //            QuesGroup_Desc = item.QuesGroup_Desc,
-                //            QuestionNum = item.QuestionNum,
-                //            QuesContent = item.QuesContent,
-                //            NumericAnswer = item.NumericAnswer,
-                //            VerbalAnswer = item.VerbalAnswer,
-                //        });
-                //    }
-
-                //    if (item.evalu_Part_Type == 2)
-                //    {
-                //        part2List.Add(new
-                //        {
-                //            ManagerOpinion = item.ManagerOpinion,
-                //            EmployeeOpinion = item.EmployeeOpinion,
-                //            OpinionInsertDate = item.OpinionInsertDate,
-                //        });
-                //    }
-
-                //}
-
-
-                //Object EvaluPart = (new
-                //{
-                //    part0List = part0List,
-                //    part1List = part1List,
-                //    part2List = part2List,
-                //});
-
 
                 return PDFdetails;
             }
