@@ -60,7 +60,7 @@ export default function TableToolbarGoal({
           padding: "16px 16px  8px 16px",
         }}
       >
-        {console.log(condition)}
+        {/* {console.log(condition)} */}
         <div
           style={{
             position: "relative",

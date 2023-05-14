@@ -174,22 +174,22 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
     }
   }, [putUser]);
 
-    //insert a new user datails using POST api
+  //insert a new user datails using POST api
   useEffect(() => {
     // Update details
     if (postUser !== "") {
       const abortController = new AbortController();
       fetch(
-        API.apiUserUrl, 
+        API.apiUserUrl,
         {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "application/json; charset=UTF-8",
-        }),
-        body: JSON.stringify(postUser),
-        signal: abortController.signal,
-      })
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: JSON.stringify(postUser),
+          signal: abortController.signal,
+        })
         .then(async (response) => {
           const data = await response.json();
           console.log(response);

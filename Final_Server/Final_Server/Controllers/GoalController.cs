@@ -17,28 +17,15 @@ namespace Final_Server.Controllers
             return Goal.ReadGoals();
         }
 
-        //[HttpGet("/userNum")]
-        //public IEnumerable<Object> GetGoalsByManager(int userNum) //Get all the questions that posed by the current manager
-        //{
-        //    Goal goal = new Goal();
-        //    return Goal.Read(userNum);
-        //}
-
-        // GET api/<GoalController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/<GoalController>
-        [HttpPost]
-        public IActionResult Post([FromBody] Goal goal) //insert new goal
+        [HttpPost("/newGoal")]
+        public IActionResult Post(int goalActive, [FromBody] string goalName) //insert new goal
         {
-            int numEffected = goal.InsertGoal();
-            if (numEffected != 0)
+            int goalNum = Goal.InsertGoal(goalName, goalActive);
+            if (goalNum != 0)
             {
-                return Ok("goal succesfully inserted");
+                return Ok(goalNum);
             }
             else
             {
@@ -46,16 +33,36 @@ namespace Final_Server.Controllers
             }
         }
 
-        // PUT api/<GoalController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        [HttpPut("/UpdateGoal/goalNum/{goalNum}/goalActive/{goalActive}")]
+        public IActionResult PutGoalName(int goalNum, int goalActive, [FromBody] string goalName) //Update Goal Name
         {
+            int numEffected = Goal.UpdateGoalName(goalNum, goalName, goalActive);
+            if (numEffected != 0)
+            {
+                return Ok(numEffected);
+            }
+            else
+            {
+                return NotFound("We couldnt update the Goal");
+            }
         }
 
-        // DELETE api/<GoalController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+
+        //[HttpPut("/goalNum/goalActive")]
+        //public IActionResult PutGoalActive(int goalNum, int goalActive) //Update Goal Active
+        //{
+        //    int numEffected = Goal.UpdateGoalActive(goalNum, goalActive);
+        //    if (numEffected != 0)
+        //    {
+        //        return Ok("Goal succesfully updated");
+        //    }
+        //    else
+        //    {
+        //        return NotFound("We couldnt update the Goal");
+        //    }
+        //}
+
+
     }
 }

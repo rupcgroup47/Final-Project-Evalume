@@ -62,8 +62,8 @@ namespace Final_Server.Controllers
 
 
         // PUT api/<Rel_Goal_EmployeeController>/5
-        [HttpPut("/goalNum/goal_Is_Active")]
-        public IActionResult PutIsActive(int userNum, int goalNum, string goalStatus) //Update goal feild "is_active" to specific user
+        [HttpPut("/userNum/goalNum/goalStatus")]
+        public IActionResult PutIsActive(int userNum, int goalNum, string goalStatus) //Update goal feild goalStatus to specific user
         {
             Rel_Goal_Employee goal = new Rel_Goal_Employee();
             int numEffected = goal.UpdateGoalStatus(userNum, goalNum, goalStatus);
@@ -76,26 +76,6 @@ namespace Final_Server.Controllers
                 return NotFound("We couldnt update your Goal");
             }
         }
-
-
-
-        // DELETE api/<Rel_Goal_EmployeeController>/5
-        [HttpDelete("/goalNum")]
-        public IActionResult Delete(int goalNum) //delete goal that connected to users
-        {
-            Rel_Goal_Employee goal = new Rel_Goal_Employee();
-            int numEffected = goal.DeleteGoal(goalNum);
-            if (numEffected != 0)
-            {
-                return Ok("Goal succesfully deleted");
-            }
-            else
-            {
-                return NotFound("We couldnt delete your Goal");
-            }
-        }
-
-
 
     }
 }

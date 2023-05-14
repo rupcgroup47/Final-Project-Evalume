@@ -28,12 +28,19 @@ import {
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { EvalueContext } from "context/evalueVariables";
+// import { MainStateContext } from "App";
 
-export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal,initGoalName, condition }) {
+export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal, initGoalName, condition }) {
   const [newGoalName, setNewGoalName] = useState(initGoalName);
-  const goalStatusArr = [{isActive:1,name:"פעיל"},{isActive:0, name:"לא פעיל"}];
+  const [update, setUpdate] = useState(false);
+  const [post, setPost] = useState(false);
+  const goalStatusArr = [{ is_Active: 1, name: "פעיל" }, { is_Active: 0, name: "לא פעיל" }];
   const [selectedStatus, setSelectedStatus] = useState(1);
+  const { API } = useContext(EvalueContext);
+  // const { mainState, setMainState } = useContext(MainStateContext);
+  const [newGoal, setNewGoal] = useState();
 
   const {
     register,
@@ -49,43 +56,213 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
 
   // Function to handle status change in the dialog
   const handleStatusChange = (event) => {
-   setSelectedStatus(event.target.value);
+    setSelectedStatus(event.target.value);
   };
-
 
   useEffect(() => {
     if (open === true) {
-      setValue("goalName",initGoalName);
+      setValue("goalName", initGoalName);
       setNewGoalName(initGoalName)
     }
   }, [goal, open]);
+
   const changeHandler = (e) => {
     // Catch the values from input
     setNewGoalName(e.target.value);
   };
+
   const onSubmit = () => {
-    const newGoal = {
-      goalName: newGoalName,
-      isActive: selectedStatus
-    };
+    console.log("name");
+    console.log(newGoalName);
 
     if (goal) {
-      setGoals((array) =>
-        array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
-      );
-      setItems((array) =>
-        array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
-      );
+      if (newGoalName !== null) {
+        console.log(newGoal);
+        setNewGoal({
+          goalNum: goal.goalNum,
+          goalName: newGoalName,
+          is_Active: selectedStatus
+        });
+      }
+      else {
+        console.log(newGoal);
+        setNewGoal({
+          goalNum: goal.goalNum,
+          goalName: goal.goalName,
+          is_Active: selectedStatus
+        });
+      }
+      setUpdate(true);
     } else {
-      // Add new goal at the end of the array
-      setGoals((oldArray) => [...oldArray, newGoal]);
-      setItems((oldArray) => [...oldArray, newGoal]);
+      setNewGoal({
+        goalNum: 0,
+        goalName: newGoalName,
+        is_Active: selectedStatus
+      });
+      setPost(true);
     }
 
-    setOpen((e) => !e);
-    reset();
+    // setOpen((e) => !e);
+    // reset();
     console.log(newGoal);
   };
+
+
+  //update Goal using PUT api
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (update !== false) {
+      console.log("here");
+      fetch(
+        API.apiUpdateGoal + newGoal.goalNum + "/goalActive/" + newGoal.is_Active, {
+        method: "PUT",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        body: JSON.stringify(newGoal.goalName),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success" + result);
+            if (result == -1) {
+              swal({
+                title: "פעולה בוטלה!",
+                text: "נראה כי שם היעד כבר קיים במערכת",
+                icon: "error",
+                button: "סגור"
+              });
+            }
+            else {
+              setGoals((array) =>
+                array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
+              );
+              setItems((array) =>
+                array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
+              );
+              swal({
+                title: "הצלחנו!",
+                text: "היעד עודכן בהצלחה",
+                icon: "success",
+                button: "סגור"
+              });
+            }
+            setNewGoal({});
+            setUpdate(false);
+            setOpen((e) => !e);
+            reset();
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err put=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, [update]);
+
+  // Post new Goal
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (post !== false) {
+      console.log("here2");
+      fetch(
+        API.apiInsertNewGoal + newGoal.is_Active, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        body: JSON.stringify(newGoal.goalName),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success" + result);
+            if (result == -1) {
+              swal({
+                title: "פעולה בוטלה!",
+                text: "נראה כי שם היעד כבר קיים במערכת",
+                icon: "error",
+                button: "סגור"
+              });
+            }
+            else {
+              const NewGoalRes = {
+                goalNum: result,
+                goalName: newGoalName,
+                is_Active: 1
+              };
+              //Add new goal at the end of the array
+              setGoals((oldArray) => [...oldArray, NewGoalRes]);
+              setItems((oldArray) => [...oldArray, NewGoalRes]);
+              swal({
+                title: "הצלחנו!",
+                text: "היעד עודכן בהצלחה",
+                icon: "success",
+                button: "סגור"
+              });
+            }
+            setNewGoal({});
+            setPost(false);
+            setOpen((e) => !e);
+            reset();
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err put=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, [post]);
+
+  console.log(newGoal);
 
   return (
     <Dialog onClose={() => setOpen((e) => !e)} open={open}>
@@ -118,8 +295,8 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
               gap: 20,
             }}
           >
-            {!goal ? 
-            <><TextField
+            {!goal ?
+              <><TextField
                 size="small"
                 id="goalName"
                 label="שם היעד"
@@ -128,7 +305,8 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
                 helperText={errors.goalName && "שם יעד הוא שדה חובה"}
                 {...register("goalName", { required: true, maxLength: 20 })}
                 onChange={changeHandler}
-                sx={{ m: 0, width: "100%" }} /><Select
+                sx={{ m: 0, width: "100%" }} />
+                <Select
                   labelId="status-label"
                   id="status"
                   label="סטטוס"
@@ -137,37 +315,37 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
                   onChange={handleStatusChange}
                 >
                   {goalStatusArr.map((status, index) => (
-                    <MenuItem key={index} value={status.isActive}>
+                    <MenuItem key={index} value={status.is_Active}>
                       {status.name}
                     </MenuItem>
                   ))}
-                </Select></> :
-          <TextField
-          size="small"
-          id="goalName"
-          value={newGoalName}
-          onChange={changeHandler}
-          sx={{ m: 0, width: "100%" }}
-        />
+                </Select>
+              </> : <TextField
+                size="small"
+                id="goalName"
+                value={newGoalName}
+                onChange={changeHandler}
+                sx={{ m: 0, width: "100%" }}
+              />
             }
-            
+
 
             {goal && condition ?
-            <Select
-            labelId="status-label"
-            id="status"
-            label="סטטוס"
-            style={{ height: "2.6375em", alignContent: "center" }}
-            value={selectedStatus}
-            onChange={handleStatusChange}
-          >
-            {goalStatusArr.map((status, index) => (
-              <MenuItem key={index} value={status.isActive}>
-                {status.name}
-              </MenuItem>
-            ))}
-          </Select>
-           : ""}
+              <Select
+                labelId="status-label"
+                id="status"
+                label="סטטוס"
+                style={{ height: "2.6375em", alignContent: "center" }}
+                value={selectedStatus}
+                onChange={handleStatusChange}
+              >
+                {goalStatusArr.map((status, index) => (
+                  <MenuItem key={index} value={status.is_Active}>
+                    {status.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              : ""}
           </div>
           <button id="submitButton" type="submit" style={{ display: "none" }}>
             יצירה

@@ -14,6 +14,7 @@ using System.Text.Json.Nodes;
 using System.Reflection.Metadata;
 using Microsoft.VisualBasic;
 using System.Data.SqlTypes;
+using System.Data.Common;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -44,6 +45,8 @@ public class DBservices
         con.Open();
         return con;
     }
+
+    //-------------- Employee ---------------
 
     //--------------------------------------------------------------------------------------------------
     // This method get the loged in user details
@@ -135,86 +138,6 @@ public class DBservices
     }
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method gets all departments details
-    ////--------------------------------------------------------------------------------------------------
-    public List<Department> GetDepartmentsDetails()
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPGet("spGetDepartments", con);            // create the command
-                                                                          //DataTable dt = new DataTable();
-        List<Department> DepList = new List<Department>();
-
-        try
-        {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            //dt.Load(dataReader);
-
-
-            while (dataReader.Read())
-            {
-                Department department = new Department();
-                department.DepNum = Convert.ToInt32(dataReader["DepNum"]);
-                department.DepName = dataReader["DepName"].ToString();
-                department.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
-
-                DepList.Add(department);
-            }
-
-            return DepList;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand using a stored procedure to get all departments details
-    ////---------------------------------------------------------------------------------
-    //private SqlCommand CreateCommandWithSPGetDepatments(String spName, SqlConnection con)
-    //{
-
-    //    SqlCommand cmd = new SqlCommand(); // create the command object
-
-    //    cmd.Connection = con;              // assign the connection to the command object
-
-    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-    //    /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
-
-
-    //    return cmd;
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
     //// This method gets all Users
     ////--------------------------------------------------------------------------------------------------
     public List<Employee> GetAllUsers()
@@ -302,9 +225,6 @@ public class DBservices
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        /*cmd.Parameters.AddWithValue();*/ //insert all the parameters we got from the user
-
-
         return cmd;
     }
 
@@ -384,71 +304,6 @@ public class DBservices
         cmd.Parameters.AddWithValue("@ManagerFname", employee.ManagerFname);
         cmd.Parameters.AddWithValue("@ManagerLName", employee.ManagerLName);
         cmd.Parameters.AddWithValue("@ManagerEmail", employee.ManagerEmail);
-
-        return cmd;
-    }
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method inserts new department
-    ////--------------------------------------------------------------------------------------------------
-    public int InsertDepartment(Department department)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPnewDep("spInsertDepartment", con, department);            // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPnewDep(String spName, SqlConnection con, Department department)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@DepName", department.DepName); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@Is_Active", department.Is_Active);
 
         return cmd;
     }
@@ -597,6 +452,199 @@ public class DBservices
 
         return cmd;
     }
+    ////--------------------------------------------------------------------------------------------------
+    //// This method saves the changes in user password
+    ////--------------------------------------------------------------------------------------------------
+    public int UpdateUserPassword(string userEmail, string userpassword)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPUpdatUserPass("spUpdateUserPassword", con, userEmail, userpassword);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPUpdatUserPass(String spName, SqlConnection con, string userEmail, string userpassword)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@UserEmail", userEmail); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@Userpassword", userpassword);
+
+        return cmd;
+    }
+
+
+    //-------------- Department ---------------
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method gets all departments details
+    ////--------------------------------------------------------------------------------------------------
+    public List<Department> GetDepartmentsDetails()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGet("spGetDepartments", con);            // create the command
+                                                                          //DataTable dt = new DataTable();
+        List<Department> DepList = new List<Department>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Department department = new Department();
+                department.DepNum = Convert.ToInt32(dataReader["DepNum"]);
+                department.DepName = dataReader["DepName"].ToString();
+                department.Is_Active = Convert.ToBoolean(dataReader["Is_Active"]);
+
+                DepList.Add(department);
+            }
+
+            return DepList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method inserts new department
+    ////--------------------------------------------------------------------------------------------------
+    public int InsertDepartment(Department department)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPnewDep("spInsertDepartment", con, department);            // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPnewDep(String spName, SqlConnection con, Department department)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@DepName", department.DepName); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@Is_Active", department.Is_Active);
+
+        return cmd;
+    }
+
+    //-------------- Goal ---------------
 
     ////--------------------------------------------------------------------------------------------------
     //// This method gets all Goals
@@ -660,7 +708,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method inserts new Goal
     ////--------------------------------------------------------------------------------------------------
-    public int InsertGoal(Goal goal)
+    public int InsertGoal(string goalName, int goalActive)
     {
 
         SqlConnection con;
@@ -676,7 +724,79 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPnewGoal("spInsertGoal", con, goal);            // create the command
+        cmd = CreateCommandWithSPnewGoal("spInsertGoal", con, goalName, goalActive);            // create the command
+
+        int numEffected = 0;
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                numEffected = Convert.ToInt32(dataReader["GOALNUM"]);
+            }
+
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPnewGoal(String spName, SqlConnection con, string goalName, int goalActive)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@GoalName", goalName); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@Is_Active", goalActive);
+
+        return cmd;
+    }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method update a Goal 
+    ////--------------------------------------------------------------------------------------------------
+    public int UpdateGoalName(int goalNum, string goalName, int goalActive)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGoalName("spUpdateGoalName", con, goalNum, goalName, goalActive);            // create the command
 
         try
         {
@@ -703,7 +823,7 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPnewGoal(String spName, SqlConnection con, Goal goal)
+    private SqlCommand CreateCommandWithSPGoalName(String spName, SqlConnection con, int goalNum, string goalName, int goalActive)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -716,12 +836,357 @@ public class DBservices
 
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        cmd.Parameters.AddWithValue("@GoalName", goal.GoalName); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@Is_Active", goal.Is_Active);
+        cmd.Parameters.AddWithValue("@GoalName", goalName); //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@GoalNum", goalNum);
+        cmd.Parameters.AddWithValue("@Goal_Active", goalActive);
 
         return cmd;
     }
 
+    //////--------------------------------------------------------------------------------------------------
+    ////// This method update Goal is_active feild
+    //////--------------------------------------------------------------------------------------------------
+    //public int UpdateGoalActive(int goalNum, int goalActive)
+    //{
+
+    //    SqlConnection con;
+    //    SqlCommand cmd;
+
+    //    try
+    //    {
+    //        con = connect("myProjDB"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    cmd = CreateCommandWithSPGoalActive("spUpdateGoalActive", con, goalNum, goalActive);            // create the command
+
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
+
+    //}
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand using a stored procedure
+    ////---------------------------------------------------------------------------------
+    //private SqlCommand CreateCommandWithSPGoalActive(String spName, SqlConnection con, int goalNum, int goalActive)
+    //{
+
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
+
+    //    cmd.Connection = con;              // assign the connection to the command object
+
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+    //    cmd.Parameters.AddWithValue("@GOALNUM", goalNum); //insert all the parameters we got from the user
+    //    cmd.Parameters.AddWithValue("@GOAL_ACTIVE", goalActive);
+
+    //    return cmd;
+    //}
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method inserts new goal for corent user
+    ////--------------------------------------------------------------------------------------------------
+    public int InsertGoalToUser(int userNum, int goalNum, string goalStatus)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPNewUserGoal("spAddGoalToEmployee", con, userNum, goalNum, goalStatus);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPNewUserGoal(String spName, SqlConnection con, int userNum, int goalNum, string goalStatus)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@USERNUM", userNum);
+        cmd.Parameters.AddWithValue("@GOALNUM", goalNum);  //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@GOALSTATUS", goalStatus);
+
+        return cmd;
+    }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method change goalStatus field by GoalNum for specific user
+    ////--------------------------------------------------------------------------------------------------
+    public int UpdateGoalStatus(int userNum, int goalNum, string goalStatus)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGoalStatus("spUpdateGoalStatus", con, userNum, goalNum, goalStatus);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGoalStatus(String spName, SqlConnection con, int userNum, int goalNum, string goalStatus)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@USERNUM", userNum);
+        cmd.Parameters.AddWithValue("@GOALNUM", goalNum);  //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@GOALSTATUS", goalStatus);
+
+        return cmd;
+    }
+
+
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method gets all User Goals
+    ////--------------------------------------------------------------------------------------------------
+    public List<Object> GetAllUserGoals(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetByUserNum("spGetUserGoals", con, userNum);            // create the command
+
+        List<Object> UserGoalsList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Object goal = (new
+                {
+                    id = Convert.ToInt32(dataReader["GoalNum"]),
+                    name = dataReader["GoalName"].ToString(),
+                    date = dataReader["GoalCreateDate"].ToString(),
+                    isDone = dataReader["GoalStatus"].ToString(),
+                });
+
+                UserGoalsList.Add(goal);
+            }
+
+            return UserGoalsList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get all users goals that under this current manager
+    //--------------------------------------------------------------------------------------------------
+    public List<Rel_Goal_Employee> GetManagerGoals(int userManager)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPManagerGoals("spGetAllManagerGoals", con, userManager);            // create the command
+
+        List<Rel_Goal_Employee> ManagerGoalsList = new List<Rel_Goal_Employee>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Rel_Goal_Employee Managergoal = new Rel_Goal_Employee();
+
+                Managergoal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
+                Managergoal.UserFName = dataReader["UserFName"].ToString();
+                Managergoal.UserLName = dataReader["UserLName"].ToString();
+                Managergoal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
+                Managergoal.GoalName = dataReader["GoalName"].ToString();
+                Managergoal.GoalStatus = dataReader["GoalStatus"].ToString();
+                Managergoal.GoalCreateDate = (dataReader["GoalCreateDate"].ToString());
+
+
+                ManagerGoalsList.Add(Managergoal);
+            }
+
+            return ManagerGoalsList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand for get user details
+    ////---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPManagerGoals(string spName, SqlConnection con, int userManager)
+    {
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@USERMANASER", userManager); //insert all the parameters we got from the user
+
+        return cmd;
+    }
+
+
+    //-------------- Question ---------------
 
     ////--------------------------------------------------------------------------------------------------
     //// This method gets all Questions
@@ -782,7 +1247,6 @@ public class DBservices
         }
 
     }
-
 
 
     ////--------------------------------------------------------------------------------------------------
@@ -924,7 +1388,7 @@ public class DBservices
     }
 
     //--------------------------------------------------------------------------------------------------
-    // This method update a user in the users table 
+    // This method update a Question in the Question table 
     //--------------------------------------------------------------------------------------------------
     public int UpdateQuestion(int QuestionNum, string QuesContent)
     {
@@ -989,491 +1453,10 @@ public class DBservices
     }
 
 
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Delete a question from the Question table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int DeleteQues(int QuestionNum)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    cmd = CreateCommandWithSPDeleteQuestion("spDeleteQues", con, QuestionNum);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand using a stored procedure
-    ////---------------------------------------------------------------------------------
-    //private SqlCommand CreateCommandWithSPDeleteQuestion(String spName, SqlConnection con, int QuestionNum)
-    //{
-
-    //    SqlCommand cmd = new SqlCommand(); // create the command object
-
-    //    cmd.Connection = con;              // assign the connection to the command object
-
-    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-    //    cmd.Parameters.AddWithValue("@QuestionNum", QuestionNum); //insert all the parameters we got from the user
-
-    //    return cmd;
-    //}
-
+    //-------------- EvaluationQues ---------------
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method saves the changes in user details
-    ////--------------------------------------------------------------------------------------------------
-    public int UpdateUserPassword(string userEmail, string userpassword)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPUpdatUserPass("spUpdateUserPassword", con, userEmail, userpassword);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPUpdatUserPass(String spName, SqlConnection con, string userEmail, string userpassword)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@UserEmail", userEmail); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@Userpassword", userpassword);
-
-        return cmd;
-    }
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method inserts new goal for corent user
-    ////--------------------------------------------------------------------------------------------------
-    public int InsertGoalToUser(int userNum, int goalNum, string goalStatus)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPNewUserGoal("spAddGoalToEmployee", con, userNum, goalNum, goalStatus);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPNewUserGoal(String spName, SqlConnection con, int userNum, int goalNum, string goalStatus)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@USERNUM", userNum);
-        cmd.Parameters.AddWithValue("@GOALNUM", goalNum);  //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@GOALSTATUS", goalStatus);
-
-        return cmd;
-    }
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method change "is_active" field by GoalNum for specific user
-    ////--------------------------------------------------------------------------------------------------
-    public int UpdateGoalStatus(int userNum, int goalNum, string goalStatus)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPGoalStatus("spUpdateGoalStatus", con, userNum, goalNum, goalStatus);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGoalStatus(String spName, SqlConnection con, int userNum, int goalNum, string goalStatus)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@USERNUM", userNum);
-        cmd.Parameters.AddWithValue("@GOALNUM", goalNum);  //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@GOALSTATUS", goalStatus);
-
-        return cmd;
-    }
-
-
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method gets all User Goals
-    ////--------------------------------------------------------------------------------------------------
-    public List<Object> GetAllUserGoals(int userNum)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPGetByUserNum("spGetUserGoals", con, userNum);            // create the command
-
-        List<Object> UserGoalsList = new List<Object>();
-
-        try
-        {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-            while (dataReader.Read())
-            {
-                Object goal = (new
-                {
-                    id = Convert.ToInt32(dataReader["GoalNum"]),
-                    name = dataReader["GoalName"].ToString(),
-                    date = dataReader["GoalCreateDate"].ToString(),
-                    isDone = dataReader["GoalStatus"].ToString(),
-                });
-
-                UserGoalsList.Add(goal);
-
-                //goal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                //goal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
-                //goal.GoalName = dataReader["GoalName"].ToString();
-                //goal.GoalStatus = dataReader["GoalStatus"].ToString();
-                //goal.GoalGroup_Desc = dataReader["GoalGroup_Desc"].ToString();
-            }
-
-            return UserGoalsList;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-
-    //--------------------------------------------------------------------------------------------------
-    // This method Delete a Goal from the Goal table 
-    //--------------------------------------------------------------------------------------------------
-    public int DeleteGoal(int goalNum)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPDeleteGoal("spDeleteGoal", con, goalNum);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPDeleteGoal(String spName, SqlConnection con, int goalNum)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@GOALNUM", goalNum); //insert all the parameters we got from the user
-
-        return cmd;
-    }
-
-
-    //--------------------------------------------------------------------------------------------------
-    // This method get all users goals that under this corent manager
-    //--------------------------------------------------------------------------------------------------
-    public List<Rel_Goal_Employee> GetManagerGoals(int userManager)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPManagerGoals("spGetAllManagerGoals", con, userManager);            // create the command
-
-        List<Rel_Goal_Employee> ManagerGoalsList = new List<Rel_Goal_Employee>();
-
-        try
-        {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            //dt.Load(dataReader);
-
-
-            while (dataReader.Read())
-            {
-                Rel_Goal_Employee Managergoal = new Rel_Goal_Employee();
-
-                Managergoal.UserNum = Convert.ToInt32(dataReader["UserNum"]);
-                Managergoal.UserFName = dataReader["UserFName"].ToString();
-                Managergoal.UserLName = dataReader["UserLName"].ToString();
-                Managergoal.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
-                Managergoal.GoalName = dataReader["GoalName"].ToString();
-                Managergoal.GoalStatus = dataReader["GoalStatus"].ToString();
-                Managergoal.GoalCreateDate = (dataReader["GoalCreateDate"].ToString());
-
-
-                ManagerGoalsList.Add(Managergoal);
-            }
-
-            return ManagerGoalsList;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand for get user details
-    ////---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPManagerGoals(string spName, SqlConnection con, int userManager)
-    {
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@USERMANASER", userManager); //insert all the parameters we got from the user
-
-        return cmd;
-    }
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This section has all EvaluationQues functions
-    ////--------------------------------------------------------------------------------------------------
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method inserts new Question
+    //// This method inserts new EvaluationQues
     ////--------------------------------------------------------------------------------------------------
     public int InserEvaluationQues(dynamic newForm)
     {
@@ -1634,7 +1617,7 @@ public class DBservices
     }
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method gets the all the EvaluQues that fit the QuesType and RoleType
+    //// This method gets the all the EvaluQues questions that fit the questionnaireNum
     ////--------------------------------------------------------------------------------------------------
     public List<Rel_Questions_EvaluQues> GetQuesByEvaluId(int questionnaireNum)
     {
@@ -1718,7 +1701,7 @@ public class DBservices
     }
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method gets all the EvaluQues that fit the QuesType and RoleType
+    //// This method gets the EvaluQues questions that fit the userNum in the evalu_Part_Type
     ////--------------------------------------------------------------------------------------------------
     public List<Rel_Questions_EvaluQues> GetEvaluQuesByUserId(int userNum, int evalu_Part_Type)
     {
@@ -1814,7 +1797,7 @@ public class DBservices
     }
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method gets the all the EvaluQues that fit the QuesType and RoleType
+    //// This method gets the right evaluations of a user by his user number
     ////--------------------------------------------------------------------------------------------------
     public List<Object> GetEvaluQuesByUserNum(int userNum)
     {
@@ -2137,7 +2120,7 @@ public class DBservices
     }
 
     //--------------------------------------------------------------------------------------------------
-    // This method get all users goals that under this current manager
+    // This method gets the employee status under a manager
     //--------------------------------------------------------------------------------------------------
     public List<Object> GetEmployeeStatus(int userNum)
     {
@@ -2199,6 +2182,65 @@ public class DBservices
 
     }
 
+    ////--------------------------------------------------------------------------------------------------
+    //// This method gets all the Questionnaires
+    ////--------------------------------------------------------------------------------------------------
+    public List<Rel_Questions_EvaluQues> GetAllQuestionnaires()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGet("spGetAllQuestionnaires", con);            // create the command
+                                                                                //DataTable dt = new DataTable();
+        List<Rel_Questions_EvaluQues> QuestionnairesList = new List<Rel_Questions_EvaluQues>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Rel_Questions_EvaluQues Questionnaire = new Rel_Questions_EvaluQues();
+                Questionnaire.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
+                Questionnaire.QuesInsertDate = Convert.ToInt32(dataReader["yearInsert"]);
+                Questionnaire.RoleGroup_Type = Convert.ToInt32(dataReader["RoleGroup_Type"]);
+                Questionnaire.QuesType = Convert.ToBoolean(dataReader["QuesType"]);
+
+                QuestionnairesList.Add(Questionnaire);
+            }
+
+            return QuestionnairesList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
     ////---------------------------------------------------------------------------------
     //// Create the SqlCommand for get user details
     ////---------------------------------------------------------------------------------
@@ -2219,96 +2261,6 @@ public class DBservices
         return cmd;
     }
 
-
-    //--------------------------------------------------------------------------------------------------
-    // This method get the selected questionnaire PDF Header
-    //--------------------------------------------------------------------------------------------------
-    //public List<Rel_Questions_EvaluQues> GetPDFdetails(int userNum, int questionnaireNum)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    cmd = CreateCommandWithSPGetPDFdetails("spPDFdetails", con, userNum, questionnaireNum);            // create the command
-
-    //    List<Rel_Questions_EvaluQues> answerslist = new List<Rel_Questions_EvaluQues>();
-
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-    //        //dt.Load(dataReader);
-
-
-    //        while (dataReader.Read())
-    //        {
-    //            Rel_Questions_EvaluQues r = new Rel_Questions_EvaluQues();
-
-    //            r.Evalu_Part_Type = Convert.ToInt32(dataReader["Evalu_Part_Type"]);
-    //            r.QuesGroup_Desc = dataReader["QuesGroup_Desc"].ToString();
-    //            r.QuestionNum = Convert.ToInt32(dataReader["QuestionNum"]);
-    //            r.QuesContent = dataReader["QuesContent"].ToString();
-    //            r.NumericAnswer = Convert.ToInt32(dataReader["NumericAnswer"]);
-    //            r.VerbalAnswer = dataReader["VerbalAnswer"].ToString();
-    //            r.ManagerOpinion = dataReader["ManagerOpinion"].ToString();
-    //            r.EmployeeOpinion = dataReader["EmployeeOpinion"].ToString();
-    //            r.OpinionInsertDate = (DateTime)dataReader["OpinionInsertDate"];
-
-    //            answerslist.Add(r);
-    //        }
-
-    //        return answerslist;
-    //    }
-
-
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand using a stored procedure for get with no conditions
-    ////---------------------------------------------------------------------------------
-    //private SqlCommand CreateCommandWithSPGetPDFdetails(String spName, SqlConnection con, int userNum, int questionnaireNum)
-    //{
-
-    //    SqlCommand cmd = new SqlCommand(); // create the command object
-
-    //    cmd.Connection = con;              // assign the connection to the command object
-
-    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-    //    cmd.Parameters.AddWithValue("@UserNum", userNum); //insert all the parameters we got from the user
-    //    cmd.Parameters.AddWithValue("@QuestionnaireNum", questionnaireNum);
-
-    //    return cmd;
-    //}
 
     //--------------------------------------------------------------------------------------------------
     // This method get the selected questionnaire PDF details
@@ -2459,6 +2411,8 @@ public class DBservices
     }
 
 
+    //-------------- BI ---------------
+
     //--------------------------------------------------------------------------------------------------
     // This method get num of employees in each dep
     //--------------------------------------------------------------------------------------------------
@@ -2478,7 +2432,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetNum("sp_NumOfEmployeesInDep", con);            // create the command
+        cmd = CreateCommandWithSPGet("sp_NumOfEmployeesInDep", con);            // create the command
 
         List<Object> DepEmployeesList = new List<Object>();
 
@@ -2519,26 +2473,6 @@ public class DBservices
 
     }
 
-    ////---------------------------------------------------------------------------------
-    //// Create the SqlCommand for get
-    ////---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetNum(string spName, SqlConnection con)
-    {
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        //insert all the parameters we got from the user
-
-        return cmd;
-    }
-
 
     //--------------------------------------------------------------------------------------------------
     // This method get num of managers
@@ -2559,7 +2493,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetNum("sp_GetNumOfManagers", con);            // create the command
+        cmd = CreateCommandWithSPGet("sp_GetNumOfManagers", con);            // create the command
 
 
         BI bi = new BI();
@@ -2614,7 +2548,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetNum("sp_GetNumOfDep", con);            // create the command
+        cmd = CreateCommandWithSPGet("sp_GetNumOfDep", con);            // create the command
 
 
         BI bi = new BI();
@@ -2668,7 +2602,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetNum("sp_GetStatuses", con);            // create the command
+        cmd = CreateCommandWithSPGet("sp_GetStatuses", con);            // create the command
 
         List<Object> statusesList = new List<Object>();
 
@@ -2728,7 +2662,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetNum("sp_GetNumOfStatusesPerGoal", con);            // create the command
+        cmd = CreateCommandWithSPGet("sp_GetNumOfStatusesPerGoal", con);            // create the command
 
         List<Object> GoalstatusList = new List<Object>();
 
@@ -2957,63 +2891,6 @@ public class DBservices
 
     }
 
-    ////--------------------------------------------------------------------------------------------------
-    //// This method gets all the Questionnaires
-    ////--------------------------------------------------------------------------------------------------
-    public List<Rel_Questions_EvaluQues> GetAllQuestionnaires()
-    {
 
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPGet("spGetAllQuestionnaires", con);            // create the command
-                                                                                //DataTable dt = new DataTable();
-        List<Rel_Questions_EvaluQues> QuestionnairesList = new List<Rel_Questions_EvaluQues>();
-
-        try
-        {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            //dt.Load(dataReader);
-
-
-            while (dataReader.Read())
-            {
-                Rel_Questions_EvaluQues Questionnaire = new Rel_Questions_EvaluQues();
-                Questionnaire.QuestionnaireNum = Convert.ToInt32(dataReader["QuestionnaireNum"]);
-                Questionnaire.QuesInsertDate = Convert.ToInt32(dataReader["yearInsert"]);
-                Questionnaire.RoleGroup_Type = Convert.ToInt32(dataReader["RoleGroup_Type"]);
-                Questionnaire.QuesType = Convert.ToBoolean(dataReader["QuesType"]);
-
-                QuestionnairesList.Add(Questionnaire);
-            }
-
-            return QuestionnairesList;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
 
 }

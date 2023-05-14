@@ -31,7 +31,7 @@ export default function GoalItem({
   setItems,
   goal,
   tableHead,
-  onRemoveButtonClick,
+  onChangeButtonClick,
 }) {
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
@@ -39,9 +39,9 @@ export default function GoalItem({
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogParticipantIndex, setDialogParticipantIndex] = useState(null);
   const [updatedGoal, setUpdatedGoal] = useState(goal);
-  const goalStatusArr = ["בוצע", "בתהליך", "עוד לא התחיל"];
+  const goalStatusArr = ["בוצע", "בתהליך", "חדש"];
   const [selectedStatus, setSelectedStatus] = useState('');
-const [goalName, setGoalName] = useState(null);
+  const [goalName, setGoalName] = useState(null);
 
   const handleOpenDialog = (participantIndex) => {
     setDialogParticipantIndex(participantIndex);
@@ -77,12 +77,10 @@ const [goalName, setGoalName] = useState(null);
     handleCloseDialog();
   };
 
-const handleEdit = (goalName) => {
-  setShowUpdateGoalDialog(true);
-  setGoalName(goalName);
-}
-
-
+  const handleEdit = (goalName) => {
+    setShowUpdateGoalDialog(true);
+    setGoalName(goalName);
+  }
 
 
   return (
@@ -154,7 +152,7 @@ const handleEdit = (goalName) => {
               labelId="status-label"
               id="status"
               label="סטטוס"
-              style={{ height: "2.6375em", alignContent: "center" }}
+              style={{ height: "2.6375em", margin: "auto", display: "flex", maxWidth: "80%" }}
               value={selectedStatus}
               onChange={handleStatusChange}
             >
@@ -178,7 +176,7 @@ const handleEdit = (goalName) => {
         open={showUpdateGoalDialog}
         setOpen={setShowUpdateGoalDialog}
         goal={goal}
-        initGoalName= {goalName}
+        initGoalName={goalName}
         goals={goals}
         setGoals={setGoals}
         setItems={setItems}
@@ -188,7 +186,7 @@ const handleEdit = (goalName) => {
         open={showCloseDialog}
         setOpen={setShowCloseDialog}
         onClick={() => {
-          onRemoveButtonClick();
+          onChangeButtonClick();
           setShowCloseDialog((e) => !e);
         }}
       />

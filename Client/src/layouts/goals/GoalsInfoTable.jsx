@@ -15,34 +15,36 @@ import IconButton from '@mui/material/IconButton';
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
+import { EvalueContext } from "context/evalueVariables";
 import Checkbox from '@mui/material/Checkbox';
 
-const _goals = [
-  {
-    goalNum: 1,
-    goalName: "קורס אקסל",
-    isActive:true
-  },
-  {
-    goalNum: 2,
-    goalName: "קורס פריוריטי",
-    isActive:false
-  }
-]
+// const _goals = [
+//   {
+//     goalNum: 1,
+//     goalName: "קורס אקסל",
+//     isActive:true
+//   },
+//   {
+//     goalNum: 2,
+//     goalName: "קורס פריוריטי",
+//     isActive:false
+//   }
+// ]
 
 
 
 export default function GoalsInfoTable() {
   const [, dispatch] = useMaterialUIController();
-  const [items, setItems] = useState(_goals);//for search
-  const [goals, setGoals] = useState(_goals);
+  const { API } = useContext(EvalueContext);
+  const [items, setItems] = useState([]);//for search
+  const [goals, setGoals] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
-const [goalName, setGoalName]= useState(null);
-//   // Function to handle the click event and update the selected goal
+  const [goalName, setGoalName] = useState(null);
+  //   // Function to handle the click event and update the selected goal
   const handleEditClick = (goal) => {
     setSelectedGoal(goal);
     setGoalName(goal.goalName);
@@ -51,14 +53,58 @@ const [goalName, setGoalName]= useState(null);
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
-
     return () => setDirection(dispatch, "ltr");
   }, []);
 
- 
+  // GET the all avaliable goals
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (API) {
+      fetch(
+        API.apiGetAllGoals,
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          signal: abortController.signal,
+        })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            setItems(result);
+            setGoals(result);
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err get=", error);
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort();
+        // stop the query by aborting on the AbortController on unmount
+      };
+    }
+  }, []);
+
   //search goal
   const [searchInput, setSearchInput] = useState("");
   const [searchDebounce] = useDebounce(searchInput, 500);
+
   useEffect(() => {
     handleSearch(searchDebounce);
   }, [searchDebounce]);
@@ -73,8 +119,11 @@ const [goalName, setGoalName]= useState(null);
     setItems(value?.length > 0 ? sx : goals);
 
   };
+
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
- 
+  console.log(goals);
+  console.log(items);
+
   return (
     <Paper sx={{ boxShadow: "none" }}>
       <TableToolbarGoal
@@ -87,30 +136,32 @@ const [goalName, setGoalName]= useState(null);
       />
 
       <TableContainer>
-      <Table>
-        <TableHead style={{ display: "table-header-group" }}>
-          <TableRow style={{ width: "100%" }}>
-            <TableCell style={{ width: "33%" }}>שם היעד</TableCell>
-            <TableCell style={{ width: "33%" }}>האם פעיל?</TableCell>
-            <TableCell style={{ width: "33%" }}>עריכה</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {items.map((goal, index) => (
-            <TableRow key={index}>
-              <TableCell style={{ width: "33%" }}>{goal.goalName}</TableCell>
-              <TableCell style={{ width: "33%" }}>
-                {goal.isActive ? 'פעיל' : 'לא פעיל'}
-                </TableCell>
-              <TableCell style={{ width: "33%" }}>
-              <IconButton color="primary" onClick={() => handleEditClick(goal)}>
-            <EditRoundedIcon />
-          </IconButton>
-
-              </TableCell>
+        <Table>
+          <TableHead style={{ display: "table-header-group" }}>
+            <TableRow style={{ width: "100%" }}>
+              <TableCell style={{ width: "33%" }}>שם היעד</TableCell>
+              <TableCell style={{ width: "33%" }}>האם פעיל?</TableCell>
+              <TableCell style={{ width: "33%" }}>עריכה</TableCell>
             </TableRow>
-          ))}
-                      {emptyRows > 0 && (
+          </TableHead>
+          <TableBody>
+            {items
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((goal, index) => (
+                <TableRow key={index}>
+                  <TableCell style={{ width: "33%" }}>{goal.goalName}</TableCell>
+                  <TableCell style={{ width: "33%" }}>
+                    {goal.is_Active ? 'פעיל' : 'לא פעיל'}
+                  </TableCell>
+                  <TableCell style={{ width: "33%" }}>
+                    <IconButton color="primary" onClick={() => handleEditClick(goal)}>
+                      <EditRoundedIcon />
+                    </IconButton>
+
+                  </TableCell>
+                </TableRow>
+              ))}
+            {emptyRows > 0 && (
               <TableRow
                 style={{
                   height: 53 * emptyRows,
@@ -123,8 +174,8 @@ const [goalName, setGoalName]= useState(null);
                 </TableCell>
               </TableRow>
             )}
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
@@ -138,32 +189,32 @@ const [goalName, setGoalName]= useState(null);
           setPage(0);
         }}
         labelDisplayedRows={({ from, to, count }) =>
-        `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
-      }
-      labelRowsPerPage="מספר שורות להציג:"
+          `${from}–${to} מתוך ${count !== -1 ? count : `יותר מ ${to}`}`
+        }
+        labelRowsPerPage="מספר שורות להציג:"
       />
 
-<CreateOrUpdateGoalDialog
+      <CreateOrUpdateGoalDialog
         open={showUpdateGoalDialog}
         setOpen={setShowUpdateGoalDialog}
         goal={selectedGoal}
         initGoalName={goalName}
         goals={goals}
-        condition ={true}
+        condition={true}
         setGoals={setGoals}
         setItems={setItems}
       />
 
-<CloseDialog
+      <CloseDialog
         open={showCloseDialog}
         setOpen={setShowCloseDialog}
         onClick={() => {
-        //   onRemoveButtonClick(selectedGoal);
+          //   onRemoveButtonClick(selectedGoal);
           setShowCloseDialog((e) => !e);
         }}
       />
     </Paper>
-    
+
 
   );
 }

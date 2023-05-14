@@ -5,61 +5,80 @@
         int goalNum;
         string goalName;
         bool is_Active;
-        int goalGroup_Type;
-        string goalGroup_Desc;
-        DateTime goalCreateDate = new DateTime();
-        string goalStatus;
-
+        //int goalGroup_Type;
+        //string goalGroup_Desc;
+        //DateTime goalCreateDate = new DateTime();
+        //string goalStatus;
 
 
         public int GoalNum { get => goalNum; set => goalNum = value; }
         public string GoalName { get => goalName; set => goalName = value; }
         public bool Is_Active { get => is_Active; set => is_Active = value; }
-        public int GoalGroup_Type { get => goalGroup_Type; set => goalGroup_Type = value; }
-        public string GoalGroup_Desc { get => goalGroup_Desc; set => goalGroup_Desc = value; }
-        public DateTime GoalCreateDate { get => goalCreateDate; set => goalCreateDate = value; }
-        public string GoalStatus { get => goalStatus; set => goalStatus = value; }
+        //public int GoalGroup_Type { get => goalGroup_Type; set => goalGroup_Type = value; }
+        //public string GoalGroup_Desc { get => goalGroup_Desc; set => goalGroup_Desc = value; }
+        //public DateTime GoalCreateDate { get => goalCreateDate; set => goalCreateDate = value; }
+        //public string GoalStatus { get => goalStatus; set => goalStatus = value; }
 
         public static List<Goal> ReadGoals() //Get all goals
         {
-            DBservices dbs = new DBservices();
-            return dbs.GetAllGoals();
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetAllGoals();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
-        public int InsertGoal() //Insert new goal
+        public static int InsertGoal(string goalName, int goalActive) //Insert new goal
         {
-            DBservices dbs = new DBservices();
-            return dbs.InsertGoal(this);
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.InsertGoal(goalName, goalActive);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
-        //public static List<Object> Read(int userNum) //Get all the questions that posed by the current manager
+        public static int UpdateGoalName(int goalNum, string goalName, int goalActive) //Update Goal Name
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.UpdateGoalName(goalNum, goalName, goalActive);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        //public static int UpdateGoalActive(int goalNum, int goalActive) //Update Goal Active
         //{
-        //    DBservices dbs = new DBservices();
-        //    List<Object> list = dbs.GetGoals(userNum);
-
-        //    List<Goal> GoalsList = new List<Goal>();
-        //    int catchID = 1;
-
-        //    for (int i = 0; i < list.Count; i++)
+        //    try
         //    {
-        //        if(catchID == (list[i].GoalNum))
-        //        {
-        //            GoalsList.Add(new {
-        //                GoalCreateDate = list[i].GoalCreateDate,
-        //                UserManagerNum = list[i].UserManagerNum,
-        //                UserNum = list[i].UserNum,
-        //                UserFName = list[i].UserFName,
-        //                UserLName = list[i].UserLName,
-        //                GoalStatus = list[i].GoalStatus
-
-
-        //            });
-
-
-        //        }
+        //        DBservices dbs = new DBservices();
+        //        return dbs.UpdateGoalActive(goalNum, goalActive);
         //    }
-            
-        //    return list;
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+
         //}
+
+
     }
 }

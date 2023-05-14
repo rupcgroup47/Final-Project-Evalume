@@ -170,7 +170,7 @@ export default function GoalsTable() {
 
     setItems(value?.length > 0 ? sx : goals);
   };
-  const handleRemoveGoal = (goal) => {
+  const handleChangeGoal = (goal) => {
     setGoals((i) => i.filter((item) => item.goalName !== goal.goalName));
     setItems((i) => i.filter((item) => item.goalName !== goal.goalName));
 
@@ -227,7 +227,7 @@ export default function GoalsTable() {
                   setGoals={setGoals}
                   setItems={setItems}
                   tableHead={tableHead}
-                  onRemoveButtonClick={() => handleRemoveGoal(goal)}
+                  onChangeButtonClick={() => handleChangeGoal(goal)}
                 />
               ))}
             {emptyRows > 0 && (
