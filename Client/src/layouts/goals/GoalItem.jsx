@@ -39,7 +39,7 @@ export default function GoalItem({
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogParticipantIndex, setDialogParticipantIndex] = useState(null);
   const [updatedGoal, setUpdatedGoal] = useState(goal);
-  const goalStatusArr = ["בוצע", "בתהליך", "עוד לא התחיל"];
+  const goalStatusArr = ["בוצע", "בתהליך", "חדש"];
   const [selectedStatus, setSelectedStatus] = useState('');
   const [goalName, setGoalName] = useState(null);
 

@@ -49,12 +49,12 @@
 
         }
 
-        public static int UpdateGoalName(int goalNum, string goalName) //Update Goal Name
+        public static int UpdateGoalName(int goalNum, string goalName, int goalActive) //Update Goal Name
         {
             try
             {
                 DBservices dbs = new DBservices();
-                return dbs.UpdateGoalName(goalNum, goalName);
+                return dbs.UpdateGoalName(goalNum, goalName, goalActive);
             }
             catch (Exception)
             {
@@ -64,20 +64,20 @@
 
         }
 
-        public static int UpdateGoalActive(int goalNum, int goalActive) //Update Goal Active
-        {
-            try
-            {
-                DBservices dbs = new DBservices();
-                return dbs.UpdateGoalActive(goalNum, goalActive);
-            }
-            catch (Exception)
-            {
+        //public static int UpdateGoalActive(int goalNum, int goalActive) //Update Goal Active
+        //{
+        //    try
+        //    {
+        //        DBservices dbs = new DBservices();
+        //        return dbs.UpdateGoalActive(goalNum, goalActive);
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
+        //        throw;
+        //    }
 
-        }
+        //}
 
 
     }

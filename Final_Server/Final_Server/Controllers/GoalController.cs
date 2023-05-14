@@ -22,10 +22,10 @@ namespace Final_Server.Controllers
         [HttpPost("/newGoal")]
         public IActionResult Post(int goalActive, [FromBody] string goalName) //insert new goal
         {
-            int numEffected = Goal.InsertGoal(goalName, goalActive);
-            if (numEffected != 0)
+            int goalNum = Goal.InsertGoal(goalName, goalActive);
+            if (goalNum != 0)
             {
-                return Ok("goal succesfully inserted");
+                return Ok(goalNum);
             }
             else
             {
@@ -34,10 +34,10 @@ namespace Final_Server.Controllers
         }
 
 
-        [HttpPut("/UpdateGoalName")]
-        public IActionResult PutGoalName( int goalNum, [FromBody] string goalName) //Update Goal Name
+        [HttpPut("/UpdateGoal/goalNum/{goalNum}/goalActive/{goalActive}")]
+        public IActionResult PutGoalName(int goalNum, int goalActive, [FromBody] string goalName) //Update Goal Name
         {
-            int numEffected = Goal.UpdateGoalName(goalNum, goalName);
+            int numEffected = Goal.UpdateGoalName(goalNum, goalName, goalActive);
             if (numEffected != 0)
             {
                 return Ok("Goal succesfully updated");
@@ -49,19 +49,19 @@ namespace Final_Server.Controllers
         }
 
 
-        [HttpPut("/goalNum/goalActive")]
-        public IActionResult PutGoalActive(int goalNum, int goalActive) //Update Goal Active
-        {
-            int numEffected = Goal.UpdateGoalActive(goalNum, goalActive);
-            if (numEffected != 0)
-            {
-                return Ok("Goal succesfully updated");
-            }
-            else
-            {
-                return NotFound("We couldnt update the Goal");
-            }
-        }
+        //[HttpPut("/goalNum/goalActive")]
+        //public IActionResult PutGoalActive(int goalNum, int goalActive) //Update Goal Active
+        //{
+        //    int numEffected = Goal.UpdateGoalActive(goalNum, goalActive);
+        //    if (numEffected != 0)
+        //    {
+        //        return Ok("Goal succesfully updated");
+        //    }
+        //    else
+        //    {
+        //        return NotFound("We couldnt update the Goal");
+        //    }
+        //}
 
 
     }

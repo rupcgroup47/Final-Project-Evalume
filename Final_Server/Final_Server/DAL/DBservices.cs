@@ -770,9 +770,9 @@ public class DBservices
     }
 
     ////--------------------------------------------------------------------------------------------------
-    //// This method update a Goal name
+    //// This method update a Goal 
     ////--------------------------------------------------------------------------------------------------
-    public int UpdateGoalName(int goalNum, string goalName)
+    public int UpdateGoalName(int goalNum, string goalName, int goalActive)
     {
 
         SqlConnection con;
@@ -788,7 +788,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGoalName("spUpdateGoalName", con, goalNum, goalName);            // create the command
+        cmd = CreateCommandWithSPGoalName("spUpdateGoalName", con, goalNum, goalName, goalActive);            // create the command
 
         try
         {
@@ -815,7 +815,7 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGoalName(String spName, SqlConnection con, int goalNum, string goalName)
+    private SqlCommand CreateCommandWithSPGoalName(String spName, SqlConnection con, int goalNum, string goalName, int goalActive)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -830,74 +830,75 @@ public class DBservices
 
         cmd.Parameters.AddWithValue("@GoalName", goalName); //insert all the parameters we got from the user
         cmd.Parameters.AddWithValue("@GoalNum", goalNum);
+        cmd.Parameters.AddWithValue("@Goal_Active", goalActive);
 
         return cmd;
     }
 
-    ////--------------------------------------------------------------------------------------------------
-    //// This method update Goal is_active feild
-    ////--------------------------------------------------------------------------------------------------
-    public int UpdateGoalActive(int goalNum, int goalActive)
-    {
+    //////--------------------------------------------------------------------------------------------------
+    ////// This method update Goal is_active feild
+    //////--------------------------------------------------------------------------------------------------
+    //public int UpdateGoalActive(int goalNum, int goalActive)
+    //{
 
-        SqlConnection con;
-        SqlCommand cmd;
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("myProjDB"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        cmd = CreateCommandWithSPGoalActive("spUpdateGoalActive", con, goalNum, goalActive);            // create the command
+    //    cmd = CreateCommandWithSPGoalActive("spUpdateGoalActive", con, goalNum, goalActive);            // create the command
 
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
+    //}
 
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGoalActive(String spName, SqlConnection con, int goalNum, int goalActive)
-    {
+    ////---------------------------------------------------------------------------------
+    //// Create the SqlCommand using a stored procedure
+    ////---------------------------------------------------------------------------------
+    //private SqlCommand CreateCommandWithSPGoalActive(String spName, SqlConnection con, int goalNum, int goalActive)
+    //{
 
-        SqlCommand cmd = new SqlCommand(); // create the command object
+    //    SqlCommand cmd = new SqlCommand(); // create the command object
 
-        cmd.Connection = con;              // assign the connection to the command object
+    //    cmd.Connection = con;              // assign the connection to the command object
 
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+    //    cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
 
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+    //    cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
 
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+    //    cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
-        cmd.Parameters.AddWithValue("@GOALNUM", goalNum); //insert all the parameters we got from the user
-        cmd.Parameters.AddWithValue("@GOAL_ACTIVE", goalActive);
+    //    cmd.Parameters.AddWithValue("@GOALNUM", goalNum); //insert all the parameters we got from the user
+    //    cmd.Parameters.AddWithValue("@GOAL_ACTIVE", goalActive);
 
-        return cmd;
-    }
+    //    return cmd;
+    //}
 
     ////--------------------------------------------------------------------------------------------------
     //// This method inserts new goal for corent user
