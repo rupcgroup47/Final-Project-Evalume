@@ -53,7 +53,6 @@ export default function GoalsInfoTable() {
   // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
-
     return () => setDirection(dispatch, "ltr");
   }, []);
 
@@ -102,10 +101,10 @@ export default function GoalsInfoTable() {
     }
   }, []);
 
-
   //search goal
   const [searchInput, setSearchInput] = useState("");
   const [searchDebounce] = useDebounce(searchInput, 500);
+
   useEffect(() => {
     handleSearch(searchDebounce);
   }, [searchDebounce]);
@@ -120,7 +119,10 @@ export default function GoalsInfoTable() {
     setItems(value?.length > 0 ? sx : goals);
 
   };
+
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
+  console.log(goals);
+  console.log(items);
 
   return (
     <Paper sx={{ boxShadow: "none" }}>
@@ -143,20 +145,22 @@ export default function GoalsInfoTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.map((goal, index) => (
-              <TableRow key={index}>
-                <TableCell style={{ width: "33%" }}>{goal.goalName}</TableCell>
-                <TableCell style={{ width: "33%" }}>
-                  {goal.is_Active ? 'פעיל' : 'לא פעיל'}
-                </TableCell>
-                <TableCell style={{ width: "33%" }}>
-                  <IconButton color="primary" onClick={() => handleEditClick(goal)}>
-                    <EditRoundedIcon />
-                  </IconButton>
+            {items
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((goal, index) => (
+                <TableRow key={index}>
+                  <TableCell style={{ width: "33%" }}>{goal.goalName}</TableCell>
+                  <TableCell style={{ width: "33%" }}>
+                    {goal.is_Active ? 'פעיל' : 'לא פעיל'}
+                  </TableCell>
+                  <TableCell style={{ width: "33%" }}>
+                    <IconButton color="primary" onClick={() => handleEditClick(goal)}>
+                      <EditRoundedIcon />
+                    </IconButton>
 
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                </TableRow>
+              ))}
             {emptyRows > 0 && (
               <TableRow
                 style={{

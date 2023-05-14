@@ -40,7 +40,7 @@ namespace Final_Server.Controllers
             int numEffected = Goal.UpdateGoalName(goalNum, goalName, goalActive);
             if (numEffected != 0)
             {
-                return Ok("Goal succesfully updated");
+                return Ok(numEffected);
             }
             else
             {

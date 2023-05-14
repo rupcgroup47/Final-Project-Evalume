@@ -83,8 +83,6 @@ export default function GoalItem({
   }
 
 
-
-
   return (
     <>
       <TableRow hover role="checkbox" tabIndex={-1}>
@@ -154,7 +152,7 @@ export default function GoalItem({
               labelId="status-label"
               id="status"
               label="סטטוס"
-              style={{ height: "2.6375em", alignContent: "center" }}
+              style={{ height: "2.6375em", margin: "auto", display: "flex", maxWidth: "80%" }}
               value={selectedStatus}
               onChange={handleStatusChange}
             >

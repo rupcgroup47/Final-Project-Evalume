@@ -14,6 +14,7 @@ using System.Text.Json.Nodes;
 using System.Reflection.Metadata;
 using Microsoft.VisualBasic;
 using System.Data.SqlTypes;
+using System.Data.Common;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -725,9 +726,16 @@ public class DBservices
 
         cmd = CreateCommandWithSPnewGoal("spInsertGoal", con, goalName, goalActive);            // create the command
 
+        int numEffected = 0;
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                numEffected = Convert.ToInt32(dataReader["GOALNUM"]);
+            }
+
             return numEffected;
         }
         catch (Exception ex)

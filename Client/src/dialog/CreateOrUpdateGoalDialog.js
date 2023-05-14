@@ -36,7 +36,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
   const [newGoalName, setNewGoalName] = useState(initGoalName);
   const [update, setUpdate] = useState(false);
   const [post, setPost] = useState(false);
-  const goalStatusArr = [{ isActive: 1, name: "פעיל" }, { isActive: 0, name: "לא פעיל" }];
+  const goalStatusArr = [{ is_Active: 1, name: "פעיל" }, { is_Active: 0, name: "לא פעיל" }];
   const [selectedStatus, setSelectedStatus] = useState(1);
   const { API } = useContext(EvalueContext);
   // const { mainState, setMainState } = useContext(MainStateContext);
@@ -77,18 +77,19 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
 
     if (goal) {
       if (newGoalName !== null) {
-        console.log(newGoalName);
+        console.log(newGoal);
         setNewGoal({
           goalNum: goal.goalNum,
           goalName: newGoalName,
-          isActive: selectedStatus
+          is_Active: selectedStatus
         });
       }
       else {
+        console.log(newGoal);
         setNewGoal({
           goalNum: goal.goalNum,
           goalName: goal.goalName,
-          isActive: selectedStatus
+          is_Active: selectedStatus
         });
       }
       setUpdate(true);
@@ -96,7 +97,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
       setNewGoal({
         goalNum: 0,
         goalName: newGoalName,
-        isActive: selectedStatus
+        is_Active: selectedStatus
       });
       setPost(true);
     }
@@ -107,18 +108,13 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
   };
 
 
-  //update Goal name using PUT api
+  //update Goal using PUT api
   useEffect(() => {
-    // Update details
     const abortController = new AbortController();
-    console.log(goal);
-    console.log(newGoalName);
-    console.log(newGoal);
-
     if (update !== false) {
       console.log("here");
       fetch(
-        API.apiUpdateGoal + newGoal.goalNum + "/goalActive/" + newGoal.isActive, {
+        API.apiUpdateGoal + newGoal.goalNum + "/goalActive/" + newGoal.is_Active, {
         method: "PUT",
         headers: new Headers({
           "Content-Type": "application/json; charset=UTF-8",
@@ -142,19 +138,30 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
         .then(
           (result) => {
             console.log("success" + result);
-            setGoals((array) =>
-              array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
-            );
-            setItems((array) =>
-              array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
-            );
-            swal({
-              title: "הצלחנו!",
-              text: "היעד עודכן בהצלחה",
-              icon: "success",
-              button: "סגור"
-            });
+            if (result == -1) {
+              swal({
+                title: "פעולה בוטלה!",
+                text: "נראה כי שם היעד כבר קיים במערכת",
+                icon: "error",
+                button: "סגור"
+              });
+            }
+            else {
+              setGoals((array) =>
+                array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
+              );
+              setItems((array) =>
+                array.map((item) => (item.goalName === goal.goalName ? { ...item, ...newGoal } : item))
+              );
+              swal({
+                title: "הצלחנו!",
+                text: "היעד עודכן בהצלחה",
+                icon: "success",
+                button: "סגור"
+              });
+            }
             setNewGoal({});
+            setUpdate(false);
             setOpen((e) => !e);
             reset();
           },
@@ -179,75 +186,83 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
 
   // Post new Goal
   useEffect(() => {
-    // Update details
     const abortController = new AbortController();
-    console.log(goal);
-    console.log(newGoalName);
-    console.log(newGoal);
-
     if (post !== false) {
       console.log("here2");
-      // fetch(
-      //   API.apiInsertNewGoal + newGoal.isActive, {
-      //   method: "POST",
-      //   headers: new Headers({
-      //     "Content-Type": "application/json; charset=UTF-8",
-      //     Accept: "application/json; charset=UTF-8",
-      //   }),
-      //   body: JSON.stringify(newGoal.goalName),
-      //   signal: abortController.signal,
-      // })
-      //   .then(async (response) => {
-      //     const data = await response.json();
-      //     console.log(response);
+      fetch(
+        API.apiInsertNewGoal + newGoal.is_Active, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+          Accept: "application/json; charset=UTF-8",
+        }),
+        body: JSON.stringify(newGoal.goalName),
+        signal: abortController.signal,
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          console.log(response);
 
-      //     if (!response.ok) {
-      //       // get error message from body or default to response statusText
-      //       const error = (data && data.message) || response.statusText;
-      //       return Promise.reject(error);
-      //     }
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
 
-      //     return data;
-      //   })
-      //   .then(
-      //     (result) => {
-      //       console.log("success" + result);
-      //       const NewGoalRes = {
-      //         goalNum: result,
-      //         goalName: newGoalName,
-      //         isActive: selectedStatus
-      //       };
-      //       //Add new goal at the end of the array
-      //       setGoals((oldArray) => [...oldArray, NewGoalRes]);
-      //       setItems((oldArray) => [...oldArray, NewGoalRes]);
-      //       swal({
-      //         title: "הצלחנו!",
-      //         text: "המשתמש עודכן בהצלחה",
-      //         icon: "success",
-      //         button: "סגור"
-      //       });
-      //       setNewGoal({});
-      //       setOpen((e) => !e);
-      //       reset();
-      //     },
-      //     (error) => {
-      //       if (error.name === "AbortError") return;
-      //       console.log("err put=", error);
-      //       swal({
-      //         title: "קרתה תקלה!",
-      //         text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-      //         icon: "error",
-      //         button: "סגור"
-      //       });
-      //       throw error;
-      //     }
-      //   );
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success" + result);
+            if (result == -1) {
+              swal({
+                title: "פעולה בוטלה!",
+                text: "נראה כי שם היעד כבר קיים במערכת",
+                icon: "error",
+                button: "סגור"
+              });
+            }
+            else {
+              const NewGoalRes = {
+                goalNum: result,
+                goalName: newGoalName,
+                is_Active: 1
+              };
+              //Add new goal at the end of the array
+              setGoals((oldArray) => [...oldArray, NewGoalRes]);
+              setItems((oldArray) => [...oldArray, NewGoalRes]);
+              swal({
+                title: "הצלחנו!",
+                text: "היעד עודכן בהצלחה",
+                icon: "success",
+                button: "סגור"
+              });
+            }
+            setNewGoal({});
+            setPost(false);
+            setOpen((e) => !e);
+            reset();
+          },
+          (error) => {
+            if (error.name === "AbortError") return;
+            console.log("err put=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
       return () => {
         abortController.abort();
         // stop the query by aborting on the AbortController on unmount
       };
     }
   }, [post]);
+
+  console.log(newGoal);
 
   return (
     <Dialog onClose={() => setOpen((e) => !e)} open={open}>
@@ -300,7 +315,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
                   onChange={handleStatusChange}
                 >
                   {goalStatusArr.map((status, index) => (
-                    <MenuItem key={index} value={status.isActive}>
+                    <MenuItem key={index} value={status.is_Active}>
                       {status.name}
                     </MenuItem>
                   ))}
@@ -325,7 +340,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
                 onChange={handleStatusChange}
               >
                 {goalStatusArr.map((status, index) => (
-                  <MenuItem key={index} value={status.isActive}>
+                  <MenuItem key={index} value={status.is_Active}>
                     {status.name}
                   </MenuItem>
                 ))}
