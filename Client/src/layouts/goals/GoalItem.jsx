@@ -31,7 +31,7 @@ export default function GoalItem({
   setItems,
   goal,
   tableHead,
-  onRemoveButtonClick,
+  onChangeButtonClick,
 }) {
   const [showUpdateGoalDialog, setShowUpdateGoalDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
@@ -41,7 +41,7 @@ export default function GoalItem({
   const [updatedGoal, setUpdatedGoal] = useState(goal);
   const goalStatusArr = ["בוצע", "בתהליך", "עוד לא התחיל"];
   const [selectedStatus, setSelectedStatus] = useState('');
-const [goalName, setGoalName] = useState(null);
+  const [goalName, setGoalName] = useState(null);
 
   const handleOpenDialog = (participantIndex) => {
     setDialogParticipantIndex(participantIndex);
@@ -77,10 +77,10 @@ const [goalName, setGoalName] = useState(null);
     handleCloseDialog();
   };
 
-const handleEdit = (goalName) => {
-  setShowUpdateGoalDialog(true);
-  setGoalName(goalName);
-}
+  const handleEdit = (goalName) => {
+    setShowUpdateGoalDialog(true);
+    setGoalName(goalName);
+  }
 
 
 
@@ -178,7 +178,7 @@ const handleEdit = (goalName) => {
         open={showUpdateGoalDialog}
         setOpen={setShowUpdateGoalDialog}
         goal={goal}
-        initGoalName= {goalName}
+        initGoalName={goalName}
         goals={goals}
         setGoals={setGoals}
         setItems={setItems}
@@ -188,7 +188,7 @@ const handleEdit = (goalName) => {
         open={showCloseDialog}
         setOpen={setShowCloseDialog}
         onClick={() => {
-          onRemoveButtonClick();
+          onChangeButtonClick();
           setShowCloseDialog((e) => !e);
         }}
       />

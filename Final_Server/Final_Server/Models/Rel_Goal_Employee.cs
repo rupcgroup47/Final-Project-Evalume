@@ -95,11 +95,11 @@
             }
         }
 
-        public int DeleteGoal(int goalNum) ////delete goal that connected to users
-        {
-            DBservices tmp = new DBservices();
-            return tmp.DeleteGoal(goalNum);
-        }
+        //public int DeleteGoal(int goalNum) ////delete goal that connected to users
+        //{
+        //    DBservices tmp = new DBservices();
+        //    return tmp.DeleteGoal(goalNum);
+        //}
 
 
         public static List<Object> ReadManagerGoals(int userManager)//get all users goals that under this current manager

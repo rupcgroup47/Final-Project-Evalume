@@ -65,7 +65,9 @@ const routes = [
   {
     type: "collapse",
     name: "כל היעדים",
+    key: "allGoals",
     route: "/check",
+    icon: <Icon fontSize="small">explore</Icon>,
     component: <GoalsInfoTable />,
     forAdmin: true,
     // isHiddenFromSideNav: true
@@ -74,7 +76,7 @@ const routes = [
   {
     type: "collapse",
     name: "משתמשים",
-    key: "משתמשים",
+    key: "users",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/users",
     component: <Users />,
@@ -83,7 +85,7 @@ const routes = [
   {
     type: "collapse",
     name: "הקמת טופס הערכה",
-    key: "evalueForm",
+    key: "evalueFormMain",
     icon: <Icon fontSize="small">feed</Icon>,
     route: "/evalueMain",
     component: <BuildEvaluation />,

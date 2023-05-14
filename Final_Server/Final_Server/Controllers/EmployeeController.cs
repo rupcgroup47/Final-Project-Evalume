@@ -171,14 +171,6 @@ namespace Final_Server.Controllers
             }
         }
 
-        // DELETE api/<EmployeeController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-
-        //}
-
-
 
     }
 }

@@ -40,6 +40,12 @@ export default function EvalueContextProvider({ children }) {
     apiGetGoalsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Goal_Employee?userNum=", //server
     // apiSetEvaluations: "https://localhost:7079/Active_Evaluations",
     apiSetEvaluations: "https://proj.ruppin.ac.il/cgroup47/prod/Active_Evaluations", //server
+    apiInsertNewGoal: "https://localhost:7079/newGoal?goalActive=",
+    // apiInsertNewGoal: "https://proj.ruppin.ac.il/cgroup47/prod/newGoal?goalActive=",//server
+    apiUpdateGoalName: "https://localhost:7079/UpdateGoalName?goalNum=",
+    // apiUpdateGoalName: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoalName?goalNum=", //server
+    apiUpdateGoalActive: "https://localhost:7079/goalNum/goalActive?goalNum=104&goalActive=0",
+    // apiUpdateGoalActive: "https://proj.ruppin.ac.il/cgroup47/prod/goalNum/goalActive?goalNum=104&goalActive=0", //server
   });
 
 
