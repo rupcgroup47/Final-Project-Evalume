@@ -181,17 +181,15 @@ export default function CreateYearlyProcessDialog({
   // console.log(JSON.stringify(openProcess));
   return (
     <><Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
-      <Typography sx={{ fontFamily: "Rubik", fontSize: "50px", textAlign: "center" }}>
+      <Typography sx={{ fontFamily: "Rubik", fontSize: "40px", textAlign: "center", fontWeight: "bold" }}>
         פתיחת תהליך הערכה{" "}
       </Typography>
       <Box
         display="inline"
-        justifyContent="center"
-        alignItems="center"
-        marginTop={3}
-        marginBottom={10}
-        marginLeft="20%"
-        textAlign="center"
+        // justifyContent="center"
+        // alignItems="center"
+        margin="15px auto"
+        // textAlign="center"
         width="60%"
       >
         <Card
@@ -201,11 +199,11 @@ export default function CreateYearlyProcessDialog({
             backgroundColor: "whitesmoke",
             overflow: "visible",
             textAlign: "center",
-            padding: "30px"
+            padding: "20px"
           }}
         >
-          <Typography>בחירת שאלונים</Typography>
-          <Button onClick={() => setShowOpenEvalueDialog((e) => !e)}>צפייה בשאלונים קיימים</Button><br />
+          <Typography style={{ fontWeight: "bold", fontSize: "larger" }}>בחירת שאלונים</Typography>
+          <Button onClick={() => setShowOpenEvalueDialog((e) => !e)}>צפייה בשאלונים קיימים</Button>
           <Notifications />
 
           {questionnairesData?.map((testObject, index) => (
@@ -239,12 +237,12 @@ export default function CreateYearlyProcessDialog({
         </Grid>
       </Box>
     </Dialog>
-    <AllExistForms 
-    open={showOpenEvalueDialog}
-    setOpen={setShowOpenEvalueDialog}
-    questionnairesData={questionnairesData}
-    />
-</>
+      <AllExistForms
+        open={showOpenEvalueDialog}
+        setOpen={setShowOpenEvalueDialog}
+        questionnairesData={questionnairesData}
+      />
+    </>
   );
-  
+
 }

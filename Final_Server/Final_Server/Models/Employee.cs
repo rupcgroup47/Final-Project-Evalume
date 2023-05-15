@@ -24,6 +24,7 @@ namespace Final_Server.Models
         string managerLName;
         string managerEmail;
         string userRoleGroupDesc;
+        int self_Evalu;
 
 
         static List<Employee> EmployeesList = new List<Employee>();
@@ -48,6 +49,7 @@ namespace Final_Server.Models
         public string ManagerLName { get => managerLName; set => managerLName = value; }
         public string ManagerEmail { get => managerEmail; set => managerEmail = value; }
         public string UserRoleGroupDesc { get => userRoleGroupDesc; set => userRoleGroupDesc = value; }
+        public int Self_Evalu { get => self_Evalu; set => self_Evalu = value; }
 
         public Employee Read(string userEmail, string userpassword) //get all user details that fit to the userEmail & userPassword
         {

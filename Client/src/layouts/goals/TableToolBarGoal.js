@@ -33,7 +33,6 @@ export default function TableToolbarGoal({
   searchInput,
   setSearchInput,
   condition
-
 }) {
   const [showSearchButton, setShowSearchButton] = useState(false);
   const [showCreateGoalDialog, setShowCreateGoalDialog] = useState(false);
@@ -47,7 +46,6 @@ export default function TableToolbarGoal({
       setShowCreateGoalDialog(true)
     } else {
       setIsPopupOpen(true)
-
     }
   }
 

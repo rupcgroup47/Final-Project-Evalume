@@ -45,8 +45,6 @@ function QuestionnaireForm() {
         .then(
           (result) => {
             console.log("success");
-            console.log(result.userNum);
-            console.log(result);
             if (result.userNum == undefined) {
               setFinishState(true);
             }

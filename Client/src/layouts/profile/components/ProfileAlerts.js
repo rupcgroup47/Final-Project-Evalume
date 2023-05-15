@@ -21,7 +21,7 @@ export default function ProfileAlerts({ tmpResult }) {
   const [tempResualt, setTempResualt] = useState([]);
   // const [waitingToEvalue, setWaitingToEvalue] = useState(3);
   const [state, setState] = useState({
-    selfEvalu: 0,
+    selfEvalu: mainState.mainState.self_Evalu,
     employeeEvalu: 0,
     employeeMeet: 0,
     employeeCalender: 0,
@@ -32,14 +32,18 @@ export default function ProfileAlerts({ tmpResult }) {
   }, [tmpResult])
 
   useEffect(() => {
-    if (tempResualt?.length !== 0)
+    if (tempResualt?.length !== 0) {
+      console.log("here");
       setState({
-        selfEvalu: 0,
+        selfEvalu: mainState.mainState.self_Evalu,
         employeeEvalu: tempResualt?.filter((item) => item.evalu_Part_Type === 0).length,
         employeeMeet: tempResualt?.filter((item) => item.evalu_Part_Type === 1).length,
         employeeCalender: 0,
       })
+    }
+
   }, [tempResualt])
+  console.log(mainState);
 
   const [arrAlerts, setArrAlerts] = useState(
     [
@@ -77,7 +81,7 @@ export default function ProfileAlerts({ tmpResult }) {
     const updateArr = arrAlerts.map((item) => {
       const keyValue = state[item.id];
       const updateValue = keyValue;
-      return {...item, alertNum: updateValue}
+      return { ...item, alertNum: updateValue }
     })
     setArrAlerts(updateArr);
   }, [state]);
