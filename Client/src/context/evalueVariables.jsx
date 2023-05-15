@@ -44,8 +44,8 @@ export default function EvalueContextProvider({ children }) {
     // apiInsertNewGoal: "https://proj.ruppin.ac.il/cgroup47/prod/newGoal?goalActive=",//server
     apiUpdateGoal: "https://localhost:7079/UpdateGoal/goalNum/",
     // apiUpdateGoalName: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoal/goalNum/", //server
-    // apiUpdateGoalActive: "https://localhost:7079/goalNum/goalActive?goalNum=104&goalActive=0",
-    // // apiUpdateGoalActive: "https://proj.ruppin.ac.il/cgroup47/prod/goalNum/goalActive?goalNum=104&goalActive=0", //server
+    apiUpdateGoalStatus: "https://localhost:7079/userNum/",
+    // apiUpdateGoalStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/", //server
   });
 
 

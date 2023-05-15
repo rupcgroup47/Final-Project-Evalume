@@ -7,13 +7,14 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { EvalueContext } from "context/evalueVariables";
 import {
   Button,
   Dialog,
@@ -38,9 +39,11 @@ export default function GoalItem({
   const [open, setOpen] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogParticipantIndex, setDialogParticipantIndex] = useState(null);
+  const { API } = useContext(EvalueContext);
   const [updatedGoal, setUpdatedGoal] = useState(goal);
   const goalStatusArr = ["בוצע", "בתהליך", "חדש"];
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [tmpStatusIndex, setTmpStatusIndex] = useState(-1);
   const [goalName, setGoalName] = useState(null);
 
   const handleOpenDialog = (participantIndex) => {
@@ -60,9 +63,72 @@ export default function GoalItem({
 
   // Function to save the updated status in the dialog
   const handleSaveStatus = (participantIndex) => {
-    handleUpdateStatus(participantIndex, selectedStatus);
-    setSelectedStatus('');
+    setTmpStatusIndex(participantIndex);
+    // handleUpdateStatus(participantIndex, selectedStatus);
+    // setSelectedStatus('');
   };
+
+
+  // POST all the new selected status for the employee
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (tmpStatusIndex > -1) {
+      console.log("here")
+      console.log(goal.employees[tmpStatusIndex]?.userNum);
+      console.log(goal.goalNum);
+      console.log(selectedStatus);
+      fetch(
+        API.apiUpdateGoalStatus + goal.employees[tmpStatusIndex].userNum + "/goalNum/" + goal.goalNum,
+        {
+          method: "PUT",
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+            Accept: "application/json; charset=UTF-8",
+          }),
+          body: JSON.stringify(selectedStatus),
+          signal: abortController.signal
+        })
+        .then(async response => {
+          const data = await response.json();
+          console.log(response);
+
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+
+          return data;
+        })
+        .then(
+          (result) => {
+            console.log("success");
+            swal({
+              title: "הצלחנו!",
+              text: "הסטטוס עודכן בהצלחה",
+              icon: "success",
+              button: "סגור"
+            });
+            handleUpdateStatus(tmpStatusIndex, selectedStatus);
+          },
+          (error) => {
+            if (error.name === 'AbortError') return
+            console.log("err get=", error);
+            swal({
+              title: "קרתה תקלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              button: "סגור"
+            });
+            throw error;
+          }
+        );
+      return () => {
+        abortController.abort()
+        // stop the query by aborting on the AbortController on unmount
+      }
+    }
+  }, [tmpStatusIndex]);
 
 
   // Function to update the updated status in employee
@@ -74,6 +140,8 @@ export default function GoalItem({
 
     const newGoal = { ...updatedGoal, employees: updatedParticipants };
     setUpdatedGoal(newGoal);
+    setSelectedStatus('');
+    setTmpStatusIndex(-1);
     handleCloseDialog();
   };
 

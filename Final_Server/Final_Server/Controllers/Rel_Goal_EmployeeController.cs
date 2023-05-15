@@ -45,7 +45,7 @@ namespace Final_Server.Controllers
 
         // POST api/<Rel_Goal_EmployeeController>
         [HttpPost("/userNum/goalNum/goalStatus")]
-        public IActionResult Post([FromBody] int userNum, int goalNum, string goalStatus) //Insert new goal to user
+        public IActionResult Post(int userNum, int goalNum, [FromBody] string goalStatus) //Insert new goal to user
         {
             Rel_Goal_Employee goal = new Rel_Goal_Employee();
             int numEffected = goal.InsertEmployeeGoal(userNum, goalNum, goalStatus);
@@ -62,8 +62,8 @@ namespace Final_Server.Controllers
 
 
         // PUT api/<Rel_Goal_EmployeeController>/5
-        [HttpPut("/userNum/goalNum/goalStatus")]
-        public IActionResult PutIsActive(int userNum, int goalNum, string goalStatus) //Update goal feild goalStatus to specific user
+        [HttpPut("/userNum/{userNum}/goalNum/{goalNum}")]
+        public IActionResult PutIsActive(int userNum, int goalNum, [FromBody] string goalStatus) //Update goal feild goalStatus to specific user
         {
             Rel_Goal_Employee goal = new Rel_Goal_Employee();
             int numEffected = goal.UpdateGoalStatus(userNum, goalNum, goalStatus);
