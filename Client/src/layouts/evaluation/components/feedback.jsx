@@ -33,8 +33,8 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
   const [finishRouteMsg, setRouteMsg] = useState("");
   const [rows, setRows] = useState([]); //Format to display table
   const [goalName, setGoalName] = useState("");
-  const [date, setDate] = useState();
-  const [notFormattedDate, setNotFormattedData] = useState();
+  // const [date, setDate] = useState();
+  // const [notFormattedDate, setNotFormattedData] = useState();
   const [managerOpinion, setManagerOpinion] = useState("");
   const [employeeOpinion, setEmployeeOpinion] = useState("");
   const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
@@ -156,17 +156,17 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
     setGoalName(event.target.value);
   };
 
-  const handleDateChange = (newValue) => {
-    const formattedDate = newValue.toISOString().slice(0, 10).replace(/-/g, "/");
-    setDate(formattedDate);
-    // setNotFormattedData(newValue)
-  };
+  // const handleDateChange = (newValue) => {
+  //   const formattedDate = newValue.toISOString().slice(0, 10).replace(/-/g, "/");
+  //   setDate(formattedDate);
+  //   // setNotFormattedData(newValue)
+  // };
 
   const handleAddRow = () => {
     ///adding new goal to employee
     const selectedId = goalNames.find((option) => option.goalName === goalName)?.goalNum; //checking the  id of the chosen goal
-    setRows([...rows, { goalName: goalName, date: date }]); //Format to display table
-    setAllGoals([...allGoals, { goalNum: selectedId, date: date }]); //Format to send to the server
+    setRows([...rows, { goalName: goalName }]); //Format to display table , date: date
+    setAllGoals([...allGoals, { goalNum: selectedId }]); //Format to send to the server , date: date
     setGoalName("");
     setDate("");
   };
@@ -219,7 +219,7 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
         <Grid item xs={12}>
           <Typography textAlign="center">הצבת יעדים</Typography>
           <Box textAlign="center">
-            <div>
+            <div style={{ display: "grid", rowGap: "20px", maxWidth: "fit-content", margin: "5px auto" }}>
               <select value={goalName} onChange={handleNameChange}>
                 <option value="">---בחירת יעד---</option>
                 {goalNames.map((goal) => (
@@ -229,7 +229,7 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
                 ))}
               </select>
 
-              <DatePicker label="תאריך יעד" value={date} locale="he" onChange={handleDateChange} />
+              {/* <DatePicker label="תאריך יעד" value={date} locale="he" onChange={handleDateChange} /> */}
               <Button
                 variant="contained"
                 color="white"
@@ -239,12 +239,12 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
                 יצירת יעד לעובד{" "}
               </Button>
             </div>
-            <TableContainer sx={{ width: "50%", display: "inline-table" }}>
+            <TableContainer sx={{ width: "30%", display: "inline-table" }}>
               <Table>
                 <TableHead sx={{ display: "table-header-group" }}>
                   <TableRow>
-                    <TableCell>שם היעד</TableCell>
-                    <TableCell>תאריך</TableCell>
+                    <TableCell style={{display:"contents"}}>שם היעד</TableCell>
+                    {/* <TableCell>תאריך</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -254,8 +254,8 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
                       index //render all the added goals
                     ) => (
                       <TableRow key={index}>
-                        <TableCell style={{ width: "50%" }}>{row.goalName}</TableCell>
-                        <TableCell style={{ width: "50%" }}>{row.date}</TableCell>
+                        <TableCell style={{display:"contents"}}>{row.goalName}</TableCell>
+                        {/* <TableCell style={{ width: "50%" }}>{row.date}</TableCell> */}
                       </TableRow>
                     )
                   )}
