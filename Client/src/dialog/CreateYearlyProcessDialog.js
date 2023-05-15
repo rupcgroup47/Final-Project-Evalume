@@ -202,7 +202,7 @@ export default function CreateYearlyProcessDialog({
             padding: "20px"
           }}
         >
-          <Typography style={{fontWeight:"bold", fontSize:"larger"}}>בחירת שאלונים</Typography>
+          <Typography style={{ fontWeight: "bold", fontSize: "larger" }}>בחירת שאלונים</Typography>
           <Button onClick={() => setShowOpenEvalueDialog((e) => !e)}>צפייה בשאלונים קיימים</Button>
           <Notifications />
 
@@ -237,12 +237,12 @@ export default function CreateYearlyProcessDialog({
         </Grid>
       </Box>
     </Dialog>
-    <AllExistForms 
-    open={showOpenEvalueDialog}
-    setOpen={setShowOpenEvalueDialog}
-    questionnairesData={questionnairesData}
-    />
-</>
+      <AllExistForms
+        open={showOpenEvalueDialog}
+        setOpen={setShowOpenEvalueDialog}
+        questionnairesData={questionnairesData}
+      />
+    </>
   );
-  
+
 }
