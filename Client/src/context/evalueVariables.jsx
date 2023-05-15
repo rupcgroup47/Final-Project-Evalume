@@ -24,8 +24,8 @@ export default function EvalueContextProvider({ children }) {
     apiQuestionnaire: "https://proj.ruppin.ac.il/cgroup47/prod/quesType/roleGroup_Type?quesType=", //server
     // apiQuestionnaireQuestiones: "https://localhost:7079/questionnaireNum?questionnaireNum=",
     apiQuestionnaireQuestiones: "https://proj.ruppin.ac.il/cgroup47/prod/questionnaireNum?questionnaireNum=", //server
-    apiUserUrllogin: "https://localhost:7079/userEmail/userpassword?",
-    // apiUserUrllogin: "https://proj.ruppin.ac.il/cgroup47/prod/userEmail/userpassword?", //server
+    // apiUserUrllogin: "https://localhost:7079/userEmail/userpassword?",
+    apiUserUrllogin: "https://proj.ruppin.ac.il/cgroup47/prod/userEmail/userpassword?", //server
     // apiGetAllGoals: "https://localhost:7079/api/Goal",
     apiGetAllGoals: "https://proj.ruppin.ac.il/cgroup47/prod/api/Goal", //server
     // apiPostFinishAll: "https://localhost:7079/EvaluationSummeryAnswers",
@@ -40,12 +40,12 @@ export default function EvalueContextProvider({ children }) {
     apiGetGoalsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Goal_Employee?userNum=", //server
     // apiSetEvaluations: "https://localhost:7079/Active_Evaluations",
     apiSetEvaluations: "https://proj.ruppin.ac.il/cgroup47/prod/Active_Evaluations", //server
-    apiInsertNewGoal: "https://localhost:7079/newGoal?goalActive=",
-    // apiInsertNewGoal: "https://proj.ruppin.ac.il/cgroup47/prod/newGoal?goalActive=",//server
-    apiUpdateGoal: "https://localhost:7079/UpdateGoal/goalNum/",
-    // apiUpdateGoalName: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoal/goalNum/", //server
-    apiUpdateGoalStatus: "https://localhost:7079/userNum/",
-    // apiUpdateGoalStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/", //server
+    // apiInsertNewGoal: "https://localhost:7079/newGoal?goalActive=",
+    apiInsertNewGoal: "https://proj.ruppin.ac.il/cgroup47/prod/newGoal?goalActive=",//server
+    // apiUpdateGoal: "https://localhost:7079/UpdateGoal/goalNum/",
+    apiUpdateGoalName: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoal/goalNum/", //server
+    // apiUpdateGoalStatus: "https://localhost:7079/userNum/",
+    apiUpdateGoalStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/", //server
   });
 
 
