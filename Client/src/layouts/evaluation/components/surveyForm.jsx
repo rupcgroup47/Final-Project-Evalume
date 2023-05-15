@@ -142,6 +142,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
           (result) => {
             console.log("success", result);
             if (evalu_Part_Type === 0) {
+              updateLocalStorage();
               setMsg("ענית על כל השאלות, מנהל ייצור איתך קשר לפגישת הערכה");
               setRouteMsg("חזרה לדף הבית");
               setShowCloseDialog((e) => !e); // Error dialog message
@@ -170,6 +171,15 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
       };
     };
   }, [finalSelfEvaluation]);
+
+  const updateLocalStorage = () => {
+    const data = JSON.parse(localStorage.getItem("Current User"));
+    data.self_Evalu = 0;
+    console.log(data);
+    localStorage.setItem("Current User", JSON.stringify(data));
+  }
+
+  console.log("items", items);
 
   const onError = (errors, event) => {
     event.preventDefault();
@@ -245,7 +255,8 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
                       <Grid item xs={2}>
                         <TextField
                           label="הוסף הערה"
-                          value={items.verbalAnswer}
+                          key={"q-" + quesGroup_ID + "-" + questionNum}
+                          value={items.length > 0 ? items?.find((item) => item.id === "q-" + quesGroup_ID + "-" + questionNum)?.verbalAnswer : ""}
                           onChange={(event) =>
                             handleTextFieldChange("q-" + quesGroup_ID + "-" + questionNum, event)
                           }

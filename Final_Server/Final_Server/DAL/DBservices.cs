@@ -94,6 +94,7 @@ public class DBservices
                 employee.ManagerFname = dataReader["managerFname"].ToString();
                 employee.ManagerLName = dataReader["managerLName"].ToString();
                 employee.ManagerEmail = dataReader["managerEmail"].ToString();
+                employee.Self_Evalu = Convert.ToInt32(dataReader["Self_Evalu"]);
             }
 
             return employee;

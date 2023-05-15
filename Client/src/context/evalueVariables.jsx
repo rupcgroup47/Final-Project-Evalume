@@ -24,8 +24,8 @@ export default function EvalueContextProvider({ children }) {
     apiQuestionnaire: "https://proj.ruppin.ac.il/cgroup47/prod/quesType/roleGroup_Type?quesType=", //server
     // apiQuestionnaireQuestiones: "https://localhost:7079/questionnaireNum?questionnaireNum=",
     apiQuestionnaireQuestiones: "https://proj.ruppin.ac.il/cgroup47/prod/questionnaireNum?questionnaireNum=", //server
-    // apiUserUrllogin: "https://localhost:7079/userEmail/userpassword?",
-    apiUserUrllogin: "https://proj.ruppin.ac.il/cgroup47/prod/userEmail/userpassword?", //server
+    apiUserUrllogin: "https://localhost:7079/userEmail/userpassword?",
+    // apiUserUrllogin: "https://proj.ruppin.ac.il/cgroup47/prod/userEmail/userpassword?", //server
     // apiGetAllGoals: "https://localhost:7079/api/Goal",
     apiGetAllGoals: "https://proj.ruppin.ac.il/cgroup47/prod/api/Goal", //server
     // apiPostFinishAll: "https://localhost:7079/EvaluationSummeryAnswers",
