@@ -32,7 +32,7 @@ import { useEffect, useState, useContext } from "react";
 import { EvalueContext } from "context/evalueVariables";
 // import { MainStateContext } from "App";
 
-export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal, initGoalName, condition }) {
+export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal, initGoalName, condition, fromFeedback }) {
   const [newGoalName, setNewGoalName] = useState(initGoalName);
   const [update, setUpdate] = useState(false);
   const [post, setPost] = useState(false);
@@ -229,11 +229,16 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
                 is_Active: 1
               };
               //Add new goal at the end of the array
-              setGoals((oldArray) => [...oldArray, NewGoalRes]);
-              setItems((oldArray) => [...oldArray, NewGoalRes]);
+              if(fromFeedback){
+                setGoals((oldArray) => [...oldArray, NewGoalRes]);
+              }
+              else{
+                setGoals((oldArray) => [...oldArray, NewGoalRes]);
+                setItems((oldArray) => [...oldArray, NewGoalRes]);
+              }
               swal({
                 title: "הצלחנו!",
-                text: "היעד עודכן בהצלחה",
+                text: "היעד נוסף בהצלחה",
                 icon: "success",
                 button: "סגור"
               });

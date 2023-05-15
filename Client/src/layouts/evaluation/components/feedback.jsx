@@ -3,7 +3,6 @@ import { useMaterialUIController, setDirection } from "context";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-import { Paper, Box, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import {
   Table,
@@ -13,13 +12,21 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Tooltip,
+  IconButton,
+  Paper,
+  Box,
+  Button
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
 import DialogSurvey from "./DialogSurvey";
 import { EvalueContext } from "context/evalueVariables";
+import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
+import GoalsInfoTable from "../../goals/GoalsInfoTable";
 
 registerLocale("he", he);
 
@@ -39,6 +46,7 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
   const [employeeOpinion, setEmployeeOpinion] = useState("");
   const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
   const [allGoals, setAllGoals] = useState([]); //Format to send to the server
+  const [showCreateGoalDialog, setShowCreateGoalDialog] = useState(false);
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -168,7 +176,7 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
     setRows([...rows, { goalName: goalName }]); //Format to display table , date: date
     setAllGoals([...allGoals, { goalNum: selectedId }]); //Format to send to the server , date: date
     setGoalName("");
-    setDate("");
+    // setDate("");
   };
 
   function sendFeedbackToServer() {
@@ -181,107 +189,128 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
     setFinalfeedbackForm({ ...newObj });
   }
 
-  return (
-    <Paper
-      sx={{ boxShadow: "none", minWidth: 300, maxWidth: 1200, margin: "auto", marginTop: "50px" }}
-    >
-      <Grid container direction="row" spacing={3} marginTop="-10px">
-        <Grid item xs={12}>
-          <Typography textAlign="center">חוות דעת מנהל</Typography>
-          <Box textAlign="center">
-            <TextField
-              label="הוסף מלל"
-              InputProps={{
-                style: { fontSize: 20, height: "150px", width: "550px", alignItems: "baseline" },
-              }}
-              multiline
-              maxRows={3}
-              value={managerOpinion}
-              onChange={(event) => setManagerOpinion(event.target.value)}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography textAlign="center">חוות דעת עובד</Typography>
-          <Box textAlign="center">
-            <TextField
-              label="הוסף מלל"
-              InputProps={{
-                style: { fontSize: 20, height: "150px", width: "550px", alignItems: "baseline" },
-              }}
-              multiline
-              maxRows={3}
-              value={employeeOpinion}
-              onChange={(event) => setEmployeeOpinion(event.target.value)}
-            />
-          </Box>
-        </Grid>{" "}
-        <Grid item xs={12}>
-          <Typography textAlign="center">הצבת יעדים</Typography>
-          <Box textAlign="center">
-            <div style={{ display: "grid", rowGap: "20px", maxWidth: "fit-content", margin: "5px auto" }}>
-              <select value={goalName} onChange={handleNameChange}>
-                <option value="">---בחירת יעד---</option>
-                {goalNames.map((goal) => (
-                  <option key={goal.goalNum} value={goal.goalName}>
-                    {goal.goalName}
-                  </option>
-                ))}
-              </select>
 
-              {/* <DatePicker label="תאריך יעד" value={date} locale="he" onChange={handleDateChange} /> */}
-              <Button
-                variant="contained"
-                color="white"
-                className={classes.button}
-                onClick={handleAddRow}
-              >
-                יצירת יעד לעובד{" "}
-              </Button>
-            </div>
-            <TableContainer sx={{ width: "30%", display: "inline-table" }}>
-              <Table>
-                <TableHead sx={{ display: "table-header-group" }}>
-                  <TableRow>
-                    <TableCell style={{display:"contents"}}>שם היעד</TableCell>
-                    {/* <TableCell>תאריך</TableCell> */}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map(
-                    (
-                      row,
-                      index //render all the added goals
-                    ) => (
-                      <TableRow key={index}>
-                        <TableCell style={{display:"contents"}}>{row.goalName}</TableCell>
-                        {/* <TableCell style={{ width: "50%" }}>{row.date}</TableCell> */}
-                      </TableRow>
-                    )
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
+
+  return (
+    <>
+      <Paper
+        sx={{ boxShadow: "none", minWidth: 300, maxWidth: 1200, margin: "auto", marginTop: "50px" }}
+      >
+        <Grid container direction="row" spacing={3} marginTop="-10px">
+          <Grid item xs={12}>
+            <Typography textAlign="center">חוות דעת מנהל</Typography>
+            <Box textAlign="center">
+              <TextField
+                label="הוסף מלל"
+                InputProps={{
+                  style: { fontSize: 20, height: "150px", width: "550px", alignItems: "baseline" },
+                }}
+                multiline
+                maxRows={3}
+                value={managerOpinion}
+                onChange={(event) => setManagerOpinion(event.target.value)}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography textAlign="center">חוות דעת עובד</Typography>
+            <Box textAlign="center">
+              <TextField
+                label="הוסף מלל"
+                InputProps={{
+                  style: { fontSize: 20, height: "150px", width: "550px", alignItems: "baseline" },
+                }}
+                multiline
+                maxRows={3}
+                value={employeeOpinion}
+                onChange={(event) => setEmployeeOpinion(event.target.value)}
+              />
+            </Box>
+          </Grid>{" "}
+          <Grid item xs={12}>
+            <Typography textAlign="center">הצבת יעדים</Typography>
+            <Box textAlign="center">
+              <div style={{ display: "grid", rowGap: "20px", maxWidth: "fit-content", margin: "5px auto" }}>
+                <div style={{ display: "flex"}}>
+                  <select value={goalName} onChange={handleNameChange}>
+                    <option value="">---בחירת יעד קיים---</option>
+                    {goalNames.map((goal) => (
+                      <option key={goal.goalNum} value={goal.goalName}>
+                        {goal.goalName}
+                      </option>
+                    ))}
+                  </select>
+                  <Box style={{ display: "flex" }}>
+                    <Tooltip title="הוספה">
+                      <IconButton
+                        color="primary"
+                        onClick={() => setShowCreateGoalDialog(true)}
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </div>
+                {/* <DatePicker label="תאריך יעד" value={date} locale="he" onChange={handleDateChange} /> */}
+                <Button
+                  variant="contained"
+                  color="white"
+                  className={classes.button}
+                  onClick={handleAddRow}
+                >
+                  יצירת יעד לעובד{" "}
+                </Button>
+              </div>
+              <TableContainer sx={{ width: "30%", display: "inline-table" }}>
+                <Table>
+                  <TableHead sx={{ display: "table-header-group" }}>
+                    <TableRow>
+                      <TableCell style={{ display: "contents" }}>שם היעד</TableCell>
+                      {/* <TableCell>תאריך</TableCell> */}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map(
+                      (
+                        row,
+                        index //render all the added goals
+                      ) => (
+                        <TableRow key={index}>
+                          <TableCell style={{ display: "contents" }}>{row.goalName}</TableCell>
+                          {/* <TableCell style={{ width: "50%" }}>{row.date}</TableCell> */}
+                        </TableRow>
+                      )
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-      <br />
-      <Box textAlign="center">
-        <Button variant="contained" color="white" onClick={handleSubmit}>
-          סיום הערכה שנתית
-        </Button>
-      </Box>
-      <br />
-      <DialogSurvey
-        open={showCloseDialog}
-        setOpen={setShowCloseDialog}
-        msg={statusMsg}
-        finishRouteMsg={finishRouteMsg}
-        onClick={() => {
-          setShowCloseDialog((e) => !e);
-        }}
+        <br />
+        <Box textAlign="center">
+          <Button variant="contained" color="white" onClick={handleSubmit}>
+            סיום הערכה שנתית
+          </Button>
+        </Box>
+        <br />
+        <DialogSurvey
+          open={showCloseDialog}
+          setOpen={setShowCloseDialog}
+          msg={statusMsg}
+          finishRouteMsg={finishRouteMsg}
+          onClick={() => {
+            setShowCloseDialog((e) => !e);
+          }}
+        />
+      </Paper>
+      <CreateOrUpdateGoalDialog
+        open={showCreateGoalDialog}
+        setOpen={setShowCreateGoalDialog}
+        setGoals={setGoalNames}
+        fromFeedback={true}
       />
-    </Paper>
+    </>
   );
 }
 const useStyles = makeStyles({
