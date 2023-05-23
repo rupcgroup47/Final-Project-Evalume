@@ -28,7 +28,7 @@ const evalues = [
 ];
 
 
-export default function MyEvalues({evalus}) {
+export default function MyEvalues({ evalus }) {
   const [tableHead, setTableHead] = useState({
     id: "evalueYear",
     align: "center",
@@ -44,12 +44,12 @@ export default function MyEvalues({evalus}) {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
- 
 
-  useEffect(() => {
-    setDirection(dispatch, "rtl");
-    return () => setDirection(dispatch, "ltr");
-  }, []);
+
+  // useEffect(() => {
+  //   setDirection(dispatch, "rtl");
+  //   return () => setDirection(dispatch, "ltr");
+  // }, []);
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items?.length);
 
@@ -113,11 +113,6 @@ export default function MyEvalues({evalus}) {
     const newData = calculateData(userId, year);
     setData(newData);
   }
-
-  useEffect(() => {
-    // This code will be executed whenever the `data` state changes
-    console.log(data);
-  }, [data]);
 
   // console.log("fetch" + state);
   return (
