@@ -41,7 +41,7 @@ function Header({ children,questionnairesData}) {
   const { mainState, setMainState } = useContext(MainStateContext);
 
   return (
-    <MDBox position="relative" mb={5}>
+    <MDBox position="relative">
       <MDBox
         display="flex"
         alignItems="center"

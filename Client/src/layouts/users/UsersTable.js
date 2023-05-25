@@ -202,7 +202,7 @@ export default function UsersTable({ users, setUsers }) {
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
   return (
-    <Paper sx={{ boxShadow: "none" }} style={{overflowY:"scroll"}}>
+    <Paper sx={{ boxShadow: "none" }}>
       <TableToolbar
         // Users
         users={users}
@@ -248,7 +248,7 @@ export default function UsersTable({ users, setUsers }) {
                       key={item.id}
                       align={item.textAlign || ""}
                       padding={item.disablePadding ? "none" : "normal"}
-                      sx={{ fontWeight: 600 }}
+                      sx={{ fontWeight: 600, padding: "4px"}}
                     >
                       {item.label}
                     </TableCell>

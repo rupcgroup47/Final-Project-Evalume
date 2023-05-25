@@ -64,7 +64,7 @@ export default function TableToolbar({
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          padding: "16px 16px  8px 16px",
+          padding: "4px 4px  4px 4px",
         }}
       >
         <div
