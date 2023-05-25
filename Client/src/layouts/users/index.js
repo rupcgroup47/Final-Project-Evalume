@@ -28,9 +28,7 @@ import { useMaterialUIController, setDirection } from "context";
 function Users() {
   const [users, setUsers] = useState([]);
   const [, dispatch] = useMaterialUIController();
-  // const [validationsMsg, setMsg] = useState("");
   const { mainState, setMainState } = useContext(MainStateContext);
-  // const [depState, setDepState] = useState([]);
   const { API, depState, setDepState } = useContext(EvalueContext);
 
   // bring all the users using GET api
@@ -129,20 +127,10 @@ function Users() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  // const value = useMemo(
-  //   () => ({
-  //     depState,
-  //     setDepState,
-  //   }),
-  //   [depState]
-  // );
-
   return (
-    // <DepartmentStateContext.Provider value={value}>
     <Container maxWidth="xl" sx={{ pt: 3, pb: 3 }}>
       <UsersTable users={users} setUsers={setUsers} />
     </Container>
-    // </DepartmentStateContext.Provider>
   );
 }
 

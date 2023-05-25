@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     fontFamily: 'Rubik',
-    color:"blue"
+    color: "blue"
 
   },
   text1: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "right",
     fontFamily: 'Rubik'
-    },text2: {
+  }, text2: {
     margin: 12,
     fontSize: 10,
     textAlign: "right",
@@ -71,14 +71,16 @@ const styles = StyleSheet.create({
 
   },
 });
+
 const objects = [
   { name: 'John Doe', age: 30, email: 'john.doe@example.com' },
   { name: 'Jane Smith', age: 25, email: 'jane.smith@example.com' },
   { name: 'Bob Johnson', age: 40, email: 'bob.johnson@example.com' },
 ];
+
 const PDFFile = () => {//receive the selected form by year and user 
-    return(
-      <Document>
+  return (
+    <Document>
       <Page>
         <View>
           <Table>
@@ -97,7 +99,7 @@ const PDFFile = () => {//receive the selected form by year and user
         </View>
       </Page>
     </Document>
-    )
+  )
 
 };
 

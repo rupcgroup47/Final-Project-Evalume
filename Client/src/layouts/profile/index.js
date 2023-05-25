@@ -7,7 +7,8 @@ import { useEffect, useState, useContext } from "react";
 import { MainStateContext } from "App";
 import { EvalueContext } from "context/evalueVariables";
 import { useMaterialUIController, setDirection } from "context";
-import swal from 'sweetalert';
+
+// import swal from 'sweetalert';
 
 // import OpenEvaluation from "./components/Header/openEvaluation";
 // Data
@@ -262,13 +263,14 @@ function Overview() {
   return (
     <Header questionnairesData={questionnairesData}>
       <MDBox mt={3} mb={3}>
-        <Grid container spacing={1}>
+        <Grid container spacing={1} style={{marginTop: ""}}>
           {/* //Profile card */}
           <Grid
             item
             xs={12}
             xl={5}
             sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            style={{paddingTop:"0px"}}
           >
             <Grid container spacing={5} direction="column" style={{ maxWidth: "450px", alignContent: "center", margin: "auto" }}>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>

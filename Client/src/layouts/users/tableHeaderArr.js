@@ -61,7 +61,7 @@ export const tableHeadArr = [
         textAlign: "center",
         disablePadding: false,
         label: "דרג",
-        show: true,
+        show: false,
     },
     {
         id: "managerName",
