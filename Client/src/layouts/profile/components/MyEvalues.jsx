@@ -15,6 +15,10 @@ import PDFFile from "layouts/evaluation/components/PDFFile";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Button } from "@mui/material";
 import { MainStateContext } from "App";
+import { EvalueContext } from "context/evalueVariables";
+import ApiFetcher from "components/ApiFetcher";
+import swal from 'sweetalert';
+import CircularProgress from "@mui/material/CircularProgress";
 // import { ContactSupportOutlined } from "@mui/icons-material";
 // import ApiFetcher from "components/ApiFetcher";
 // import { EvalueContext } from "context/evalueVariables";
@@ -22,10 +26,10 @@ import { MainStateContext } from "App";
 // import CircularProgress from "@mui/material/CircularProgress";
 
 
-const evalues = [
-  { id: 1, year: 2022 },
-  { id: 2, year: 2023 },
-];
+// const evalues = [
+//   { id: 1, year: 2022 },
+//   { id: 2, year: 2023 },
+// ];
 
 
 export default function MyEvalues({ evalus }) {
@@ -37,13 +41,18 @@ export default function MyEvalues({ evalus }) {
     label: "שאלוני הערכה",
     show: true,
   });
+
   const mainState = useContext(MainStateContext);
   const userId = mainState.mainState.userNum; //The employee who is now connected to the system
   const [items, setItems] = useState(evalus);
   const [, dispatch] = useMaterialUIController();
   const [data, setData] = useState([]);
+  const [dataFetched, setdataFetched] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { API } = useContext(EvalueContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
   // useEffect(() => {
@@ -105,13 +114,98 @@ export default function MyEvalues({ evalus }) {
 
     }
     return data;
+  }
 
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+  //   if (evalus.length === 0 && mainState.userNum) {
+  //     fetch(
+  //       API.apiGetPDFdetails + "14&questionnaireNum=15" + mainState.userNum,
+  //       {
+  //         method: "GET",
+  //         headers: new Headers({
+  //           "Content-Type": "application/json; charset=UTF-8",
+  //           Accept: "application/json; charset=UTF-8",
+  //         }),
+  //         body: state.fetch.body,
+  //         signal: abortController.signal
+  //       })
+  //       .then(async response => {
+  //         const data = await response.json();
+  //         console.log(response);
+
+  //         if (!response.ok) {
+  //           // get error message from body or default to response statusText
+  //           const error = (data && data.message) || response.statusText;
+  //           return Promise.reject(error);
+  //         }
+
+  //         return data;
+  //       })
+  //       .then(
+  //         (result) => {
+  //           console.log("success");
+  //           if (result[0].text !== undefined) {
+  //             console.log(result[0].text);
+  //           }
+  //           else {
+  //             setEvalus(result);
+  //             // setState({ evalus: result });
+  //           }
+  //         },
+  //         (error) => {
+  //           if (error.name === 'AbortError') return
+  //           console.log("err get=", error);
+  //           throw error;
+  //         }
+  //       );
+  //     return () => {
+  //       abortController.abort()
+  //       // stop the query by aborting on the AbortController on unmount
+  //     }
+  //   }
+  // }, []);
+
+
+  const updateData = async (id) => {
+    try {
+      setLoading(true);
+      const fetchedData = await ApiFetcher(API.apiGetPDFdetails + userId + "&questionnaireNum=" + id, "GET", null);
+      console.log(fetchedData);
+      setData(fetchedData);
+      setdataFetched(true);
+      setLoading(false);
+    }
+    catch (error) {
+      setError(error);
+      setLoading(false);
+    }
   }
 
 
-  function updateData(year) {
-    const newData = calculateData(userId, year);
-    setData(newData);
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "block",
+          alignSelf: "center",
+          alignItems: "center",
+          height: "100%",
+          backgroundColor: "white",
+        }}
+      >
+        <CircularProgress size={300} sx={{ alignSelf: "center", margin: 50 }} />
+      </Box>
+    );
+  }
+
+  if (error) {
+    swal({
+      title: "קרתה תקלה!",
+      text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+      icon: "error",
+      button: "סגור"
+    });
   }
 
   // console.log("fetch" + state);
@@ -141,6 +235,7 @@ export default function MyEvalues({ evalus }) {
                 sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
                 hover
               >
+                {/* {console.log(evalue)} */}
                 {/* {" "} */}
                 <TableCell align="left" >
                   {/* {console.log(evalue.name)} */}
@@ -148,15 +243,21 @@ export default function MyEvalues({ evalus }) {
                 </TableCell>
                 <TableCell align="center" >
                   {/* {console.log(evalue.name)} */}
-                  <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה">
+                  <Button onClick={() => updateData(evalue.id)}>הורד קובץ כPFD</Button>
+                  {dataFetched && (
+                    <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה.pdf">
+                      {({ loading }) => loading ? ('טוען מידע לפני הורדה...') : ( <Button id="pdf-download-link" > הורד</Button>)}
+                    </PDFDownloadLink>
+                  )}
+                  {/* <PDFDownloadLink document={<PDFFile data={data} year={evalue.year}/>} fileName="טופס הערכה">
                     {({ loading }) =>
                       loading ? (
                         <Button>שגיאה</Button>
                       ) : (
-                        <Button onClick={() => updateData(evalue.year)}>הורד קובץ כPFD</Button>
+                        <Button onClick={() => updateData(evalue.id)}>הורד קובץ כPFD</Button>
                       )
                     }
-                  </PDFDownloadLink>{" "}
+                  </PDFDownloadLink>{" "} */}
                 </TableCell>
               </TableRow>
             ))}
@@ -192,6 +293,11 @@ export default function MyEvalues({ evalus }) {
         }
         labelRowsPerPage="מספר שורות להציג:"
       />
+      {/* {dataFetched && (
+        <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה.pdf">
+          {({ blob, url, loading, error }) => loading ? ('טוען מידע לפני הורדה...') : (<Button id="pdf-download-link" onClick={handleDocumentLoad} style={{ display: 'none' }}></Button>)}
+        </PDFDownloadLink>
+      )} */}
     </Paper>
   );
 }
