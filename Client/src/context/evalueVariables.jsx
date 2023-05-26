@@ -34,8 +34,8 @@ export default function EvalueContextProvider({ children }) {
     apiGetEmployeeStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum?userNum=", //
     // apiGoalsEmployee: "https://localhost:7079/userManager?userManager=",
     apiGoalsEmployee: "https://proj.ruppin.ac.il/cgroup47/prod/userManager?userManager=", //server
-    // apiGetEvaluationsByUserNum: "https://localhost:7079/api/Rel_Questions_EvaluQues",
-    apiGetEvaluationsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues", //server
+    // apiGetEvaluations: "https://localhost:7079/api/Rel_Questions_EvaluQues",
+    apiGetEvaluations: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues", //server
     // apiGetGoalsByUserNum: "https://localhost:7079/api/Rel_Goal_Employee?userNum=",
     apiGetGoalsByUserNum: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Goal_Employee?userNum=", //server
     // apiSetEvaluations: "https://localhost:7079/Active_Evaluations",
@@ -46,6 +46,8 @@ export default function EvalueContextProvider({ children }) {
     apiUpdateGoalName: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoal/goalNum/", //server
     // apiUpdateGoalStatus: "https://localhost:7079/userNum/",
     apiUpdateGoalStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/", //server
+    apiGetPDFdetails: "https://localhost:7079/userNum/questionnaireNum?userNum=",
+    // apiGetPDFdetails: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/questionnaireNum?userNum=", //server
   });
 
 

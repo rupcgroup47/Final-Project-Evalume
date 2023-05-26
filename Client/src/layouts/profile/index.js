@@ -34,35 +34,12 @@ function Overview() {
     // tmpResult: [],
   });
 
-  // useEffect(() => {
-  //   console.log(mainState);
-  //   if (state.evalus === null) {
-  //     setState({
-  //       fetch: {
-  //         api: API.apiGetEvaluationsByUserNum + mainState.userNum,
-  //         method: "GET",
-  //         body: undefined,
-  //       }
-  //     })
-  //   }
-  //   if(state.evalus !== null && state.goals === null){
-  //     setState({
-  //       fetch: {
-  //         api: API.apiGetEvaluationsByUserNum + mainState.userNum,
-  //         method: "GET",
-  //         body: undefined,
-  //       }
-  //     })
-  //   }
-  // }, [mainState])
-
-
   // bring all the user eveluations using GET api
   useEffect(() => {
     const abortController = new AbortController();
     if (evalus.length === 0 && mainState.userNum) {
       fetch(
-        API.apiGetEvaluationsByUserNum + "/" + mainState.userNum,
+        API.apiGetEvaluations + "/" + mainState.userNum,
         {
           method: "GET",
           headers: new Headers({
@@ -138,6 +115,7 @@ function Overview() {
         .then(
           (result) => {
             console.log("success");
+            console.log(result);
             setGoals(result);
             // setState({ goals: result });
           },
@@ -205,7 +183,7 @@ function Overview() {
     const abortController = new AbortController();
     if (evalus.length === 0) {
       fetch(
-        API.apiGetEvaluationsByUserNum,
+        API.apiGetEvaluations,
         {
           method: "GET",
           headers: new Headers({

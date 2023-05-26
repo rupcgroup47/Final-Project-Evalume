@@ -60,6 +60,7 @@ function ManagerEvalues() {
               setFinishState(true);
             }
             else {
+              console.log(result);
               setQuestionnaireNum(result.questionnaireNum);
               setQuestionsResp(result.questionsList);
               setShowForm(true);

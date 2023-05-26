@@ -43,7 +43,7 @@ export default function ProfileAlerts({ tmpResult }) {
     }
 
   }, [tempResualt])
-  console.log(mainState);
+  // console.log(mainState);
 
   const [arrAlerts, setArrAlerts] = useState(
     [

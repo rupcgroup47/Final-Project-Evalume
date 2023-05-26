@@ -16,7 +16,7 @@ const PersonalGoals = ({ goals }) => {///receive all user goals and their data
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  console.log("myGoalsData" + goals);
+  // console.log(goals);
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - goals?.length);
 
