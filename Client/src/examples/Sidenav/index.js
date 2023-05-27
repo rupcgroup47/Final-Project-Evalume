@@ -196,16 +196,15 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       />
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
-        {/* <LinkDom to="layouts/info/SystemInfo"> */}
+        <LinkDom to="/userInfo"> 
         <MDButton rel="noreferrer" variant="gradient" color={sidenavColor} fullWidth>
           מידע למשתמש
         </MDButton>
-        {/* </LinkDom> */}
+        </LinkDom> 
       </MDBox>
     </SidenavRoot>
   );
 }
-
 // Setting default values for the props of Sidenav
 Sidenav.defaultProps = {
   color: "info",

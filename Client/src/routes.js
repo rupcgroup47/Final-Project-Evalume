@@ -53,6 +53,7 @@ import MeetingCalendar from "layouts/meetings/Calendar";
 import Feedback from "layouts/evaluation/components/feedback";
 import BuildEvaluation from "layouts/evalue/buildEvaluation";
 import GoalsInfoTable from "layouts/goals/GoalsInfoTable";
+import UserInfo from "layouts/userInfo/userInfo";
 const routes = [
   {
     type: "collapse",
@@ -61,6 +62,16 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "מידע למשתמש",
+    key: "infp",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/userInfo",
+    component: <UserInfo />,
+    isHiddenFromSideNav: true
+
   },
   {
     type: "collapse",
