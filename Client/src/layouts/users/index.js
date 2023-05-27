@@ -76,50 +76,50 @@ function Users() {
     }
   }, []);
 
-  useEffect(() => {
-    // Get importent details and set the main context
-    const abortController = new AbortController();
-    fetch(
-      API.apiDeprUrl,
-      {
-        method: "GET",
-        headers: new Headers({
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "application/json; charset=UTF-8",
-        }),
-        signal: abortController.signal,
-      })
-      .then(async (response) => {
-        const data = await response.json();
-        console.log(response);
+  // useEffect(() => {
+  //   // Get importent details and set the main context
+  //   const abortController = new AbortController();
+  //   fetch(
+  //     API.apiDeprUrl,
+  //     {
+  //       method: "GET",
+  //       headers: new Headers({
+  //         "Content-Type": "application/json; charset=UTF-8",
+  //         Accept: "application/json; charset=UTF-8",
+  //       }),
+  //       signal: abortController.signal,
+  //     })
+  //     .then(async (response) => {
+  //       const data = await response.json();
+  //       console.log(response);
 
-        if (!response.ok) {
-          // get error message from body or default to response statusText
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
+  //       if (!response.ok) {
+  //         // get error message from body or default to response statusText
+  //         const error = (data && data.message) || response.statusText;
+  //         return Promise.reject(error);
+  //       }
 
-        return data;
-      })
-      .then(
-        (result) => {
-          console.log("success");
-          if (!localStorage.getItem("Department list")) {
-            localStorage.setItem("Department list", JSON.stringify(result));
-          }
-          setDepState(result.map((index) => (index.depName)));
-        },
-        (error) => {
-          if (error.name === "AbortError") return;
-          console.log("err get=", error);
-          throw error;
-        }
-      );
-    return () => {
-      abortController.abort();
-      // stop the query by aborting on the AbortController on unmount
-    };
-  }, []);
+  //       return data;
+  //     })
+  //     .then(
+  //       (result) => {
+  //         console.log("success");
+  //         if (!localStorage.getItem("Department list")) {
+  //           localStorage.setItem("Department list", JSON.stringify(result));
+  //         }
+  //         setDepState(result.map((index) => (index.depName)));
+  //       },
+  //       (error) => {
+  //         if (error.name === "AbortError") return;
+  //         console.log("err get=", error);
+  //         throw error;
+  //       }
+  //     );
+  //   return () => {
+  //     abortController.abort();
+  //     // stop the query by aborting on the AbortController on unmount
+  //   };
+  // }, []);
 
   // Changing the direction to rtl
   useEffect(() => {
