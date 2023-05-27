@@ -1,17 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useMemo } from "react";
 
@@ -32,27 +18,26 @@ import MDTypography from "components/MDTypography";
 // VerticalBarChart configurations
 import configs from "examples/Charts/BarCharts/VerticalBarChart/configs";
 
-// Material Dashboard 2 React base styles
-import colors from "assets/theme/base/colors";
 
 function VerticalBarChart({ icon, title, description, height, chart }) {
-  const chartDatasets = chart.datasets
-    ? chart.datasets.map((dataset) => ({
-        ...dataset,
-        weight: 5,
-        borderWidth: 0,
-        borderRadius: 4,
-        backgroundColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
-        fill: false,
-        maxBarThickness: 35,
-      }))
-    : [];
+  // const chartDatasets = chart.datasets
+  //   ? chart.datasets.map((dataset) => ({
+  //       ...dataset,
+  //       weight: 5,
+  //       borderWidth: 0,
+  //       borderRadius: 4,
+  //       // backgroundColor: colors[dataset.color]
+  //       //   ? colors[dataset.color].main
+  //       //   : colors.dark.main,
+  //       fill: false,
+  //       maxBarThickness: 35,
+  //     }))
+  //   : [];
 
-  const { data, options } = configs(chart.labels || [], chartDatasets);
+  const { data, options } = configs(chart.labels || [], chart.datasets);
 
   const renderChart = (
+    
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
       {title || description ? (
         <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
