@@ -8,6 +8,7 @@ import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
 import { MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box} from '@mui/material';
 import MDBox from "components/MDBox";
+import CreateOrUpdateUserDialog from "dialog/CreateOrUpdateUserDialog";
 import {
   navbar,
   navbarContainer,
@@ -32,7 +33,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
-
+  const isUserUpdate = true;
 
   useEffect(() => {
     // Setting the navbar type
@@ -67,6 +68,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openDialog, setOpenDialog] = useState(false);
   const storedUserInformation = JSON.parse(localStorage.getItem('Current User'));
   const [userInformation, setUserInformation] = useState(storedUserInformation || {});
+  const [showUpdateUserDialog, setShowUpdateUserDialog] = useState(false);
 
   const handleUpdateUser = () => {
     setOpenDialog(true);
@@ -92,12 +94,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-       <MenuItem onClick={handleUpdateUser}>עדכון פרטי משתמש</MenuItem>
+       <MenuItem onClick={() => setShowUpdateUserDialog((e) => !e)}>עדכון פרטי משתמש</MenuItem>
        <MenuItem onClick={handleLogout}>התנתקות</MenuItem>
           
     
     </Menu>
   );
+
+  const handleSaveChanges = () => {
+    setOpenDialog(false);
+    console.log('Updated details:');
+  };
+
 
   return (
     <div>
@@ -150,33 +158,45 @@ function DashboardNavbar({ absolute, light, isMini }) {
       </Toolbar>
     </AppBar>
 
-<Dialog open={openDialog} onClose={handleCloseDialog}>
+<Dialog open={openDialog} onClose={handleCloseDialog} fullWidth>
         <DialogTitle>עדכון פרטי משתמש</DialogTitle>
         <DialogContent>
           <br/>
-        <Box mb={6}>
+        <Box mb={3}>
         <TextField label="שם פרטי" fullWidth value={userInformation.userFName || ''} />
         </Box>
-        <Box mb={6}>
+        <Box mb={3}>
         <TextField label="שם משפחה" fullWidth value={userInformation.userLName || ''} />
         </Box>
-        <Box mb={6}>
+        <Box mb={3}>
         <TextField label="תעודת זהות" fullWidth value={userInformation.userId || ''} />
         </Box>
-        <Box mb={6}>
+        <Box mb={3}>
+        <TextField label="מספר טלפון" fullWidth value={userInformation.userPhoneNum || ''} />
+        </Box>
+        <Box mb={3}>
           <TextField label="אימייל" fullWidth value={userInformation.userEmail || ''}/>
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>ביטול</Button>
-          {/* <Button onClick={handleSaveChanges}>Save Changes</Button> */}
+          <Button onClick={handleSaveChanges}>שמירה</Button>
         </DialogActions>
       </Dialog>
+
+      <CreateOrUpdateUserDialog
+        open={showUpdateUserDialog}
+        setOpen={setShowUpdateUserDialog}
+        user={userInformation}
+        isUserUpdate ={isUserUpdate}
+        // users={users}
+        // setUsers={setUsers}
+        // setItems={setItems}
+      />
     </div>
 
   );
 }
-// localStorage.getItem("Department list")
 // Setting default values for the props of DashboardNavbar
 DashboardNavbar.defaultProps = {
   absolute: false,

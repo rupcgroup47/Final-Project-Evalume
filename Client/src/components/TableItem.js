@@ -30,7 +30,7 @@ export default function TableItem({
 }) {
   const [showUpdateUserDialog, setShowUpdateUserDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
-
+const isUserUpdate = false;
   return (
     <>
       <TableRow
@@ -112,6 +112,7 @@ export default function TableItem({
         users={users}
         setUsers={setUsers}
         setItems={setItems}
+        isUserUpdate = {isUserUpdate}
       />
 
       <CloseDialog

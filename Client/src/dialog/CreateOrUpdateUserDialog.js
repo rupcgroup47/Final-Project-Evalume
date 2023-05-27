@@ -36,7 +36,7 @@ import { useContext, useEffect, useState } from "react";
 import { EvalueContext } from "context/evalueVariables";
 import swal from 'sweetalert';
 
-export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setItems, user }) {
+export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setItems, user, isUserUpdate }) {
   const {
     register,
     handleSubmit,
@@ -420,145 +420,129 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
               {errors.department && "מחלקה היא שדה חובה"}
             </FormHelperText>
           </FormControl>
-          <TextField
-            size="small"
-            id="job"
-            label="תפקיד"
-            type="job"
-            error={errors.job}
-            helperText={errors.job && "תפקיד הוא שדה חובה"}
-            {...register("job", { required: true, maxLength: 30 })}
-            sx={{ m: 0, width: "100%" }}
-          />
-          <FormControl
-            size="small"
-            error={errors.roleType}
-            sx={{ m: 0, width: "100%" }}
-          >
-            <InputLabel id="roleType-label">סוג תפקיד</InputLabel>
-            <Select
-              labelId="roleType-label"
-              id="roleType"
-              label="סוג תפקיד"
-              {...register("roleType", { required: true })}
-              style={{ height: "2.6375em", alignContent: "center" }}
-              // Handle the change event
-              value={roleType}
-              onChange={(e) => setroleType(e.target.value)}
-            >
-              {roleTypes.map((roleType) => (
-                <MenuItem key={roleType} value={roleType}>
-                  {roleType}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>{errors.roleType && "סוג תפקיד הוא שדה חובה"}</FormHelperText>
-          </FormControl>
-          <FormControl
-            size="small"
-            error={errors.roleGroup}
-            sx={{ m: 0, width: "100%" }}
-          >
-            <InputLabel id="roleGroup-label">סוג תפקידן</InputLabel>
-            <Select
-              labelId="roleGroup-label"
-              id="roleGroup"
-              label="סוג תפקידן"
-              {...register("roleGroup", { required: true })}
-              style={{ height: "2.6375em", alignContent: "center" }}
-              // Handle the change event
-              value={roleGroup}
-              onChange={(e) => setroleGroup(e.target.value)}
-            >
-              {roleGroups.map((roleGroup) => (
-                <MenuItem key={roleGroup} value={roleGroup}>
-                  {roleGroup}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>{errors.roleGroup && "סוג תפקידן הוא שדה חובה"}</FormHelperText>
-          </FormControl>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              gap: 20,
-            }}
-          >
-            <TextField
+          {!isUserUpdate ? 
+          <><TextField
               size="small"
-              id="managerFname"
-              label="שם פרטי מנהל"
-              error={errors.managerFname}
-              helperText={errors.managerFname && "שם פרטי הוא שדה חובה"}
-              {...register("managerFname", { required: true, maxLength: 20 })}
-              sx={{ m: 0, width: "100%" }}
-            />
-            <TextField
-              size="small"
-              id="managerLName"
-              label="שם משפחה מנהל"
-              error={errors.managerLName}
-              helperText={errors.managerLName && "שם משפחה הוא שדה חובה"}
-              {...register("managerLName", { required: true, maxLength: 20 })}
-              sx={{ m: 0, width: "100%" }}
-            />
-          </div>
-          <TextField
-            size="small"
-            id="managerEmail"
-            label="אימייל מנהל"
-            type="managerEmail"
-            error={errors.managerEmail}
-            helperText={errors.managerEmail && "אימייל הוא שדה חובה"}
-            {...register("managerEmail", {
-              required: true,
-              pattern: {
-                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                message: "האימייל אינו תקין",
-              },
-            })}
-            sx={{ m: 0, width: "100%" }}
-          />
-          <FormControl
-            size="small"
-            error={errors.isActive}
-            sx={{ m: 0, width: "100%" }}
-          >
-            <FormControlLabel
-              value={isActiveState}
-              control={
-                <Checkbox
-                  inputProps={{ "aria-label": "Checkbox is_Active" }}
-                  {...register("isActive")}
-                  checked={isActiveState}
-                  onChange={(e) => setisActiveState(e.target.checked)}
-                />
-              }
-              label="פעיל?"
-            />
-            <FormHelperText>{errors.isActive && "הפעלה הוא שדה חובה"}</FormHelperText>
-          </FormControl>
-          <FormControl
-            size="small"
-            error={errors.isActive}
-            sx={{ m: 0, width: "100%" }}
-          >
-            <FormControlLabel
-              value={isAdminState}
-              control={
-                <Checkbox
-                  inputProps={{ "aria-label": "Checkbox is_Admin" }}
-                  {...register("isAdmin")}
-                  checked={isAdminState}
-                  onChange={(e) => setisAdminState(e.target.checked)}
-                />
-              }
-              label="אדמין?"
-            />
-            <FormHelperText>{errors.isActive && "אדמין הוא שדה חובה"}</FormHelperText>
-          </FormControl>
+              id="job"
+              label="תפקיד"
+              type="job"
+              error={errors.job}
+              helperText={errors.job && "תפקיד הוא שדה חובה"}
+              {...register("job", { required: true, maxLength: 30 })}
+              sx={{ m: 0, width: "100%" }} /><FormControl
+                size="small"
+                error={errors.roleType}
+                sx={{ m: 0, width: "100%" }}
+              >
+                <InputLabel id="roleType-label">סוג תפקיד</InputLabel>
+                <Select
+                  labelId="roleType-label"
+                  id="roleType"
+                  label="סוג תפקיד"
+                  {...register("roleType", { required: true })}
+                  style={{ height: "2.6375em", alignContent: "center" }}
+                  // Handle the change event
+                  value={roleType}
+                  onChange={(e) => setroleType(e.target.value)}
+                >
+                  {roleTypes.map((roleType) => (
+                    <MenuItem key={roleType} value={roleType}>
+                      {roleType}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.roleType && "סוג תפקיד הוא שדה חובה"}</FormHelperText>
+              </FormControl><FormControl
+                size="small"
+                error={errors.roleGroup}
+                sx={{ m: 0, width: "100%" }}
+              >
+                <InputLabel id="roleGroup-label">סוג תפקידן</InputLabel>
+                <Select
+                  labelId="roleGroup-label"
+                  id="roleGroup"
+                  label="סוג תפקידן"
+                  {...register("roleGroup", { required: true })}
+                  style={{ height: "2.6375em", alignContent: "center" }}
+                  // Handle the change event
+                  value={roleGroup}
+                  onChange={(e) => setroleGroup(e.target.value)}
+                >
+                  {roleGroups.map((roleGroup) => (
+                    <MenuItem key={roleGroup} value={roleGroup}>
+                      {roleGroup}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{errors.roleGroup && "סוג תפקידן הוא שדה חובה"}</FormHelperText>
+              </FormControl><div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                  gap: 20,
+                }}
+              >
+                <TextField
+                  size="small"
+                  id="managerFname"
+                  label="שם פרטי מנהל"
+                  error={errors.managerFname}
+                  helperText={errors.managerFname && "שם פרטי הוא שדה חובה"}
+                  {...register("managerFname", { required: true, maxLength: 20 })}
+                  sx={{ m: 0, width: "100%" }} />
+                <TextField
+                  size="small"
+                  id="managerLName"
+                  label="שם משפחה מנהל"
+                  error={errors.managerLName}
+                  helperText={errors.managerLName && "שם משפחה הוא שדה חובה"}
+                  {...register("managerLName", { required: true, maxLength: 20 })}
+                  sx={{ m: 0, width: "100%" }} />
+              </div><TextField
+                size="small"
+                id="managerEmail"
+                label="אימייל מנהל"
+                type="managerEmail"
+                error={errors.managerEmail}
+                helperText={errors.managerEmail && "אימייל הוא שדה חובה"}
+                {...register("managerEmail", {
+                  required: true,
+                  pattern: {
+                    value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                    message: "האימייל אינו תקין",
+                  },
+                })}
+                sx={{ m: 0, width: "100%" }} /><FormControl
+                  size="small"
+                  error={errors.isActive}
+                  sx={{ m: 0, width: "100%" }}
+                >
+                <FormControlLabel
+                  value={isActiveState}
+                  control={<Checkbox
+                    inputProps={{ "aria-label": "Checkbox is_Active" }}
+                    {...register("isActive")}
+                    checked={isActiveState}
+                    onChange={(e) => setisActiveState(e.target.checked)} />}
+                  label="פעיל?" />
+                <FormHelperText>{errors.isActive && "הפעלה הוא שדה חובה"}</FormHelperText>
+              </FormControl><FormControl
+                size="small"
+                error={errors.isActive}
+                sx={{ m: 0, width: "100%" }}
+              >
+                <FormControlLabel
+                  value={isAdminState}
+                  control={<Checkbox
+                    inputProps={{ "aria-label": "Checkbox is_Admin" }}
+                    {...register("isAdmin")}
+                    checked={isAdminState}
+                    onChange={(e) => setisAdminState(e.target.checked)} />}
+                  label="אדמין?" />
+                <FormHelperText>{errors.isActive && "אדמין הוא שדה חובה"}</FormHelperText>
+              </FormControl></>
+           : "" }
           <button id="submitButton" type="submit" style={{ display: "none" }}>
             יצירה
           </button>
