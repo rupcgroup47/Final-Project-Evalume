@@ -2663,11 +2663,8 @@ public class DBservices
             throw (ex);
         }
 
-<<<<<<< Updated upstream
-        cmd = CreateCommandWithSPGet("sp_GetNumOfStatusesPerGoal", con);            // create the command
-=======
         cmd = CreateCommandWithSPGetGoalsStatusesByYear("sp_GetNumOfStatusesPerGoal", con, goalYear);            // create the command
->>>>>>> Stashed changes
+
 
         List<Object> GoalstatusList = new List<Object>();
 
@@ -3015,7 +3012,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetNum("spGetNumOfEmployeesInEachPart", con);            // create the command
+        cmd = CreateCommandWithSPGet("spGetNumOfEmployeesInEachPart", con);            // create the command
 
         List<Object> totalAnswersList = new List<Object>();
 

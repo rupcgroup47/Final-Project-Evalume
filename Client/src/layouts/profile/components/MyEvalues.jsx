@@ -62,109 +62,59 @@ export default function MyEvalues({ evalus }) {
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items?.length);
 
-  function calculateData(userId, year) {
-    ///data is the array i pass to the pdf file component
-    // let data = [{id:1, year:222}, {id:2,year:333}]
-    let data = {
-      questionnaireNum: 1,
-      userNum: 14,
-      roleGroup: 0,
-      filledOn: 1,
-      parts: [{
-        part: 0,
-        answerInsertDate: "14/4/2022",
-        quesGroup_Desc: "שירותיות",
-        questions: [
-          {
-            questionNum: 1,
-            questionContent: "הייי",
-            numericAnswer: 1,
-            verbalAnswer: "שלום"
-          },
-          {
-            questionNum: 2,
-            questionContent: "עדע",
-            numericAnswer: 1,
-            verbalAnswer: "יכגיג"
-          }
-        ]
-      }
-        ,
-
-      {
-        part: 1,
-        answerInsertDate: "19/4/2022",
-        quesGroup_Desc: "שירותיות",
-        questions: [
-          {
-            questionNum: 1,
-            questionContent: "הייי",
-            numericAnswer: 1,
-            verbalAnswer: "שלום"
-          },
-          {
-            questionNum: 2,
-            questionContent: "עדע",
-            numericAnswer: 1,
-            verbalAnswer: "יכגיג"
-          }
-        ]
-      }
-      ]
-
-    }
-    return data;
-  }
-
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-  //   if (evalus.length === 0 && mainState.userNum) {
-  //     fetch(
-  //       API.apiGetPDFdetails + "14&questionnaireNum=15" + mainState.userNum,
-  //       {
-  //         method: "GET",
-  //         headers: new Headers({
-  //           "Content-Type": "application/json; charset=UTF-8",
-  //           Accept: "application/json; charset=UTF-8",
-  //         }),
-  //         body: state.fetch.body,
-  //         signal: abortController.signal
-  //       })
-  //       .then(async response => {
-  //         const data = await response.json();
-  //         console.log(response);
-
-  //         if (!response.ok) {
-  //           // get error message from body or default to response statusText
-  //           const error = (data && data.message) || response.statusText;
-  //           return Promise.reject(error);
-  //         }
-
-  //         return data;
-  //       })
-  //       .then(
-  //         (result) => {
-  //           console.log("success");
-  //           if (result[0].text !== undefined) {
-  //             console.log(result[0].text);
-  //           }
-  //           else {
-  //             setEvalus(result);
-  //             // setState({ evalus: result });
-  //           }
+  // function calculateData(userId, year) {
+  //   ///data is the array i pass to the pdf file component
+  //   // let data = [{id:1, year:222}, {id:2,year:333}]
+  //   let data = {
+  //     questionnaireNum: 1,
+  //     userNum: 14,
+  //     roleGroup: 0,
+  //     filledOn: 1,
+  //     parts: [{
+  //       part: 0,
+  //       answerInsertDate: "14/4/2022",
+  //       quesGroup_Desc: "שירותיות",
+  //       questions: [
+  //         {
+  //           questionNum: 1,
+  //           questionContent: "הייי",
+  //           numericAnswer: 1,
+  //           verbalAnswer: "שלום"
   //         },
-  //         (error) => {
-  //           if (error.name === 'AbortError') return
-  //           console.log("err get=", error);
-  //           throw error;
+  //         {
+  //           questionNum: 2,
+  //           questionContent: "עדע",
+  //           numericAnswer: 1,
+  //           verbalAnswer: "יכגיג"
   //         }
-  //       );
-  //     return () => {
-  //       abortController.abort()
-  //       // stop the query by aborting on the AbortController on unmount
+  //       ]
   //     }
+  //       ,
+
+  //     {
+  //       part: 1,
+  //       answerInsertDate: "19/4/2022",
+  //       quesGroup_Desc: "שירותיות",
+  //       questions: [
+  //         {
+  //           questionNum: 1,
+  //           questionContent: "הייי",
+  //           numericAnswer: 1,
+  //           verbalAnswer: "שלום"
+  //         },
+  //         {
+  //           questionNum: 2,
+  //           questionContent: "עדע",
+  //           numericAnswer: 1,
+  //           verbalAnswer: "יכגיג"
+  //         }
+  //       ]
+  //     }
+  //     ]
+
   //   }
-  // }, []);
+  //   return data;
+  // }
 
 
   const updateData = async (id) => {
@@ -181,23 +131,6 @@ export default function MyEvalues({ evalus }) {
       setLoading(false);
     }
   }
-
-
-  // if (loading) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         display: "block",
-  //         alignSelf: "center",
-  //         alignItems: "center",
-  //         height: "100%",
-  //         backgroundColor: "white",
-  //       }}
-  //     >
-  //       <CircularProgress size={300} sx={{ alignSelf: "center", margin: 50 }} />
-  //     </Box>
-  //   );
-  // }
 
   if (error) {
     swal({
@@ -249,15 +182,6 @@ export default function MyEvalues({ evalus }) {
                       {({ loading }) => loading ? ('טוען מידע לפני הורדה...') : ( <Button id="pdf-download-link" > הורד</Button>)}
                     </PDFDownloadLink>
                   )}
-                  {/* <PDFDownloadLink document={<PDFFile data={data} year={evalue.year}/>} fileName="טופס הערכה">
-                    {({ loading }) =>
-                      loading ? (
-                        <Button>שגיאה</Button>
-                      ) : (
-                        <Button onClick={() => updateData(evalue.id)}>הורד קובץ כPFD</Button>
-                      )
-                    }
-                  </PDFDownloadLink>{" "} */}
                 </TableCell>
               </TableRow>
             ))}
@@ -293,75 +217,6 @@ export default function MyEvalues({ evalus }) {
         }
         labelRowsPerPage="מספר שורות להציג:"
       />
-      {/* {dataFetched && (
-        <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה.pdf">
-          {({ blob, url, loading, error }) => loading ? ('טוען מידע לפני הורדה...') : (<Button id="pdf-download-link" onClick={handleDocumentLoad} style={{ display: 'none' }}></Button>)}
-        </PDFDownloadLink>
-      )} */}
     </Paper>
   );
 }
-
-{/* <div> */ }
-{/* {
-        state.fetch.api != null ? (
-          <ApiFetcher props={state.fetch} onFetchComplete={handleFetchComplete} onFetchError={handleFetchError} >
-            {
-              (data, error) => {
-                if (error) {
-                  return (
-                    <div>
-                      {
-                        swal({
-                          title: "קרתה תקלה!",
-                          text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-                          icon: "error",
-                          button: "סגור"
-                        })
-                      }
-                    </div>
-                  )
-                }
-                else if (!data) {
-                  return (
-                    <Box
-                      sx={{
-                        display: "block",
-                        alignSelf: "center",
-                        alignItems: "center",
-                        height: "100%",
-                        backgroundColor: "white",
-                      }}
-                    >
-                      <CircularProgress size={300} sx={{ alignSelf: "center", margin: 50 }} />
-                    </Box>
-                  )
-                }
-                else {
-                  return (
-                    
-                  )
-                }
-              }
-            }
-          </ApiFetcher>
-
-        ) : null
-      }
-    </div > */}
-  // function handleFetchComplete(data) {
-  //   setItems(data);
-  // }
-
-  // function handleFetchError(error) {
-  //   console.log("error = " + error)
-  // }
-    // function fetchData(){
-  //   ApiFetcher({
-  //     api: state.fetch.api,
-  //     method: state.fetch.method,
-  //     body: state.fetch.body,
-  //     onFetchComplete: handleFetchComplete,
-  //     onFetchError: handleFetchError,
-  //   });
-  // }
