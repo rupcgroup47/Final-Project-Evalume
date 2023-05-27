@@ -14,7 +14,10 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React base styles
+// import {Chart} from 'chart.js';
 import typography from "assets/theme/base/typography";
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
+// Chart.register(ChartDataLabels);
 
 function configs(labels, datasets) {
   return {
@@ -27,8 +30,13 @@ function configs(labels, datasets) {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false,
+          display: false,         
         },
+        datalabels: {
+          display: false,
+          color: "white"
+        }
+    
       },
       scales: {
         y: {
