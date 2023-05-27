@@ -63,12 +63,12 @@ namespace Final_Server.Controllers
             }
         }
 
-        [HttpGet("/Goal_Statuse")]
-        public IEnumerable<Object> GetGoalsStatus() //gets the status of specific goal
+        [HttpGet("/Goal_Status")]
+        public IEnumerable<Object> GetGoalsStatus(int goalYear) //gets the status of specific goal
         {
             try
             {
-                return BI.ReadGoalsStatus();
+                return BI.ReadGoalsStatus(goalYear);
             }
             catch (Exception ex)
             {
@@ -76,6 +76,32 @@ namespace Final_Server.Controllers
             }
         }
 
+
+        [HttpGet("/Avg_Answers")]
+        public IEnumerable<Object> GetAvgAnsPerQuesGroup(int answerYear) //get the ques answers avg according to the question group type, by the year the client chose
+        {
+            try
+            {
+                return BI.ReadAvgAnsPerQuesGroup(answerYear);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("/Evaluation_Process_Status")]
+        public IEnumerable<Object> GetEvaluProcessStatus() //gets how many employees are in each part of the evaluation process for the current year
+        {
+            try
+            {
+                return BI.ReadEvaluProcessStatus();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         [HttpGet("/Score")]
         public IEnumerable<Object> GetEmployeeNManagerScore(int userNum) //get the avg score of the employee VS to the avg score of the manager by current year
@@ -89,6 +115,20 @@ namespace Final_Server.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet("/Employees_Goals_By_Year")]
+        public IEnumerable<Object> GetGoalsStatusByManagerNumNyear(int userNum, int goalYear) //get all goals statuses of the employees under this manager num, by the selected year
+        {
+            try
+            {
+                return BI.ReadGoalsStatusByManagerNumNyear(userNum, goalYear);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         [HttpGet("/Num_Of_User's_Goals")]
         public Object GetNumOfUserGoals(int userNum) //gets the goals per user

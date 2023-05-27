@@ -17,7 +17,12 @@
         int rounded_avg;
         int num_of_goals;
         int user_num_of_evaluQues;
+        int goalYear;
 
+        int answerYear;
+        int quesGroup_Type;
+        int avg_Answers;
+        int totalAnswer;
         public int DepNum { get => depNum; set => depNum = value; }
         public int Num_of_people { get => num_of_people; set => num_of_people = value; }
         public int Num_of_manager { get => num_of_manager; set => num_of_manager = value; }
@@ -33,6 +38,11 @@
         public string DepName { get => depName; set => depName = value; }
         public int Num_of_goals { get => num_of_goals; set => num_of_goals = value; }
         public int User_num_of_evaluQues { get => user_num_of_evaluQues; set => user_num_of_evaluQues = value; }
+        public int GoalYear { get => goalYear; set => goalYear = value; }
+        public int AnswerYear { get => answerYear; set => answerYear = value; }
+        public int QuesGroup_Type { get => quesGroup_Type; set => quesGroup_Type = value; }
+        public int Avg_Answers { get => avg_Answers; set => avg_Answers = value; }
+        public int TotalAnswer { get => totalAnswer; set => totalAnswer = value; }
 
         public static List<Object> ReadNumOfEmployees() //gets the num of employees in each dep
         {
@@ -96,18 +106,59 @@
         }
 
 
-        public static List<Object> ReadGoalsStatus()  //gets the status of specific goal
+        public static List<Object> ReadGoalsStatus(int goalYear)  //gets the status of specific goal
         {
             try
             {
                 DBservices dbs = new DBservices();
-                return dbs.GetGoalStatus();
+                return dbs.GetGoalStatus(goalYear);
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
+        public static List<Object> ReadAvgAnsPerQuesGroup(int answerYear)  //get the ques answers avg according to the question group type, by the year the client chose
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetAvgAnsPerQuesGroup(answerYear);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<Object> ReadEvaluProcessStatus() //gets how many employees are in each part of the evaluation process for the current year
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetEvaluProcessStatus();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<Object> ReadGoalsStatusByManagerNumNyear(int userNum, int goalYear) //get all goals statuses of the employees under this manager num, by the selected year
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetGoalsManagerNumNyear(userNum, goalYear);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        
 
         //KPI
         public static List<Object> ReadEmployeeNManagerScore(int userNum) //get the avg score of the employee VS to the avg score of the manager by current year
