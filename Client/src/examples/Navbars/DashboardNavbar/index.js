@@ -1,26 +1,13 @@
 import { useState, useEffect } from "react";
-
-// react-router components
 import { useLocation, Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
-
-// @material-ui core components
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React components
+import { MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box} from '@mui/material';
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
-// import Breadcrumbs from "examples/Breadcrumbs";
-import NotificationItem from "examples/Items/NotificationItem";
-
-// Custom styles for DashboardNavbar
 import {
   navbar,
   navbarContainer,
@@ -28,8 +15,6 @@ import {
   navbarIconButton,
   navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
-
-// Material Dashboard 2 React context
 import {
   useMaterialUIController,
   setTransparentNavbar,
@@ -47,9 +32,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
-  const route = useLocation().pathname.split("/").slice(1);
-  const classes = useStyles();
-  const [newNotification, setNewNotification] = useState(false); // red button if there is a new evaluation waiting for me
+
 
   useEffect(() => {
     // Setting the navbar type
@@ -81,8 +64,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
-  // Render the notifications menu
-  const renderMenu = () => (
+  const [openDialog, setOpenDialog] = useState(false);
+  const storedUserInformation = JSON.parse(localStorage.getItem('Current User'));
+  const [userInformation, setUserInformation] = useState(storedUserInformation || {});
+
+  const handleUpdateUser = () => {
+    setOpenDialog(true);
+    handleCloseMenu();
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem('Current User');
+    window.location.href = '/authentication/sign-in';
+  };
+  const renderProfileMenu = () => (
     <Menu
       anchorEl={openMenu}
       anchorReference={null}
@@ -94,13 +92,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      {newNotification ? (
-        <NotificationItem icon={<Icon>email</Icon>} title="הערכה חדשה ממתינה לך" />
-      ) : null}
+       <MenuItem onClick={handleUpdateUser}>עדכון פרטי משתמש</MenuItem>
+       <MenuItem onClick={handleLogout}>התנתקות</MenuItem>
+          
+    
     </Menu>
   );
 
   return (
+    <div>
+
     <AppBar
       position={absolute ? "absolute" : navbarType}
       color="inherit"
@@ -108,12 +109,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <MDBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          {/* <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} /> */}
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
                 <IconButton
                   size="medium"
                   disableRipple
@@ -121,10 +120,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   aria-controls="notification-menu"
                   aria-haspopup="true"
                   variant="contained"
+                  onClick={handleOpenMenu}
                 >
                   <Icon>account_circle</Icon>
                 </IconButton>
-              </Link>
+                {renderProfileMenu()}
+
               <IconButton
                 size="small"
                 disableRipple
@@ -143,30 +144,39 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon>settings</Icon>
               </IconButton>
-              <IconButton
-                size="medium"
-                disableRipple
-                color="inherit"
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-              >
-                {newNotification ? (
-                  <Icon className={classes.iconButton}>notifications</Icon>
-                ) : (
-                  <Icon>notifications</Icon>
-                )}
-              </IconButton>
-              {renderMenu()}
             </MDBox>
           </MDBox>
         )}
       </Toolbar>
     </AppBar>
+
+<Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>עדכון פרטי משתמש</DialogTitle>
+        <DialogContent>
+          <br/>
+        <Box mb={6}>
+        <TextField label="שם פרטי" fullWidth value={userInformation.userFName || ''} />
+        </Box>
+        <Box mb={6}>
+        <TextField label="שם משפחה" fullWidth value={userInformation.userLName || ''} />
+        </Box>
+        <Box mb={6}>
+        <TextField label="תעודת זהות" fullWidth value={userInformation.userId || ''} />
+        </Box>
+        <Box mb={6}>
+          <TextField label="אימייל" fullWidth value={userInformation.userEmail || ''}/>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>ביטול</Button>
+          {/* <Button onClick={handleSaveChanges}>Save Changes</Button> */}
+        </DialogActions>
+      </Dialog>
+    </div>
+
   );
 }
-
+// localStorage.getItem("Department list")
 // Setting default values for the props of DashboardNavbar
 DashboardNavbar.defaultProps = {
   absolute: false,
