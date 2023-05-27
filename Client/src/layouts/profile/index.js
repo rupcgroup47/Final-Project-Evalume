@@ -245,7 +245,7 @@ function Overview() {
           {/* //Profile card */}
           <Grid
             item
-            xs={12}
+            s={12}
             xl={5}
             sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
             style={{paddingTop:"0px"}}
@@ -269,7 +269,7 @@ function Overview() {
           </Grid>
           <Grid
             item
-            xs={12}
+            s={12}
             xl={7}
             sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
           >

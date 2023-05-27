@@ -173,7 +173,7 @@ export default function ProfileAlerts({ tmpResult }) {
 
   return (
     <>
-      <Card sx={{ backgroundColor: "#effafb82", minWidth: "600px" }}>
+      <Card sx={{ backgroundColor: "#effafb82", Width: "100%" }}>
         <MDBox p={2}>
           {filteredAlerts?.map((item, index) => (
             <MDTypography variant="h3" color="secondary" key={index}>
