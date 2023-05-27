@@ -183,21 +183,21 @@ export default function MyEvalues({ evalus }) {
   }
 
 
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: "block",
-          alignSelf: "center",
-          alignItems: "center",
-          height: "100%",
-          backgroundColor: "white",
-        }}
-      >
-        <CircularProgress size={300} sx={{ alignSelf: "center", margin: 50 }} />
-      </Box>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         display: "block",
+  //         alignSelf: "center",
+  //         alignItems: "center",
+  //         height: "100%",
+  //         backgroundColor: "white",
+  //       }}
+  //     >
+  //       <CircularProgress size={300} sx={{ alignSelf: "center", margin: 50 }} />
+  //     </Box>
+  //   );
+  // }
 
   if (error) {
     swal({

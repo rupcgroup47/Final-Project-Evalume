@@ -207,9 +207,37 @@ export default function App() {
   return (
     <MainStateContext.Provider value={value}>
       <EvalueContextProvider>
-      {direction === "rtl" ? (
-        <CacheProvider value={rtlCache}>
-          <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+        {direction === "rtl" ? (
+          <CacheProvider value={rtlCache}>
+            <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+              <CssBaseline />
+              {layout === "dashboard" && (
+                <>
+                  <Sidenav
+                    color={sidenavColor}
+                    brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                    brandName="פורטל הערכת עובדים"
+                    routes={routes}
+                    onMouseEnter={handleOnMouseEnter}
+                    onMouseLeave={handleOnMouseLeave}
+                  />
+                  <Configurator />
+                  {/* {configsButton} */}
+                </>
+              )}
+              {layout === "vr" && <Configurator />}
+              <Routes>
+                {getRoutes(routes)}
+                {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
+                {/* if main state (user logged in) initialize go to profile */}
+                {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
+                {/* if  user  not logged in  go to sign in */}
+
+              </Routes>
+            </ThemeProvider>
+          </CacheProvider>
+        ) : (
+          <ThemeProvider theme={darkMode ? themeDark : theme}>
             <CssBaseline />
             {layout === "dashboard" && (
               <>
@@ -222,45 +250,17 @@ export default function App() {
                   onMouseLeave={handleOnMouseLeave}
                 />
                 <Configurator />
-                {configsButton}
+                {/* {configsButton} */}
               </>
             )}
             {layout === "vr" && <Configurator />}
             <Routes>
               {getRoutes(routes)}
               {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
-              {/* if main state (user logged in) initialize go to profile */}
               {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
-                            {/* if  user  not logged in  go to sign in */}
-
             </Routes>
           </ThemeProvider>
-        </CacheProvider>
-      ) : (
-        <ThemeProvider theme={darkMode ? themeDark : theme}>
-          <CssBaseline />
-          {layout === "dashboard" && (
-            <>
-              <Sidenav
-                color={sidenavColor}
-                brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                brandName="פורטל הערכת עובדים"
-                routes={routes}
-                onMouseEnter={handleOnMouseEnter}
-                onMouseLeave={handleOnMouseLeave}
-              />
-              <Configurator />
-              {configsButton}
-            </>
-          )}
-          {layout === "vr" && <Configurator />}
-          <Routes>
-            {getRoutes(routes)}
-            {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
-            {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
-          </Routes>
-        </ThemeProvider>
-      )}
+        )}
       </EvalueContextProvider>
     </MainStateContext.Provider>
   );
