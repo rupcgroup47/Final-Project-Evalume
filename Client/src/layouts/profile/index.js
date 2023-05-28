@@ -170,14 +170,14 @@ function Overview() {
             <Grid container spacing={5} direction="column" style={{ maxWidth: "450px", alignContent: "center", margin: "auto" }}>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>
                 <ProfileGrid
-                  title="הערכות"
+                  title="הערכות שלי"
                   description="צפייה והורדת כלל ההערכות שלי לאורך השנים"
                   type="evalues"
                   evalus={evalus}
                 />
               </Grid>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>
-                <ProfileGrid title="יעדים" description="צפייה ועדכון היעדים האישיים שלי" type="goals" goals={goals} />
+                <ProfileGrid title="יעדים שלי" description="צפייה ועדכון היעדים האישיים שלי" type="goals" goals={goals} />
               </Grid>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>
                 <ProfileGrid title="יומן פגישות" description="צפייה בפגישות שלי" />

@@ -94,9 +94,6 @@ export default function App() {
     }
   }, [mainState]);
 
-  console.log("kan2");
-  console.log(mainState);
-
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
