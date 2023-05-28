@@ -1,6 +1,7 @@
 
 import React, { createContext } from "react";
 import { useState, useEffect } from "react";
+import { isEqual } from "lodash";
 
 export const EvalueContext = createContext();
 export default function EvalueContextProvider({ children }) {
@@ -48,6 +49,8 @@ export default function EvalueContextProvider({ children }) {
     apiUpdateGoalStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/", //server
     apiGetPDFdetails: "https://localhost:7079/userNum/questionnaireNum?userNum=",
     // apiGetPDFdetails: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/questionnaireNum?userNum=", //server
+    apiStatusMeeting: "https://localhost:7079/api/Rel_Questions_EvaluQues/StatusMeeting/",
+    // apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
   });
 
 
@@ -57,34 +60,34 @@ export default function EvalueContextProvider({ children }) {
 
   const [FAQ, setFAQ] = useState([
     {
-     "id": 1,
-     "question": "איך למחוק יעד קיים?",
-     "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates corporis vitae tempora quod provident tenetur culpa dolore facere? Earum, dolor?"
+      "id": 1,
+      "question": "איך למחוק יעד קיים?",
+      "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates corporis vitae tempora quod provident tenetur culpa dolore facere? Earum, dolor?"
     },
     {
-     "id": 2,
-     "question": "איך לעדכן פרטי משתמש?",
-     "answer": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto iusto veniam eveniet labore impedit nam"
+      "id": 2,
+      "question": "איך לעדכן פרטי משתמש?",
+      "answer": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto iusto veniam eveniet labore impedit nam"
     },
     {
-     "id": 3,
-     "question": "איך להוסיף משתמש חדש?",
-     "answer": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium, sed. Dolores,"
+      "id": 3,
+      "question": "איך להוסיף משתמש חדש?",
+      "answer": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium, sed. Dolores,"
     },
     {
-     "id": 4,
-     "question": "איך להקים טופס הערכה חדש?",
-     "answer": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium, sed. Dolores, sequi."
+      "id": 4,
+      "question": "איך להקים טופס הערכה חדש?",
+      "answer": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium, sed. Dolores, sequi."
     }
-   ]);
+  ]);
 
   useEffect(() => {
     const exisiting = localStorage.getItem("chosenEmployee");
-    if (exisiting === null && chosenEmployee !== undefined || (exisiting !== null && chosenEmployee !== undefined && exisiting !== chosenEmployee)) {
+    const areObjectsEqual = isEqual(chosenEmployee, JSON.parse(exisiting));
+    if (exisiting === null && chosenEmployee !== undefined || (exisiting !== null && chosenEmployee !== undefined && !areObjectsEqual)) {
       localStorage.setItem("chosenEmployee", JSON.stringify(chosenEmployee)); // Set chosenEmployee details in local storage
     }
     if (exisiting !== null && chosenEmployee === "") {
-
       setChosenEmployee(JSON.parse(exisiting));
     }
   }, [chosenEmployee])
@@ -96,7 +99,7 @@ export default function EvalueContextProvider({ children }) {
     setChosenEmployee,
     depState,
     setDepState,
-    FAQ, 
+    FAQ,
     setFAQ
   }
 

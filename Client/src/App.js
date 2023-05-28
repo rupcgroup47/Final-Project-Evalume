@@ -1,4 +1,4 @@
-/**
+/*
 =========================================================
 * Material Dashboard 2 React - v2.1.0
 =========================================================
@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useState, useEffect, useMemo, createContext } from "react";
-// import { Container } from "@mui/material";
+import { isEqual } from "lodash";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -79,11 +79,18 @@ export default function App() {
 
   useEffect(() => {
     // Get user details from Local Storage
+    const exisiting = localStorage.getItem("Current User");
+    const areObjectsEqual = isEqual(mainState, JSON.parse(exisiting));
     if (!mainState) {
-      const Employee = JSON.parse(localStorage.getItem("Current User"));
+      console.log("here???");
+      const Employee = JSON.parse(exisiting);
       if (Employee) {
         setMainState(Employee);
       }
+    }
+    if (mainState !== null && exisiting !== null && !areObjectsEqual) {
+      console.log("here");
+      localStorage.setItem("Current User", JSON.stringify(mainState)); // Set chosenEmployee details in local storage
     }
   }, [mainState]);
 
@@ -156,29 +163,29 @@ export default function App() {
       return null;
     });
 
-  const configsButton = (
-    <MDBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.25rem"
-      height="3.25rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="small" color="inherit">
-        settings
-      </Icon>
-    </MDBox>
-  );
+  // const configsButton = (
+  //   <MDBox
+  //     display="flex"
+  //     justifyContent="center"
+  //     alignItems="center"
+  //     width="3.25rem"
+  //     height="3.25rem"
+  //     bgColor="white"
+  //     shadow="sm"
+  //     borderRadius="50%"
+  //     position="fixed"
+  //     right="2rem"
+  //     bottom="2rem"
+  //     zIndex={99}
+  //     color="dark"
+  //     sx={{ cursor: "pointer" }}
+  //     onClick={handleConfiguratorOpen}
+  //   >
+  //     <Icon fontSize="small" color="inherit">
+  //       settings
+  //     </Icon>
+  //   </MDBox>
+  // );
 
   const value = useMemo(
     () => ({

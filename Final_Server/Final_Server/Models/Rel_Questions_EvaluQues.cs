@@ -188,6 +188,19 @@ namespace Final_Server.Models
             }
         }
 
+        public static List<Object> ReadEmployeeStatusMeeting(int userNum) //gets the employee that needs to set a meeting
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetEmployeeStatusMeeting(userNum);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public static List<Object> ReadEvaluQuesByUserNum(int userNum) // get the right evaluations of a user by his user number
         {
             try

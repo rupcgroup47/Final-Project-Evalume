@@ -16,7 +16,7 @@ import DialogSurvey from "./DialogSurvey";
 import RadioButtons from "./survey-component/RadioButtons";
 import { EvalueContext } from "context/evalueVariables";
 
-export default function surveyForm({ userNum, employeesManager, evalu_Part_Type, questionsResp, questionnaireNum, showForm }) {
+export default function surveyForm({ userNum, employeesManager, evalu_Part_Type, questionsResp, questionnaireNum, showForm, mainState, setMainState }) {
   const [expanded, setExpanded] = useState(1);
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
@@ -177,9 +177,16 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     data.self_Evalu = 0;
     console.log(data);
     localStorage.setItem("Current User", JSON.stringify(data));
+    setMainState(data);
   }
 
-  console.log("items", items);
+  // console.log(mainState);
+  // const update = mainState;
+  // update.self_Evalu = 0;
+  // console.log(update);
+  // setMainState(update);
+
+  // console.log("items", items);
 
   const onError = (errors, event) => {
     event.preventDefault();

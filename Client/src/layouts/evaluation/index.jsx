@@ -8,7 +8,7 @@ import { EvalueContext } from "context/evalueVariables";
 
 function QuestionnaireForm() {
   const [, dispatch] = useMaterialUIController();
-  const mainState = useContext(MainStateContext);
+  const { mainState, setMainState } = useContext(MainStateContext);
   const { API } = useContext(EvalueContext);
   const evalu_Part_Type = 0;
   const [questionsResp, setQuestionsResp] = useState([]);
@@ -16,12 +16,13 @@ function QuestionnaireForm() {
   const [finishState, setFinishState] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
+
   // GET the evaluation form of the user
   useEffect(() => {
     const abortController = new AbortController();
-    if (mainState.mainState.userNum) {
+    if (mainState.userNum) {
       fetch(
-        API.evaluationApi + mainState.mainState.userNum + "&evalu_Part_Type=" + evalu_Part_Type,
+        API.evaluationApi + mainState.userNum + "&evalu_Part_Type=" + evalu_Part_Type,
         {
           method: "GET",
           headers: new Headers({
@@ -75,12 +76,12 @@ function QuestionnaireForm() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  const userId = mainState.mainState.userNum;//The employee who is now connected to the system
-  const userManagerId = mainState.mainState.userManagerNum;//The manager of the employee who is now connected to the system
+  const userId = mainState.userNum;//The employee who is now connected to the system
+  const userManagerId = mainState.userManagerNum;//The manager of the employee who is now connected to the system
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={evalu_Part_Type} />
-      <SurveyForm userNum={userId} employeesManager={userManagerId} evalu_Part_Type={evalu_Part_Type} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />
+      <SurveyForm userNum={userId} employeesManager={userManagerId} evalu_Part_Type={evalu_Part_Type} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} mainState={mainState} setMainState={setMainState}/>
       <div>
         {
           finishState ? (
@@ -92,7 +93,7 @@ function QuestionnaireForm() {
                   </Typography>
                 </CardContent>
                 <CardMedia
-                  sx={{height:"auto", minHeight:"350px",width:"auto", minWidth:"350px",mb:"10px" }}
+                  sx={{ height: "auto", minHeight: "350px", width: "auto", minWidth: "350px", mb: "10px" }}
                   image={require("../../assets/images/Thumbs-Up-cartoon-drawing.jpg")}
                   title="Thumbs-Up"
                 />
