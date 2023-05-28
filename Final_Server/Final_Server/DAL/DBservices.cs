@@ -2183,6 +2183,68 @@ public class DBservices
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method gets the employee that needs to set a meeting
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> GetEmployeeStatusMeeting(int userNum)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetByUserNum("spGetEmployeeMeetingToBeScheduled", con, userNum);            // create the command
+
+        List<Object> EmployeeStatusList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                Object users = (new
+                {
+                    UserNum = Convert.ToInt32(dataReader["UserNum"]),
+                    UserFName = dataReader["UserFName"].ToString(),
+                    UserLName = dataReader["UserLName"].ToString(),
+                    UserEmail = dataReader["UserEmail"].ToString(),
+                    Evalu_Part_Type = Convert.ToInt32(dataReader["Evalu_Part_Type"])
+                });
+
+                EmployeeStatusList.Add(users);
+            }
+
+            return EmployeeStatusList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
     ////--------------------------------------------------------------------------------------------------
     //// This method gets all the Questionnaires
     ////--------------------------------------------------------------------------------------------------

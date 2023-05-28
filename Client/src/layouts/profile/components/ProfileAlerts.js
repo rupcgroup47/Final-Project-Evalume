@@ -14,11 +14,12 @@ import Card from "@mui/material/Card";
 import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
 
-export default function ProfileAlerts({ tmpResult }) {
+export default function ProfileAlerts({ tmpResult, meeting }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { API } = useContext(EvalueContext);
   const mainState = useContext(MainStateContext);
   const [tempResualt, setTempResualt] = useState([]);
+  const [meetingState, setMeetingState] = useState([]);
   // const [waitingToEvalue, setWaitingToEvalue] = useState(3);
   const [state, setState] = useState({
     selfEvalu: mainState.mainState.self_Evalu,
@@ -32,17 +33,33 @@ export default function ProfileAlerts({ tmpResult }) {
   }, [tmpResult])
 
   useEffect(() => {
+    setMeetingState(meeting);
+  }, [meeting])
+
+  useEffect(() => {
     if (tempResualt?.length !== 0) {
       console.log("here");
-      setState({
-        selfEvalu: mainState.mainState.self_Evalu,
-        employeeEvalu: tempResualt?.filter((item) => item.evalu_Part_Type === 0).length,
-        employeeMeet: tempResualt?.filter((item) => item.evalu_Part_Type === 1).length,
-        employeeCalender: 0,
-      })
-    }
-
-  }, [tempResualt])
+      // const tmp = state;
+      // tmp.employeeEvalu = tempResualt?.filter((item) => item.evalu_Part_Type === 0).length;
+      // tmp.employeeMeet = tempResualt?.filter((item) => item.evalu_Part_Type === 1).length;
+      setState((prevState) => {
+        return {
+          ...prevState,
+          employeeEvalu: tempResualt?.filter((item) => item.evalu_Part_Type === 0).length,
+          employeeMeet: tempResualt?.filter((item) => item.evalu_Part_Type === 1).length
+        };
+      });
+    };
+    if (meetingState?.length !== 0) {
+      console.log("here");
+      setState((prevState) => {
+        return {
+          ...prevState,
+          employeeCalender: meetingState.length
+        };
+      });
+    };
+  }, [tempResualt, meetingState])
   // console.log(mainState);
 
   const [arrAlerts, setArrAlerts] = useState(

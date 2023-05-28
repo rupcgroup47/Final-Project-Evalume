@@ -66,6 +66,19 @@ namespace Final_Server.Controllers
             }
         }
 
+        [HttpGet("StatusMeeting/{userNum}")]
+        public IEnumerable<Object> GetEmployeeStatusMeeting(int userNum) //gets the employee that needs to set a meeting
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadEmployeeStatusMeeting(userNum);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         [HttpGet("/userNum/evalu_Part_Type")]
         public Object GetEvaluQuesByUserId(int userNum, int evalu_Part_Type) //get the right EvaluQues for the current employee

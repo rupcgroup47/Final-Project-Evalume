@@ -20,6 +20,7 @@ function Overview() {
   const [evalus, setEvalus] = useState([]);
   const [goals, setGoals] = useState([]);
   const [tmpResult, setTmpResult] = useState([]);
+  const [meeting, setMeeting] = useState([]);
   const [questionnairesData, setQuestionnairesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -96,7 +97,7 @@ function Overview() {
     }
 
     // GET the employee status under a manager
-    if (goals.length === 0 && mainState.userNum) {
+    if (evalus.length === 0 && mainState.userNum) {
       const getEmployeeStatus = async () => {
         try {
           const fetchedData = await ApiFetcher(API.apiGetEmployeeStatus + mainState.userNum, "GET", null);
@@ -113,6 +114,26 @@ function Overview() {
         }
       }
       getEmployeeStatus();
+    }
+
+    // GET the employee status that needs a meeting to be set up
+    if (evalus.length === 0 && mainState.userNum) {
+      const getEmployeeStatusMeeting = async () => {
+        try {
+          const fetchedData = await ApiFetcher(API.apiStatusMeeting + mainState.userNum, "GET", null);
+          if (isMounted) {
+            console.log("success");
+            setMeeting(fetchedData);
+          }
+        }
+        catch (error) {
+          if (isMounted) {
+            setError(error);
+            console.log(error);
+          }
+        }
+      }
+      getEmployeeStatusMeeting();
     }
 
     // GET all the Questionnaires to the button
@@ -190,7 +211,7 @@ function Overview() {
             xl={7}
             sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
           >
-            <ProfileAlerts title="conversations" tmpResult={tmpResult} />
+            <ProfileAlerts title="conversations" tmpResult={tmpResult} meeting={meeting} />
             {/* alerts={alerts} */}
           </Grid>
         </Grid>
