@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
@@ -9,6 +9,7 @@ import Icon from "@mui/material/Icon";
 import { MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box } from '@mui/material';
 import MDBox from "components/MDBox";
 import CreateOrUpdateUserDialog from "dialog/CreateOrUpdateUserDialog";
+import { MainStateContext } from "App";
 import {
   navbar,
   navbarContainer,
@@ -28,11 +29,13 @@ const useStyles = makeStyles({
     color: "red",
   },
 });
+
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
+  const { mainState, setMainState } = useContext(MainStateContext);
   const isUserUpdate = true;
 
   useEffect(() => {
@@ -66,8 +69,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const storedUserInformation = JSON.parse(localStorage.getItem('Current User'));
-  const [userInformation, setUserInformation] = useState(storedUserInformation || {});
+  // const storedUserInformation = JSON.parse(localStorage.getItem('Current User'));
+  // const [userInformation, setUserInformation] = useState(storedUserInformation || {});
   const [showUpdateUserDialog, setShowUpdateUserDialog] = useState(false);
 
   const handleUpdateUser = () => {
@@ -158,36 +161,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </Toolbar>
       </AppBar>
 
-      {/* <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth>
-        <DialogTitle>עדכון פרטי משתמש</DialogTitle>
-        <DialogContent>
-          <br />
-          <Box mb={3}>
-            <TextField label="שם פרטי" fullWidth value={userInformation.userFName || ''} />
-          </Box>
-          <Box mb={3}>
-            <TextField label="שם משפחה" fullWidth value={userInformation.userLName || ''} />
-          </Box>
-          <Box mb={3}>
-            <TextField label="תעודת זהות" fullWidth value={userInformation.userId || ''} />
-          </Box>
-          <Box mb={3}>
-            <TextField label="מספר טלפון" fullWidth value={userInformation.userPhoneNum || ''} />
-          </Box>
-          <Box mb={3}>
-            <TextField label="אימייל" fullWidth value={userInformation.userEmail || ''} />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>ביטול</Button>
-          <Button onClick={handleSaveChanges}>שמירה</Button>
-        </DialogActions>
-      </Dialog> */}
-
       <CreateOrUpdateUserDialog
         open={showUpdateUserDialog}
         setOpen={setShowUpdateUserDialog}
-        user={userInformation}
+        user={mainState}
+        setUser={setMainState}
         isUserUpdate={isUserUpdate}
       // users={users}
       // setUsers={setUsers}
