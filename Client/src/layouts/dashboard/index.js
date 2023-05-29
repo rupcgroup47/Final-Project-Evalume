@@ -38,7 +38,7 @@ function Dashboard() {
                 title="שביעות רצון"
                 description="המחלקות בעלות שביעות הרצון הגבוהה ביותר"
                 date="עודכן לאחרונה בתאריך 2.2.2023"
-                chart={reportsBarChartData} 
+                chart={reportsBarChartData}
 
               />
             </MDBox>
@@ -47,7 +47,7 @@ function Dashboard() {
             <MDBox mb={3}>
               <ReportsLineChart
                 color="success"
-                title="משמעת" 
+                title="משמעת"
                 description="קצב השינוי במשמעת העובדים"
                 date="עודכן לאחרונה בתאריך 2.2.2023"
                 chart={sales}
@@ -56,11 +56,11 @@ function Dashboard() {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={3}>
-            <VerticalBarChart 
+              <VerticalBarChart
                 color="dark"
-                title="סטטוס יעדים"     
+                title="סטטוס יעדים"
                 description="כמות העובדים המשויכים ליעד וקצת התקדמות"
-                chart = {reportsGoalsData}                         
+                chart={reportsGoalsData}
               />
             </MDBox>
           </Grid>
