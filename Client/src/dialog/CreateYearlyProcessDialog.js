@@ -209,7 +209,7 @@ export default function CreateYearlyProcessDialog({
           {questionnairesData?.map((testObject, index) => (
             <div key={index}>
               <h4>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h4>
-              <select key={index} name={index} onChange={handleChange}>
+              <select key={index} name={index} onChange={handleChange} style={{ fontFamily: "rubik", fontSize: "large" }}>
                 <option value="">בחירת שאלון מתאים</option>
                 {testObject.forms.map((form) => ( //Go through all the questionnaires appropriate for role type & group type
                   <option key={form.id} value={form.id}>שאלון {form.year} </option>
@@ -219,8 +219,8 @@ export default function CreateYearlyProcessDialog({
           ))}
           <Typography>בחירת תאריך סיום</Typography>
 
-          <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
-          {/* </Box> */}</Card>
+          <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he"/>
+        </Card>
       </Box>
       <Box textAlign="center" marginBottom={3}>
         <Grid container spacing={2} justifyContent="center">
@@ -231,7 +231,7 @@ export default function CreateYearlyProcessDialog({
           </Grid>
           <Grid item>
             <Button variant="contained" color="white" size="large" onClick={handleFinish}>
-              שליחת הערכה שנתית
+              פתיחת הערכה שנתית
             </Button>
           </Grid>
         </Grid>
