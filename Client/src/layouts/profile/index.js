@@ -140,7 +140,7 @@ function Overview() {
     if (evalus.length === 0) {
       const getQuestionnaires = async () => {
         try {
-          const fetchedData = await ApiFetcher(API.apiGetEmployeeStatus + mainState.userNum, "GET", null);
+          const fetchedData = await ApiFetcher(API.apiGetEvaluations, "GET", null);
           if (isMounted) {
             console.log("success");
             if (fetchedData[0].text !== undefined) {
