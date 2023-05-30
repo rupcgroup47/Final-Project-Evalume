@@ -9,11 +9,9 @@ const array = [ { name: "משאבי אנוש", depCount: 100, level0:30, level1:
 
 
 export default function data() {
-
-
   return {
     columns: [
-      { Header: "מחלקות", accessor: "departments", width: "45%", align: "left" },
+      { Header: "מחלקות", accessor: "departments", align: "left" },
       { Header: "כמות עובדים במחלקה", accessor: "depCount", align: "center" },
       { Header: "הערכה עצמית", accessor: "level0", align: "center" },
       { Header: "הערכת מנהל", accessor: "level1", align: "center" },
@@ -31,7 +29,7 @@ export default function data() {
         </MDTypography>
       ),
       level0: (
-        <MDTypography variant="caption" color="text" fontWeight="medium">
+        <MDTypography variant="caption" color="text" fontWeight="medium" >
           {item.level0}
         </MDTypography>
       ),
@@ -52,4 +50,5 @@ export default function data() {
       ),
     })),
   };
+
 }
