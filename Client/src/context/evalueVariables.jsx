@@ -47,10 +47,12 @@ export default function EvalueContextProvider({ children }) {
     apiUpdateGoalName: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoal/goalNum/", //server
     // apiUpdateGoalStatus: "https://localhost:7079/userNum/",
     apiUpdateGoalStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/", //server
-    apiGetPDFdetails: "https://localhost:7079/userNum/questionnaireNum?userNum=",
-    // apiGetPDFdetails: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/questionnaireNum?userNum=", //server
-    apiStatusMeeting: "https://localhost:7079/api/Rel_Questions_EvaluQues/StatusMeeting/",
-    // apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
+    // apiGetPDFdetails: "https://localhost:7079/userNum/questionnaireNum?userNum=",
+    apiGetPDFdetails: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/questionnaireNum?userNum=", //server
+    // apiStatusMeeting: "https://localhost:7079/api/Rel_Questions_EvaluQues/StatusMeeting/",
+    apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
+    apiOpenAIdetails: "https://localhost:7079/api/OpenAI",
+    // apiOpenAIdetails: "https://proj.ruppin.ac.il/cgroup47/prod/api/OpenAI", //server
   });
 
 

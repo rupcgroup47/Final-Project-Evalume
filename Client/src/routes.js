@@ -46,6 +46,7 @@ import Evaluations from "layouts/evaluation";
 import EvalueForm from "layouts/evalue";
 import { Outlet } from "react-router-dom";
 import MyEvalues from "layouts/profile/components/MyEvalues";
+import ReportGenerator from "layouts/OpenAI-ReportGenerator";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import ManagerEvalues from "layouts/evaluation/components/Evaluation-Steps/ManagerEvalues";
@@ -156,6 +157,17 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
+    forManager: true,
+    // isHiddenFromSideNav: true,
+  },
+  {
+    type: "collapse",
+    name: "מחולל דוחות",
+    key: "ReportGenerator",
+    icon: <Icon fontSize="small">table_chart</Icon>,
+    route: "/ReportGenerator",
+    component: <ReportGenerator />,
+    forManager: true,
     // isHiddenFromSideNav: true,
   },
   {

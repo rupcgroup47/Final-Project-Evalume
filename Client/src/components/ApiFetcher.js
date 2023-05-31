@@ -30,22 +30,14 @@ const ApiFetcher = async (api, method, body) => {
         clearTimeout(timeoutId);
         return data;
     }
-   
-    // .then((result) => {
-    //     console.log("success");
-    //     return result;
-    // })
-    catch (error) {
-    if (error.name === 'AbortError') { return };
-    console.log("err get=", error);
-    clearTimeout(timeoutId);
-    throw error;
-};
 
-    // return () => {
-    //     abortController.abort()
-    //     // stop the query by aborting on the AbortController on unmount
-    // }
+    catch (error) {
+        if (error.name === 'AbortError') { return };
+        console.log("err get=", error);
+        clearTimeout(timeoutId);
+        throw error;
+    };
+
 
 }
 

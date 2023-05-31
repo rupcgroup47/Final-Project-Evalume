@@ -22,13 +22,11 @@ function Overview() {
   const [tmpResult, setTmpResult] = useState([]);
   const [meeting, setMeeting] = useState([]);
   const [questionnairesData, setQuestionnairesData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   //all API calls
   useEffect(() => {
     let isMounted = true;
-    setLoading(true);
 
     // Get importent details and set the main context
     const getDepartment = async () => {
@@ -165,7 +163,6 @@ function Overview() {
 
     return () => {
       isMounted = false;
-      setLoading(false);
     }
   }, []);
 

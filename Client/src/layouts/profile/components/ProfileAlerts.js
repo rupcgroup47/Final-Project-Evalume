@@ -52,10 +52,11 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
     };
     if (meetingState?.length !== 0) {
       console.log("here");
+      console.log(meetingState);
       setState((prevState) => {
         return {
           ...prevState,
-          employeeCalender: meetingState.length
+          employeeCalender: meetingState?.length
         };
       });
     };

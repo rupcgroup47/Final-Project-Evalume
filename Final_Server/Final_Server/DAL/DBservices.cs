@@ -3196,4 +3196,61 @@ public class DBservices
         return cmd;
     }
 
+    //-------------- OpenAI ---------------
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get num of employees in each dep
+    //--------------------------------------------------------------------------------------------------
+    public OpenAI GetOpenAIDetails()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGet("spGetOpenAIdetails", con);            // create the command
+
+        OpenAI OpenAIdetails = new OpenAI();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                OpenAIdetails.OpenAI_api_key = dataReader["OPENAI_API_KEY"].ToString();
+                OpenAIdetails.Organization_ID = dataReader["Organization_ID"].ToString();
+                OpenAIdetails.Organization_name = dataReader["Organization_name"].ToString();
+            }
+
+            return OpenAIdetails;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
 }
