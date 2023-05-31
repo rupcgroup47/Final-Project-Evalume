@@ -53,6 +53,14 @@ export default function EvalueContextProvider({ children }) {
     apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
     apiOpenAIdetails: "https://localhost:7079/api/OpenAI",
     // apiOpenAIdetails: "https://proj.ruppin.ac.il/cgroup47/prod/api/OpenAI", //server
+    apiEmployeeInEachPart: "https://localhost:7079/Evaluation_Process_Status",
+    // apiEmployeeInEachPart: "https://proj.ruppin.ac.il/cgroup47/prod/Evaluation_Process_Status", //server
+    apiQuesGroupDep: "https://localhost:7079/Avg_Answers?answerYear=",
+    // apiQuesGroupDep: "https://proj.ruppin.ac.il/cgroup47/prod/Avg_Answers?answerYear=", //server
+    apiAvgAnsByYears: "https://localhost:7079/AvgAnswersByYear",
+    // apiAvgAnsByYears: "https://proj.ruppin.ac.il/cgroup47/prod/AvgAnswersByYear", //server
+    apiSelfKPI: "https://localhost:7079/Score?userNum=",
+    // apiSelfKPI: "https://proj.ruppin.ac.il/cgroup47/prod/Score?userNum=", //server
   });
 
 
