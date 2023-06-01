@@ -1,23 +1,36 @@
 
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-import PieChart from "examples/Charts/PieChart";
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
-import { useEffect } from "react";
+import { useEffect , useState} from "react";
 import { useMaterialUIController, setDirection } from "context";
 import reportsGoalsData from "./data/reportsGoalsData";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [selectedValueGraph1, setselectedValueGraph1] = useState(''); // Initialize the selected value state
+  const [selectedValueGraph2, setselectedValueGraph2] = useState(''); // Initialize the selected value state
+  const measurs = [
+    {
+      quesGroup: 1,
+      quesGroup_Desc: "שירותיות",
+    },
+    {
+      quesGroup: 2,
+      quesGroup_Desc: "מקצועיות ואיכות בעבודה",
+    }
+    ]
+  const handleSelectChange1 = (event) => {
+    setselectedValueGraph1(event.target.value); }
+
+    const handleSelectChange2 = (event) => {
+      setselectedValueGraph2(event.target.value); }
+
 
   const [, dispatch] = useMaterialUIController();
 
@@ -35,24 +48,43 @@ function Dashboard() {
             <MDBox mb={3}>
               <ReportsBarChart
                 color="info"
-                title="שביעות רצון"
-                description="המחלקות בעלות שביעות הרצון הגבוהה ביותר"
+                title={selectedValueGraph1}
+                description="התפלגות לפי מחלקות"
                 date="עודכן לאחרונה בתאריך 2.2.2023"
                 chart={reportsBarChartData}
 
               />
+
+<select value={selectedValueGraph1} onChange={handleSelectChange1}>
+        <option value="">בחר מדד</option>
+        {measurs.map((option, index) => (
+          <option key={option.quesGroup} value={option.quesGroup_Desc}>
+            {option.quesGroup_Desc}
+          </option>
+        ))}
+      </select>
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={3}>
               <ReportsLineChart
                 color="success"
-                title="משמעת"
-                description="קצב השינוי במשמעת העובדים"
+                title={selectedValueGraph2}
+                description="קצב השינוי לאורך השנים"
                 date="עודכן לאחרונה בתאריך 2.2.2023"
                 chart={sales}
               />
+
+<select value={selectedValueGraph2} onChange={handleSelectChange2}>
+        <option value="">בחר מדד</option>
+        {measurs.map((option) => (
+          <option key={option.quesGroup} value={option.quesGroup_Desc}>
+          {option.quesGroup_Desc}
+        </option>
+        ))}
+      </select>
             </MDBox>
+
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={3}>
