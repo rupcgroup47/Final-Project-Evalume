@@ -121,32 +121,20 @@ namespace Final_Server.Models
             try
             {
                 DBservices dbs = new DBservices();
-                return dbs.GetGoalStatus(goalYear);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public static List<Object> ReadAvgAnsPerQuesGroup(int answerYear)  //get the questions avg answer according to the question group type soeted by department and changes by the year the client chose
-        {
-            try
-            {
-                DBservices dbs = new DBservices();
-                List<BI> tempNumList = dbs.GetAvgAnsPerQuesGroup(answerYear);
-                List<Object> depList = new List<Object>();
+                List<BI> tempNumList = dbs.GetGoalStatus(goalYear);
+                List<Object> goalsList = new List<Object>();
 
                 int counter = 0;
-                string currentDepartment = "";
-                List<string> departmentOptions = new List<string>();
+                int currentGoals = 0;
+                List<int> goalsOptions = new List<int>();
+                string[] statusNames = { "חדש", "בתהליך", "בוצע" };
 
                 foreach (BI item in tempNumList)
                 {
-                    if (currentDepartment != item.DepName)
+                    if (currentGoals != item.GoalNum)
                     {
-                        currentDepartment = item.DepName;
-                        departmentOptions.Add(currentDepartment);
+                        currentGoals = item.GoalNum;
+                        goalsOptions.Add(currentGoals);
                         counter++;
                     }
                 }
@@ -155,7 +143,61 @@ namespace Final_Server.Models
                     List<BI> tmpList = new List<BI>();
                     foreach (BI item1 in tempNumList)
                     {
-                        if (item1.DepName == departmentOptions[j])
+                        if (item1.GoalNum == goalsOptions[j])
+                        {
+                            tmpList.Add(item1);
+                        }
+                    }
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        int index = tmpList.FindIndex(x => x.GoalStatus == statusNames[i]);
+                        goalsList.Add(new
+                        {
+                            GoalNum = tmpList[0].GoalNum,
+                            GoalName = tmpList[0].GoalName,
+                            GoalStatus = statusNames[i],
+                            num_of_statuses_byGoal = (index != -1 ? tmpList[index].Num_of_statuses_byGoal : 0),
+                        });
+                    }
+
+                }
+
+                return goalsList;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static List<Object> ReadAvgAnsPerQuesGroup(int answerYear)  //get the questions avg answer according to the department soeted by question group type and changes by the year the client choose
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                List<BI> tempNumList = dbs.GetAvgAnsPerQuesGroup(answerYear);
+                List<Object> QuesGroupList = new List<Object>();
+
+                int counter = 0;
+                int currentQuesGroup = 0;
+                List<int> QuesGroupOptions = new List<int>();
+
+                foreach (BI item in tempNumList)
+                {
+                    if (currentQuesGroup != item.QuesGroup_Type)
+                    {
+                        currentQuesGroup = item.QuesGroup_Type;
+                        QuesGroupOptions.Add(currentQuesGroup);
+                        counter++;
+                    }
+                }
+                for (int j = 0; j < counter; j++)
+                {
+                    List<BI> tmpList = new List<BI>();
+                    foreach (BI item1 in tempNumList)
+                    {
+                        if (item1.QuesGroup_Type == QuesGroupOptions[j])
                         {
                             tmpList.Add(item1);
                         }
@@ -168,21 +210,21 @@ namespace Final_Server.Models
                     {
                         groupsList.Add(new
                         {
-                            QuesGroup = item2.QuesGroup_Type,
-                            QuesGroup_Desc = item2.QuesGroup_Desc,
+                            DepNum = item2.DepNum,
+                            DepName = item2.DepName,
                             Avg_Answers = item2.Avg_Answers,
                         });
                     }
 
-                    depList.Add(new
+                    QuesGroupList.Add(new
                     {
-                        DepNum = tmpList[0].DepNum,
-                        DepName = departmentOptions[j],
+                        QuesGroup = tmpList[0].QuesGroup_Type,
+                        QuesGroup_Desc = tmpList[0].QuesGroup_Desc,
                         parts = groupsList
                     });
                 }
 
-                return depList;
+                return QuesGroupList;
             }
             catch (Exception)
             {
@@ -284,7 +326,7 @@ namespace Final_Server.Models
             }
         }
 
-        public static List<Object> ReadEmployeesAvgAnswersByYear() //gets the avg of the employees' answers (Evalu_Part_Type = 1) by year
+        public static List<Object> ReadEmployeesAvgAnswersByYear() //get the total questions avg answer for the last 5 years from the current year
         {
             try
             {

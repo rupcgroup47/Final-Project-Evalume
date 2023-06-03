@@ -23,6 +23,7 @@ function Overview() {
   const [tmpResult, setTmpResult] = useState([]);
   const [meeting, setMeeting] = useState([]);
   const [questionnairesData, setQuestionnairesData] = useState([]);
+  const [selfKPI, setSelfKPI] = useState([]);
   const [error, setError] = useState(null);
 
   //all API calls
@@ -159,6 +160,26 @@ function Overview() {
         }
       }
       getQuestionnaires();
+    }
+
+    // GET the avg score of the employee VS to the avg score of the manager by current year
+    if (mainState.userNum) {
+      const getEmployeeVSManager = async () => {
+        try {
+          const fetchedData = await ApiFetcher(API.apiSelfKPI + mainState.userNum, "GET", null);
+          if (isMounted) {
+            console.log("success");
+            setSelfKPI(fetchedData);
+          }
+        }
+        catch (error) {
+          if (isMounted) {
+            setError(error);
+            console.log(error);
+          }
+        }
+      }
+      getEmployeeVSManager();
     }
 
 
