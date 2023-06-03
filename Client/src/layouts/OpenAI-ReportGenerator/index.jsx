@@ -54,22 +54,22 @@ function ReportGenerator() {
             console.log(openAIdetails.openAI_api_key);
             console.log(openAIdetails.organization_ID);
 
-            const sendOpenAIdetails = async () => {
-                try {
-                    const fetchedData = await sendMessageToChatGPT(openAIdetails.openAI_api_key, openAIdetails.organization_ID, messages);
-                    if (isMounted) {
-                        console.log("success");
-                        console.log(fetchedData);
-                    }
-                }
-                catch (error) {
-                    if (isMounted) {
-                        setError(error);
-                        console.log(error);
-                    }
-                }
-            }
-            sendOpenAIdetails();
+            // const sendOpenAIdetails = async () => {
+            //     try {
+            //         const fetchedData = await sendMessageToChatGPT(openAIdetails.openAI_api_key, openAIdetails.organization_ID, messages);
+            //         if (isMounted) {
+            //             console.log("success");
+            //             console.log(fetchedData);
+            //         }
+            //     }
+            //     catch (error) {
+            //         if (isMounted) {
+            //             setError(error);
+            //             console.log(error);
+            //         }
+            //     }
+            // }
+            // sendOpenAIdetails();
 
 
             return () => {

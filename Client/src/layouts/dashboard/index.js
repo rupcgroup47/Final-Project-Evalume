@@ -7,135 +7,138 @@ import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
-import { useEffect , useState} from "react";
+import { useEffect, useState, useContext } from "react";
 import { useMaterialUIController, setDirection } from "context";
 import reportsGoalsData from "./data/reportsGoalsData";
+import { EvalueContext } from "context/evalueVariables";
+import { MainStateContext } from "App";
 import { CollectionsBookmarkOutlined } from "@mui/icons-material";
+import ApiFetcher from "components/ApiFetcher";
+
 // import BarChartData from "./data/reportsBarChartData";
 const jsonArray = [
   {
-"quesGroup": 1,
+    "quesGroup": 1,
     "quesGroup_Desc": "שירותיות",
     "parts": [
       {
-    "depNum": 1,
-    "depName": "משאבי אנוש וביטחון",
+        "depNum": 1,
+        "depName": "משאבי אנוש וביטחון",
         "avg_Answers": 5
       },
       {
-    "depNum": 2,
-    "depName": "שיווק ומכירות",
+        "depNum": 2,
+        "depName": "שיווק ומכירות",
         "avg_Answers": 4
       },
       {
-    "depNum": 102,
-    "depName": "תפעול",
+        "depNum": 102,
+        "depName": "תפעול",
         "avg_Answers": 5
-     }
+      }
     ]
- },
+  },
   {
- "quesGroup": 2,
-  "quesGroup_Desc": "מקצועיות ואיכות בעבודה",
+    "quesGroup": 2,
+    "quesGroup_Desc": "מקצועיות ואיכות בעבודה",
     "parts": [
       {
-    "depNum": 1,
-    "depName": "משאבי אנוש וביטחון",
+        "depNum": 1,
+        "depName": "משאבי אנוש וביטחון",
         "avg_Answers": 5
       },
       {
-    "depNum": 2,
-    "depName": "שיווק ומכירות",
+        "depNum": 2,
+        "depName": "שיווק ומכירות",
         "avg_Answers": 4
       },
       {
-    "depNum": 102,
-    "depName": "תפעול",
+        "depNum": 102,
+        "depName": "תפעול",
         "avg_Answers": 5
-     }
+      }
     ]
- },{
- 
- "quesGroup": 3,
-  "quesGroup_Desc": "יחסי עבודה , תקשורת ועבודת צוות",
-    "parts": [
-      {
-    "depNum": 1,
-    "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-    "depNum": 2,
-    "depName": "שיווק ומכירות",
-        "avg_Answers": 4
-      },
-      {
-    "depNum": 102,
-    "depName": "תפעול",
-        "avg_Answers": 5
-     }
-    ]
- },{
+  }, {
 
- "quesGroup": 4,
-  "quesGroup_Desc": "יוזמה ואחריות",
+    "quesGroup": 3,
+    "quesGroup_Desc": "יחסי עבודה , תקשורת ועבודת צוות",
     "parts": [
       {
-    "depNum": 1,
-    "depName": "משאבי אנוש וביטחון",
+        "depNum": 1,
+        "depName": "משאבי אנוש וביטחון",
         "avg_Answers": 5
       },
       {
-    "depNum": 102,
-    "depName": "תפעול",
-        "avg_Answers": 5
-     }
-    ]
- },{
-
- "quesGroup": 5,
-  "quesGroup_Desc": "משמעת",
-    "parts": [
-      {
-    "depNum": 1,
-    "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-    "depNum": 2,
-    "depName": "שיווק ומכירות",
+        "depNum": 2,
+        "depName": "שיווק ומכירות",
         "avg_Answers": 4
       },
       {
-    "depNum": 102,
-    "depName": "תפעול",
+        "depNum": 102,
+        "depName": "תפעול",
         "avg_Answers": 5
-     }
+      }
     ]
- },{
+  }, {
 
- "quesGroup": 6,
-  "quesGroup_Desc": "מיומנויות ניהול",
+    "quesGroup": 4,
+    "quesGroup_Desc": "יוזמה ואחריות",
     "parts": [
       {
-    "depNum": 1,
-    "depName": "משאבי אנוש וביטחון",
+        "depNum": 1,
+        "depName": "משאבי אנוש וביטחון",
         "avg_Answers": 5
       },
       {
-    "depNum": 2,
-    "depName": "שיווק ומכירות",
+        "depNum": 102,
+        "depName": "תפעול",
+        "avg_Answers": 5
+      }
+    ]
+  }, {
+
+    "quesGroup": 5,
+    "quesGroup_Desc": "משמעת",
+    "parts": [
+      {
+        "depNum": 1,
+        "depName": "משאבי אנוש וביטחון",
+        "avg_Answers": 5
+      },
+      {
+        "depNum": 2,
+        "depName": "שיווק ומכירות",
         "avg_Answers": 4
       },
       {
-    "depNum": 102,
-    "depName": "תפעול",
+        "depNum": 102,
+        "depName": "תפעול",
         "avg_Answers": 5
-           }
-    ]
-  }
+      }
+    ]
+  }, {
+
+    "quesGroup": 6,
+    "quesGroup_Desc": "מיומנויות ניהול",
+    "parts": [
+      {
+        "depNum": 1,
+        "depName": "משאבי אנוש וביטחון",
+        "avg_Answers": 5
+      },
+      {
+        "depNum": 2,
+        "depName": "שיווק ומכירות",
+        "avg_Answers": 4
+      },
+      {
+        "depNum": 102,
+        "depName": "תפעול",
+        "avg_Answers": 5
+      }
+    ]
+  }
 ]
-
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [chartData, setChartData] = useState({
@@ -147,35 +150,139 @@ function Dashboard() {
       },
     ],
   });
-
   const [selectedValueGraph1, setselectedValueGraph1] = useState("שירותיות"); // Initialize the selected value state
   const [selectedValueGraph2, setselectedValueGraph2] = useState(''); // Initialize the selected value state
+  const { API, setDepState } = useContext(EvalueContext);
+  const { mainState, setMainState } = useContext(MainStateContext);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [dataTable, setDataTable] = useState([]);
+  const [error, setError] = useState(null);
+  const [goals, setGoals] = useState(null);
+  const [totalAvg, setTotalAvg] = useState(null);
+  const [avgQuestions, setAvgQuestions] = useState(null);
+
+  //all API calls
+  useEffect(() => {
+    let isMounted = true;
+
+    // Get the total questions avg answer for the last 5/6 years from the current year
+    const getTotalAvg = async () => {
+      try {
+        const fetchedData = await ApiFetcher(API.apiAvgAnsByYears, "GET", null);
+        if (isMounted) {
+          console.log("success");
+          console.log("getTotalAvg",fetchedData);
+          setTotalAvg(fetchedData);
+        }
+      }
+      catch (error) {
+        if (isMounted) {
+          setError(error);
+          console.log(error);
+        }
+      }
+    }
+    getTotalAvg();
+
+    // Get how many employees are in each part of the evaluation process for the current year soted by departments
+    const getDataTable = async () => {
+      try {
+        const fetchedData = await ApiFetcher(API.apiEmployeeInEachPart, "GET", null);
+        if (isMounted) {
+          console.log("success");
+          console.log("getDataTable",fetchedData);
+          setDataTable(fetchedData);
+        }
+      }
+      catch (error) {
+        if (isMounted) {
+          setError(error);
+          console.log(error);
+        }
+      }
+    }
+    getDataTable();
+
+    return () => {
+      isMounted = false;
+    }
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    // Get goals and their status details
+    const getGolas = async () => {
+      try {
+        const fetchedData = await ApiFetcher(API.apiGoalsStatusBI + year, "GET", null);
+        if (isMounted) {
+          console.log("success");
+          console.log("getGolas",fetchedData);
+          setGoals(fetchedData);
+        }
+      }
+      catch (error) {
+        if (isMounted) {
+          setError(error);
+          console.log(error);
+        }
+      }
+    }
+    getGolas();
+
+    // Get the questions avg answer according to the question group type
+    const getAvgQuestions = async () => {
+      try {
+        const fetchedData = await ApiFetcher(API.apiQuesGroupDep + year, "GET", null);
+        if (isMounted) {
+          console.log("success");
+          console.log("getAvgQuestions",fetchedData);
+          setAvgQuestions(fetchedData);
+        }
+      }
+      catch (error) {
+        if (isMounted) {
+          setError(error);
+          console.log(error);
+        }
+      }
+    }
+    getAvgQuestions();
+
+    return () => {
+      isMounted = false;
+    }
+  }, [year]);
+
+
   const handleSelectChange1 = (event) => {
-    setselectedValueGraph1(event.target.value); }
+    setselectedValueGraph1(event.target.value);
+  }
 
-    useEffect(() => {
-      // Find the selected item in the JSON array
-      const selectedOption = jsonArray.find((option) => option.quesGroup_Desc === selectedValueGraph1);
-      console.log(selectedOption)
-  
-      // Generate the chart data based on the selected option
-      const newChartData = {
-        labels: selectedOption?.parts.map((part) => part.depName) || [],
-        datasets: [
-          {
-            label: selectedOption.quesGroup_Desc,
-            data: selectedOption?.parts.map((part) => part.avg_Answers) || [],
-          },
-        ],
-      };
-  
-      setChartData(newChartData);
-      console.log(newChartData)
-    }, [selectedValueGraph1]);
+  useEffect(() => {
+    // Find the selected item in the JSON array
+    const selectedOption = jsonArray.find((option) => option.quesGroup_Desc === selectedValueGraph1);
+    console.log(selectedOption)
 
-   
-    const handleSelectChange2 = (event) => {
-      setselectedValueGraph2(event.target.value); }
+    // Generate the chart data based on the selected option
+    const newChartData = {
+      labels: selectedOption?.parts.map((part) => part.depName) || [],
+      datasets: [
+        {
+          label: selectedOption.quesGroup_Desc,
+          data: selectedOption?.parts.map((part) => part.avg_Answers) || [],
+        },
+      ],
+    };
+
+    setChartData(newChartData);
+    console.log(newChartData)
+  }, [selectedValueGraph1]);
+
+
+  const handleSelectChange2 = (event) => {
+    setselectedValueGraph2(event.target.value);
+  }
 
 
   const [, dispatch] = useMaterialUIController();
@@ -186,6 +293,7 @@ function Dashboard() {
 
     return () => setDirection(dispatch, "ltr");
   }, []);
+
   return (
     <header>
       <MDBox py={3}>
@@ -200,14 +308,14 @@ function Dashboard() {
                 chart={chartData}
               />
 
-<select value={selectedValueGraph1} onChange={handleSelectChange1}>
-        <option value="שירותיות">שירותיות</option>
-        {jsonArray.map((option, index) => (
-          <option key={option.quesGroup} value={option.quesGroup_Desc}>
-            {option.quesGroup_Desc}
-          </option>
-        ))}
-      </select>
+              <select value={selectedValueGraph1} onChange={handleSelectChange1}>
+                <option value="שירותיות">שירותיות</option>
+                {jsonArray.map((option, index) => (
+                  <option key={option.quesGroup} value={option.quesGroup_Desc}>
+                    {option.quesGroup_Desc}
+                  </option>
+                ))}
+              </select>
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
@@ -220,14 +328,14 @@ function Dashboard() {
                 chart={sales}
               />
 
-<select value={selectedValueGraph2} onChange={handleSelectChange2}>
-        <option value="">בחר מדד</option>
-        {jsonArray.map((option) => (
-          <option key={option.quesGroup} value={option.quesGroup_Desc}>
-          {option.quesGroup_Desc}
-        </option>
-        ))}
-      </select>
+              <select value={selectedValueGraph2} onChange={handleSelectChange2}>
+                <option value="">בחר מדד</option>
+                {jsonArray.map((option) => (
+                  <option key={option.quesGroup} value={option.quesGroup_Desc}>
+                    {option.quesGroup_Desc}
+                  </option>
+                ))}
+              </select>
             </MDBox>
 
           </Grid>

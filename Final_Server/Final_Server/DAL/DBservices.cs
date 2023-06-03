@@ -2536,7 +2536,7 @@ public class DBservices
     }
 
     //--------------------------------------------------------------------------------------------------
-    // This method get the questions avg answer according to the question group type soeted by department and changes by the year the client chose
+    // This method get the questions avg answer according to the department soeted by question group type and changes by the year the client choose
     //--------------------------------------------------------------------------------------------------
     public List<BI> GetAvgAnsPerQuesGroup(int answerYear)
     {
@@ -2757,7 +2757,7 @@ public class DBservices
     //--------------------------------------------------------------------------------------------------
     // This method gets the status of specific goal
     //--------------------------------------------------------------------------------------------------
-    public List<Object> GetGoalStatus(int goalYear)
+    public List<BI> GetGoalStatus(int goalYear)
     {
 
         SqlConnection con;
@@ -2776,7 +2776,7 @@ public class DBservices
         cmd = CreateCommandWithSPGetAvgAnsByYear("sp_GetNumOfStatusesPerGoal", con, goalYear);            // create the command
 
 
-        List<Object> GoalstatusList = new List<Object>();
+        List<BI> GoalstatusList = new List<BI>();
 
         try
         {
@@ -2786,13 +2786,11 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                Object goalStatus = (new
-                {
-                    GoalStatus = dataReader["GoalStatus"].ToString(),
-                    GoalNum = Convert.ToInt32(dataReader["GoalNum"]),
-                    GoalName = dataReader["GoalName"].ToString(),
-                    Num_of_statuses_byGoal = Convert.ToInt32(dataReader["Num_of_statuses_byGoal"])
-                });
+                BI goalStatus = new BI();
+                goalStatus.GoalStatus = dataReader["GoalStatus"].ToString();
+                goalStatus.GoalNum = Convert.ToInt32(dataReader["GoalNum"]);
+                goalStatus.GoalName = dataReader["GoalName"].ToString();
+                goalStatus.Num_of_statuses_byGoal = Convert.ToInt32(dataReader["Num_of_statuses_byGoal"]);
 
                 GoalstatusList.Add(goalStatus);
             }

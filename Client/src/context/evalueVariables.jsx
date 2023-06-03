@@ -61,6 +61,8 @@ export default function EvalueContextProvider({ children }) {
     // apiAvgAnsByYears: "https://proj.ruppin.ac.il/cgroup47/prod/AvgAnswersByYear", //server
     apiSelfKPI: "https://localhost:7079/Score?userNum=",
     // apiSelfKPI: "https://proj.ruppin.ac.il/cgroup47/prod/Score?userNum=", //server
+    apiGoalsStatusBI: "https://localhost:7079/Goal_Status?goalYear=",
+    // apiGoalsStatusBI: "https://proj.ruppin.ac.il/cgroup47/prod/Goal_Status?goalYear=", //server
   });
 
 
