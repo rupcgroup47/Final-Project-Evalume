@@ -257,11 +257,11 @@ function Dashboard() {
   const { API, setDepState } = useContext(EvalueContext);
   const { mainState, setMainState } = useContext(MainStateContext);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [dataTable, setDataTable] = useState([]);
+  const [dataTable, setDataTable] = useState([]);//bottom table
   const [error, setError] = useState(null);
-  const [goals, setGoals] = useState(null);
-  const [totalAvg, setTotalAvg] = useState(null);
-  const [avgQuestions, setAvgQuestions] = useState(null);
+  const [goals, setGoals] = useState(null);//goals
+  const [totalAvg, setTotalAvg] = useState(null);//years
+  const [avgQuestions, setAvgQuestions] = useState(null);//dep table
 
   //all API calls
   useEffect(() => {
