@@ -14,12 +14,10 @@ function ReportGenerator() {
     const { API } = useContext(EvalueContext);
     const [error, setError] = useState(null);
     const [openAIdetails, setOpenAIdetails] = useState(null);
-    const [messages, setMessages] = useState([
-        { role: "system", content: data },
-    ]);
+    const [messages, setMessages] = useState(null);
     const [response, setResponse] = useState("");
-    const [tableData, setTableData] = useState(null);
-    console.log(JSON.stringify(data));
+    const [showTable, setShowTable] = useState(false);
+    const [tableData, setTableData] = useState([]);
 
     //API calls
     useEffect(() => {
@@ -31,7 +29,6 @@ function ReportGenerator() {
                 const fetchedData = await ApiFetcher(API.apiOpenAIdetails, "GET", null);
                 if (isMounted) {
                     console.log("success");
-                    console.log(fetchedData);
                     setOpenAIdetails(fetchedData);
                 }
             }
@@ -51,51 +48,53 @@ function ReportGenerator() {
     }, []);
 
     // send the query to the server and gets the data for the table
-    // useEffect(() => {
-    //     let isMounted = true;
+    useEffect(() => {
+        let isMounted = true;
 
-    //     // Get importent details and set the main context
-    //     const getTabledetails = async () => {
-    //         try {
-    //             const fetchedData = await ApiFetcher(API.apiGetDataFromGPT + response, "GET", null);
-    //             if (isMounted) {
-    //                 console.log("success");
-    //                 console.log(fetchedData);
-    //                 setTableData(fetchedData);
-    //             }
-    //         }
-    //         catch (error) {
-    //             if (isMounted) {
-    //                 if (error.message == "Invalid object name.") {
-    //                     console.log("The query is wrong");
-    //                 }
-    //                 setError(error);
-    //                 console.log(error);
-    //             }
-    //         }
-    //     }
-    //     getTabledetails();
+        // Get importent details and set the main context
+        const getTabledetails = async () => {
+            try {
+                const fetchedData = await ApiFetcher(API.apiGetDataFromGPT + response, "GET", null);
+                if (isMounted) {
+                    console.log("success");
+                    console.log(fetchedData);
+                    setTableData(fetchedData);
+                    setShowTable(true);
+                }
+            }
+            catch (error) {
+                if (isMounted) {
+                    if (error.message == "Invalid object name.") {
+                        console.log("The query is wrong");
+                    }
+                    setError(error);
+                    console.log(error);
+                }
+            }
+        }
+        getTabledetails();
 
 
-    //     return () => {
-    //         isMounted = false;
-    //     }
-    // }, [response]);
+        return () => {
+            isMounted = false;
+        }
+    }, [response]);
 
     useEffect(() => {
         if (openAIdetails !== null) {
             let isMounted = true;
-
+            console.log("here");
+            console.log(messages);
             const sendOpenAIdetails = async () => {
                 try {
-                    console.log(messages);
-                    // const fetchedData = await sendMessageToChatGPT(openAIdetails.openAI_api_key, openAIdetails.organization_ID, messages);
-                    // if (isMounted) {
-                    //     console.log("success");
-                    //     console.log('ft',fetchedData);
-                    //     console.log(JSON.stringify(fetchedData));
-                    //     // setResponse(JSON.stringify(fetchedData));
-                    // }
+                    console.log("now here");
+                    const fetchedData = await sendMessageToChatGPT(openAIdetails.openAI_api_key, openAIdetails.organization_ID, messages);
+                    if (isMounted) {
+                        console.log("her now");
+                        console.log("success");
+                        console.log(JSON.stringify(fetchedData));
+                        setResponse(fetchedData);
+                    }
                 }
                 catch (error) {
                     if (isMounted) {
@@ -111,13 +110,15 @@ function ReportGenerator() {
                 isMounted = false;
             }
         }
-    }, [openAIdetails]);
+    }, [messages]);
 
     const sendQuery = () => {
         var textFieldValue = document.getElementById("query").value;
         console.log(textFieldValue);
-        setMessages(
+        setMessages([
+            { role: "system", content: data },
             { role: "user", content: textFieldValue },
+        ]
         )
     };
 
@@ -130,7 +131,7 @@ function ReportGenerator() {
 
     return (
         <Container maxWidth="xl" sx={{ pt: 5, pb: 5, background: "white", borderRadius: "5px" }}>
-            <Stack sx={{mb:5}}>
+            <Stack sx={{ mb: 5 }}>
                 <h1
                     style={{ padding: "10px 20px", textAlign: "center", color: "black", fontFamily: "Rubik" }}
                 >
@@ -158,7 +159,7 @@ function ReportGenerator() {
                     <Button type="button" onClick={sendQuery}>שלח</Button>
                 </Stack>
             </Stack>
-            {/* {tableData !== null ? <GPTTable tableData={tableData} setTableData={setTableData} /> : ""} */}
+            {/* {showTable ? <GPTTable tableData={tableData} setTableData={setTableData} /> : ""} */}
         </Container>
     );
 }
