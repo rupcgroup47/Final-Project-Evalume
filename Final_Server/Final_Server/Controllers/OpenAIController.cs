@@ -29,7 +29,8 @@ namespace Final_Server.Controllers
         {
             try
             {
-                return OpenAI.ReadsqlCommand(query);
+                string output = query.Replace("\"", "").Replace("\\", "");
+                return OpenAI.ReadsqlCommand(output);
             }
             catch (Exception ex)
             {
