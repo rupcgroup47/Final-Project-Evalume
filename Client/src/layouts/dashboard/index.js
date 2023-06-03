@@ -140,7 +140,7 @@ const jsonArray = [
   }
 ]
 
-const goals= 
+const goals1= 
 [
   {
     "goalStatus": "בוצע",
@@ -391,7 +391,7 @@ function Dashboard() {
     setselectedValueGraph2(event.target.value);
   }
       useEffect(() => {
-      const processedData = goals.reduce((acc, curr, index) => {
+      const processedData = goals1.reduce((acc, curr, index) => {
         const { goalName, goalStatus, num_of_statuses_byGoal } = curr;
     
         if (!acc.labels.includes(goalName)) {
