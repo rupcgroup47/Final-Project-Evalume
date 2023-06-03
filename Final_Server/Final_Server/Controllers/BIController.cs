@@ -64,7 +64,7 @@ namespace Final_Server.Controllers
         //}
 
         [HttpGet("/Goal_Status")]
-        public IEnumerable<Object> GetGoalsStatus(int goalYear) //gets the status of specific goal
+        public IEnumerable<Object> GetGoalsStatus(int goalYear) //for each active goal, gets for each status the number of employee that are on this status
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Final_Server.Controllers
         }
 
         [HttpGet("/AvgAnswersByYear")]
-        public IEnumerable<Object> GetAvgAnsByYears() //get the questions avg answer according to the question group type soeted by department and changes by the year the client chose
+        public IEnumerable<Object> GetAvgAnsByYears() //get the total questions avg answer for the last 5 years from the current year
         {
             try
             {
@@ -90,7 +90,7 @@ namespace Final_Server.Controllers
         }
 
         [HttpGet("/Avg_Answers")]
-        public IEnumerable<Object> GetAvgAnsPerQuesGroup(int answerYear) //get the questions avg answer according to the question group type soeted by department and changes by the year the client chose
+        public IEnumerable<Object> GetAvgAnsPerQuesGroup(int answerYear) //get the questions avg answer according to the department soeted by question group type and changes by the year the client choose
         {
             try
             {

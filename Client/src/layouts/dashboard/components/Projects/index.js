@@ -10,7 +10,7 @@ import { Today } from "@mui/icons-material";
 function Projects() {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
-const year= new Date().getFullYear();
+  const year = new Date().getFullYear();
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 

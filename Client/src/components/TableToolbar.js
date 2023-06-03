@@ -20,6 +20,8 @@ import SelectColumnsMenu from "./SelectColumnsMenu";
 import CreateOrUpdateUserDialog from "../dialog/CreateOrUpdateUserDialog";
 
 export default function TableToolbar({
+  fromAI,
+
   // Users
   users,
   setUsers,
@@ -74,11 +76,13 @@ export default function TableToolbar({
             alignItems: "center",
           }}
         >
-          <Fade in={!showSearchButton}>
-            <Typography variant="h5" fontWeight={600}>
-              משתמשים
-            </Typography>
-          </Fade>
+          {!fromAI ?
+            <Fade in={!showSearchButton}>
+              <Typography variant="h5" fontWeight={600}>
+                משתמשים
+              </Typography>
+            </Fade>
+            : ""}
 
           <Fade in={showSearchButton} mountOnEnter unmountOnExit>
             <Box
@@ -124,50 +128,56 @@ export default function TableToolbar({
         </div>
 
         <Box style={{ display: "flex" }}>
-          <Tooltip title="הוספה">
-            <IconButton
-              color="primary"
-              onClick={() => setShowCreateUserDialog((e) => !e)}
-            >
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
+          {!fromAI ?
+            <Tooltip title="הוספה">
+              <IconButton
+                color="primary"
+                onClick={() => setShowCreateUserDialog((e) => !e)}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+            : ""}
 
-          <Tooltip title="חיפוש">
-            <IconButton onClick={() => setShowSearchButton((e) => !e)}>
-              <SearchIcon />
-            </IconButton>
-          </Tooltip>
+          {!fromAI ?
+            <Tooltip title="חיפוש">
+              <IconButton onClick={() => setShowSearchButton((e) => !e)}>
+                <SearchIcon />
+              </IconButton>
+            </Tooltip>
+            : ""}
 
           <SelectColumnsMenu
             tableHead={tableHead}
             setTableHead={setTableHead}
           />
 
-          <FilterMenu
-            users={users}
-            // Filters
-            filterName={filterName}
-            setFilterName={setFilterName}
-            filterEmail={filterEmail}
-            setFilterEmail={setFilterEmail}
-            filterGender={filterGender}
-            setFilterGender={setFilterGender}
-            filterDepartment={filterDepartment}
-            setFilterDepartment={setFilterDepartment}
-            filterJob={filterJob}
-            setFilterJob={setFilterJob}
-            filterRoleType={filterRoleType}
-            setFilterRoleType={setFilterRoleType}
-            filterDirector={filterDirector}
-            setFilterDirector={setFilterDirector}
-            filterActive={filterActive}
-            setFilterActive={setFilterActive}
-            filterAdmin={filterAdmin}
-            setFilterAdmin={setFilterAdmin}
-            filterRoleGroup={filterRoleGroup}
-            setFilterRoleGroup={setFilterRoleGroup}
-          />
+          {!fromAI ?
+            <FilterMenu
+              users={users}
+              // Filters
+              filterName={filterName}
+              setFilterName={setFilterName}
+              filterEmail={filterEmail}
+              setFilterEmail={setFilterEmail}
+              filterGender={filterGender}
+              setFilterGender={setFilterGender}
+              filterDepartment={filterDepartment}
+              setFilterDepartment={setFilterDepartment}
+              filterJob={filterJob}
+              setFilterJob={setFilterJob}
+              filterRoleType={filterRoleType}
+              setFilterRoleType={setFilterRoleType}
+              filterDirector={filterDirector}
+              setFilterDirector={setFilterDirector}
+              filterActive={filterActive}
+              setFilterActive={setFilterActive}
+              filterAdmin={filterAdmin}
+              setFilterAdmin={setFilterAdmin}
+              filterRoleGroup={filterRoleGroup}
+              setFilterRoleGroup={setFilterRoleGroup}
+            />
+            : ""}
         </Box>
       </Box>
 

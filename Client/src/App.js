@@ -82,14 +82,12 @@ export default function App() {
     const exisiting = localStorage.getItem("Current User");
     const areObjectsEqual = isEqual(mainState, JSON.parse(exisiting));
     if (!mainState) {
-      console.log("here???");
       const Employee = JSON.parse(exisiting);
       if (Employee) {
         setMainState(Employee);
       }
     }
     if (mainState !== null && exisiting !== null && !areObjectsEqual) {
-      console.log("here");
       localStorage.setItem("Current User", JSON.stringify(mainState)); // Set chosenEmployee details in local storage
     }
   }, [mainState]);

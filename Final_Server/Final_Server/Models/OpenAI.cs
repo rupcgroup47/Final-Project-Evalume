@@ -1,4 +1,6 @@
-﻿namespace Final_Server.Models
+﻿using System.Globalization;
+
+namespace Final_Server.Models
 {
     public class OpenAI
     {
@@ -16,6 +18,32 @@
             {
                 DBservices dbs = new DBservices();
                 return dbs.GetOpenAIDetails();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static List<Object> ReadsqlCommand(string sqlCommand) //get all openAI details
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                List<Object> result = dbs.ReadsqlCommand(sqlCommand);
+                //foreach (var row in result)
+                //{
+                //    Dictionary<string, object> rowData = (Dictionary<string, object>)row;
+
+                //    foreach (var field in rowData)
+                //    {
+                //        string fieldName = field.Key;
+                //        object fieldValue = field.Value;
+                //    }
+
+                //    Console.WriteLine(); // Add a line break between rows
+                //}
+                return result;
             }
             catch (Exception ex)
             {
