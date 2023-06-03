@@ -12,6 +12,7 @@ import ApiFetcher from "components/ApiFetcher";
 // Data
 import ProfileAlerts from "./components/ProfileAlerts";
 import ProfileGrid from "./components/ProfileGrid";
+import KPIRating from "./components/KPI";
 
 function Overview() {
   const [, dispatch] = useMaterialUIController();
@@ -211,6 +212,14 @@ function Overview() {
             <ProfileAlerts title="conversations" tmpResult={tmpResult} meeting={meeting} />
             {/* alerts={alerts} */}
           </Grid>
+          <Grid
+            item
+            s={12}
+            xl={7}
+            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          >
+          <KPIRating/>
+          </Grid>
         </Grid>
       </MDBox>
       {/* <MDBox p={2}>
@@ -221,225 +230,3 @@ function Overview() {
 }
 
 export default Overview;
-
-{/* <ProfileInfoCard
-              title="פרטים אישיים"
-              info={{
-                שם: `${mainState.userFName} ${mainState.userLName}`,
-                טלפון: `${mainState.userPhoneNum}`,
-                אימייל: `${mainState.userEmail}`,
-                תז: `${mainState.userId}`,
-                מחלקה: `${mainState.userDepartment}`,
-                תפקיד: `${mainState.userRole}`,
-                מנהל: `${mainState.managerFname} ${mainState.managerLName}`,
-              }}
-              action={{ route: "", tooltip: "Edit Profile" }}
-              shadow={false}
-            />
-            <Divider orientation="vertical" sx={{ mx: 0 }} /> */}
-
-              // const [state, setState] = useState({
-  //   fetch: {
-  //     api: "",
-  //     method: "",
-  //     body: undefined,
-  //   },
-  //   // evalus: [],
-  //   // goals: [],
-  //   // tmpResult: [],
-  // });
-
-  // // bring all the user eveluations using GET api
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-  //   if (evalus.length === 0 && mainState.userNum) {
-  //     fetch(
-  //       API.apiGetEvaluations + "/" + mainState.userNum,
-  //       {
-  //         method: "GET",
-  //         headers: new Headers({
-  //           "Content-Type": "application/json; charset=UTF-8",
-  //           Accept: "application/json; charset=UTF-8",
-  //         }),
-  //         body: state.fetch.body,
-  //         signal: abortController.signal
-  //       })
-  //       .then(async response => {
-  //         const data = await response.json();
-  //         console.log(response);
-
-  //         if (!response.ok) {
-  //           // get error message from body or default to response statusText
-  //           const error = (data && data.message) || response.statusText;
-  //           return Promise.reject(error);
-  //         }
-
-  //         return data;
-  //       })
-  //       .then(
-  //         (result) => {
-  //           console.log("success");
-  //           if (result[0].text !== undefined) {
-  //             console.log(result[0].text);
-  //           }
-  //           else {
-  //             setEvalus(result);
-  //             // setState({ evalus: result });
-  //           }
-  //         },
-  //         (error) => {
-  //           if (error.name === 'AbortError') return
-  //           console.log("err get=", error);
-  //           throw error;
-  //         }
-  //       );
-  //     return () => {
-  //       abortController.abort()
-  //       // stop the query by aborting on the AbortController on unmount
-  //     }
-  //   }
-  // }, []);
-
-  // GET the employee goals
-  // useEffect(() => {
-  //   const abortController = new AbortController()
-  //   if (goals.length === 0 && mainState.userNum) {
-  //     fetch(
-  //       API.apiGetGoalsByUserNum + mainState.userNum,
-  //       {
-  //         method: "GET",
-  //         headers: new Headers({
-  //           "Content-Type": "application/json; charset=UTF-8",
-  //           Accept: "application/json; charset=UTF-8",
-  //         }),
-  //         body: state.fetch.body,
-  //         signal: abortController.signal
-  //       })
-  //       .then(async response => {
-  //         const data = await response.json();
-  //         console.log(response);
-
-  //         if (!response.ok) {
-  //           // get error message from body or default to response statusText
-  //           const error = (data && data.message) || response.statusText;
-  //           return Promise.reject(error);
-  //         }
-
-  //         return data;
-  //       })
-  //       .then(
-  //         (result) => {
-  //           console.log("success");
-  //           console.log(result);
-  //           setGoals(result);
-  //           // setState({ goals: result });
-  //         },
-  //         (error) => {
-  //           if (error.name === 'AbortError') return
-  //           console.log("err get=", error);
-  //           throw error;
-  //         }
-  //       );
-  //     return () => {
-  //       abortController.abort()
-  //       // stop the query by aborting on the AbortController on unmount
-  //     }
-  //   }
-  // }, []);
-
-  // GET the employee status under a manager
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-  //   if (tmpResult.length === 0 && mainState.userNum) {
-  //     fetch(
-  //       API.apiGetEmployeeStatus + mainState.userNum,
-  //       {
-  //         method: "GET",
-  //         headers: new Headers({
-  //           "Content-Type": "application/json; charset=UTF-8",
-  //           Accept: "application/json; charset=UTF-8",
-  //         }),
-  //         signal: abortController.signal,
-  //       })
-  //       .then(async (response) => {
-  //         const data = await response.json();
-  //         console.log(response);
-
-  //         if (!response.ok) {
-  //           // get error message from body or default to response statusText
-  //           const error = (data && data.message) || response.statusText;
-  //           return Promise.reject(error);
-  //         }
-
-  //         return data;
-  //       })
-  //       .then(
-  //         (result) => {
-  //           console.log("success");
-  //           setTmpResult(result);
-  //           // setState({ tmpResult: result });
-  //         },
-  //         (error) => {
-  //           console.log(error);
-  //           if (error.name === "AbortError") return;
-  //           console.log("err get=", error);
-  //           throw error;
-  //         }
-  //       );
-  //     return () => {
-  //       abortController.abort();
-  //       // stop the query by aborting on the AbortController on unmount
-  //     };
-  //   }
-  // }, []);
-
-  // GET all the Questionnaires to the button
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-  //   if (evalus.length === 0) {
-  //     fetch(
-  //       API.apiGetEvaluations,
-  //       {
-  //         method: "GET",
-  //         headers: new Headers({
-  //           "Content-Type": "application/json; charset=UTF-8",
-  //           Accept: "application/json; charset=UTF-8",
-  //         }),
-  //         body: state.fetch.body,
-  //         signal: abortController.signal
-  //       })
-  //       .then(async response => {
-  //         const data = await response.json();
-  //         console.log(response);
-
-  //         if (!response.ok) {
-  //           // get error message from body or default to response statusText
-  //           const error = (data && data.message) || response.statusText;
-  //           return Promise.reject(error);
-  //         }
-
-  //         return data;
-  //       })
-  //       .then(
-  //         (result) => {
-  //           console.log("success");
-  //           if (result[0].text !== undefined) {
-  //             console.log(result[0].text);
-  //           }
-  //           else {
-  //             setQuestionnairesData(result);
-  //             // setState({ evalus: result });
-  //           }
-  //         },
-  //         (error) => {
-  //           if (error.name === 'AbortError') return
-  //           console.log("err get=", error);
-  //           throw error;
-  //         }
-  //       );
-  //     return () => {
-  //       abortController.abort()
-  //       // stop the query by aborting on the AbortController on unmount
-  //     }
-  //   }
-  // }, []);

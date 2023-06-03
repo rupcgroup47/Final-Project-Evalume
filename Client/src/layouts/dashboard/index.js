@@ -317,10 +317,11 @@ function Dashboard() {
         'rgba(255, 99, 132, 0.5)',
         'rgba(54, 162, 235, 0.5)',
         'rgba(255, 206, 86, 0.5)',
-        // Add more colors as needed
       ];
       return colors[index % colors.length];
     };
+
+    
   return (
     <header>
       <MDBox py={3}>
