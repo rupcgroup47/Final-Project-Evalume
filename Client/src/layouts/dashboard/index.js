@@ -136,6 +136,101 @@ const jsonArray = [
   }
 ]
 
+const goals= 
+[
+  {
+    "goalStatus": "בוצע",
+    "goalNum": 1,
+    "goalName": "סגירת תקציבים לשנת 2023",
+    "num_of_statuses_byGoal": 1
+  },
+  {
+    "goalStatus": "בתהליך",
+    "goalNum": 1,
+    "goalName": "סגירת תקציבים לשנת 2023",
+    "num_of_statuses_byGoal": 2
+  },
+ {
+    "goalStatus": "חדש",
+    "goalNum": 1,
+    "goalName": "סגירת תקציבים לשנת 2023",
+    "num_of_statuses_byGoal": 0
+  },
+  {
+    "goalStatus": "בוצע",
+    "goalNum": 2,
+    "goalName": "מעבר למחסן החדש",
+    "num_of_statuses_byGoal": 1
+  },
+   {
+    "goalStatus": "בתהליך",
+    "goalNum": 2,
+    "goalName": "מעבר למחסן החדש",
+    "num_of_statuses_byGoal": 0,
+   },
+  {
+    "goalStatus": "חדש",
+    "goalNum": 2,
+    "goalName": "מעבר למחסן החדש",
+    "num_of_statuses_byGoal": 0
+  },
+
+  {
+    "goalStatus": "בוצע",
+    "goalNum": 3,
+    "goalName": "מיפוי ארגזים",
+    "num_of_statuses_byGoal": 1
+  },
+  {
+    "goalStatus": "בתהליך",
+    "goalNum": 3,
+    "goalName": "מיפוי ארגזים",
+    "num_of_statuses_byGoal": 0
+  },
+ {
+    "goalStatus": "חדש",
+    "goalNum": 3,
+    "goalName": "מיפוי ארגזים",
+    "num_of_statuses_byGoal": 0
+  },
+  {
+    "goalStatus": "בוצע",
+    "goalNum": 108,
+    "goalName": "הדרכת בטיחות",
+    "num_of_statuses_byGoal": 0
+  },
+  {
+    "goalStatus": "בתהליך",
+    "goalNum": 108,
+    "goalName": "הדרכת בטיחות",
+    "num_of_statuses_byGoal": 0
+  },
+  {
+    "goalStatus": "חדש",
+    "goalNum": 108,
+    "goalName": "הדרכת בטיחות",
+    "num_of_statuses_byGoal": 1
+  },
+  {
+    "goalStatus": "בוצע",
+    "goalNum": 111,
+    "goalName": "כנס בטיחות שנתי",
+    "num_of_statuses_byGoal": 4
+  },
+  {
+    "goalStatus": "בתהליך",
+    "goalNum": 111,
+    "goalName": "כנס בטיחות שנתי",
+    "num_of_statuses_byGoal": 3
+  },
+  {
+    "goalStatus": "חדש",
+    "goalNum": 111,
+    "goalName": "כנס בטיחות שנתי",
+    "num_of_statuses_byGoal": 1
+  }
+]
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [chartData, setChartData] = useState({
@@ -147,9 +242,21 @@ function Dashboard() {
       },
     ],
   });
+  const [, dispatch] = useMaterialUIController();
 
+  // Changing the direction to rtl
+  useEffect(() => {
+    setDirection(dispatch, "rtl");
+
+    return () => setDirection(dispatch, "ltr");
+  }, []);
   const [selectedValueGraph1, setselectedValueGraph1] = useState("שירותיות"); // Initialize the selected value state
   const [selectedValueGraph2, setselectedValueGraph2] = useState(''); // Initialize the selected value state
+  const [goalchartData, setgoalChartData] = useState({
+    labels: [],
+    datasets: [],
+  });
+
   const handleSelectChange1 = (event) => {
     setselectedValueGraph1(event.target.value); }
 
@@ -176,16 +283,44 @@ function Dashboard() {
    
     const handleSelectChange2 = (event) => {
       setselectedValueGraph2(event.target.value); }
-
-
-  const [, dispatch] = useMaterialUIController();
-
-  // Changing the direction to rtl
-  useEffect(() => {
-    setDirection(dispatch, "rtl");
-
-    return () => setDirection(dispatch, "ltr");
-  }, []);
+      useEffect(() => {
+      const processedData = goals.reduce((acc, curr, index) => {
+        const { goalName, goalStatus, num_of_statuses_byGoal } = curr;
+    
+        if (!acc.labels.includes(goalName)) {
+          acc.labels.push(goalName);
+        }
+    
+        let dataset = acc.datasets.find((d) => d.label === goalStatus);
+    
+        if (!dataset) {
+          dataset = {
+            label: goalStatus,
+            data: [],
+            backgroundColor: getBackgroundColor(index),
+          };
+          acc.datasets.push(dataset);
+        }
+    
+        dataset.data.push(num_of_statuses_byGoal);
+    
+        return acc;
+      }, { labels: [], datasets: [] });
+    
+      setgoalChartData({
+        labels: processedData.labels,
+        datasets: processedData.datasets,
+      });
+    }, []);
+    const getBackgroundColor = (index) => {
+      const colors = [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        // Add more colors as needed
+      ];
+      return colors[index % colors.length];
+    };
   return (
     <header>
       <MDBox py={3}>
@@ -237,7 +372,7 @@ function Dashboard() {
                 color="dark"
                 title="סטטוס יעדים"
                 description="כמות העובדים המשויכים ליעד וקצת התקדמות"
-                chart={reportsGoalsData}
+                chart={goalchartData}
               />
             </MDBox>
           </Grid>
