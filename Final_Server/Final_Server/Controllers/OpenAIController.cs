@@ -24,28 +24,35 @@ namespace Final_Server.Controllers
         }
 
         // GET api/<OpenAIController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{query}")]
+        public List<Object> GetTableData(string query)
         {
-            return "value";
+            try
+            {
+                return OpenAI.ReadsqlCommand(query);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        // POST api/<OpenAIController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+        //// POST api/<OpenAIController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
-        // PUT api/<OpenAIController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<OpenAIController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<OpenAIController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<OpenAIController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

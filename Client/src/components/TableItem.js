@@ -27,84 +27,103 @@ export default function TableItem({
   user,
   tableHead,
   onRemoveButtonClick,
+  fromAI,
+  index
 }) {
   const [showUpdateUserDialog, setShowUpdateUserDialog] = useState(false);
   const [showCloseDialog, setShowCloseDialog] = useState(false);
-const isUserUpdate = false;
+  const isUserUpdate = false;
   return (
     <>
-      <TableRow
-        key={`${user.userFName} ${user.userLName}`}
-        // onClick={(event) => handleClick(event, row.name)}
-        tabIndex={-1}
-        sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
-        hover
-        role="checkbox"
-      >
-        {tableHead.find((i) => i.id === "fullName").show && (
-          <TableCell component="td" scope="row" align="center">
-            {`${user.userFName} ${user.userLName}`}
-          </TableCell>
-        )}
-        {tableHead.find((i) => i.id === "userId").show && (
-          <TableCell align="center">{user.userId}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "phoneNum").show && (
-          <TableCell align="center">{user.userPhoneNum}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "email").show && (
-          <TableCell align="center">{user.userEmail}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "gender").show && (
-          <TableCell align="center">{user.userGender}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "department").show && (
-          <TableCell align="center">{user.userDepartment}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "role").show && (
-          <TableCell align="center">{user.userRole}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "userRoleGroupDesc").show && (
-          <TableCell align="center">{user.userRoleGroupDesc}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "userType").show && (
-          <TableCell align="center">{user.userType === true ? `מנהל` : `עובד`}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "managerName").show && (
-          <TableCell align="center"> {`${user.managerFname} ${user.managerLName}`}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "managerEmail").show && (
-          <TableCell align="center"> {user.managerEmail}</TableCell>
-        )}
-        {tableHead.find((i) => i.id === "is_Active").show && (
-          <TableCell align="center">
-            <Checkbox
-              inputProps={{ "aria-label": "Checkbox is_Active" }}
-              disabled
-              checked={user.is_Active}
-            />
-          </TableCell>
+      {!fromAI ?
+        <TableRow
+          key={`${user.userFName} ${user.userLName}`}
+          // onClick={(event) => handleClick(event, row.name)}
+          tabIndex={-1}
+          sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
+          hover
+          role="checkbox"
+        >
+          {tableHead.find((i) => i.id === "fullName").show && (
+            <TableCell component="td" scope="row" align="center">
+              {`${user.userFName} ${user.userLName}`}
+            </TableCell>
+          )}
+          {tableHead.find((i) => i.id === "userId").show && (
+            <TableCell align="center">{user.userId}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "phoneNum").show && (
+            <TableCell align="center">{user.userPhoneNum}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "email").show && (
+            <TableCell align="center">{user.userEmail}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "gender").show && (
+            <TableCell align="center">{user.userGender}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "department").show && (
+            <TableCell align="center">{user.userDepartment}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "role").show && (
+            <TableCell align="center">{user.userRole}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "userRoleGroupDesc").show && (
+            <TableCell align="center">{user.userRoleGroupDesc}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "userType").show && (
+            <TableCell align="center">{user.userType === true ? `מנהל` : `עובד`}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "managerName").show && (
+            <TableCell align="center"> {`${user.managerFname} ${user.managerLName}`}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "managerEmail").show && (
+            <TableCell align="center"> {user.managerEmail}</TableCell>
+          )}
+          {tableHead.find((i) => i.id === "is_Active").show && (
+            <TableCell align="center">
+              <Checkbox
+                inputProps={{ "aria-label": "Checkbox is_Active" }}
+                disabled
+                checked={user.is_Active}
+              />
+            </TableCell>
 
-        )}
-        {tableHead.find((i) => i.id === "is_Admin").show && (
+          )}
+          {tableHead.find((i) => i.id === "is_Admin").show && (
+            <TableCell align="center">
+              <Checkbox
+                inputProps={{ "aria-label": "Checkbox is_Admin" }}
+                disabled
+                checked={user.is_Admin}
+              />
+            </TableCell>
+          )}
           <TableCell align="center">
-            <Checkbox
-              inputProps={{ "aria-label": "Checkbox is_Admin" }}
-              disabled
-              checked={user.is_Admin}
-            />
+            <IconButton color="primary" onClick={() => setShowUpdateUserDialog((e) => !e)}>
+              <EditRoundedIcon />
+            </IconButton>
+            <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
+              <ToggleOffRoundedIcon />
+            </IconButton>
           </TableCell>
-        )}
-        <TableCell align="center">
-          <IconButton color="primary" onClick={() => setShowUpdateUserDialog((e) => !e)}>
-            <EditRoundedIcon />
-          </IconButton>
-          <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
-            <ToggleOffRoundedIcon />
-          </IconButton>
-        </TableCell>
-      </TableRow>
-
+        </TableRow>
+        : <TableRow
+          key={user[tableHead[0].id] + '-' + index}
+          tabIndex={-1}
+          sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
+          hover
+        >
+          {tableHead.map((item, idx) => {
+            return (
+              tableHead.find((i) => i.id === item.id).show && (
+                <TableCell component="td" scope="row" align="center" key={index + '-' + user[item.id] + '-' + idx}>
+                  {`${user[item.id]}`}
+                </TableCell>
+              )
+            )
+          })}
+        </TableRow>
+      }
       <UpdateUserDialog
         open={showUpdateUserDialog}
         setOpen={setShowUpdateUserDialog}
@@ -112,7 +131,7 @@ const isUserUpdate = false;
         users={users}
         setUsers={setUsers}
         setItems={setItems}
-        isUserUpdate = {isUserUpdate}
+        isUserUpdate={isUserUpdate}
       />
 
       <CloseDialog
@@ -123,7 +142,7 @@ const isUserUpdate = false;
           setShowCloseDialog((e) => !e);
         }}
       />
-      
+
     </>
   );
 }

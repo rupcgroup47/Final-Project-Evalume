@@ -2818,7 +2818,7 @@ public class DBservices
     //-------------- OpenAI ---------------
 
     //--------------------------------------------------------------------------------------------------
-    // This method get num of employees in each dep
+    // This method get the openAI details
     //--------------------------------------------------------------------------------------------------
     public OpenAI GetOpenAIDetails()
     {
@@ -2870,6 +2870,119 @@ public class DBservices
             }
         }
 
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method gets the details of the sql command created by chatGPT
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> ReadsqlCommand(string sqlCommand)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommand(sqlCommand, con);             // create the command
+
+        List<Object> dataList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                var rowData = new Dictionary<string, object>();
+
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    string fieldName = dataReader.GetName(i);
+                    object fieldValue = dataReader.GetValue(i);
+
+                    rowData[fieldName] = fieldValue;
+                }
+
+                dataList.Add(rowData);
+            }
+
+            return dataList;
+        }
+        catch (SqlException ex)
+        {
+            // Handle specific SQL exceptions
+            if (ex.Number == 208) // Invalid object name. This error occurs when a referenced database object does not exist in the database.
+            {
+                Console.WriteLine("Invalid object name.");
+            }
+            else if (ex.Number == 4060) // Cannot open database. This error occurs when the database specified in the connection string does not exist or the user does not have permission to access it.
+            { 
+                Console.WriteLine("Cannot open database.");
+            }
+            else
+            {
+                Console.WriteLine("SQL exception occurred: " + ex.Message);
+            }
+            throw (ex);
+
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine("An exception occurred: " + ex.Message);
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    ////--------------------------------------------------------------------
+    //// Build the Insert command String
+    ////--------------------------------------------------------------------
+    //private String BuildInsertCommand(string sqlCommand)
+    //{
+    //    String command;
+
+    //    StringBuilder sb = new StringBuilder();
+    //    sb.AppendFormat("Values('{0}', '{1}')", student.Name, student.Age);
+    //    String prefix = "INSERT INTO Students_2022 " + "(name, age) ";
+    //    command = prefix + sb.ToString();
+
+    //    return command;
+    //}
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = CommandSTR;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
+
+        return cmd;
     }
 
 }
