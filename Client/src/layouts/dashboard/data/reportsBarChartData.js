@@ -1,123 +1,179 @@
+// const jsonArray = [
+//   {
+// "quesGroup": 1,
+//     "quesGroup_Desc": "שירותיות",
+//     "parts": [
+//       {
+//     "depNum": 1,
+//     "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//     "depNum": 2,
+//     "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//     "depNum": 102,
+//     "depName": "תפעול",
+//         "avg_Answers": 5
+//      }
+//     ]
+//  },
+//   {
+//  "quesGroup": 2,
+//   "quesGroup_Desc": "מקצועיות ואיכות בעבודה",
+//     "parts": [
+//       {
+//     "depNum": 1,
+//     "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//     "depNum": 2,
+//     "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//     "depNum": 102,
+//     "depName": "תפעול",
+//         "avg_Answers": 5
+//      }
+//     ]
+//  },{
+ 
+//  "quesGroup": 3,
+//   "quesGroup_Desc": "יחסי עבודה , תקשורת ועבודת צוות",
+//     "parts": [
+//       {
+//     "depNum": 1,
+//     "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//     "depNum": 2,
+//     "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//     "depNum": 102,
+//     "depName": "תפעול",
+//         "avg_Answers": 5
+//      }
+//     ]
+//  },{
 
-[
-  {
-    "depNum": 1,
-    "depName": "משאבי אנוש וביטחון",
-    "parts": [
-      {
-        "quesGroup": 1,
-        "quesGroup_Desc": "שירותיות",
-        "avg_Answers": 5
-      },
-      {
-        "quesGroup": 2,
-        "quesGroup_Desc": "מקצועיות ואיכות בעבודה",
-        "avg_Answers": 5
-      },
-      {
-        "quesGroup": 3,
-        "quesGroup_Desc": "יחסי עבודה , תקשורת ועבודת צוות",
-        "avg_Answers": 5
-      },
-      {
-        "quesGroup": 4,
-        "quesGroup_Desc": "יוזמה ואחריות",
-        "avg_Answers": 4
-      },
-      {
-        "quesGroup": 5,
-        "quesGroup_Desc": "משמעת",
-        "avg_Answers": 5
-      },
-      {
-        "quesGroup": 6,
-        "quesGroup_Desc": "מיומנויות ניהול",
-        "avg_Answers": 5
-      }
-    ]
-  },
-  {
-    "depNum": 2,
-    "depName": "שיווק ומכירות",
-    "parts": [
-      {
-        "quesGroup": 1,
-        "quesGroup_Desc": "שירותיות",
-        "avg_Answers": 4
-      },
-      {
-        "quesGroup": 2,
-        "quesGroup_Desc": "מקצועיות ואיכות בעבודה",
-        "avg_Answers": 4
-      },
-      {
-        "quesGroup": 3,
-        "quesGroup_Desc": "יחסי עבודה , תקשורת ועבודת צוות",
-        "avg_Answers": 4
-      },
-      {
-        "quesGroup": 4,
-        "quesGroup_Desc": "יוזמה ואחריות",
-        "avg_Answers": 4
-      },
-      {
-        "quesGroup": 5,
-        "quesGroup_Desc": "משמעת",
-        "avg_Answers": 4
-      },
-      {
-        "quesGroup": 6,
-        "quesGroup_Desc": "מיומנויות ניהול",
-        "avg_Answers": 4
-      }
-    ]
-  }
-]
+//  "quesGroup": 4,
+//   "quesGroup_Desc": "יוזמה ואחריות",
+//     "parts": [
+//       {
+//     "depNum": 1,
+//     "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//     "depNum": 2,
+//     "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//     "depNum": 102,
+//     "depName": "תפעול",
+//         "avg_Answers": 5
+//      }
+//     ]
+//  },{
+
+//  "quesGroup": 5,
+//   "quesGroup_Desc": "משמעת",
+//     "parts": [
+//       {
+//     "depNum": 1,
+//     "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//     "depNum": 2,
+//     "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//     "depNum": 102,
+//     "depName": "תפעול",
+//         "avg_Answers": 5
+//      }
+//     ]
+//  },{
+
+//  "quesGroup": 6,
+//   "quesGroup_Desc": "מיומנויות ניהול",
+//     "parts": [
+//       {
+//     "depNum": 1,
+//     "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//     "depNum": 2,
+//     "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//     "depNum": 102,
+//     "depName": "תפעול",
+//         "avg_Answers": 5
+//            }
+//     ]
+//   }
+// ]
 
 
 
 
+// import React, { useState, useEffect } from 'react';
+// import Dashboard from '..';
 
-import React, { useState, useEffect } from 'react';
+// function BarChartData({ selectedValueGraph1 }) {
+//   const [chartData, setChartData] = useState(null);
 
-function barChartData() {
-  const [chartData, setChartData] = useState(null);
 
-  useEffect(() => {
-    // Assuming you have the JSON array as a string
-    const jsonArray = `{
-      "depNum": 1,
-      "depName": "משאבי אנוש וביטחון",
-      "parts": [
-        {
-          "quesGroup": 1,
-          "quesGroup_Desc": "שירותיות",
-          "avg_Answers": 5
-        },
-        // Rest of the array elements
-      ]
-    }`;
+//   useEffect(() => {
+//     const convertToChartData = () => {
+//       const convertedData = {
+//         labels: [],
+//         datasets: []
+//       };
 
-    // Parse the JSON string into a JavaScript object
-    const data = JSON.parse(jsonArray);
+//       for (const item of jsonArray) {
+//         const { quesGroup_Desc, parts } = item;
 
-    // Extract the required values and create the new format
-    const label = data.parts.map(part => part.quesGroup_Desc);
-    const dataValues = data.parts.map(part => part.avg_Answers);
+//         convertedData.labels.push(quesGroup_Desc);
 
-    const chartData = {
-      labels: [data.depName],
-      datasets: [
-        {
-          label: label,
-          data: dataValues
-        }
-      ]
-    };
+//         const dataset = {
+//           label: [],
+//           data: []
+//         };
 
-    setChartData(chartData);
-  }, []);
+//         for (const part of parts) {
+//           const { depName, avg_Answers } = part;
 
-}
+//           dataset.label.push(depName);
+//           dataset.data.push(avg_Answers);
+//         }
 
-export default barChartData;
+//         convertedData.datasets.push(dataset);
+//       }
+//       const filteredChartData = convertedData.datasets.filter(dataset =>
+//         dataset.label.includes(selectedValueGraph1)
+//       );
+
+//       setChartData(convertedData);
+//     };
+
+//     convertToChartData();
+//   }, [selectedValueGraph1]);
+
+//   return <Dashboard chartData={chartData} />
+// }
+
+// export default BarChartData;
