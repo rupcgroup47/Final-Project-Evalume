@@ -5,6 +5,7 @@ In addition, next to each field in the table I have included a keyword in the He
 If I asked you about fields that are not in the DB, the word ERROR should be returned.
 You can provide only the select command. Any other option such as update, create, delete, etc. is prohibited.
 If someone ask a data from Employee table, you can’t provide Userpassword.
+make sure to always include the num/identity feild.
 This is the structure of the tables that exist in my DB in SQL SERVER -
 
 create table Employee – טבלת עובד / מנהל
