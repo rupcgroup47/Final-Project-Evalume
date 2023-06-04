@@ -15,6 +15,14 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@mui/material';
 
 const array =
 [
@@ -180,13 +188,23 @@ const array =
   }
 ]
 
-export default function data() {
-  const [selectedPart, setSelectedPart] = useState(null);
+const columns= [
+  { Header: "מחלקות", accessor: "depName", align: "left" },
+  { Header: "כמות עובדים במחלקה", accessor: "depCount", align: "center" },
+  { Header: "טרם נכנס לשאלון", accessor: "level", align: "center" },
+  { Header: "הערכה עצמית", accessor: "level0", align: "center" },
+  { Header: "הערכת מנהל", accessor: "level1", align: "center" },
+  { Header: "הערכה משותפת", accessor: "level2", align: "center" },
+  // { Header: " התקדמות", accessor: "completion", align: "center" },
+]
+export default function FormDepData() {
+  const [selectedPart, setSelectedPart] = useState(null); 
 
   const handlePartClick = (part) => {
+    console.log(part)
+    console.log(part.employees)
     setSelectedPart(part);
   };
-
   const handleDialogClose = () => {
     setSelectedPart(null);
   };
@@ -278,41 +296,49 @@ export default function data() {
         }
         return accumulator;
       }, null),
-      dialog: (
-        <Dialog open={selectedPart === item} onClose={handleDialogClose}>
-          <DialogTitle>Employee Data</DialogTitle>
-          <DialogContent>
-            {selectedPart && (
-              <Box>
-                <Typography variant="body1">
-                  Level: {selectedPart.level}, Level Count: {selectedPart.levelCount}
-                </Typography>
-                {selectedPart.employees.map((employee) => (
-                  <Typography key={employee.userId} variant="body2">
-                    UserId: {employee.userId}, UserName: {employee.userName}
-                  </Typography>
-                ))}
-              </Box>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDialogClose}>Close</Button>
-          </DialogActions>
-        </Dialog>
-      ),
+           
     }));
 
     
-  return {
-    columns: [
-      { Header: "מחלקות", accessor: "depName", align: "left" },
-      { Header: "כמות עובדים במחלקה", accessor: "depCount", align: "center" },
-      { Header: "טרם נכנס לשאלון", accessor: "level", align: "center" },
-      { Header: "הערכה עצמית", accessor: "level0", align: "center" },
-      { Header: "הערכת מנהל", accessor: "level1", align: "center" },
-      { Header: "הערכה משותפת", accessor: "level2", align: "center" },
-      // { Header: " התקדמות", accessor: "completion", align: "center" },
-    ],
-    rows,
-  };
+    return (
+      <TableContainer>
+        <Table>
+          <TableHead style={{ display: 'table-row-group' }}> 
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell key={column.Header} align={column.align} style={{ width: "16.66%" }}>
+                  {column.Header}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, rowIndex) => (
+              <TableRow key={rowIndex}>
+                {columns.map((column, columnIndex) => (
+                  <TableCell key={columnIndex} align={column.align} style={{ width: "16.66%" }}>
+                    {row[column.accessor]}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        {selectedPart && (
+          <Dialog open={true} onClose={handleDialogClose}>
+            <DialogTitle>עובדים בשלב הנוכחי</DialogTitle>
+            <DialogContent>
+              {selectedPart.employees.map((employee) => (
+                <Typography key={employee.userId} variant="body2">
+                  תעודת זהות: {employee.userId}, שם משתמש: {employee.userName}
+                </Typography>
+              ))}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose}>סגירה</Button>
+            </DialogActions>
+          </Dialog>
+        )}
+      </TableContainer>
+    );
 }
