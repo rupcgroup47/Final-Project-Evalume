@@ -234,6 +234,24 @@ const goals1=
     "num_of_statuses_byGoal": 1
   }
 ]
+
+const yearsChart = 
+  [
+    {
+      "year": 2023,
+      "avgAnswer": 4
+    },
+    {
+      "year": 2022,
+      "avgAnswer": 4
+    },
+    {
+      "year": 2021,
+      "avgAnswer": 2
+    }
+  ]
+
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [chartData, setChartData] = useState({
@@ -253,7 +271,6 @@ function Dashboard() {
     return () => setDirection(dispatch, "ltr");
   }, []);
   const [selectedValueGraph1, setselectedValueGraph1] = useState("שירותיות"); // Initialize the selected value state
-  const [selectedValueGraph2, setselectedValueGraph2] = useState(''); // Initialize the selected value state
   const { API, setDepState } = useContext(EvalueContext);
   const { mainState, setMainState } = useContext(MainStateContext);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -262,6 +279,15 @@ function Dashboard() {
   const [goals, setGoals] = useState(null);//goals
   const [totalAvg, setTotalAvg] = useState(null);//years
   const [avgQuestions, setAvgQuestions] = useState(null);//dep table
+  const [yearsChartData, setYearsChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'ציון ממוצע',
+        data: [],
+      },
+    ],
+  })
 
   //all API calls
   useEffect(() => {
@@ -387,9 +413,6 @@ function Dashboard() {
   }, [selectedValueGraph1]);
 
 
-  const handleSelectChange2 = (event) => {
-    setselectedValueGraph2(event.target.value);
-  }
       useEffect(() => {///Arranging the data of the goals and inserting them into the chart table
       const processedData = goals1.reduce((acc, curr, index) => {
         const { goalName, goalStatus, num_of_statuses_byGoal } = curr;
@@ -418,6 +441,31 @@ function Dashboard() {
         labels: processedData.labels,
         datasets: processedData.datasets,
       });
+
+      
+// Extract the years and avgAnswer values from the objects
+let labels = yearsChart.map(item => item.year);
+let data = yearsChart.map(item => item.avgAnswer);
+
+// Sort the labels and data arrays based on the years
+const sortedIndices = labels.map((_, index) => index).sort((a, b) => labels[a] - labels[b]);
+labels = sortedIndices.map(index => labels[index]);
+data = sortedIndices.map(index => data[index]);
+
+
+
+      const yearsTempChartData = {
+        labels: labels || [],
+        datasets: 
+          {
+            label: "ציון ממוצע",
+            data: data || [],
+          }
+        
+      };
+
+      setYearsChartData(yearsTempChartData);
+
     }, []);
 
     const getBackgroundColor = (index) => {
@@ -457,19 +505,10 @@ function Dashboard() {
             <MDBox mb={3}>
               <ReportsLineChart
                 color="success"
-                title={selectedValueGraph2}
+                title="שביעות רצון"
                 description="קצב השינוי לאורך השנים"
-                chart={sales}
+                chart={yearsChartData}
               />
-
-              <select value={selectedValueGraph2} onChange={handleSelectChange2}>
-                <option value="">בחר מדד</option>
-                {jsonArray.map((option) => (
-                  <option key={option.quesGroup} value={option.quesGroup_Desc}>
-                    {option.quesGroup_Desc}
-                  </option>
-                ))}
-              </select>
             </MDBox>
 
           </Grid>
