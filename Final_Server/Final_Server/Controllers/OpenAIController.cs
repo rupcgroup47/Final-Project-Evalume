@@ -29,7 +29,7 @@ namespace Final_Server.Controllers
         {
             try
             {
-                string output = query.Replace("\"", "").Replace("\\", "");
+                string output = query.Replace("\n", " ").Replace("\"", "").Replace("\\", "");
                 return OpenAI.ReadsqlCommand(output);
             }
             catch (Exception ex)

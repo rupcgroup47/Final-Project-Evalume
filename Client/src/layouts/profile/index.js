@@ -204,10 +204,10 @@ function Overview() {
             item
             s={12}
             xl={5}
-            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            sx={{ display: "flex", justifyContent: "center", alignItems: "center", maxWidth: "100%" }}
             style={{ paddingTop: "0px" }}
           >
-            <Grid container spacing={5} direction="column" style={{ maxWidth: "450px", alignContent: "center", margin: "auto" }}>
+            <Grid container spacing={5} direction="column" style={{ maxWidth: "100%", alignContent: "center", margin: "auto" }}>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>
                 <ProfileGrid
                   title="הערכות שלי"
@@ -228,18 +228,17 @@ function Overview() {
             item
             s={12}
             xl={7}
-            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            sx={{ display: "flex", justifyContent: "center", alignItems: "center", maxWidth: "100%" }}
           >
-            <ProfileAlerts title="conversations" tmpResult={tmpResult} meeting={meeting} />
-            {/* alerts={alerts} */}
-          </Grid>
-          <Grid
-            item
-            s={12}
-            xl={7}
-            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-          >
-          <KPIRating/>
+            <Grid container spacing={5} direction="column" style={{ maxWidth: "100%", alignContent: "center", margin: "auto" }}>
+              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "inherit" }}>
+                <ProfileAlerts title="conversations" tmpResult={tmpResult} meeting={meeting} />
+                {/* alerts={alerts} */}
+              </Grid>
+              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "inherit" }}>
+                <KPIRating selfKPI={selfKPI} />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </MDBox>

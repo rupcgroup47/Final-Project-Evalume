@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Grid, Rating ,Card} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
-const KPIRating = () => {
+const KPIRating = ({selfKPI}) => {
   const ratings = [//We need to validate who is the user
     {
       userNum: 14,
@@ -16,8 +16,8 @@ const KPIRating = () => {
     },
   ];
 
-  const selfRating = ratings.find((rating) => rating.evalu_part_type === 0)?.rounded_avg || 0;
-  const managerRating = ratings.find((rating) => rating.evalu_part_type === 1)?.rounded_avg || 0;
+  const selfRating = selfKPI?.find((rating) => rating.evalu_part_type === 0)?.rounded_avg || 0;
+  const managerRating = selfKPI?.find((rating) => rating.evalu_part_type === 1)?.rounded_avg || 0;
 
   return (
     <Card sx={{ backgroundColor: "#effafb82", Width: "100%" }}>

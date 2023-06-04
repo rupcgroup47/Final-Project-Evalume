@@ -66,7 +66,7 @@ function ReportsBarChart({ color, title, description, date, chart }) {
           <Divider />
           <MDBox display="flex" alignItems="center">
             <MDTypography variant="button" color="text" fontWeight="light">
-              {date}
+              {/* {date} */}
             </MDTypography>
           </MDBox>
         </MDBox>
@@ -86,7 +86,7 @@ ReportsBarChart.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
   title: PropTypes.string.isRequired,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  date: PropTypes.string.isRequired,
+  // date: PropTypes.string.isRequired,
   chart: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired,
 };
 
