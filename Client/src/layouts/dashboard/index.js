@@ -374,12 +374,12 @@ function Dashboard() {
     // Generate the chart data based on the selected option
     const newChartData = {
       labels: selectedOption?.parts.map((part) => part.depName) || [],
-      datasets: [
+      datasets: 
         {
-          label: selectedOption.quesGroup_Desc,
+          label: "ציון ממוצע",
           data: selectedOption?.parts.map((part) => part.avg_Answers) || [],
-        },
-      ],
+        }
+      
     };
 
     setChartData(newChartData);
@@ -390,7 +390,7 @@ function Dashboard() {
   const handleSelectChange2 = (event) => {
     setselectedValueGraph2(event.target.value);
   }
-      useEffect(() => {
+      useEffect(() => {///Arranging the data of the goals and inserting them into the chart table
       const processedData = goals1.reduce((acc, curr, index) => {
         const { goalName, goalStatus, num_of_statuses_byGoal } = curr;
     
@@ -440,12 +440,11 @@ function Dashboard() {
                 color="info"
                 title={selectedValueGraph1}
                 description="התפלגות לפי מחלקות"
-                date="עודכן לאחרונה בתאריך 2.2.2023"
                 chart={chartData}
               />
 
               <select value={selectedValueGraph1} onChange={handleSelectChange1}>
-                <option value="שירותיות">שירותיות</option>
+                <option value="">בחר מדד</option>
                 {jsonArray.map((option, index) => (
                   <option key={option.quesGroup} value={option.quesGroup_Desc}>
                     {option.quesGroup_Desc}
@@ -460,7 +459,6 @@ function Dashboard() {
                 color="success"
                 title={selectedValueGraph2}
                 description="קצב השינוי לאורך השנים"
-                date="עודכן לאחרונה בתאריך 2.2.2023"
                 chart={sales}
               />
 
@@ -490,7 +488,7 @@ function Dashboard() {
       <MDBox>
         <Grid container spacing={3}>
           <Grid item xs={12} md={12} lg={12}>
-            <Projects />
+            <Projects dataTable={dataTable}/>
           </Grid>
           {/* <Grid item xs={12} md={6} lg={4}>
             <OrdersOverview />

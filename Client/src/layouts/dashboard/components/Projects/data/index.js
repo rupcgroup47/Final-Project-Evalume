@@ -24,169 +24,6 @@ import {
   TableCell,
 } from '@mui/material';
 
-const array =
-[
-  {
-    "depName": "מנכל",
-    "depCount": 1,
-    "parts": [
-      {
-        "level": -1,
-        "levelCount": 1,
-        "employees": [
-          {
-            "userId": 203668954,
-            "userName": "אדם סנדלר"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "depName": "משאבי אנוש וביטחון",
-    "depCount": 5,
-    "parts": [
-      {
-        "level": -1,
-        "levelCount": 1,
-        "employees": [
-          {
-            "userId": 205994781,
-            "userName": "כריסטיאנו רונאלדו"
-          }
-        ]
-      },
-      {
-        "level": 0,
-        "levelCount": 1,
-        "employees": [
-          {
-            "userId": 349581268,
-            "userName": "שני שבח מילר"
-          }
-        ]
-      },
-      {
-        "level": 1,
-        "levelCount": 1,
-        "employees": [
-          {
-            "userId": 2031245215,
-            "userName": "שיר זיו"
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "levelCount": 2,
-        "employees": [
-          {
-            "userId": 203645215,
-            "userName": "יהל שבח"
-          },
-          {
-            "userId": 203845215,
-            "userName": "נועה פרקש"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "depName": "שיווק ומכירות",
-    "depCount": 4,
-    "parts": [
-      {
-        "level": -1,
-        "levelCount": 3,
-        "employees": [
-          {
-            "userId": 205894281,
-            "userName": "ליונל מסי"
-          },
-          {
-            "userId": 219654875,
-            "userName": "אדם פשוט"
-          },
-          {
-            "userId": 361985459,
-            "userName": "מוני מושונוב"
-          }
-        ]
-      },
-      {
-        "level": 2,
-        "levelCount": 1,
-        "employees": [
-          {
-            "userId": 216584795,
-            "userName": "דורית שבח"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "depName": "שינוע והובלה",
-    "depCount": 2,
-    "parts": [
-      {
-        "level": -1,
-        "levelCount": 2,
-        "employees": [
-          {
-            "userId": 205894991,
-            "userName": "מייקל גורדן"
-          },
-          {
-            "userId": 207774991,
-            "userName": "משה משה"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "depName": "תפעול",
-    "depCount": 4,
-    "parts": [
-      {
-        "level": -1,
-        "levelCount": 1,
-        "employees": [
-          {
-            "userId": 206932587,
-            "userName": "טל עינב"
-          }
-        ]
-      },
-      {
-        "level": 0,
-        "levelCount": 2,
-        "employees": [
-          {
-            "userId": 205894222,
-            "userName": "סיגי כהן"
-          },
-          {
-            "userId": 319648526,
-            "userName": "לני מילר"
-          }
-        ]
-      },
-      {
-        "level": 1,
-        "levelCount": 1,
-        "employees": [
-          {
-            "userId": 2048596312,
-            "userName": "שון מילר"
-          }
-        ]
-      }
-    ]
-  }
-]
 
 const columns= [
   { Header: "מחלקות", accessor: "depName", align: "left" },
@@ -197,7 +34,7 @@ const columns= [
   { Header: "הערכה משותפת", accessor: "level2", align: "center" },
   // { Header: " התקדמות", accessor: "completion", align: "center" },
 ]
-export default function FormDepData() {
+export default function FormDepData({dataTable}) {
   const [selectedPart, setSelectedPart] = useState(null); 
 
   const handlePartClick = (part) => {
@@ -209,7 +46,7 @@ export default function FormDepData() {
     setSelectedPart(null);
   };
 
-    const rows = array.map((item) => ({
+    const rows = dataTable.map((item) => ({
       depName: (
         <MDTypography variant="caption" color="text" fontWeight="medium">
           {item.depName}

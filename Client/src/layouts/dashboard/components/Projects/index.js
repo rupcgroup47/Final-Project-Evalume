@@ -8,7 +8,7 @@ import DataTable from "examples/Tables/DataTable";
 import { Today } from "@mui/icons-material";
 import FormDepData from "./data";
 
-function Projects() {
+function Projects({dataTable}) {
   // const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
   const year = new Date().getFullYear();
@@ -26,7 +26,7 @@ function Projects() {
         </MDBox>
       </MDBox>
       <MDBox>
-        <FormDepData/>
+        <FormDepData dataTable={dataTable}/>
         {/* <DataTable
           table={{ columns, rows }}
           showTotalEntries={false}
