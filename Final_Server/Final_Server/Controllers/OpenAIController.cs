@@ -1,5 +1,6 @@
 ﻿using Final_Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,13 +38,21 @@ namespace Final_Server.Controllers
         }
 
         // GET api/<OpenAIController>/5
-        [HttpGet("{query}")]
-        public List<Object> GetTableData(string query)
+        [HttpPost("query")]
+        public IActionResult GetTableData([FromBody]string query)
         {
             try
             {
                 string output = query.Replace("\n", " ").Replace("\"", "").Replace("\\", "");
-                return OpenAI.ReadsqlCommand(output);
+                List<Object> list = OpenAI.ReadsqlCommand(output);
+                if (list.Count != 0)
+                {
+                    return Ok(list);
+                }
+                else
+                {
+                    return NotFound("Error");
+                }
             }
             catch (Exception ex)
             {
