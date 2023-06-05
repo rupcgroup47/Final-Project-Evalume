@@ -49,34 +49,36 @@ function ReportGenerator() {
 
     // send the query to the server and gets the data for the table
     useEffect(() => {
-        let isMounted = true;
+        if (response !== "") {
+            let isMounted = true;
 
-        // Get importent details and set the main context
-        const getTabledetails = async () => {
-            try {
-                const fetchedData = await ApiFetcher(API.apiGetDataFromGPT + response, "GET", null);
-                if (isMounted) {
-                    console.log("success");
-                    console.log(fetchedData);
-                    setTableData(fetchedData);
-                    setShowTable(true);
-                }
-            }
-            catch (error) {
-                if (isMounted) {
-                    if (error.message == "Invalid object name.") {
-                        console.log("The query is wrong");
+            // Get importent details and set the main context
+            const getTabledetails = async () => {
+                try {
+                    const fetchedData = await ApiFetcher(API.apiGetDataFromGPT, "POST", response);
+                    if (isMounted) {
+                        console.log("success");
+                        console.log(fetchedData);
+                        setTableData(fetchedData);
+                        setShowTable(true);
                     }
-                    setError(error);
-                    console.log(error);
+                }
+                catch (error) {
+                    if (isMounted) {
+                        if (error.message == "Invalid object name.") {
+                            console.log("The query is wrong");
+                        }
+                        setError(error);
+                        console.log(error);
+                    }
                 }
             }
-        }
-        getTabledetails();
+            getTabledetails();
 
 
-        return () => {
-            isMounted = false;
+            return () => {
+                isMounted = false;
+            }
         }
     }, [response]);
 
@@ -93,7 +95,7 @@ function ReportGenerator() {
                         console.log("her now");
                         console.log("success");
                         console.log(JSON.stringify(fetchedData));
-                        setResponse(fetchedData);
+                        setResponse(JSON.stringify(fetchedData));
                     }
                 }
                 catch (error) {
@@ -159,7 +161,7 @@ function ReportGenerator() {
                     <Button type="button" onClick={sendQuery}>שלח</Button>
                 </Stack>
             </Stack>
-            {/* {showTable ? <GPTTable tableData={tableData} setTableData={setTableData} /> : ""} */}
+            {showTable ? <GPTTable tableData={tableData} setTableData={setTableData} /> : ""}
         </Container>
     );
 }

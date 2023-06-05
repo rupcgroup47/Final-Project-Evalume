@@ -25,6 +25,19 @@ namespace Final_Server.Models
             }
         }
 
+        public static List<Object> ReadUserGuideDetails() //get User Guide details
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetUserGuideDetails();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static List<Object> ReadsqlCommand(string sqlCommand) //get all openAI details
         {
             try

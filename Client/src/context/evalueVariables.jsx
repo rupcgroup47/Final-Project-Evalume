@@ -53,8 +53,8 @@ export default function EvalueContextProvider({ children }) {
     apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
     // apiOpenAIdetails: "https://localhost:7079/api/OpenAI",
     apiOpenAIdetails: "https://proj.ruppin.ac.il/cgroup47/prod/api/OpenAI", //server
-    apiGetDataFromGPT: "https://localhost:7079/api/OpenAI/",
-    // apiGetDataFromGPT: "https://proj.ruppin.ac.il/cgroup47/prod/api/OpenAI/", //server
+    apiGetDataFromGPT: "https://localhost:7079/api/OpenAI/query",
+    // apiGetDataFromGPT: "https://proj.ruppin.ac.il/cgroup47/prod//api/OpenAI/query", //server
     // apiEmployeeInEachPart: "https://localhost:7079/Evaluation_Process_Status",
     apiEmployeeInEachPart: "https://proj.ruppin.ac.il/cgroup47/prod/Evaluation_Process_Status", //server
     // apiQuesGroupDep: "https://localhost:7079/Avg_Answers?answerYear=",
@@ -65,6 +65,8 @@ export default function EvalueContextProvider({ children }) {
     apiSelfKPI: "https://proj.ruppin.ac.il/cgroup47/prod/Score?userNum=", //server
     // apiGoalsStatusBI: "https://localhost:7079/Goal_Status?goalYear=",
     apiGoalsStatusBI: "https://proj.ruppin.ac.il/cgroup47/prod/Goal_Status?goalYear=", //server
+    apiUserGuideDetails : "https://localhost:7079/userGuide",
+    // apiUserGuideDetails : "https://proj.ruppin.ac.il/cgroup47/prod/userGuide", //server
   });
 
 
