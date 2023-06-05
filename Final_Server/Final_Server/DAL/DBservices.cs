@@ -2924,7 +2924,7 @@ public class DBservices
                 Console.WriteLine("Invalid object name.");
             }
             else if (ex.Number == 4060) // Cannot open database. This error occurs when the database specified in the connection string does not exist or the user does not have permission to access it.
-            { 
+            {
                 Console.WriteLine("Cannot open database.");
             }
             else
@@ -2951,21 +2951,6 @@ public class DBservices
 
     }
 
-    ////--------------------------------------------------------------------
-    //// Build the Insert command String
-    ////--------------------------------------------------------------------
-    //private String BuildInsertCommand(string sqlCommand)
-    //{
-    //    String command;
-
-    //    StringBuilder sb = new StringBuilder();
-    //    sb.AppendFormat("Values('{0}', '{1}')", student.Name, student.Age);
-    //    String prefix = "INSERT INTO Students_2022 " + "(name, age) ";
-    //    command = prefix + sb.ToString();
-
-    //    return command;
-    //}
-
     //---------------------------------------------------------------------------------
     // Create the SqlCommand
     //---------------------------------------------------------------------------------
@@ -2983,6 +2968,66 @@ public class DBservices
         cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
 
         return cmd;
+    }
+
+    //-------------- User Guide ---------------
+
+    //--------------------------------------------------------------------------------------------------
+    // This method get the openAI details
+    //--------------------------------------------------------------------------------------------------
+    public List<Object> GetUserGuideDetails()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGet("spGetUserGuide", con);            // create the command
+
+        List<Object> UserGuideList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                UserGuideList.Add(new
+                {
+                    id = Convert.ToInt32(dataReader["QuesNum"]),
+                    question = (dataReader["QuesContent"]).ToString(),
+                    answer = (dataReader["AnsContent"]).ToString().Replace("\"", "")
+                });
+            }
+
+            return UserGuideList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
     }
 
 }

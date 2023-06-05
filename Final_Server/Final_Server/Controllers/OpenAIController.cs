@@ -23,6 +23,19 @@ namespace Final_Server.Controllers
             }
         }
 
+        [HttpGet("/userGuide")]
+        public List<Object> GetUserGuideDetails()
+        {
+            try
+            {
+                return OpenAI.ReadUserGuideDetails();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         // GET api/<OpenAIController>/5
         [HttpGet("{query}")]
         public List<Object> GetTableData(string query)
