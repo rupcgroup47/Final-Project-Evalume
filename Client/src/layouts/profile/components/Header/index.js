@@ -10,6 +10,7 @@ import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import breakpoints from "assets/theme/base/breakpoints";
 import burceMars from "assets/images/bruce-mars.jpg";
+import avatar from "assets/images/avatar.png"
 import backgroundImage from "assets/images/packages.jpg";
 import OpenEvaluation from "./openEvaluation";
 
@@ -62,7 +63,7 @@ function Header({ children,questionnairesData}) {
       <Card sx={{ position: "relative", mt: -20, mx: 3, py: 1, px: 2 }}>
         <Grid container spacing={3} alignItems="center">
           <Grid item>
-            <MDAvatar src={burceMars} alt="profile-image" size="xl" shadow="sm" />
+            <MDAvatar src={avatar} alt="profile-image" size="xl" shadow="sm" />
           </Grid>
           <Grid item xs={6}>
             <MDBox height="100%" mt={0.5} lineHeight={1}>

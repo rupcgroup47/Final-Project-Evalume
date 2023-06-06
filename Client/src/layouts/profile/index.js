@@ -198,17 +198,29 @@ function Overview() {
   return (
     <Header questionnairesData={questionnairesData}>
       <MDBox mt={3} mb={3}>
-        <Grid container spacing={1} style={{ marginTop: "" }}>
+        <Grid container spacing={1} style={{ marginRight: "0px", width: "auto" }}>
           {/* //Profile card */}
           <Grid
             item
             s={12}
             xl={5}
             sx={{ display: "flex", justifyContent: "center", alignItems: "center", maxWidth: "100%" }}
-            style={{ paddingTop: "0px" }}
+            style={{ paddingTop: "0px", paddingRight: "0px" }}
           >
-            <Grid container spacing={5} direction="column" style={{ maxWidth: "100%", alignContent: "center", margin: "auto" }}>
-              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>
+            <Grid container spacing={5} direction="column"
+              style={
+                {
+                  maxWidth: "100%",
+                  alignContent: "space-around",
+                  margin: "auto",
+                  justifyContent: "space-evenly",
+                  display: "flex",
+                  alignItems: "stretch",
+                  flexWrap: "wrap",
+                  minHeight: "-webkit-fill-available"
+                }
+              }>
+              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "0px" }}>
                 <ProfileGrid
                   title="הערכות שלי"
                   description="צפייה והורדת כלל ההערכות שלי לאורך השנים"
@@ -216,10 +228,10 @@ function Overview() {
                   evalus={evalus}
                 />
               </Grid>
-              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>
+              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "0px" }}>
                 <ProfileGrid title="יעדים שלי" description="צפייה ועדכון היעדים האישיים שלי" type="goals" goals={goals} />
               </Grid>
-              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit" }}>
+              <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "0px" }}>
                 <ProfileGrid title="יומן פגישות" description="צפייה בפגישות שלי" />
               </Grid>
             </Grid>
@@ -229,6 +241,7 @@ function Overview() {
             s={12}
             xl={7}
             sx={{ display: "flex", justifyContent: "center", alignItems: "center", maxWidth: "100%" }}
+            style={{ paddingTop: "0px", paddingRight: "0px" }}
           >
             <Grid container spacing={5} direction="column" style={{ maxWidth: "100%", alignContent: "center", margin: "auto" }}>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "inherit" }}>
