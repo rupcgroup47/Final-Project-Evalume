@@ -10,7 +10,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
 import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector";
-// import { useState, useContext } from "react";
 
 const steps = ["משוב עצמי", "משוב מנהל", "שיחת משוב והצבת יעדים"];
 
