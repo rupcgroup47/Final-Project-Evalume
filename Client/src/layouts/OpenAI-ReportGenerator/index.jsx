@@ -7,6 +7,8 @@ import ApiFetcher from "components/ApiFetcher";
 import sendMessageToChatGPT from "./components/sendMessageToChatGPT";
 import data from "./Json/data";
 import GPTTable from "./components/GPTTable";
+import swal from "sweetalert";
+import './custom.css';
 
 function ReportGenerator() {
     const [, dispatch] = useMaterialUIController();
@@ -58,17 +60,35 @@ function ReportGenerator() {
                     const fetchedData = await ApiFetcher(API.apiGetDataFromGPT, "POST", response);
                     if (isMounted) {
                         console.log("success");
-                        setTableData(fetchedData);
-                        setShowTable(true);
+                        console.log("here????");
+                        if (fetchedData === undefined) {
+                            swal({
+                                title: "קרתה תקלה!",
+                                text: 'מצטערים, נראה כי קרתה תקלה ואנו מתקשים להביא עבורך את המידע שביקשת. \nאנא נסה שנית או פנה לגורם מקצוע',
+                                icon: "error",
+                                button: "סגור",
+                                direction: "rtl",
+                                textAlign: "right"
+                            });
+                        }
+                        else {
+                            console.log(fetchedData);
+                            setTableData(fetchedData);
+                            setShowTable(true);
+                        }
                     }
                 }
                 catch (error) {
                     if (isMounted) {
-                        if (error.message == "Invalid object name.") {
-                            console.log("The query is wrong");
-                        }
-                        setError(error);
+                        console.log("or here????");
                         console.log(error);
+                        setError(error);
+                        swal({
+                            title: "קרתה תקלה!",
+                            text: 'מצטערים, נראה כי קרתה תקלה ואנו מתקשים להביא עבורך את המידע שביקשת. \nאנא נסה שנית או פנה לגורם מקצוע',
+                            icon: "error",
+                            button: "סגור",
+                        });
                     }
                 }
             }
@@ -138,7 +158,7 @@ function ReportGenerator() {
                     <Typography sx={{ m: 2 }}>מחולל הדוחות נועד לעזור לך לצפות בטבלאות מתוך מאגר הנתונים שלך בצורה דינמית ונוחה באמצעות שילוב של מערכת בינה מלאכותית chatGPT של חברת openAI.</Typography>
                     <Typography sx={{ m: 2 }}>כל שעליך לעשות הוא לרשום בצורה ברורה מה ברצונך לראות בתוך שדה הטקסט החופשי וללחוץ על כפתור שלח</Typography>
                     <Typography sx={{ m: 2 }}>במידה והשדות שהזנת תקינים, כעבור מספר שניות תוצג בפנייך הטבלה שביקשת!</Typography>
-                    <Typography sx={{ m: 2 }} style={{ whiteSpace: 'pre-line' }}>{'דוגמאות:\n"הבא לי רשימה של כל העובדים"\n"הצג לי את כל המחלקות"'}</Typography>
+                    <Typography sx={{ m: 2 }} style={{ whiteSpace: 'pre-line' }}>{'דוגמאות:\n"הבא לי רשימה של כל העובדים"\n"הצג לי את כל העובדים ושמות המחלקות שאליהם שייכים"\n"הצג לי את כל היעדים שמשויכים לעובד ואת שמות העובדים"'}</Typography>
                 </Stack>
                 <Stack
                     key="header"

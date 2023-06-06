@@ -19,11 +19,14 @@ const ApiFetcher = async (api, method, body) => {
                 body: body,
                 signal: abortController.signal,
             });
+
+        console.log("res", response);
+
         const data = await response.json();
-        console.log(response);
         if (!response.ok) {
             // get error message from body or default to response statusText
             const error = (data && data.message) || response.statusText;
+            console.log("errrrrr", error);
             return Promise.reject(error);
         }
 
@@ -33,7 +36,7 @@ const ApiFetcher = async (api, method, body) => {
 
     catch (error) {
         if (error.name === 'AbortError') { return };
-        console.log("err get=", error);
+        console.log("err=", error);
         clearTimeout(timeoutId);
         throw error;
     };
