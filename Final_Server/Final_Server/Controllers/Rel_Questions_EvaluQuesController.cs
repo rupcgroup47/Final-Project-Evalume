@@ -120,6 +120,20 @@ namespace Final_Server.Controllers
             }
         }
 
+        // GET api/<Rel_Questions_EvaluQuesController>/5
+        [HttpGet("/Meetings/{userNum}/{userType}")]
+        public List<Object> GetMeetings(int userNum, int userType) // get the meetings of the employee
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadMeetings(userNum, userType);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // POST api/<Rel_Questions_EvaluQuesController>
         [HttpPost]
         public IActionResult Post([FromBody] JsonElement data) // post a new evaluation to the database

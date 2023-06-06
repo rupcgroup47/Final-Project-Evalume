@@ -113,7 +113,7 @@ export default function CreateQuestionsDialog({
                 // Handle the change event
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                style={{ height: "35px", alignContent: "center" }}
+                style={{ minHeight: "40px", alignContent: "center" }}
               >
                 {titles?.map((titleItem) => (
                   <MenuItem key={titleItem} value={titleItem}>

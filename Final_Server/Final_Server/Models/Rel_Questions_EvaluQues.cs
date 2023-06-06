@@ -545,6 +545,20 @@ namespace Final_Server.Models
                 throw;
             }
         }
+
+        public static List<Object> ReadMeetings(int userNum, int userType) //Insert new final meeting by userNum
+        {
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.GetMeetings(userNum, userType);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
 

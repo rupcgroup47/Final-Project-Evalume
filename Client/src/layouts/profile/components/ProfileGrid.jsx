@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+// import { Link } from "react-router-dom";
+// import PropTypes from "prop-types";
 import PersonalGoals from "./ProfileTables/PersonalGoals";
 import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import { useState, useEffect } from "react";
+// import CardMedia from "@mui/material/CardMedia";
+import { useState } from "react";
 import { Dialog, DialogContent, Button } from "@mui/material";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";

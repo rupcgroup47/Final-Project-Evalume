@@ -17,7 +17,7 @@ import KPIRating from "./components/KPI";
 function Overview() {
   const [, dispatch] = useMaterialUIController();
   const { mainState, setMainState } = useContext(MainStateContext);
-  const { API, setDepState } = useContext(EvalueContext);
+  const { API, setDepState, setMeetings } = useContext(EvalueContext);
   const [evalus, setEvalus] = useState([]);
   const [goals, setGoals] = useState([]);
   const [tmpResult, setTmpResult] = useState([]);
@@ -180,6 +180,33 @@ function Overview() {
         }
       }
       getEmployeeVSManager();
+    }
+
+    // GET the meetings details
+    if (mainState.userNum) {
+      const getMeeting = async () => {
+        try {
+          const fetchedData = await ApiFetcher(API.apiMeetings + mainState.userNum + "/" + (mainState.userType ? 1 : 0), "GET", null);
+          if (isMounted) {
+            console.log("success");
+            console.log("meet",fetchedData);
+            setMeetings(fetchedData);
+
+            // if (fetchedData.length == 0) {
+
+            // }
+            // else {
+            // }
+          }
+        }
+        catch (error) {
+          if (isMounted) {
+            setError(error);
+            console.log(error);
+          }
+        }
+      }
+      getMeeting();
     }
 
 

@@ -16,6 +16,7 @@ import { MainStateContext } from "App";
 
 export default function ProfileAlerts({ tmpResult, meeting }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [calenderOpen, setcalenderOpen] = useState(false);
   const { API } = useContext(EvalueContext);
   const mainState = useContext(MainStateContext);
   const [tempResualt, setTempResualt] = useState([]);
@@ -174,6 +175,7 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
     setData(tmp);
     if (tmp.length !== 0) {
       setIsPopupOpen(true);
+      setcalenderOpen(false);
     }
   };
 
@@ -182,6 +184,16 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
     setData(tmp);
     if (tmp.length !== 0) {
       setIsPopupOpen(true);
+      setcalenderOpen(false);
+    }
+  };
+
+  const handleCalendarClick = () => {
+    let tmp = meetingState;
+    setData(tmp);
+    if (tmp.length !== 0) {
+      setIsPopupOpen(true);
+      setcalenderOpen(true);
     }
   };
 
@@ -202,7 +214,7 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
               ) : index === 2 ? (
                 <PeopleIcon onClick={handleMeetingClick} fontSize="large" style={{ cursor: "pointer" }} />
               ) : index === 3 ? (
-                <CalendarToday fontSize="large" style={{ cursor: "pointer" }} />
+                <CalendarToday onClick={handleCalendarClick} fontSize="large" style={{ cursor: "pointer" }} />
               ) : (
                 <Subject fontSize="large" />
               )}
@@ -217,7 +229,7 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
       <Dialog open={isPopupOpen} onClose={handleCloseDialog}>
         <Button onClick={handleCloseDialog}>חזרה לדף הבית</Button>
         <DialogContent>
-          <WaitingEvalues data={data} />
+          <WaitingEvalues data={data} calender={calenderOpen} />
         </DialogContent>
       </Dialog>
     </>

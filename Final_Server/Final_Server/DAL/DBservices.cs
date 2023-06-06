@@ -2473,6 +2473,153 @@ public class DBservices
         return cmd;
     }
 
+    ////--------------------------------------------------------------------------------------------------
+    //// This method Insert new final meeting by userNum
+    ////--------------------------------------------------------------------------------------------------
+    public int InsertMeeting(int userNum, string meetingDate)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPInserNewMeeting("spInsertNewFinalMeeting", con, userNum, meetingDate);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPInserNewMeeting(String spName, SqlConnection con, int userNum, string meetingDate)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@UserNum", userNum);
+        cmd.Parameters.AddWithValue("@MeetingDate", meetingDate);  //insert all the parameters we got from the user
+
+        return cmd;
+    }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method Get all meetings for employee
+    ////--------------------------------------------------------------------------------------------------
+    public List<Object> GetMeetings(int userNum, int userType)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetMeetings("spGetScheduledMeetingsByUserNum", con, userNum, userType);             // create the command
+        List<Object> meetingsList = new List<Object>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+
+            while (dataReader.Read())
+            {
+                meetingsList.Add(new
+                {
+                    id = Convert.ToInt32(dataReader["meetNum"]),
+                    UserNum = Convert.ToInt32(dataReader["UserNum"]),
+                    employeeName = (dataReader["employeeName"]).ToString(),
+                    userManager = Convert.ToInt32(dataReader["userManager"]),
+                    managerName = (dataReader["managerName"]).ToString(),
+                    date = ((DateTime)dataReader["meetingDate"]).ToShortDateString(),
+                    time = ((DateTime)dataReader["meetingDate"]).ToShortTimeString()
+                });
+            }
+
+            return meetingsList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGetMeetings(String spName, SqlConnection con, int userNum, int userType)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@UserNum", userNum);
+        cmd.Parameters.AddWithValue("@UserType", userType);  //insert all the parameters we got from the user
+
+        return cmd;
+    }
 
     //-------------- BI ---------------
 
@@ -3028,72 +3175,6 @@ public class DBservices
             }
         }
 
-    }
-
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Insert new final meeting by userNum
-    ////--------------------------------------------------------------------------------------------------
-    public int InsertMeeting(int userNum, string meetingDate)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPInserNewMeeting("spInsertNewFinalMeeting", con, userNum, meetingDate);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPInserNewMeeting(String spName, SqlConnection con, int userNum, string meetingDate)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@UserNum", userNum);
-        cmd.Parameters.AddWithValue("@MeetingDate", meetingDate);  //insert all the parameters we got from the user
-
-        return cmd;
     }
 
 }

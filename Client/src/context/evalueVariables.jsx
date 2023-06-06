@@ -67,6 +67,8 @@ export default function EvalueContextProvider({ children }) {
     apiGoalsStatusBI: "https://proj.ruppin.ac.il/cgroup47/prod/Goal_Status?goalYear=", //server
     apiUserGuideDetails : "https://localhost:7079/userGuide",
     // apiUserGuideDetails : "https://proj.ruppin.ac.il/cgroup47/prod/userGuide", //server
+    apiMeetings: "https://localhost:7079/Meetings/",
+    // apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
   });
 
 
@@ -74,28 +76,7 @@ export default function EvalueContextProvider({ children }) {
 
   const [depState, setDepState] = useState([]);
 
-  const [FAQ, setFAQ] = useState([
-    {
-      "id": 1,
-      "question": "איך למחוק יעד קיים?",
-      "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates corporis vitae tempora quod provident tenetur culpa dolore facere? Earum, dolor?"
-    },
-    {
-      "id": 2,
-      "question": "איך לעדכן פרטי משתמש?",
-      "answer": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto iusto veniam eveniet labore impedit nam"
-    },
-    {
-      "id": 3,
-      "question": "איך להוסיף משתמש חדש?",
-      "answer": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium, sed. Dolores,"
-    },
-    {
-      "id": 4,
-      "question": "איך להקים טופס הערכה חדש?",
-      "answer": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium, sed. Dolores, sequi."
-    }
-  ]);
+  const [meetings, setMeetings] = useState([]);
 
   useEffect(() => {
     const exisiting = localStorage.getItem("chosenEmployee");
@@ -115,8 +96,8 @@ export default function EvalueContextProvider({ children }) {
     setChosenEmployee,
     depState,
     setDepState,
-    FAQ,
-    setFAQ
+    meetings,
+    setMeetings
   }
 
   return (
