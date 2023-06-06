@@ -58,7 +58,6 @@ function ReportGenerator() {
                     const fetchedData = await ApiFetcher(API.apiGetDataFromGPT, "POST", response);
                     if (isMounted) {
                         console.log("success");
-                        console.log(fetchedData);
                         setTableData(fetchedData);
                         setShowTable(true);
                     }
@@ -85,16 +84,12 @@ function ReportGenerator() {
     useEffect(() => {
         if (openAIdetails !== null) {
             let isMounted = true;
-            console.log("here");
-            console.log(messages);
+            setShowTable(false);
             const sendOpenAIdetails = async () => {
                 try {
-                    console.log("now here");
                     const fetchedData = await sendMessageToChatGPT(openAIdetails.openAI_api_key, openAIdetails.organization_ID, messages);
                     if (isMounted) {
-                        console.log("her now");
                         console.log("success");
-                        console.log(JSON.stringify(fetchedData));
                         setResponse(JSON.stringify(fetchedData));
                     }
                 }
