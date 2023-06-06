@@ -15,7 +15,7 @@ export default function OpenEvaluation({questionnairesData}) {
           height: "60px",
           width: "200px",
         }}
-        style={{ position:"absolute", left:"50px", top: "30px", borderRadius:"20px"}}
+        style={{ position:"absolute", left:"20px", top: "20px", borderRadius:"20px"}}
         onClick={() => setShowCreateOpenEvalueDialog((e) => !e)}
       >
         פתיחת תהליך הערכה

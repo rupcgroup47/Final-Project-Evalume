@@ -2,7 +2,7 @@
 
 const ApiFetcher = async (api, method, body) => {
     const abortController = new AbortController();
-    console.log("body", body);
+    // console.log("body", body);
     //set up the timeout for aborting the fetch request
     const timeoutId = setTimeout(() => {
         abortController.abort();

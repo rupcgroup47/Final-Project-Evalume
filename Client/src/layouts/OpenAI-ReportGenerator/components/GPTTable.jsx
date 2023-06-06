@@ -8,14 +8,17 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    Button,
+    Tooltip
     // TableSortLabel,
 } from "@mui/material";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { useEffect, useState, useContext } from "react";
 // import { visuallyHidden } from "@mui/utils";
-import { useDebounce } from "use-debounce";
 import { EvalueContext } from "context/evalueVariables";
 import TableItem from "components/TableItem";
 import TableToolbar from "components/TableToolbar";
+import * as XLSX from "xlsx";
 
 export default function GPTTable({ tableData, setTableData }) {
     const objectArray = Object.entries(tableData[0])
@@ -29,48 +32,43 @@ export default function GPTTable({ tableData, setTableData }) {
             show: true,
         };
     });
-    console.log(tableHeadArr);
+    // console.log(tableHeadArr);
     const [tableHead, setTableHead] = useState(tableHeadArr);
     const [items, setItems] = useState([tableData]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const { API } = useContext(EvalueContext);
-    console.log(items);
+    // console.log(items);
 
     useEffect(() => {
         // Update the users array
         setItems(tableData);
     }, [tableData]);
 
+    //Export the table to excel
+    const exportToExcel = () => {
+        const worksheet = XLSX.utils.json_to_sheet(tableData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
 
-
-    // handleSearch - start
-    // const [searchInput, setSearchInput] = useState("");
-    // const [searchDebounce] = useDebounce(searchInput, 500);
-
-    // const handleSearch = (value) => {
-    //     setSearchInput(value);
-
-    //     // const sx = tableData.filter((item) =>
-    //     //     item.includes(value.toLowerCase())
-    //     // );
-
-    //     setItems(value?.length > 0 ? sx : tableData);
-    // };
-
-    // useEffect(() => {
-    //     handleSearch(searchDebounce);
-    // }, [searchDebounce]);
-
-    // handleSearch - end
+        XLSX.writeFile(workbook, 'data.xlsx');
+    };
 
     // show empty rows if the array / filted array is epmty or less then rowsPerPage
     const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
     return (
         <Paper sx={{ boxShadow: "none" }}>
+            <Tooltip title="Export to Excel">
+                <Button
+                    variant="contained.base"
+                    style={{position: "absolute", fontSize: "xx-large"}}
+                    startIcon={<CloudDownloadIcon />}
+                    onClick={exportToExcel}
+                />
+            </Tooltip>
             <TableToolbar
-                fromAI={true}
+                fromAI
                 // Users
                 users={tableData}
                 setUsers={setTableData}
@@ -109,7 +107,7 @@ export default function GPTTable({ tableData, setTableData }) {
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row, index) => (
                                 <TableItem
-                                    fromAI={true}
+                                    fromAI
                                     key={index}
                                     user={row}
                                     users={tableData}
