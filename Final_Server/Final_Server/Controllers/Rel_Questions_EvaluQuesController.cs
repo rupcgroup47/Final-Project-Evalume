@@ -285,5 +285,21 @@ namespace Final_Server.Controllers
             }
         }
 
+        // POST api/<Rel_Goal_EmployeeController>
+        [HttpPost("/userNum/meetingDate")]
+        public IActionResult Post(int userNum, string meetingDate) //Insert new final meeting by userNum
+        {
+            Rel_Questions_EvaluQues meeting = new Rel_Questions_EvaluQues();
+            int numEffected = meeting.InsertFinalMeeting(userNum, meetingDate);
+            if (numEffected != 0)
+            {
+                return Ok("Meeting succesfully inserted");
+            }
+            else
+            {
+                return NotFound("Error in insert this Meeting");
+            }
+        }
+
     }
 }

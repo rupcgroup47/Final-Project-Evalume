@@ -50,7 +50,7 @@ namespace Final_Server.Models
         string employeeOpinion;
         DateTime opinionInsertDate = new DateTime();
 
-
+        string meetingDate;
 
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
         public bool QuesType { get => quesType; set => quesType = value; }
@@ -86,6 +86,7 @@ namespace Final_Server.Models
         public string UserRole { get => userRole; set => userRole = value; }
         public string ManagerRole { get => managerRole; set => managerRole = value; }
         public string ManagerDepartment { get => managerDepartment; set => managerDepartment = value; }
+        public string MeetingDate { get => meetingDate; set => meetingDate = value; }
 
         public static List<Object> ReadAllQuestionnaires() //gets all the Questionnaires
         {
@@ -526,6 +527,21 @@ namespace Final_Server.Models
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+
+        public int InsertFinalMeeting(int userNum, string meetingDate) //Insert new final meeting by userNum
+        {
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.InsertMeeting(userNum, meetingDate);
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }
