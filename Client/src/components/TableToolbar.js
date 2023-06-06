@@ -78,9 +78,7 @@ export default function TableToolbar({
         >
           {!fromAI ?
             <Fade in={!showSearchButton}>
-              <Typography variant="h5" fontWeight={600}>
-                משתמשים
-              </Typography>
+              <Typography variant="h5" fontWeight={600}> </Typography>
             </Fade>
             : ""}
 

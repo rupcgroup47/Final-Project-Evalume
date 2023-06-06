@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./calendar.css";
 import { Card, Typography, Grid, Stack } from "@mui/material";
-import { meetings } from "./meetingsData";
+// import { meetings } from "./meetingsData";
+import { EvalueContext } from "context/evalueVariables";
 
-function MeetingCalendar() {
+function MeetingCalendar({ fromAlert }) {
+  const { API, meetings } = useContext(EvalueContext);
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const locale = "he-IL";
@@ -14,6 +16,8 @@ function MeetingCalendar() {
   const handleDateChange = (date) => {
     setDate(date);
   };
+
+  console.log("meetings", meetings);
 
   const tileDisabled = ({ date, view }) => {
     // handle weekend and disable passed dates
@@ -27,13 +31,24 @@ function MeetingCalendar() {
       return true;
     }
   };
+
   const meetingsInTheSameDayExist = ({ date }) => {
     // Check if the date has a meeting
-    const hasMeeting = meetings.some(
-      (meeting) =>
-        new Date(meeting.date).getFullYear() === new Date(date).getFullYear() &&
-        new Date(meeting.date).getMonth() === new Date(date).getMonth() &&
-        new Date(meeting.date).getDate() === new Date(date).getDate()
+
+
+    const theDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+    const hasMeeting = meetings?.some(
+      (meeting) => {
+        const parts = meeting.date.split('/'); // Split the date string by '/'
+        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
+        const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
+        return (
+          meetingDate.getFullYear() === theDate.getFullYear() &&
+          meetingDate.getMonth() === theDate.getMonth() &&
+          meetingDate.getDate() === theDate.getDate()
+        )
+      }
     );
 
     // Return a div with a blue background if the date has a meeting
@@ -48,16 +63,21 @@ function MeetingCalendar() {
       if (selectedDate === null) {
         return [];
       }
-      const inTheSameDayMeetings = meetings.filter((meeting) => {//show all meetings schedule in the same day
+
+      const inTheSameDayMeetings = meetings?.filter((meeting) => {//show all meetings schedule in the same day
         console.log(meeting);
-        const d1 = new Date(selectedDate);
-        const d2 = new Date(meeting.date);
+        const parts = meeting.date.split('/'); // Split the date string by '/'
+        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
+        const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
+
+        const selectedDateObj = new Date(selectedDate); // Convert the selectedDate to a JavaScript Date object
         return (
-          d1.getFullYear() === d2.getFullYear() &&
-          d1.getMonth() === d2.getMonth() &&
-          d1.getDate() === d2.getDate()
+          meetingDate.getFullYear() === selectedDateObj.getFullYear() &&
+          meetingDate.getMonth() === selectedDateObj.getMonth() &&
+          meetingDate.getDate() === selectedDateObj.getDate()
         );
       });
+
       setFilteredMeetings(inTheSameDayMeetings); // filtered meetings array
     }
 
@@ -96,9 +116,9 @@ function MeetingCalendar() {
             }}
           >
             <Typography sx={{ m: 2, fontSize: "1rem" }} key={meeting.id}>
-              {meeting.title} <br />
-              {meeting.time} <br />
-              {meeting.location}
+              {' פגישה עם' + meeting.employeeName} <br />
+              {' בשעה' + meeting.time} <br />
+              {' במשרדו של' + meeting.managerName} <br />
             </Typography>
           </Card>
         </Grid>
