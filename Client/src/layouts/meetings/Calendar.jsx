@@ -5,6 +5,7 @@ import "./calendar.css";
 import { Card, Typography, Grid, Stack } from "@mui/material";
 // import { meetings } from "./meetingsData";
 import { EvalueContext } from "context/evalueVariables";
+import { MainStateContext } from "App";
 
 function MeetingCalendar({ fromAlert }) {
   const { API, meetings } = useContext(EvalueContext);
@@ -13,6 +14,8 @@ function MeetingCalendar({ fromAlert }) {
   const locale = "he-IL";
   const calendarType = "Hebrew";
   const [filteredMeetings, setFilteredMeetings] = useState([]);
+  const { mainState } = useContext(MainStateContext);
+
   const handleDateChange = (date) => {
     setDate(date);
   };
@@ -41,7 +44,7 @@ function MeetingCalendar({ fromAlert }) {
     const hasMeeting = meetings?.some(
       (meeting) => {
         const parts = meeting.date.split('/'); // Split the date string by '/'
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
+        const formattedDate = `${parts[2]}-${parts[0]}-${parts[1]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
         const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
         return (
           meetingDate.getFullYear() === theDate.getFullYear() &&
@@ -67,7 +70,7 @@ function MeetingCalendar({ fromAlert }) {
       const inTheSameDayMeetings = meetings?.filter((meeting) => {//show all meetings schedule in the same day
         console.log(meeting);
         const parts = meeting.date.split('/'); // Split the date string by '/'
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
+        const formattedDate = `${parts[2]}-${parts[0]}-${parts[1]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
         const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
 
         const selectedDateObj = new Date(selectedDate); // Convert the selectedDate to a JavaScript Date object
@@ -105,7 +108,7 @@ function MeetingCalendar({ fromAlert }) {
         </Typography>
       </Stack>
       {filteredMeetings.map((meeting) => (
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4} key={"g" + meeting.id}>
           <Card
             sx={{
               display: "flex",
@@ -113,12 +116,13 @@ function MeetingCalendar({ fromAlert }) {
               backgroundColor: "aliceblue",
               overflow: "visible",
               textAlign: "center",
+              minWidth: "max-content"
             }}
           >
             <Typography sx={{ m: 2, fontSize: "1rem" }} key={meeting.id}>
-              {' פגישה עם' + meeting.employeeName} <br />
-              {' בשעה' + meeting.time} <br />
-              {' במשרדו של' + meeting.managerName} <br />
+              {' פגישה עם ' + (meeting.userNum !== mainState.userNum ? meeting.employeeName : meeting.managerName)} <br />
+              {' בשעה ' + meeting.time} <br />
+              {' במשרדו של ' + (meeting.userNum !== mainState.userNum ? meeting.employeeName : meeting.managerName)} <br />
             </Typography>
           </Card>
         </Grid>
