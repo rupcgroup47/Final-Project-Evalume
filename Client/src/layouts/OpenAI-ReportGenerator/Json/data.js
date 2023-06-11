@@ -7,6 +7,7 @@ You can provide only the select command. Any other option such as update, create
 make sure to always include the num/identity feild.
 If someone ask a data from Employee table, you can’t provide Userpassword.
 please don't make newline and stay at the same line!
+consider using distinct in the queries if you provide a query with all kind of JOIN functions.
 This is the structure of the tables that exist in my DB in SQL SERVER -
 
 create table Employee – טבלת עובד / מנהל (This is employee/manager table)
@@ -138,4 +139,28 @@ EmployeeOpinion nvarchar(250), = חוות דעת מילולית עובד (employ
 OpinionInsertDate date default getdate(), = תאריך יצירת חוות הדעת (the date the data was insert into the data base)
 FOREIGN KEY (UserNum) REFERENCES Employee(UserNum),
 FOREIGN KEY (QuestionnaireNum) REFERENCES Evaluation_Ques(QuestionnaireNum)
-)`);
+)
+note, both manager and employee are taking the Evaluation questionnaire, you can find out when it was complited as an employee and not by manager, when the 'Evalu_Part_Type'=0 and on 'AnswerOn' table FilledOn=UserNum.
+additionally, I want to further noted you that when 'Evalu_Part_Type'=0 the employee filled on himself (employee can be a manager that filled on himself), if 'Evalu_Part_Type'=1 it means that a manager filled on a employee, if Evalu_Part_Type=2 it means that both employee and the manager are togheter answer the survey step.
+if I didn't provie you in a table the 'is_Active' feild, it means that this table doesn't have this column.
+Here are some exples for more comlex queries for you to learn from:
+1. this query show you the satisfaction rate of all employees and thier managers:
+SELECT A.UserNum, UserFName + ' ' + UserLName AS UserName,
+	case when isnull(evalu_part_type,0)=0 then N'משוב עצמי' else N'משוב מנהל' end as Evaluation_Part,
+	       CASE
+	         WHEN AVG(CAST(NumericAnswer AS decimal(10,2))) - FLOOR(AVG(CAST(NumericAnswer AS decimal(10,2)))) >= 0.5
+	           THEN CEILING(AVG(CAST(NumericAnswer AS decimal(10,2))))
+	         ELSE FLOOR(AVG(CAST(NumericAnswer AS decimal(10,2))))
+	       END AS rounded_avg
+	FROM AnswerOn A JOIN Employee E ON A.UserNum = E.UserNum
+	WHERE YEAR(AnswerInsertDate)=YEAR(GETDATE())
+	GROUP BY A.UserNum, UserFName, UserLName, evalu_part_type
+	ORDER BY A.UserNum DESC
+2.this query show you all the employees that finished the self evaluation section:
+select 	A.UserNum, UserFName + ' ' + UserLName AS UserName,
+	case when  isnull(evalu_part_type,0)=0 then N'משוב עצמי' end from Employee e 
+    join (
+    select UserNum, MAX(Evalu_Part_Type) as Evalu_Part_Type from AnswerOn where YEAR(AnswerInsertDate)=YEAR(GETDATE()) 
+    group by UserNum) as a on e.UserNum= a.UserNum
+    where Evalu_Part_Type=0
+`);
