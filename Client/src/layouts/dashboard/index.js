@@ -16,224 +16,224 @@ import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 import ApiFetcher from "components/ApiFetcher";
 
 // import BarChartData from "./data/reportsBarChartData";
-const jsonArray = [
-  {
-    "quesGroup": 1,
-    "quesGroup_Desc": "שירותיות",
-    "parts": [
-      {
-        "depNum": 1,
-        "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-        "depNum": 2,
-        "depName": "שיווק ומכירות",
-        "avg_Answers": 4
-      },
-      {
-        "depNum": 102,
-        "depName": "תפעול",
-        "avg_Answers": 5
-      }
-    ]
-  },
-  {
-    "quesGroup": 2,
-    "quesGroup_Desc": "מקצועיות ואיכות בעבודה",
-    "parts": [
-      {
-        "depNum": 1,
-        "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-        "depNum": 2,
-        "depName": "שיווק ומכירות",
-        "avg_Answers": 4
-      },
-      {
-        "depNum": 102,
-        "depName": "תפעול",
-        "avg_Answers": 5
-      }
-    ]
-  }, {
+// const jsonArray = [
+//   {
+//     "quesGroup": 1,
+//     "quesGroup_Desc": "שירותיות",
+//     "parts": [
+//       {
+//         "depNum": 1,
+//         "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//         "depNum": 2,
+//         "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//         "depNum": 102,
+//         "depName": "תפעול",
+//         "avg_Answers": 5
+//       }
+//     ]
+//   },
+//   {
+//     "quesGroup": 2,
+//     "quesGroup_Desc": "מקצועיות ואיכות בעבודה",
+//     "parts": [
+//       {
+//         "depNum": 1,
+//         "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//         "depNum": 2,
+//         "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//         "depNum": 102,
+//         "depName": "תפעול",
+//         "avg_Answers": 5
+//       }
+//     ]
+//   }, {
 
-    "quesGroup": 3,
-    "quesGroup_Desc": "יחסי עבודה , תקשורת ועבודת צוות",
-    "parts": [
-      {
-        "depNum": 1,
-        "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-        "depNum": 2,
-        "depName": "שיווק ומכירות",
-        "avg_Answers": 4
-      },
-      {
-        "depNum": 102,
-        "depName": "תפעול",
-        "avg_Answers": 5
-      }
-    ]
-  }, {
+//     "quesGroup": 3,
+//     "quesGroup_Desc": "יחסי עבודה , תקשורת ועבודת צוות",
+//     "parts": [
+//       {
+//         "depNum": 1,
+//         "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//         "depNum": 2,
+//         "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//         "depNum": 102,
+//         "depName": "תפעול",
+//         "avg_Answers": 5
+//       }
+//     ]
+//   }, {
 
-    "quesGroup": 4,
-    "quesGroup_Desc": "יוזמה ואחריות",
-    "parts": [
-      {
-        "depNum": 1,
-        "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-        "depNum": 102,
-        "depName": "תפעול",
-        "avg_Answers": 5
-      }
-    ]
-  }, {
+//     "quesGroup": 4,
+//     "quesGroup_Desc": "יוזמה ואחריות",
+//     "parts": [
+//       {
+//         "depNum": 1,
+//         "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//         "depNum": 102,
+//         "depName": "תפעול",
+//         "avg_Answers": 5
+//       }
+//     ]
+//   }, {
 
-    "quesGroup": 5,
-    "quesGroup_Desc": "משמעת",
-    "parts": [
-      {
-        "depNum": 1,
-        "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-        "depNum": 2,
-        "depName": "שיווק ומכירות",
-        "avg_Answers": 4
-      },
-      {
-        "depNum": 102,
-        "depName": "תפעול",
-        "avg_Answers": 5
-      }
-    ]
-  }, {
+//     "quesGroup": 5,
+//     "quesGroup_Desc": "משמעת",
+//     "parts": [
+//       {
+//         "depNum": 1,
+//         "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//         "depNum": 2,
+//         "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//         "depNum": 102,
+//         "depName": "תפעול",
+//         "avg_Answers": 5
+//       }
+//     ]
+//   }, {
 
-    "quesGroup": 6,
-    "quesGroup_Desc": "מיומנויות ניהול",
-    "parts": [
-      {
-        "depNum": 1,
-        "depName": "משאבי אנוש וביטחון",
-        "avg_Answers": 5
-      },
-      {
-        "depNum": 2,
-        "depName": "שיווק ומכירות",
-        "avg_Answers": 4
-      },
-      {
-        "depNum": 102,
-        "depName": "תפעול",
-        "avg_Answers": 5
-      }
-    ]
-  }
-]
+//     "quesGroup": 6,
+//     "quesGroup_Desc": "מיומנויות ניהול",
+//     "parts": [
+//       {
+//         "depNum": 1,
+//         "depName": "משאבי אנוש וביטחון",
+//         "avg_Answers": 5
+//       },
+//       {
+//         "depNum": 2,
+//         "depName": "שיווק ומכירות",
+//         "avg_Answers": 4
+//       },
+//       {
+//         "depNum": 102,
+//         "depName": "תפעול",
+//         "avg_Answers": 5
+//       }
+//     ]
+//   }
+// ]
 
-const goals1 =
-  [
-    {
-      "goalStatus": "בוצע",
-      "goalNum": 1,
-      "goalName": "סגירת תקציבים לשנת 2023",
-      "num_of_statuses_byGoal": 1
-    },
-    {
-      "goalStatus": "בתהליך",
-      "goalNum": 1,
-      "goalName": "סגירת תקציבים לשנת 2023",
-      "num_of_statuses_byGoal": 2
-    },
-    {
-      "goalStatus": "חדש",
-      "goalNum": 1,
-      "goalName": "סגירת תקציבים לשנת 2023",
-      "num_of_statuses_byGoal": 0
-    },
-    {
-      "goalStatus": "בוצע",
-      "goalNum": 2,
-      "goalName": "מעבר למחסן החדש",
-      "num_of_statuses_byGoal": 1
-    },
-    {
-      "goalStatus": "בתהליך",
-      "goalNum": 2,
-      "goalName": "מעבר למחסן החדש",
-      "num_of_statuses_byGoal": 0,
-    },
-    {
-      "goalStatus": "חדש",
-      "goalNum": 2,
-      "goalName": "מעבר למחסן החדש",
-      "num_of_statuses_byGoal": 0
-    },
+// const goals1 =
+//   [
+//     {
+//       "goalStatus": "בוצע",
+//       "goalNum": 1,
+//       "goalName": "סגירת תקציבים לשנת 2023",
+//       "num_of_statuses_byGoal": 1
+//     },
+//     {
+//       "goalStatus": "בתהליך",
+//       "goalNum": 1,
+//       "goalName": "סגירת תקציבים לשנת 2023",
+//       "num_of_statuses_byGoal": 2
+//     },
+//     {
+//       "goalStatus": "חדש",
+//       "goalNum": 1,
+//       "goalName": "סגירת תקציבים לשנת 2023",
+//       "num_of_statuses_byGoal": 0
+//     },
+//     {
+//       "goalStatus": "בוצע",
+//       "goalNum": 2,
+//       "goalName": "מעבר למחסן החדש",
+//       "num_of_statuses_byGoal": 1
+//     },
+//     {
+//       "goalStatus": "בתהליך",
+//       "goalNum": 2,
+//       "goalName": "מעבר למחסן החדש",
+//       "num_of_statuses_byGoal": 0,
+//     },
+//     {
+//       "goalStatus": "חדש",
+//       "goalNum": 2,
+//       "goalName": "מעבר למחסן החדש",
+//       "num_of_statuses_byGoal": 0
+//     },
 
-    {
-      "goalStatus": "בוצע",
-      "goalNum": 3,
-      "goalName": "מיפוי ארגזים",
-      "num_of_statuses_byGoal": 1
-    },
-    {
-      "goalStatus": "בתהליך",
-      "goalNum": 3,
-      "goalName": "מיפוי ארגזים",
-      "num_of_statuses_byGoal": 0
-    },
-    {
-      "goalStatus": "חדש",
-      "goalNum": 3,
-      "goalName": "מיפוי ארגזים",
-      "num_of_statuses_byGoal": 0
-    },
-    {
-      "goalStatus": "בוצע",
-      "goalNum": 108,
-      "goalName": "הדרכת בטיחות",
-      "num_of_statuses_byGoal": 0
-    },
-    {
-      "goalStatus": "בתהליך",
-      "goalNum": 108,
-      "goalName": "הדרכת בטיחות",
-      "num_of_statuses_byGoal": 0
-    },
-    {
-      "goalStatus": "חדש",
-      "goalNum": 108,
-      "goalName": "הדרכת בטיחות",
-      "num_of_statuses_byGoal": 1
-    },
-    {
-      "goalStatus": "בוצע",
-      "goalNum": 111,
-      "goalName": "כנס בטיחות שנתי",
-      "num_of_statuses_byGoal": 4
-    },
-    {
-      "goalStatus": "בתהליך",
-      "goalNum": 111,
-      "goalName": "כנס בטיחות שנתי",
-      "num_of_statuses_byGoal": 3
-    },
-    {
-      "goalStatus": "חדש",
-      "goalNum": 111,
-      "goalName": "כנס בטיחות שנתי",
-      "num_of_statuses_byGoal": 1
-    }
-  ]
+//     {
+//       "goalStatus": "בוצע",
+//       "goalNum": 3,
+//       "goalName": "מיפוי ארגזים",
+//       "num_of_statuses_byGoal": 1
+//     },
+//     {
+//       "goalStatus": "בתהליך",
+//       "goalNum": 3,
+//       "goalName": "מיפוי ארגזים",
+//       "num_of_statuses_byGoal": 0
+//     },
+//     {
+//       "goalStatus": "חדש",
+//       "goalNum": 3,
+//       "goalName": "מיפוי ארגזים",
+//       "num_of_statuses_byGoal": 0
+//     },
+//     {
+//       "goalStatus": "בוצע",
+//       "goalNum": 108,
+//       "goalName": "הדרכת בטיחות",
+//       "num_of_statuses_byGoal": 0
+//     },
+//     {
+//       "goalStatus": "בתהליך",
+//       "goalNum": 108,
+//       "goalName": "הדרכת בטיחות",
+//       "num_of_statuses_byGoal": 0
+//     },
+//     {
+//       "goalStatus": "חדש",
+//       "goalNum": 108,
+//       "goalName": "הדרכת בטיחות",
+//       "num_of_statuses_byGoal": 1
+//     },
+//     {
+//       "goalStatus": "בוצע",
+//       "goalNum": 111,
+//       "goalName": "כנס בטיחות שנתי",
+//       "num_of_statuses_byGoal": 4
+//     },
+//     {
+//       "goalStatus": "בתהליך",
+//       "goalNum": 111,
+//       "goalName": "כנס בטיחות שנתי",
+//       "num_of_statuses_byGoal": 3
+//     },
+//     {
+//       "goalStatus": "חדש",
+//       "goalNum": 111,
+//       "goalName": "כנס בטיחות שנתי",
+//       "num_of_statuses_byGoal": 1
+//     }
+//   ]
 
 const yearsChart =
   [
@@ -490,8 +490,19 @@ function Dashboard() {
                 description="התפלגות לפי מחלקות"
                 chart={chartData}
               />
-
-              <select value={selectedValueGraph1} onChange={handleSelectChange1}>
+              <select
+                value={selectedValueGraph1}
+                onChange={handleSelectChange1}
+                style={{
+                  fontFamily: "Rubik",
+                  fontSize: "large",
+                  margin: "5px auto",
+                  display: "flex",
+                  borderRadius: "5px",
+                  border: "none",
+                  minWidth: "-webkit-fill-available"
+                }}
+              >
                 <option value="" disabled>בחר מדד</option>
                 {avgQuestions?.map((option, index) => (
                   <option key={option.quesGroup} value={option.quesGroup_Desc}>
