@@ -29,7 +29,7 @@ function ManagerEvalues() {
     const abortController = new AbortController();
     if (mainState.mainState) {
       fetch(
-        API.evaluationApi + chosenEmployee + "&evalu_Part_Type=" + currentStep,
+        API.evaluationApi + chosenEmployee.userNum + "&evalu_Part_Type=" + currentStep,
         {
           method: "GET",
           headers: new Headers({
@@ -86,8 +86,8 @@ function ManagerEvalues() {
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />
-      {currentStep === 1 && <SurveyForm userNum={chosenEmployee} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />}
-      {currentStep === 2 && <Feedback userNum={chosenEmployee} evalu_Part_Type={currentStep} questionnaireNum={questionnaireNum} />}
+      {currentStep === 1 && <SurveyForm userNum={chosenEmployee.userNum} employeesManager={userId} evalu_Part_Type={currentStep} questionsResp={questionsResp} questionnaireNum={questionnaireNum} showForm={showForm} />}
+      {currentStep === 2 && <Feedback userNum={chosenEmployee.userNum} evalu_Part_Type={currentStep} questionnaireNum={questionnaireNum} />}
       <div>
         {
           finishState ? (

@@ -2,22 +2,34 @@ import { useState, useEffect, useContext } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./calendar.css";
-import { Card, Typography, Grid, Stack } from "@mui/material";
+import { Card, Typography, Grid, Stack, Button, IconButton,Dialog, DialogContent } from "@mui/material";
 // import { meetings } from "./meetingsData";
 import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import MeetingDialog from ".//meetingDialog"
 
 function MeetingCalendar({ fromAlert }) {
-  const { API, meetings } = useContext(EvalueContext);
+  const { meetings, chosenEmployee } = useContext(EvalueContext);
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const locale = "he-IL";
   const calendarType = "Hebrew";
   const [filteredMeetings, setFilteredMeetings] = useState([]);
   const { mainState } = useContext(MainStateContext);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
 
   const handleDateChange = (date) => {
     setDate(date);
+  };
+
+  const scheduleMeeting = () => {
+    setIsPopupOpen(true);
+  }
+
+  const handleCloseDialog = () => {
+    setIsPopupOpen(false);
   };
 
   console.log("meetings", meetings);
@@ -88,46 +100,61 @@ function MeetingCalendar({ fromAlert }) {
   }, [selectedDate]);
 
   return (
-    <Grid container spacing={2} width="auto" justifyContent="center" alignItems="center">
-      <Stack alignItems="center" justifyContent="center">
-        <Calendar
-          onChange={handleDateChange}
-          value={date}
-          tileDisabled={tileDisabled}
-          locale={locale}
-          calendarType={calendarType}
-          onClickDay={(date) => setSelectedDate(date)}
-          tileClassName={meetingsInTheSameDayExist}
-        />
-        <Typography sx={{ m: 2, fontSize: "1rem" }}>
-          {" "}
-          מקרא: <br />
-          בתא אדום קיימות כבר פגישות
-          <br />
-          תא כחול זה התא עליו לחצת
-        </Typography>
-      </Stack>
-      {filteredMeetings.map((meeting) => (
-        <Grid item xs={12} md={4} key={"g" + meeting.id}>
-          <Card
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: "aliceblue",
-              overflow: "visible",
-              textAlign: "center",
-              minWidth: "max-content"
-            }}
-          >
-            <Typography sx={{ m: 2, fontSize: "1rem" }} key={meeting.id}>
-              {' פגישה עם ' + (meeting.userNum !== mainState.userNum ? meeting.employeeName : meeting.managerName)} <br />
-              {' בשעה ' + meeting.time} <br />
-              {' במשרדו של ' + (meeting.userNum !== mainState.userNum ? meeting.employeeName : meeting.managerName)} <br />
+    <>
+      <Grid container spacing={2} width="auto" justifyContent="center" alignItems="center">
+        <Stack alignItems="center" justifyContent="center">
+          <Calendar
+            onChange={handleDateChange}
+            value={date}
+            tileDisabled={tileDisabled}
+            locale={locale}
+            calendarType={calendarType}
+            onClickDay={(date) => setSelectedDate(date)}
+            tileClassName={meetingsInTheSameDayExist}
+          />
+          <Stack direction="row" spacing={2}>
+            <Typography sx={{ m: 2, fontSize: "1rem" }}>
+              {" "}
+              מקרא: <br />
+              בתא אדום קיימות כבר פגישות
+              <br />
+              תא כחול זה התא עליו לחצת
             </Typography>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+            {selectedDate !== null && fromAlert ?
+              <IconButton aria-label="setMeeting" size="large" onClick={scheduleMeeting}>
+                <EventAvailableIcon fontSize="large" />
+              </IconButton>
+              : ""}
+          </Stack>
+        </Stack>
+        {filteredMeetings.map((meeting) => (
+          <Grid item xs={12} md={4} key={"g" + meeting.id}>
+            <Card
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: "aliceblue",
+                overflow: "visible",
+                textAlign: "center",
+                minWidth: "max-content"
+              }}
+            >
+              <Typography sx={{ m: 2, fontSize: "1rem" }} key={meeting.id}>
+                {' פגישה עם ' + (meeting.userNum !== mainState.userNum ? meeting.employeeName : meeting.managerName)} <br />
+                {' בשעה: ' + meeting.time} <br />
+                {' במיקום: ' + meeting.meetingPlace} <br />
+              </Typography>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <Dialog open={isPopupOpen} onClose={handleCloseDialog}>
+        <Button onClick={handleCloseDialog}>חזרה לדף הבית</Button>
+        <DialogContent>
+          <MeetingDialog chosenEmployee={chosenEmployee} selectedDate={selectedDate}/>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 

@@ -532,12 +532,12 @@ namespace Final_Server.Models
         }
 
 
-        public int InsertFinalMeeting(int userNum, string meetingDate) //Insert new final meeting by userNum
+        public int InsertFinalMeeting(int userNum, string meetingDate, string meetingPlace) //Insert new final meeting by userNum
         {
             try
             {
                 DBservices tmp = new DBservices();
-                return tmp.InsertMeeting(userNum, meetingDate);
+                return tmp.InsertMeeting(userNum, meetingDate, meetingPlace);
             }
             catch (Exception)
             {

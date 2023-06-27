@@ -2476,7 +2476,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method Insert new final meeting by userNum
     ////--------------------------------------------------------------------------------------------------
-    public int InsertMeeting(int userNum, string meetingDate)
+    public int InsertMeeting(int userNum, string meetingDate, string meetingPlace)
     {
 
         SqlConnection con;
@@ -2492,7 +2492,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPInserNewMeeting("spInsertNewFinalMeeting", con, userNum, meetingDate);             // create the command
+        cmd = CreateCommandWithSPInserNewMeeting("spInsertNewFinalMeeting", con, userNum, meetingDate, meetingPlace);             // create the command
 
         try
         {
@@ -2519,7 +2519,7 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPInserNewMeeting(String spName, SqlConnection con, int userNum, string meetingDate)
+    private SqlCommand CreateCommandWithSPInserNewMeeting(String spName, SqlConnection con, int userNum, string meetingDate, string meetingPlace)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -2534,6 +2534,7 @@ public class DBservices
 
         cmd.Parameters.AddWithValue("@UserNum", userNum);
         cmd.Parameters.AddWithValue("@MeetingDate", meetingDate);  //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@MeetingPlace", meetingPlace);  //insert all the parameters we got from the user
 
         return cmd;
     }
@@ -2576,7 +2577,8 @@ public class DBservices
                     userManager = Convert.ToInt32(dataReader["userManager"]),
                     managerName = (dataReader["managerName"]).ToString(),
                     date = ((DateTime)dataReader["meetingDate"]).ToShortDateString(),
-                    time = ((DateTime)dataReader["meetingDate"]).ToShortTimeString()
+                    time = ((DateTime)dataReader["meetingDate"]).ToShortTimeString(),
+                    meetingPlace = (dataReader["meetingPlace"]).ToString()
                 });
             }
 
