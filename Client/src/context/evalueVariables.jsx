@@ -51,6 +51,8 @@ export default function EvalueContextProvider({ children }) {
     apiGetPDFdetails: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/questionnaireNum?userNum=", //server
     // apiStatusMeeting: "https://localhost:7079/api/Rel_Questions_EvaluQues/StatusMeeting/",
     apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
+    apiPostMeeting: "https://localhost:7079/setAmeeting",
+    // apiPostMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/setAmeeting", //server
     // apiOpenAIdetails: "https://localhost:7079/api/OpenAI",
     apiOpenAIdetails: "https://proj.ruppin.ac.il/cgroup47/prod/api/OpenAI", //server
     // apiGetDataFromGPT: "https://localhost:7079/api/OpenAI/query",

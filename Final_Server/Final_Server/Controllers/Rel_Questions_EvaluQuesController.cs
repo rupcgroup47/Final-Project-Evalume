@@ -301,7 +301,7 @@ namespace Final_Server.Controllers
 
         // POST api/<Rel_Goal_EmployeeController>
         [HttpPost("/setAmeeting")]
-        public IActionResult Post([FromBody] JsonElement data) //Insert new final meeting by userNum
+        public IActionResult Post_Meeting([FromBody] JsonElement data) //Insert new final meeting by userNum
         {
             int userNum = Convert.ToInt32(data.GetProperty("userNum").GetInt32());
             string meetingDate = (data.GetProperty("meetingDate")).ToString();
