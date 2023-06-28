@@ -33,6 +33,7 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
 
     //creating a new user when submiting the form at the targeted varibles type and set the relevant state
     const onSubmit = () => {
+
         let isMounted = true;
 
         console.log(date);
@@ -45,44 +46,44 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
         console.log(JSON.stringify(sendObject));
 
         // Post a new meeting
-        // const setMeeting = async () => {
-        //     try {
-        //         const fetchedData = await ApiFetcher(API.apiPostMeeting, "POST", JSON.stringify(sendObject));
-        //         if (isMounted) {
-        //             console.log("success");
-        //             if (fetchedData.txt) {
-        //                 console.log(fetchedData);
-        //                 swal({
-        //                     title: "פעולה בוטלה!",
-        //                     text: "נראה כי קיימת כבר פגישה במועד זה במערכת",
-        //                     icon: "error",
-        //                     button: "סגור"
-        //                 });
-        //             }
-        //             else
-        //                 swal({
-        //                     title: "הצלחנו!",
-        //                     text: "היעד עודכן בהצלחה",
-        //                     icon: "success",
-        //                     button: "סגור"
-        //                 });
-        //         }
-        //     }
-        //     catch (error) {
-        //         if (isMounted) {
-        //             console.log(error);
-        //             swal({
-        //                 title: "פעולה בוטלה!",
-        //                 text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-        //                 icon: "error",
-        //                 button: "סגור"
-        //             });
-        //         }
-        //     }
-        // }
-        // setMeeting();
+        const setMeeting = async () => {
+            try {
+                const fetchedData = await ApiFetcher(API.apiPostMeeting, "POST", JSON.stringify(sendObject));
+                if (isMounted) {
+                    console.log("success");
+                    if (fetchedData.txt) {
+                        console.log(fetchedData);
+                        swal({
+                            title: "פעולה בוטלה!",
+                            text: "נראה כי קיימת כבר פגישה במועד זה במערכת",
+                            icon: "error",
+                            button: "סגור"
+                        });
+                    }
+                    else
+                        swal({
+                            title: "הצלחנו!",
+                            text: "היעד עודכן בהצלחה",
+                            icon: "success",
+                            button: "סגור"
+                        });
+                }
+            }
+            catch (error) {
+                if (isMounted) {
+                    console.log(error);
+                    swal({
+                        title: "פעולה בוטלה!",
+                        text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+                        icon: "error",
+                        button: "סגור"
+                    });
+                }
+            }
+        }
+        setMeeting();
 
-        // window.location.reload(); // Reload the page
+        window.location.reload(); // Reload the page
 
         return () => {
             isMounted = false;
@@ -96,11 +97,9 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
 
     return (
         <form
-
             onSubmit={handleSubmit(onSubmit, onError)}
         >
             <Paper
-                component="form"
                 sx={{ boxShadow: "none", minWidth: 300, maxWidth: 1200, margin: "auto", marginTop: "50px" }}
             >
                 <Grid container direction="row" spacing={3}>
@@ -142,6 +141,7 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DemoContainer components={['TimePicker']}>
                                     <TimePicker
+                                        name="time"
                                         label="בחר שעה"
                                         value={date}
                                         onChange={(newValue) => setDate(newValue)}
@@ -150,7 +150,6 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
                                             minutes: renderTimeViewClock,
                                             seconds: renderTimeViewClock,
                                         }}
-
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
@@ -172,7 +171,7 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
                             />
                         </Stack>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
                         <Button type="submit">סיום</Button>
                     </Grid>
                 </Grid>
