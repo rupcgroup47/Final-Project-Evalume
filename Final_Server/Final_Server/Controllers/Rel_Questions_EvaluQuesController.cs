@@ -121,12 +121,12 @@ namespace Final_Server.Controllers
         }
 
         // GET api/<Rel_Questions_EvaluQuesController>/5
-        [HttpGet("/Meetings/{userNum}/{userType}")]
-        public List<Object> GetMeetings(int userNum, int userType) // get the meetings of the employee
+        [HttpGet("/Meetings/{userNum}")]
+        public List<Object> GetMeetings(int userNum) // get the meetings of the employee
         {
             try
             {
-                return Rel_Questions_EvaluQues.ReadMeetings(userNum, userType);
+                return Rel_Questions_EvaluQues.ReadMeetings(userNum);
             }
             catch (Exception)
             {

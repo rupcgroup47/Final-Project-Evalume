@@ -188,7 +188,7 @@ function Overview() {
     if (mainState.userNum) {
       const getMeeting = async () => {
         try {
-          const fetchedData = await ApiFetcher(API.apiMeetings + mainState.userNum + "/" + (mainState.userType ? 1 : 0), "GET", null);
+          const fetchedData = await ApiFetcher(API.apiMeetings + mainState.userNum, "GET", null);
           if (isMounted) {
             console.log("success");
             console.log("meet",fetchedData);

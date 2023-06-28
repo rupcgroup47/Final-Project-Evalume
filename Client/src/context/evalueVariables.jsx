@@ -69,8 +69,8 @@ export default function EvalueContextProvider({ children }) {
     apiGoalsStatusBI: "https://proj.ruppin.ac.il/cgroup47/prod/Goal_Status?goalYear=", //server
     // apiUserGuideDetails : "https://localhost:7079/userGuide",
     apiUserGuideDetails : "https://proj.ruppin.ac.il/cgroup47/prod/userGuide", //server
-    // apiMeetings: "https://localhost:7079/Meetings/",
-    apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
+    apiMeetings: "https://localhost:7079/Meetings/",
+    // apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
   });
 
 

@@ -2533,7 +2533,7 @@ public class DBservices
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
         cmd.Parameters.AddWithValue("@UserNum", userNum);
-        cmd.Parameters.AddWithValue("@MeetingDate", meetingDate);  //insert all the parameters we got from the user
+        cmd.Parameters.AddWithValue("@MeetingDate", DateTime.Parse(meetingDate));  //insert all the parameters we got from the user
         cmd.Parameters.AddWithValue("@MeetingPlace", meetingPlace);  //insert all the parameters we got from the user
 
         return cmd;
@@ -2542,7 +2542,7 @@ public class DBservices
     ////--------------------------------------------------------------------------------------------------
     //// This method Get all meetings for employee
     ////--------------------------------------------------------------------------------------------------
-    public List<Object> GetMeetings(int userNum, int userType)
+    public List<Object> GetMeetings(int userNum)
     {
 
         SqlConnection con;
@@ -2558,7 +2558,7 @@ public class DBservices
             throw (ex);
         }
 
-        cmd = CreateCommandWithSPGetMeetings("spGetScheduledMeetingsByUserNum", con, userNum, userType);             // create the command
+        cmd = CreateCommandWithSPGetMeetings("spGetScheduledMeetingsByUserNum", con, userNum);             // create the command
         List<Object> meetingsList = new List<Object>();
 
         try
@@ -2604,7 +2604,7 @@ public class DBservices
     //---------------------------------------------------------------------------------
     // Create the SqlCommand using a stored procedure
     //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetMeetings(String spName, SqlConnection con, int userNum, int userType)
+    private SqlCommand CreateCommandWithSPGetMeetings(String spName, SqlConnection con, int userNum)
     {
 
         SqlCommand cmd = new SqlCommand(); // create the command object
@@ -2618,7 +2618,6 @@ public class DBservices
         cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
 
         cmd.Parameters.AddWithValue("@UserNum", userNum);
-        cmd.Parameters.AddWithValue("@UserType", userType);  //insert all the parameters we got from the user
 
         return cmd;
     }
