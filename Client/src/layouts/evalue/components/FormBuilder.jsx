@@ -1,20 +1,14 @@
-import React from "react";
-
-// Material Dashboard 2 React examples
+import React, { useEffect, useState, useContext } from "react";
 import { Container, Typography } from "@mui/material";
-import { useEffect, useState, useContext } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-// import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Grid from "@mui/material/Grid";
-// Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
-// import FinishDialog from "./FinishDialog";
 import { QuestionsContext } from "context/globalVariables";
 
 export default function FormBuilder({ setMyArray }) {
@@ -22,19 +16,31 @@ export default function FormBuilder({ setMyArray }) {
   const [expanded, setExpanded] = useState(globalQuestionArray[0].quesGroup_ID);
   const [, dispatch] = useMaterialUIController();
   const [checkedItems, setCheckedItems] = useState([]);
-  const [checkedBoxes, setCheckedBoxes] = useState([]);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  // Changing the direction to rtl
   useEffect(() => {
     setDirection(dispatch, "rtl");
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  const handleChangeCheck = (event, id, questionId) => {//Perception and insertion or removal from the array of the questions marked in the check box
+  useEffect(() => {
+    const defaultCheckedItems = [];
+    globalQuestionArray.forEach((group) => {
+      group.questions.forEach((question) => {
+        const newCheck = {
+          quesGroup_ID: group.quesGroup_ID,
+          questionNum: question.questionNum,
+        };
+        defaultCheckedItems.push(newCheck);
+      });
+    });
+    setCheckedItems(defaultCheckedItems);
+  }, []);
+
+  const handleChangeCheck = (event, id, questionId) => {
     const isChecked = event.target.checked;
     const question = event.target.name;
     const newCheck = {
@@ -42,32 +48,30 @@ export default function FormBuilder({ setMyArray }) {
       questionNum: questionId,
     };
     if (isChecked) {
-      setCheckedBoxes([...checkedBoxes, question]);
-      const newCheckedItems = checkedItems.includes(newCheck)
-        ? checkedItems
-        : [...checkedItems, newCheck];
-      setCheckedItems(newCheckedItems);
-      console.log(checkedItems);
+      setCheckedItems((prevCheckedItems) => [...prevCheckedItems, newCheck]);
     } else {
-      setCheckedBoxes(checkedBoxes.filter((q) => q !== question));
-      setCheckedItems(
-        checkedItems.filter((field) => JSON.stringify(field) !== JSON.stringify(newCheck))// remove object from questions form if object removed from check box
+      setCheckedItems((prevCheckedItems) =>
+        prevCheckedItems.filter(
+          (field) => field.quesGroup_ID !== id || field.questionNum !== questionId
+        )
       );
     }
-
   };
 
   const handleCheckedForm = () => {
     const groupedData = Array.from(new Set(checkedItems.map((item) => item.quesGroup_ID))).map(
       (quesGroup_ID) => ({
         quesGroup_ID,
-        questionNum: checkedItems.filter((item) => item.quesGroup_ID === quesGroup_ID).map((item) => item.questionNum),
+        questionNum: checkedItems
+          .filter((item) => item.quesGroup_ID === quesGroup_ID)
+          .map((item) => item.questionNum),
       })
-    ); // group by titles and questions
+    );
+
     console.log(groupedData);
     setMyArray(groupedData);
   };
-  
+
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       {globalQuestionArray?.map(({ quesGroup_ID, quesGroup_Desc, questions }) => (
@@ -82,7 +86,7 @@ export default function FormBuilder({ setMyArray }) {
           </AccordionSummary>
 
           <AccordionDetails>
-            {questions.map(({ questionNum, quesContent }) => (//show the questions inside the title
+            {questions.map(({ questionNum, quesContent }) => (
               <Grid
                 container
                 direction="row"
@@ -98,8 +102,11 @@ export default function FormBuilder({ setMyArray }) {
                 <Grid item xs={2}>
                   <Checkbox
                     name={"q-" + quesGroup_ID + "-" + questionNum}
-                    checked={checkedBoxes.includes("q-" + quesGroup_ID + "-" + questionNum)}//check if allready checked
-                    onChange={(event) => handleChangeCheck(event, quesGroup_ID, questionNum)}//create new object of the qustion and title the user just checked
+                    checked={checkedItems.some(
+                      (item) =>
+                        item.quesGroup_ID === quesGroup_ID && item.questionNum === questionNum
+                    )}
+                    onChange={(event) => handleChangeCheck(event, quesGroup_ID, questionNum)}
                     inputProps={{ "aria-label": "controlled" }}
                   />
                 </Grid>
@@ -108,13 +115,16 @@ export default function FormBuilder({ setMyArray }) {
           </AccordionDetails>
         </Accordion>
       ))}
-      <Button type={"submit"} label="סיים" onClick={handleCheckedForm} style={{fontSize:"large", position:"absolute", left:"50px"}}>
+      <Button
+        type={"submit"}
+        label="סיים"
+        onClick={handleCheckedForm}
+        style={{fontSize:"large", position:"absolute", left:"50px"}}>
         סיום
       </Button>
     </Container>
   );
 }
-
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
