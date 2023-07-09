@@ -24,6 +24,8 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import { IconButton, InputAdornment } from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
@@ -51,7 +53,10 @@ function Basic() {
   });
   const [userDetailsValidation, setUserDetailsValidation] = useState(false);
   const {mainState,setMainState} = useContext(MainStateContext);
-
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
+  };
   useEffect(() => {
     if (userDetailsValidation){
       fetch(API.apiUserUrllogin + "userEmail=" + userData.email + "&userpassword=" + userData.password, {
@@ -138,7 +143,7 @@ function Basic() {
             </MDBox>
             <MDBox mb={2}>
               <MDInput
-                type="password"
+                type={passwordVisible ? 'text' : 'password'}
                 name="password"
                 value={userData.password}
                 placeholder="סיסמה"
@@ -146,6 +151,15 @@ function Basic() {
                 label="סיסמה"
                 fullWidth
                 required
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility}>
+                        {passwordVisible ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </MDBox>
             <MDBox mt={4} mb={1}>
