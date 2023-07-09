@@ -135,7 +135,7 @@ export default function AllExistForms({ //shows all the forms group by role type
                     <div key={form.id}>
                       <a key={form.id} value={form.id} onClick={() => handleFormClick(form)}
                         style={{ cursor: "pointer" }}>
-                        שאלון {form.year}
+                        שאלון {form.year}-{form.id}
                       </a>
                     </div>
 

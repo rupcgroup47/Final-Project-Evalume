@@ -212,7 +212,7 @@ export default function CreateYearlyProcessDialog({
               <select key={index} name={index} onChange={handleChange} style={{ fontFamily: "rubik", fontSize: "large" }}>
                 <option value="">בחירת שאלון מתאים</option>
                 {testObject.forms.map((form) => ( //Go through all the questionnaires appropriate for role type & group type
-                  <option key={form.id} value={form.id}>שאלון {form.year} </option>
+                  <option key={form.id} value={form.id}>שאלון {form.year}-{form.id} </option>
                 ))}
               </select>
             </div>

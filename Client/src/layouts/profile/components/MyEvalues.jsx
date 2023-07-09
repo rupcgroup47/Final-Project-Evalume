@@ -172,7 +172,7 @@ export default function MyEvalues({ evalus }) {
                 {/* {" "} */}
                 <TableCell align="left" >
                   {/* {console.log(evalue.name)} */}
-                  {evalue.year}
+                  {evalue.year}-{evalue.id}
                 </TableCell>
                 <TableCell align="center" >
                   {/* {console.log(evalue.name)} */}
