@@ -216,6 +216,21 @@ namespace Final_Server.Models
             }
         }
 
+        public static Object ReadFinalDate() //get EvaluFinalDate
+        {
+            try
+            {
+                DBservices dbs = new DBservices();
+                return dbs.GetFinalDate();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         public static Object ReadQuesByEvaluId(int questionnaireNum) //gets the questions that part of this corrent evaluQues
         {
             try
@@ -552,6 +567,35 @@ namespace Final_Server.Models
             {
                 DBservices tmp = new DBservices();
                 return tmp.GetMeetings(userNum, userType);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        public int UpdateEvaluFinalProcDate(DateTime quesLimitDate) //Update quesLimitDate
+        {
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.UpdateEvaluFinalProcDate(quesLimitDate);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public int UpdateEndOfEvalu() //delete values from Active_Evaluation_Ques table- end of process
+        {
+            try
+            {
+                DBservices tmp = new DBservices();
+                return tmp.UpdateEndOfEvalu();
             }
             catch (Exception)
             {

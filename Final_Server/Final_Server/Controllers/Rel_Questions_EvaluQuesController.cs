@@ -27,6 +27,20 @@ namespace Final_Server.Controllers
             }
         }
 
+
+        [HttpGet("/EvaluFinalDate")]
+        public Object GetEvaluProcDate() //get EvaluFinalDate
+        {
+            try
+            {
+                return Rel_Questions_EvaluQues.ReadFinalDate();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         [HttpGet("/quesType/roleGroup_Type")]
         public IEnumerable<Object> GetEvaluQuesByType(bool quesType, int roleGroup_Type) //gets all the EvaluQues that fit the QuesType and RoleType
         {
@@ -312,6 +326,38 @@ namespace Final_Server.Controllers
             else
             {
                 return NotFound("Error in insert this Meeting");
+            }
+        }
+
+
+        [HttpPut("/quesLimitDate")]
+        public IActionResult PutEvaluFinalProcDate(DateTime quesLimitDate) //Update quesLimitDate
+        {
+            Rel_Questions_EvaluQues NewDate = new Rel_Questions_EvaluQues();
+            int numEffected = NewDate.UpdateEvaluFinalProcDate(quesLimitDate);
+            if (numEffected != 0)
+            {
+                return Ok("date succesfully updated");
+            }
+            else
+            {
+                return NotFound("We couldnt update your date");
+            }
+        }
+
+
+        [HttpPut("/EndOfEvalu")]
+        public IActionResult PutEvaluFinalProcDate() //delete values from Active_Evaluation_Ques table- end of process
+        {
+            Rel_Questions_EvaluQues rel = new Rel_Questions_EvaluQues();
+            int numEffected = rel.UpdateEndOfEvalu();
+            if (numEffected != 0)
+            {
+                return Ok("date succesfully updated");
+            }
+            else
+            {
+                return NotFound("We couldnt update your date");
             }
         }
 
