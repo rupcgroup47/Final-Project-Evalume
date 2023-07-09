@@ -62,7 +62,7 @@ function VerticalBarChart({ icon, title, description, height, chart }) {
           <MDBox mt={icon.component ? -2 : 0}>
             {title && <MDTypography variant="h6">{title}</MDTypography>}
             <MDBox mb={2}>
-              <MDTypography component="div" variant="button" color="text">
+              <MDTypography component="div" variant="button" color="text" style={{ marginBottom: '30px' }}>
                 {description}
               </MDTypography>
             </MDBox>
