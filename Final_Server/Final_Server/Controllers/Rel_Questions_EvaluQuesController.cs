@@ -130,17 +130,17 @@ namespace Final_Server.Controllers
             }
             catch (Exception)
             {
-               throw;
+                throw;
             }
         }
 
         // GET api/<Rel_Questions_EvaluQuesController>/5
-        [HttpGet("/Meetings/{userNum}/{userType}")]
-        public List<Object> GetMeetings(int userNum, int userType) // get the meetings of the employee
+        [HttpGet("/Meetings/{userNum}")]
+        public List<Object> GetMeetings(int userNum) // get the meetings of the employee
         {
             try
             {
-                return Rel_Questions_EvaluQues.ReadMeetings(userNum, userType);
+                return Rel_Questions_EvaluQues.ReadMeetings(userNum);
             }
             catch (Exception)
             {
@@ -207,14 +207,14 @@ namespace Final_Server.Controllers
 
                 //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
 
-                 foreach (JsonElement answersElement in answers.EnumerateArray())
-                 {
+                foreach (JsonElement answersElement in answers.EnumerateArray())
+                {
                     int questionNum = Convert.ToInt32(answersElement.GetProperty("questionNum").GetInt32());
                     int numericAnswer = Convert.ToInt32(answersElement.GetProperty("numericAnswer").GetString());
                     string verbalAnswer = (answersElement.GetProperty("verbalAnswer").GetString()).ToString();
-                    
+
                     answersList.Add((questionNum, numericAnswer, verbalAnswer));
-                 };
+                };
 
                 int numEffected = Rel_Questions_EvaluQues.insertNewAnswers(userNum, evalu_Part_Type, questionnaireNum, answersList);
 
@@ -249,7 +249,7 @@ namespace Final_Server.Controllers
                 string managerOpinion = (data.GetProperty("managerOpinion")).ToString();
                 string employeeOpinion = (data.GetProperty("employeeOpinion")).ToString();
 
-                List <int> goalsList = new List<int>();
+                List<int> goalsList = new List<int>();
 
                 //JsonElement answersElement = JsonElement.ParseValue(data.GetProperty("answers"));
 
@@ -314,11 +314,15 @@ namespace Final_Server.Controllers
         }
 
         // POST api/<Rel_Goal_EmployeeController>
-        [HttpPost("/userNum/meetingDate")]
-        public IActionResult Post(int userNum, string meetingDate) //Insert new final meeting by userNum
+        [HttpPost("/setAmeeting")]
+        public IActionResult Post_Meeting([FromBody] JsonElement data) //Insert new final meeting by userNum
         {
+            int userNum = Convert.ToInt32(data.GetProperty("userNum").GetInt32());
+            string meetingDate = (data.GetProperty("meetingDate")).ToString();
+            string meetingPlace= (data.GetProperty("meetingPlace")).ToString();
             Rel_Questions_EvaluQues meeting = new Rel_Questions_EvaluQues();
-            int numEffected = meeting.InsertFinalMeeting(userNum, meetingDate);
+
+            int numEffected = meeting.InsertFinalMeeting(userNum, meetingDate, meetingPlace);
             if (numEffected != 0)
             {
                 return Ok("Meeting succesfully inserted");

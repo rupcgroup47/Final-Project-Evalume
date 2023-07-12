@@ -51,6 +51,8 @@ export default function EvalueContextProvider({ children }) {
     apiGetPDFdetails: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/questionnaireNum?userNum=", //server
     // apiStatusMeeting: "https://localhost:7079/api/Rel_Questions_EvaluQues/StatusMeeting/",
     apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
+    apiPostMeeting: "https://localhost:7079/setAmeeting",
+    // apiPostMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/setAmeeting", //server
     // apiOpenAIdetails: "https://localhost:7079/api/OpenAI",
     apiOpenAIdetails: "https://proj.ruppin.ac.il/cgroup47/prod/api/OpenAI", //server
     // apiGetDataFromGPT: "https://localhost:7079/api/OpenAI/query",
@@ -67,8 +69,8 @@ export default function EvalueContextProvider({ children }) {
     apiGoalsStatusBI: "https://proj.ruppin.ac.il/cgroup47/prod/Goal_Status?goalYear=", //server
     // apiUserGuideDetails : "https://localhost:7079/userGuide",
     apiUserGuideDetails : "https://proj.ruppin.ac.il/cgroup47/prod/userGuide", //server
-    // apiMeetings: "https://localhost:7079/Meetings/",
-    apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
+    apiMeetings: "https://localhost:7079/Meetings/",
+    // apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
   });
 
 

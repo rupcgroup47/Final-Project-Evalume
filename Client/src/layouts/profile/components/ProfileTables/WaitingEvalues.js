@@ -23,7 +23,7 @@ const WaitingEvalues = ({ data, calender }) => {
 
   const handleRowClick = (row) => {
     console.log(row);
-    setChosenEmployee(row.userNum); //send chosen employee data to the global context
+    setChosenEmployee(row); //send chosen employee data to the global context
     setSelectedRow(row); //css
   };
 

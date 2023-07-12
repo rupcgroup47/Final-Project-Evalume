@@ -88,7 +88,7 @@ export default function App() {
       }
     }
     if (mainState !== null && exisiting !== null && !areObjectsEqual) {
-      localStorage.setItem("Current User", JSON.stringify(mainState)); // Set chosenEmployee details in local storage
+      localStorage.setItem("Current User", JSON.stringify(mainState)); // Set Current User details in local storage
     }
   }, [mainState]);
 

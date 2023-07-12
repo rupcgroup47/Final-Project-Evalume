@@ -547,12 +547,12 @@ namespace Final_Server.Models
         }
 
 
-        public int InsertFinalMeeting(int userNum, string meetingDate) //Insert new final meeting by userNum
+        public int InsertFinalMeeting(int userNum, string meetingDate, string meetingPlace) //Insert new final meeting by userNum
         {
             try
             {
                 DBservices tmp = new DBservices();
-                return tmp.InsertMeeting(userNum, meetingDate);
+                return tmp.InsertMeeting(userNum, meetingDate, meetingPlace);
             }
             catch (Exception)
             {
@@ -561,12 +561,12 @@ namespace Final_Server.Models
             }
         }
 
-        public static List<Object> ReadMeetings(int userNum, int userType) //Insert new final meeting by userNum
+        public static List<Object> ReadMeetings(int userNum) //Insert new final meeting by userNum
         {
             try
             {
                 DBservices tmp = new DBservices();
-                return tmp.GetMeetings(userNum, userType);
+                return tmp.GetMeetings(userNum);
             }
             catch (Exception)
             {

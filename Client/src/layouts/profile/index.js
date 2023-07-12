@@ -123,6 +123,8 @@ function Overview() {
           const fetchedData = await ApiFetcher(API.apiStatusMeeting + mainState.userNum, "GET", null);
           if (isMounted) {
             console.log("success");
+            console.log('meeting')
+            console.log(fetchedData)
             setMeeting(fetchedData);
           }
         }
@@ -186,17 +188,11 @@ function Overview() {
     if (mainState.userNum) {
       const getMeeting = async () => {
         try {
-          const fetchedData = await ApiFetcher(API.apiMeetings + mainState.userNum + "/" + (mainState.userType ? 1 : 0), "GET", null);
+          const fetchedData = await ApiFetcher(API.apiMeetings + mainState.userNum, "GET", null);
           if (isMounted) {
             console.log("success");
             console.log("meet",fetchedData);
             setMeetings(fetchedData);
-
-            // if (fetchedData.length == 0) {
-
-            // }
-            // else {
-            // }
           }
         }
         catch (error) {
