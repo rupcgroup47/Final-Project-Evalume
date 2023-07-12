@@ -13,8 +13,9 @@ import burceMars from "assets/images/bruce-mars.jpg";
 import avatar from "assets/images/avatar.png"
 import backgroundImage from "assets/images/packages.jpg";
 import OpenEvaluation from "./openEvaluation";
+import dayjs from 'dayjs';
 
-function Header({ children,questionnairesData}) {
+function Header({ children, questionnairesData, openProcess }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -76,10 +77,10 @@ function Header({ children,questionnairesData}) {
           <Grid item>
             <div>
               {
-                mainState.is_Admin ? (
+                mainState.is_Admin && openProcess == null ? (
                   <MDBox height="100%" mt={0.5} lineHeight={1}>
                     <MDTypography variant="h5" fontWeight="medium">
-                      <OpenEvaluation questionnairesData={questionnairesData}/>
+                      <OpenEvaluation questionnairesData={questionnairesData} />
                     </MDTypography>
                   </MDBox>
                 ) : null

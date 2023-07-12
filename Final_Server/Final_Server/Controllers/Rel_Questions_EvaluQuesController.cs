@@ -120,7 +120,7 @@ namespace Final_Server.Controllers
             }
         }
 
-        // GET api/<Rel_Questions_EvaluQuesController>/5
+        // GET 
         [HttpGet("{userNum}")]
         public List<Object> GetByUserNum(int userNum) // get the right evaluations of a user by his user number
         {
@@ -134,7 +134,7 @@ namespace Final_Server.Controllers
             }
         }
 
-        // GET api/<Rel_Questions_EvaluQuesController>/5
+        // GET 
         [HttpGet("/Meetings/{userNum}")]
         public List<Object> GetMeetings(int userNum) // get the meetings of the employee
         {
@@ -148,7 +148,7 @@ namespace Final_Server.Controllers
             }
         }
 
-        // POST api/<Rel_Questions_EvaluQuesController>
+        // POST 
         [HttpPost]
         public IActionResult Post([FromBody] JsonElement data) // post a new evaluation to the database
         {
@@ -313,7 +313,7 @@ namespace Final_Server.Controllers
             }
         }
 
-        // POST api/<Rel_Goal_EmployeeController>
+        // POST 
         [HttpPost("/setAmeeting")]
         public IActionResult Post_Meeting([FromBody] JsonElement data) //Insert new final meeting by userNum
         {
@@ -335,7 +335,7 @@ namespace Final_Server.Controllers
 
 
         [HttpPut("/quesLimitDate")]
-        public IActionResult PutEvaluFinalProcDate(DateTime quesLimitDate) //Update quesLimitDate
+        public IActionResult PutEvaluFinalProcDate([FromBody] DateTime quesLimitDate) //Update quesLimitDate
         {
             Rel_Questions_EvaluQues NewDate = new Rel_Questions_EvaluQues();
             int numEffected = NewDate.UpdateEvaluFinalProcDate(quesLimitDate);

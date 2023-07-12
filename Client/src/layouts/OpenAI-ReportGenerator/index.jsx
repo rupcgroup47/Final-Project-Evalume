@@ -7,7 +7,7 @@ import ApiFetcher from "components/ApiFetcher";
 import sendMessageToChatGPT from "./components/sendMessageToChatGPT";
 import data from "./Json/data";
 import GPTTable from "./components/GPTTable";
-import swal from "sweetalert";
+import Swal from 'sweetalert2'
 import './custom.css';
 
 function ReportGenerator() {
@@ -62,7 +62,7 @@ function ReportGenerator() {
                         console.log("success");
                         console.log("here????");
                         if (fetchedData === undefined) {
-                            swal({
+                            Swal.fire({
                                 title: "קרתה תקלה!",
                                 text: 'מצטערים, נראה כי קרתה תקלה ואנו מתקשים להביא עבורך את המידע שביקשת. \nאנא נסה שנית או פנה לגורם מקצוע',
                                 icon: "error",
@@ -83,7 +83,7 @@ function ReportGenerator() {
                         console.log("or here????");
                         console.log(error);
                         setError(error);
-                        swal({
+                        Swal.fire({
                             title: "קרתה תקלה!",
                             text: 'מצטערים, נראה כי קרתה תקלה ואנו מתקשים להביא עבורך את המידע שביקשת. \nאנא נסה שנית או פנה לגורם מקצוע',
                             icon: "error",

@@ -58,6 +58,10 @@ import brandDark from "assets/images/logo-ct-dark.png";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import EvalueContextProvider from "context/evalueVariables";
+import Alerts from "layouts/profile/components/Alerts/Alerts";
+import ApiFetcher from "components/ApiFetcher";
+import dayjs from 'dayjs';
+
 export const MainStateContext = createContext();
 
 export default function App() {
@@ -75,6 +79,9 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const [mainState, setMainState] = useState(null);
+  const [showAlert, setShowAlert] = useState(true);
+  const [openProcess, setOpenProcess] = useState(null);
+
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -193,6 +200,75 @@ export default function App() {
     [mainState]
   );
 
+  console.log('show?', showAlert);
+  console.log('pro?', openProcess)
+
+  useEffect(() => {
+    console.log(showAlert);
+    let isMounted = true;
+
+    // const interval = setInterval(() => {
+    //   const getEnDate = async () => {
+    //     try {
+    //       const fetchedData = await ApiFetcher("https://localhost:7079/EvaluFinalDate", "GET", null);
+    //       if (isMounted) {
+    //         console.log("success");
+    //         console.log('date', fetchedData);
+    //         const endDate = dayjs(fetchedData, 'DD/MM/YYYY');
+    //         console.log(endDate);
+    //         console.log(typeof(endDate));
+    //         if (fetchedData.lenght == 0 || fetchedData == null || fetchedData == undefined) {
+
+    //           setOpenProcess(null);
+    //         }
+    //         setOpenProcess(dayjs(fetchedData, 'DD/MM/YYYY'));
+    //       }
+    //     }
+    //     catch (error) {
+    //       if (isMounted) {
+    //         console.log(error);
+    //       }
+    //     }
+    //   }
+    //   getEnDate();
+    // }, 6000); // Interval time in milliseconds (10 minute)
+
+    const getEnDate = async () => {
+      try {
+        const fetchedData = await ApiFetcher("https://localhost:7079/EvaluFinalDate", "GET", null);
+        if (isMounted) {
+          console.log("success");
+          if (fetchedData.lenght == 0 || fetchedData == null || fetchedData == undefined) {
+            setOpenProcess(null);
+            
+          }
+          setOpenProcess(dayjs(fetchedData, 'DD/MM/YYYY'));
+        }
+      }
+      catch (error) {
+        if (isMounted) {
+          console.log(error);
+        }
+      }
+    }
+    getEnDate();
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => {
+      clearInterval(interval);
+      isMounted = false;
+    };
+  }, []);
+
+  const handleShowAlert = (show) => {
+    setShowAlert(show);
+  };
+
+  const handeleOpenProcess = (date) => {
+    setOpenProcess(date);
+    setShowAlert(false);
+  };
+
   if (!mainState && localStorage.getItem("Current User") !== null) {
     return (
       <Box
@@ -266,6 +342,7 @@ export default function App() {
             </Routes>
           </ThemeProvider>
         )}
+        {showAlert && openProcess !== null ? <Alerts mainState={JSON.parse(localStorage.getItem("Current User"))} handleShowAlert={handleShowAlert} openProcess={openProcess} handeleOpenProcess={handeleOpenProcess} /> : null}
       </EvalueContextProvider>
     </MainStateContext.Provider>
   );

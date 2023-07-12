@@ -3210,7 +3210,6 @@ public class DBservices
             while (dataReader.Read())
             {
                 FinalDate = ((DateTime)dataReader["QuesLimitDate"]).ToShortDateString();
-
             }
 
             return FinalDate;

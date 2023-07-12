@@ -51,8 +51,8 @@ export default function EvalueContextProvider({ children }) {
     apiGetPDFdetails: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/questionnaireNum?userNum=", //server
     // apiStatusMeeting: "https://localhost:7079/api/Rel_Questions_EvaluQues/StatusMeeting/",
     apiStatusMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/api/Rel_Questions_EvaluQues/StatusMeeting/", //server
-    apiPostMeeting: "https://localhost:7079/setAmeeting",
-    // apiPostMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/setAmeeting", //server
+    // apiPostMeeting: "https://localhost:7079/setAmeeting",
+    apiPostMeeting: "https://proj.ruppin.ac.il/cgroup47/prod/setAmeeting", //server
     // apiOpenAIdetails: "https://localhost:7079/api/OpenAI",
     apiOpenAIdetails: "https://proj.ruppin.ac.il/cgroup47/prod/api/OpenAI", //server
     // apiGetDataFromGPT: "https://localhost:7079/api/OpenAI/query",
@@ -68,9 +68,15 @@ export default function EvalueContextProvider({ children }) {
     // apiGoalsStatusBI: "https://localhost:7079/Goal_Status?goalYear=",
     apiGoalsStatusBI: "https://proj.ruppin.ac.il/cgroup47/prod/Goal_Status?goalYear=", //server
     // apiUserGuideDetails : "https://localhost:7079/userGuide",
-    apiUserGuideDetails : "https://proj.ruppin.ac.il/cgroup47/prod/userGuide", //server
-    apiMeetings: "https://localhost:7079/Meetings/",
-    // apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
+    apiUserGuideDetails: "https://proj.ruppin.ac.il/cgroup47/prod/userGuide", //server
+    // apiMeetings: "https://localhost:7079/Meetings/",
+    apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
+    apiGetEndProcessDate: "https://localhost:7079/EvaluFinalDate",
+    // apiGetEndProcessDate: "https://proj.ruppin.ac.il/cgroup47/prod/EvaluFinalDate", //server
+    apiUpdateEndDate: "https://localhost:7079/quesLimitDate",
+    // apiUpdateEndDate: "https://proj.ruppin.ac.il/cgroup47/prod/quesLimitDate",//server
+    apiFinishProcess: "https://localhost:7079/EndOfEvalu",
+    // apiFinishProcess: "https://proj.ruppin.ac.il/cgroup47/prod/EndOfEvalu", //server
   });
 
 
@@ -79,6 +85,11 @@ export default function EvalueContextProvider({ children }) {
   const [depState, setDepState] = useState([]);
 
   const [meetings, setMeetings] = useState([]);
+
+  const [openProcessSet, setOpenProcessSet] = useState(null);
+
+  // const [showAlert, setShowAlert] = useState(true);
+
 
   useEffect(() => {
     const exisiting = localStorage.getItem("chosenEmployee");
@@ -99,7 +110,9 @@ export default function EvalueContextProvider({ children }) {
     depState,
     setDepState,
     meetings,
-    setMeetings
+    setMeetings,
+    openProcessSet,
+    setOpenProcessSet
   }
 
   return (
