@@ -86,11 +86,6 @@ export default function EvalueContextProvider({ children }) {
 
   const [meetings, setMeetings] = useState([]);
 
-  const [openProcessSet, setOpenProcessSet] = useState(null);
-
-  // const [showAlert, setShowAlert] = useState(true);
-
-
   useEffect(() => {
     const exisiting = localStorage.getItem("chosenEmployee");
     const areObjectsEqual = isEqual(chosenEmployee, JSON.parse(exisiting));
@@ -110,9 +105,7 @@ export default function EvalueContextProvider({ children }) {
     depState,
     setDepState,
     meetings,
-    setMeetings,
-    openProcessSet,
-    setOpenProcessSet
+    setMeetings
   }
 
   return (

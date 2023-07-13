@@ -2622,6 +2622,213 @@ public class DBservices
         return cmd;
     }
 
+
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method get the final evalu process date
+    ////--------------------------------------------------------------------------------------------------
+    public Object GetFinalDate()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPGetFinalEvaluProcDate("sp_GetFinalEvaluProcDate", con);            // create the command
+
+        Object FinalDate = new Object();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //dt.Load(dataReader);
+
+            while (dataReader.Read())
+            {
+                FinalDate = ((DateTime)dataReader["QuesLimitDate"]).ToShortDateString();
+
+            }
+            if (!dataReader.HasRows)
+            {
+                FinalDate = "empty";
+            }
+
+            return FinalDate;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure for get with no conditions
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPGetFinalEvaluProcDate(String spName, SqlConnection con)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+
+
+        return cmd;
+    }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method Update quesLimitDate
+    ////--------------------------------------------------------------------------------------------------
+    public int UpdateEvaluFinalProcDate(DateTime quesLimitDate)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPUpdateDate("sp_UpdateNewEvaluFinalProcDate", con, quesLimitDate);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPUpdateDate(String spName, SqlConnection con, DateTime quesLimitDate)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+        cmd.Parameters.AddWithValue("@QuesLimitDate", quesLimitDate);
+
+        return cmd;
+    }
+
+    ////--------------------------------------------------------------------------------------------------
+    //// This method delete values from Active_Evaluation_Ques table- end of process
+    ////--------------------------------------------------------------------------------------------------
+    public int UpdateEndOfEvalu()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        cmd = CreateCommandWithSPUDeleteProcess("spUpdateEndOfProcess", con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------
+    // Create the SqlCommand using a stored procedure
+    //---------------------------------------------------------------------------------
+    private SqlCommand CreateCommandWithSPUDeleteProcess(String spName, SqlConnection con)
+    {
+
+        SqlCommand cmd = new SqlCommand(); // create the command object
+
+        cmd.Connection = con;              // assign the connection to the command object
+
+        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
+
+        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+
+        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
+
+
+        return cmd;
+    }
+
     //-------------- BI ---------------
 
     //--------------------------------------------------------------------------------------------------
@@ -2963,6 +3170,7 @@ public class DBservices
     }
 
 
+
     //-------------- OpenAI ---------------
 
     //--------------------------------------------------------------------------------------------------
@@ -3121,7 +3329,7 @@ public class DBservices
     //-------------- User Guide ---------------
 
     //--------------------------------------------------------------------------------------------------
-    // This method get the openAI details
+    // This method get the User Guide details
     //--------------------------------------------------------------------------------------------------
     public List<Object> GetUserGuideDetails()
     {
@@ -3178,206 +3386,6 @@ public class DBservices
 
     }
 
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method get the final evalu process date
-    ////--------------------------------------------------------------------------------------------------
-    public Object GetFinalDate()
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPGetFinalEvaluProcDate("sp_GetFinalEvaluProcDate", con);            // create the command
-
-        Object FinalDate = new Object();
-
-        try
-        {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            //dt.Load(dataReader);
-
-            while (dataReader.Read())
-            {
-                FinalDate = ((DateTime)dataReader["QuesLimitDate"]).ToShortDateString();
-            }
-
-            return FinalDate;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure for get with no conditions
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPGetFinalEvaluProcDate(String spName, SqlConnection con)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-
-
-        return cmd;
-    }
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Update quesLimitDate
-    ////--------------------------------------------------------------------------------------------------
-    public int UpdateEvaluFinalProcDate(DateTime quesLimitDate)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPUpdateDate("sp_UpdateNewEvaluFinalProcDate", con, quesLimitDate);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPUpdateDate(String spName, SqlConnection con, DateTime quesLimitDate)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-        cmd.Parameters.AddWithValue("@QuesLimitDate", quesLimitDate);
-   
-        return cmd;
-    }
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method delete values from Active_Evaluation_Ques table- end of process
-    ////--------------------------------------------------------------------------------------------------
-    public int UpdateEndOfEvalu()
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        cmd = CreateCommandWithSPUDeleteProcess("spUpdateEndOfProcess", con);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
-
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand using a stored procedure
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommandWithSPUDeleteProcess(String spName, SqlConnection con)
-    {
-
-        SqlCommand cmd = new SqlCommand(); // create the command object
-
-        cmd.Connection = con;              // assign the connection to the command object
-
-        cmd.CommandText = spName;      // can be Select, Insert, Update, Delete 
-
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-        cmd.CommandType = System.Data.CommandType.StoredProcedure; // the type of the command, can also be stored procedure
-
-
-        return cmd;
-    }
 
 
 

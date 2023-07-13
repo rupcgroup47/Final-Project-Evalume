@@ -61,8 +61,10 @@ import EvalueContextProvider from "context/evalueVariables";
 import Alerts from "layouts/profile/components/Alerts/Alerts";
 import ApiFetcher from "components/ApiFetcher";
 import dayjs from 'dayjs';
+import Swal from 'sweetalert2';
 
 export const MainStateContext = createContext();
+export const EndDateContext = createContext();
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -81,7 +83,8 @@ export default function App() {
   const [mainState, setMainState] = useState(null);
   const [showAlert, setShowAlert] = useState(true);
   const [openProcess, setOpenProcess] = useState(null);
-
+  const [flag, setFlag] = useState(0);
+  const [dateProcess, setDateProcess] = useState(null);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -94,10 +97,29 @@ export default function App() {
         setMainState(Employee);
       }
     }
-    if (mainState !== null && exisiting !== null && !areObjectsEqual) {
+    if (mainState !== null && exisiting !== null && areObjectsEqual == false) {
       localStorage.setItem("Current User", JSON.stringify(mainState)); // Set Current User details in local storage
     }
   }, [mainState]);
+
+  // useEffect(() => {
+  //   // Get end date details from Local Storage
+  //   const exisiting = localStorage.getItem("Process End Date");
+  //   const areObjectsEqual = isEqual(openProcess, JSON.parse(exisiting));
+  //   console.log('hhhhh');
+
+  //   if (!openProcess && exisiting !== null) {
+  //     const endDate = JSON.parse(exisiting);
+  //     console.log('hhhhh', endDate);
+  //     if (endDate) {
+  //       setOpenProcess(endDate);
+  //     }
+  //   }
+  //   if (openProcess !== null && areObjectsEqual == false) {
+  //     console.log('openProcess', openProcess);
+  //     localStorage.setItem("Process End Date", JSON.stringify(openProcess)); // Set end date details in local storage
+  //   }
+  // }, [openProcess]);
 
   // Cache for the rtl
   useMemo(() => {
@@ -168,36 +190,20 @@ export default function App() {
       return null;
     });
 
-  // const configsButton = (
-  //   <MDBox
-  //     display="flex"
-  //     justifyContent="center"
-  //     alignItems="center"
-  //     width="3.25rem"
-  //     height="3.25rem"
-  //     bgColor="white"
-  //     shadow="sm"
-  //     borderRadius="50%"
-  //     position="fixed"
-  //     right="2rem"
-  //     bottom="2rem"
-  //     zIndex={99}
-  //     color="dark"
-  //     sx={{ cursor: "pointer" }}
-  //     onClick={handleConfiguratorOpen}
-  //   >
-  //     <Icon fontSize="small" color="inherit">
-  //       settings
-  //     </Icon>
-  //   </MDBox>
-  // );
-
   const value = useMemo(
     () => ({
       mainState,
       setMainState,
     }),
     [mainState]
+  );
+
+  const valueDate = useMemo(
+    () => ({
+      openProcess,
+      setOpenProcess,
+    }),
+    [openProcess]
   );
 
   console.log('show?', showAlert);
@@ -207,42 +213,20 @@ export default function App() {
     console.log(showAlert);
     let isMounted = true;
 
-    // const interval = setInterval(() => {
-    //   const getEnDate = async () => {
-    //     try {
-    //       const fetchedData = await ApiFetcher("https://localhost:7079/EvaluFinalDate", "GET", null);
-    //       if (isMounted) {
-    //         console.log("success");
-    //         console.log('date', fetchedData);
-    //         const endDate = dayjs(fetchedData, 'DD/MM/YYYY');
-    //         console.log(endDate);
-    //         console.log(typeof(endDate));
-    //         if (fetchedData.lenght == 0 || fetchedData == null || fetchedData == undefined) {
-
-    //           setOpenProcess(null);
-    //         }
-    //         setOpenProcess(dayjs(fetchedData, 'DD/MM/YYYY'));
-    //       }
-    //     }
-    //     catch (error) {
-    //       if (isMounted) {
-    //         console.log(error);
-    //       }
-    //     }
-    //   }
-    //   getEnDate();
-    // }, 6000); // Interval time in milliseconds (10 minute)
-
     const getEnDate = async () => {
       try {
         const fetchedData = await ApiFetcher("https://localhost:7079/EvaluFinalDate", "GET", null);
         if (isMounted) {
           console.log("success");
-          if (fetchedData.lenght == 0 || fetchedData == null || fetchedData == undefined) {
+          console.log('ff');
+          console.log(fetchedData);
+
+          if (fetchedData == "empty") {
+            console.log('ff????');
             setOpenProcess(null);
-            
           }
-          setOpenProcess(dayjs(fetchedData, 'DD/MM/YYYY'));
+          else
+            setOpenProcess(dayjs(fetchedData, 'DD/MM/YYYY'));
         }
       }
       catch (error) {
@@ -255,7 +239,6 @@ export default function App() {
 
     // Cleanup function to clear the interval when the component unmounts
     return () => {
-      clearInterval(interval);
       isMounted = false;
     };
   }, []);
@@ -264,10 +247,88 @@ export default function App() {
     setShowAlert(show);
   };
 
-  const handeleOpenProcess = (date) => {
-    setOpenProcess(date);
+  const handleCloseProcess = (status) => {
     setShowAlert(false);
+    if (status) {
+      setFlag(2);
+    }
   };
+
+  const handeleExtention = (newDate) => {
+    console.log(newDate);
+    setShowAlert(false);
+    setDateProcess(newDate);
+    setFlag(1);
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (flag == 1) {
+      console.log(JSON.stringify(dayjs(dateProcess).format('DD/MM/YYYY')));
+      const updateEnDate = async () => {
+        try {
+          const fetchedData = await ApiFetcher("https://localhost:7079/quesLimitDate", "PUT", JSON.stringify(dayjs(dateProcess).format('DD/MM/YYYY')));
+          if (isMounted) {
+            console.log("success", fetchedData);
+            setFlag(0);
+            Swal.fire({
+              icon: 'success',
+              title: 'תשובתך התקבלה',
+              text: `תאריך היעד השתנה והינו ${dayjs(dateProcess).format('DD/MM/YYYY')}`,
+            })
+            setOpenProcess(dateProcess);
+          }
+        }
+        catch (error) {
+          if (isMounted) {
+            console.log(error);
+            Swal.fire({
+              title: "פעולה בוטלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              showCloseButton: true,
+              cancelButtonText: "סגור"
+            });
+          }
+        }
+      }
+      updateEnDate();
+    }
+    else if (flag == 2) {
+      console.log('CLOSE');
+      const updateEnDate = async () => {
+        try {
+          const fetchedData = await ApiFetcher("https://localhost:7079/EndOfEvalu", "PUT", null);
+          if (isMounted) {
+            console.log("success", fetchedData);
+            setFlag(0);
+            Swal.fire({
+              icon: 'success',
+              title: 'בקשתך התקבלה',
+              text: `תהליך ההערכה הסתיים בהצלחה, נפגש בשנה הבאה!`,
+            })
+          }
+        }
+        catch (error) {
+          if (isMounted) {
+            console.log(error);
+            Swal.fire({
+              title: "פעולה בוטלה!",
+              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+              icon: "error",
+              showCloseButton: true,
+              cancelButtonText: "סגור"
+            });
+          }
+        }
+      }
+      updateEnDate();
+    }
+    return () => {
+      isMounted = false;
+    }
+  }, [flag]);
 
   if (!mainState && localStorage.getItem("Current User") !== null) {
     return (
@@ -287,10 +348,39 @@ export default function App() {
 
   return (
     <MainStateContext.Provider value={value}>
-      <EvalueContextProvider>
-        {direction === "rtl" ? (
-          <CacheProvider value={rtlCache}>
-            <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+      <EndDateContext.Provider value={valueDate}>
+        <EvalueContextProvider>
+          {direction === "rtl" ? (
+            <CacheProvider value={rtlCache}>
+              <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+                <CssBaseline />
+                {layout === "dashboard" && (
+                  <>
+                    <Sidenav
+                      color={sidenavColor}
+                      brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                      brandName="פורטל הערכת עובדים"
+                      routes={routes}
+                      onMouseEnter={handleOnMouseEnter}
+                      onMouseLeave={handleOnMouseLeave}
+                    />
+                    <Configurator />
+                    {/* {configsButton} */}
+                  </>
+                )}
+                {layout === "vr" && <Configurator />}
+                <Routes>
+                  {getRoutes(routes)}
+                  {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
+                  {/* if main state (user logged in) initialize go to profile */}
+                  {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
+                  {/* if  user  not logged in  go to sign in */}
+
+                </Routes>
+              </ThemeProvider>
+            </CacheProvider>
+          ) : (
+            <ThemeProvider theme={darkMode ? themeDark : theme}>
               <CssBaseline />
               {layout === "dashboard" && (
                 <>
@@ -310,40 +400,13 @@ export default function App() {
               <Routes>
                 {getRoutes(routes)}
                 {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
-                {/* if main state (user logged in) initialize go to profile */}
                 {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
-                {/* if  user  not logged in  go to sign in */}
-
               </Routes>
             </ThemeProvider>
-          </CacheProvider>
-        ) : (
-          <ThemeProvider theme={darkMode ? themeDark : theme}>
-            <CssBaseline />
-            {layout === "dashboard" && (
-              <>
-                <Sidenav
-                  color={sidenavColor}
-                  brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                  brandName="פורטל הערכת עובדים"
-                  routes={routes}
-                  onMouseEnter={handleOnMouseEnter}
-                  onMouseLeave={handleOnMouseLeave}
-                />
-                <Configurator />
-                {/* {configsButton} */}
-              </>
-            )}
-            {layout === "vr" && <Configurator />}
-            <Routes>
-              {getRoutes(routes)}
-              {mainState && <Route path="*" element={<Navigate to="/profile" />} />}
-              {!mainState && <Route path="*" element={<Navigate to="/authentication/sign-in" />} />}
-            </Routes>
-          </ThemeProvider>
-        )}
-        {showAlert && openProcess !== null ? <Alerts mainState={JSON.parse(localStorage.getItem("Current User"))} handleShowAlert={handleShowAlert} openProcess={openProcess} handeleOpenProcess={handeleOpenProcess} /> : null}
-      </EvalueContextProvider>
+          )}
+          {showAlert && openProcess !== null ? <Alerts mainState={JSON.parse(localStorage.getItem("Current User"))} handleShowAlert={handleShowAlert} openProcess={openProcess} handeleExtention={handeleExtention} handleCloseProcess={handleCloseProcess} /> : null}
+        </EvalueContextProvider>
+      </EndDateContext.Provider>
     </MainStateContext.Provider>
   );
 }

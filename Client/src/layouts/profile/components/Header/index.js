@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { MainStateContext } from "App";
+import { MainStateContext, EndDateContext } from "App";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 // @mui material components
@@ -15,7 +15,7 @@ import backgroundImage from "assets/images/packages.jpg";
 import OpenEvaluation from "./openEvaluation";
 import dayjs from 'dayjs';
 
-function Header({ children, questionnairesData, openProcess }) {
+function Header({ children, questionnairesData  }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -41,6 +41,10 @@ function Header({ children, questionnairesData, openProcess }) {
 
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
   const { mainState, setMainState } = useContext(MainStateContext);
+  const { openProcess, setOpenProcess } = useContext(EndDateContext);
+
+  console.log('nana',mainState);
+  console.log('banana',openProcess);
 
   return (
     <MDBox position="relative">

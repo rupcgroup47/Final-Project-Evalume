@@ -335,10 +335,12 @@ namespace Final_Server.Controllers
 
 
         [HttpPut("/quesLimitDate")]
-        public IActionResult PutEvaluFinalProcDate([FromBody] DateTime quesLimitDate) //Update quesLimitDate
+        public IActionResult PutEvaluFinalProcDate([FromBody] string quesLimitDate) //Update quesLimitDate
         {
             Rel_Questions_EvaluQues NewDate = new Rel_Questions_EvaluQues();
-            int numEffected = NewDate.UpdateEvaluFinalProcDate(quesLimitDate);
+            DateTime dateTime = DateTime.Parse(quesLimitDate);
+
+            int numEffected = NewDate.UpdateEvaluFinalProcDate(dateTime);
             if (numEffected != 0)
             {
                 return Ok("date succesfully updated");

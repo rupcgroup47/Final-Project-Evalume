@@ -17,7 +17,7 @@ import KPIRating from "./components/KPI";
 function Overview() {
   const [, dispatch] = useMaterialUIController();
   const { mainState, setMainState } = useContext(MainStateContext);
-  const { API, setDepState, setMeetings, openProcess } = useContext(EvalueContext);
+  const { API, setDepState, setMeetings } = useContext(EvalueContext);
   const [evalus, setEvalus] = useState([]);
   const [goals, setGoals] = useState([]);
   const [tmpResult, setTmpResult] = useState([]);
@@ -220,7 +220,7 @@ function Overview() {
   }, []);
 
   return (
-    <Header questionnairesData={questionnairesData} openProcess={openProcess}>
+    <Header questionnairesData={questionnairesData}>
       <MDBox mt={3} mb={3}>
         <Grid container spacing={1} style={{ marginRight: "0px", width: "auto" }}>
           {/* //Profile card */}
