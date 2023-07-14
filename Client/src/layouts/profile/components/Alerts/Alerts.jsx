@@ -6,15 +6,11 @@ import Swal from 'sweetalert2';
 export default function Alerts({ mainState, handleShowAlert, openProcess, handeleExtention, handleCloseProcess }) {
     // const [showAlert, setShowAlert] = useState(true);
     const today = dayjs();
-    console.log('hereeeee noooo?????')
-    console.log(openProcess);
 
     useEffect(() => {
         if (openProcess !== null) {
-            console.log('alertsssss');
-            if (mainState.is_Admin) {
+            if (mainState?.is_Admin) {
                 const diffInDays = openProcess.diff(today, 'day');
-                console.log(diffInDays);
                 if (diffInDays < 3 && diffInDays >= 1) {
                     Swal.fire({
                         title: 'האם תרצה להעריך את מועד סיום תהליך ההערכה?',
@@ -90,7 +86,7 @@ export default function Alerts({ mainState, handleShowAlert, openProcess, handel
                     })
                 }
             }
-            if (mainState.self_Evalu == 1) {
+            if (mainState?.self_Evalu == 1) {
                 Swal.fire({
                     icon: 'info',
                     title: 'תהליך הערכה פתוח',

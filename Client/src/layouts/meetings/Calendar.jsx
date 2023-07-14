@@ -8,6 +8,7 @@ import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import MeetingDialog from ".//meetingDialog"
+import dayjs from "dayjs";
 
 function MeetingCalendar({ fromAlert }) {
   const { meetings, chosenEmployee } = useContext(EvalueContext);
@@ -50,18 +51,23 @@ function MeetingCalendar({ fromAlert }) {
   const meetingsInTheSameDayExist = ({ date }) => {
     // Check if the date has a meeting
 
-
     const theDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     const hasMeeting = meetings?.some(
       (meeting) => {
-        const parts = meeting.date.split('/'); // Split the date string by '/'
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
-        const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
+        console.log('hasMeeting',meeting.date);
+        console.log(dayjs(meeting.date));
+
+        // const parts = meeting.date.split('/'); // Split the date string by '/'
+        // const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
+        // const meetingDate = new Date(dayjs(meeting,'DD/MM/YYYY' )); // Convert the formatted string to a JavaScript Date object
+        const meetingDate = dayjs(meeting.date,'DD/MM/YYYY'); // Convert the formatted string to a JavaScript Date object
+        console.log('hasMeeting date',meetingDate);
         return (
-          meetingDate.getFullYear() === theDate.getFullYear() &&
-          meetingDate.getMonth() === theDate.getMonth() &&
-          meetingDate.getDate() === theDate.getDate()
+          meetingDate.isSame(theDate)
+          // meetingDate.getFullYear() === theDate.getFullYear() &&
+          // meetingDate.getMonth() === theDate.getMonth() &&
+          // meetingDate.getDate() === theDate.getDate()
         )
       }
     );
@@ -80,14 +86,14 @@ function MeetingCalendar({ fromAlert }) {
       }
 
       const inTheSameDayMeetings = meetings?.filter((meeting) => {//show all meetings schedule in the same day
-        console.log(meeting);
+        console.log('inTheSameDayMeetings',meeting);
         const parts = meeting.date.split('/'); // Split the date string by '/'
         const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
         const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
 
         const selectedDateObj = new Date(selectedDate); // Convert the selectedDate to a JavaScript Date object
-        console.log(selectedDateObj);
-        console.log(meetingDate);
+        console.log('selectedDateObj',selectedDateObj);
+        console.log('meetingDate',meetingDate);
 
         return (
           meetingDate.getFullYear() === selectedDateObj.getFullYear() &&

@@ -43,9 +43,6 @@ function Header({ children, questionnairesData  }) {
   const { mainState, setMainState } = useContext(MainStateContext);
   const { openProcess, setOpenProcess } = useContext(EndDateContext);
 
-  console.log('nana',mainState);
-  console.log('banana',openProcess);
-
   return (
     <MDBox position="relative">
       <MDBox

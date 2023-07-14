@@ -46,42 +46,42 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
         console.log(JSON.stringify(sendObject));
 
         // Post a new meeting
-        const setMeeting = async () => {
-            try {
-                const fetchedData = await ApiFetcher(API.apiPostMeeting, "POST", JSON.stringify(sendObject));
-                if (isMounted) {
-                    console.log("success");
-                    if (fetchedData.txt) {
-                        console.log(fetchedData);
-                        swal({
-                            title: "פעולה בוטלה!",
-                            text: "נראה כי קיימת כבר פגישה במועד זה במערכת",
-                            icon: "error",
-                            button: "סגור"
-                        });
-                    }
-                    else
-                        swal({
-                            title: "הצלחנו!",
-                            text: "היעד עודכן בהצלחה",
-                            icon: "success",
-                            button: "סגור"
-                        });
-                }
-            }
-            catch (error) {
-                if (isMounted) {
-                    console.log(error);
-                    swal({
-                        title: "פעולה בוטלה!",
-                        text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-                        icon: "error",
-                        button: "סגור"
-                    });
-                }
-            }
-        }
-        setMeeting();
+        // const setMeeting = async () => {
+        //     try {
+        //         const fetchedData = await ApiFetcher(API.apiPostMeeting, "POST", JSON.stringify(sendObject));
+        //         if (isMounted) {
+        //             console.log("success");
+        //             if (fetchedData.txt) {
+        //                 console.log(fetchedData);
+        //                 swal({
+        //                     title: "פעולה בוטלה!",
+        //                     text: "נראה כי קיימת כבר פגישה במועד זה במערכת",
+        //                     icon: "error",
+        //                     button: "סגור"
+        //                 });
+        //             }
+        //             else
+        //                 swal({
+        //                     title: "הצלחנו!",
+        //                     text: "היעד עודכן בהצלחה",
+        //                     icon: "success",
+        //                     button: "סגור"
+        //                 });
+        //         }
+        //     }
+        //     catch (error) {
+        //         if (isMounted) {
+        //             console.log(error);
+        //             swal({
+        //                 title: "פעולה בוטלה!",
+        //                 text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+        //                 icon: "error",
+        //                 button: "סגור"
+        //             });
+        //         }
+        //     }
+        // }
+        // setMeeting();
 
         window.location.reload(); // Reload the page
 
