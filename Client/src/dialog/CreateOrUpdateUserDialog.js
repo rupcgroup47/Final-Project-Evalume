@@ -63,6 +63,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
       roleGroup: "",
     },
   });
+  
 
   // setup variables 
   const genders = ["זכר", "נקבה", "אחר"];
@@ -79,7 +80,6 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   const [isAdminState, setisAdminState] = useState(user ? user?.is_Admin : false);
   const [putUser, setPutUser] = useState("");
   const [postUser, setPostUser] = useState("");
-  // const { depState, setDepState } = useContext(DepartmentStateContext);
 
   //set the values of the form inputs and the states to be of the selected user if it exist
   useEffect(() => {

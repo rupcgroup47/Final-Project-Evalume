@@ -71,12 +71,6 @@ export default function EvalueContextProvider({ children }) {
     apiUserGuideDetails: "https://proj.ruppin.ac.il/cgroup47/prod/userGuide", //server
     // apiMeetings: "https://localhost:7079/Meetings/",
     apiMeetings: "https://proj.ruppin.ac.il/cgroup47/prod/Meetings/", //server
-    apiGetEndProcessDate: "https://localhost:7079/EvaluFinalDate",
-    // apiGetEndProcessDate: "https://proj.ruppin.ac.il/cgroup47/prod/EvaluFinalDate", //server
-    apiUpdateEndDate: "https://localhost:7079/quesLimitDate",
-    // apiUpdateEndDate: "https://proj.ruppin.ac.il/cgroup47/prod/quesLimitDate",//server
-    apiFinishProcess: "https://localhost:7079/EndOfEvalu",
-    // apiFinishProcess: "https://proj.ruppin.ac.il/cgroup47/prod/EndOfEvalu", //server
   });
 
 

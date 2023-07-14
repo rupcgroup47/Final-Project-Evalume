@@ -86,40 +86,24 @@ export default function App() {
   const [flag, setFlag] = useState(0);
   const [dateProcess, setDateProcess] = useState(null);
   const { pathname } = useLocation();
+  const apiGetEndProcessDate = "https://proj.ruppin.ac.il/cgroup47/prod/EvaluFinalDate"; //server
+  const apiUpdateEndDate = "https://proj.ruppin.ac.il/cgroup47/prod/quesLimitDate";//server
+  const apiFinishProcess = "https://proj.ruppin.ac.il/cgroup47/prod/EndOfEvalu"; //server
 
-  useEffect(() => {
-    // Get user details from Local Storage
-    const exisiting = localStorage.getItem("Current User");
-    const areObjectsEqual = isEqual(mainState, JSON.parse(exisiting));
-    if (!mainState) {
-      const Employee = JSON.parse(exisiting);
-      if (Employee) {
-        setMainState(Employee);
+    useEffect(() => {
+      // Get user details from Local Storage
+      const exisiting = localStorage.getItem("Current User");
+      const areObjectsEqual = isEqual(mainState, JSON.parse(exisiting));
+      if (!mainState) {
+        const Employee = JSON.parse(exisiting);
+        if (Employee) {
+          setMainState(Employee);
+        }
       }
-    }
-    if (mainState !== null && exisiting !== null && areObjectsEqual == false) {
-      localStorage.setItem("Current User", JSON.stringify(mainState)); // Set Current User details in local storage
-    }
-  }, [mainState]);
-
-  // useEffect(() => {
-  //   // Get end date details from Local Storage
-  //   const exisiting = localStorage.getItem("Process End Date");
-  //   const areObjectsEqual = isEqual(openProcess, JSON.parse(exisiting));
-  //   console.log('hhhhh');
-
-  //   if (!openProcess && exisiting !== null) {
-  //     const endDate = JSON.parse(exisiting);
-  //     console.log('hhhhh', endDate);
-  //     if (endDate) {
-  //       setOpenProcess(endDate);
-  //     }
-  //   }
-  //   if (openProcess !== null && areObjectsEqual == false) {
-  //     console.log('openProcess', openProcess);
-  //     localStorage.setItem("Process End Date", JSON.stringify(openProcess)); // Set end date details in local storage
-  //   }
-  // }, [openProcess]);
+      if (mainState !== null && exisiting !== null && areObjectsEqual == false) {
+        localStorage.setItem("Current User", JSON.stringify(mainState)); // Set Current User details in local storage
+      }
+    }, [mainState]);
 
   // Cache for the rtl
   useMemo(() => {
@@ -206,23 +190,19 @@ export default function App() {
     [openProcess]
   );
 
-  console.log('show?', showAlert);
-  console.log('pro?', openProcess)
+  // console.log('show?', showAlert);
+  // console.log('pro?', openProcess)
 
   useEffect(() => {
-    console.log(showAlert);
     let isMounted = true;
 
     const getEnDate = async () => {
       try {
-        const fetchedData = await ApiFetcher("https://localhost:7079/EvaluFinalDate", "GET", null);
+        const fetchedData = await ApiFetcher(apiGetEndProcessDate, "GET", null);
         if (isMounted) {
           console.log("success");
-          console.log('ff');
-          console.log(fetchedData);
 
           if (fetchedData == "empty") {
-            console.log('ff????');
             setOpenProcess(null);
           }
           else
@@ -265,10 +245,9 @@ export default function App() {
     let isMounted = true;
 
     if (flag == 1) {
-      console.log(JSON.stringify(dayjs(dateProcess).format('DD/MM/YYYY')));
       const updateEnDate = async () => {
         try {
-          const fetchedData = await ApiFetcher("https://localhost:7079/quesLimitDate", "PUT", JSON.stringify(dayjs(dateProcess).format('DD/MM/YYYY')));
+          const fetchedData = await ApiFetcher(apiUpdateEndDate, "PUT", JSON.stringify(dayjs(dateProcess).format('DD/MM/YYYY')));
           if (isMounted) {
             console.log("success", fetchedData);
             setFlag(0);
@@ -296,10 +275,9 @@ export default function App() {
       updateEnDate();
     }
     else if (flag == 2) {
-      console.log('CLOSE');
       const updateEnDate = async () => {
         try {
-          const fetchedData = await ApiFetcher("https://localhost:7079/EndOfEvalu", "PUT", null);
+          const fetchedData = await ApiFetcher(apiFinishProcess, "PUT", null);
           if (isMounted) {
             console.log("success", fetchedData);
             setFlag(0);
