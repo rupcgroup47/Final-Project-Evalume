@@ -60,7 +60,6 @@ function ReportGenerator() {
                     const fetchedData = await ApiFetcher(API.apiGetDataFromGPT, "POST", response);
                     if (isMounted) {
                         console.log("success");
-                        console.log("here????");
                         if (fetchedData === undefined) {
                             Swal.fire({
                                 title: "קרתה תקלה!",
@@ -80,7 +79,6 @@ function ReportGenerator() {
                 }
                 catch (error) {
                     if (isMounted) {
-                        console.log("or here????");
                         console.log(error);
                         setError(error);
                         Swal.fire({
@@ -131,7 +129,6 @@ function ReportGenerator() {
 
     const sendQuery = () => {
         var textFieldValue = document.getElementById("query").value;
-        console.log(textFieldValue);
         setMessages([
             { role: "system", content: data },
             { role: "user", content: textFieldValue },

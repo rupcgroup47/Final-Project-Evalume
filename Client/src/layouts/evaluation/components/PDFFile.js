@@ -1,19 +1,8 @@
 import React from 'react';
 import { Page, Text, Document, StyleSheet, Font, View } from '@react-pdf/renderer';
-import Table from '@mui/material/Table';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import { TableBody } from '@mui/material';
 import '@fontsource/rubik';
 Font.register({ family: 'Rubik', src: 'http://fonts.gstatic.com/s/rubik/v3/4sMyW_teKWHB3K8Hm-Il6A.ttf' });// The only font works for Hebrew!
 
-
-
-// const objects = [
-//   { name: 'John Doe', age: 30, email: 'john.doe@example.com' },
-//   { name: 'Jane Smith', age: 25, email: 'jane.smith@example.com' },
-//   { name: 'Bob Johnson', age: 40, email: 'bob.johnson@example.com' },
-// ];
 
 const PDFFile = ({ data }) => {//receive the selected form by year and user
   const styles = StyleSheet.create({

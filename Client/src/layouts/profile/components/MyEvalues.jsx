@@ -1,5 +1,4 @@
 import {
-  Box,
   Paper,
   Table,
   TableBody,
@@ -9,8 +8,8 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import { useEffect, useState, useContext, useCallback } from "react";
-import { useMaterialUIController, setDirection } from "context";
+import { useState, useContext } from "react";
+import { useMaterialUIController } from "context";
 import PDFFile from "layouts/evaluation/components/PDFFile";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Button } from "@mui/material";
@@ -18,18 +17,6 @@ import { MainStateContext } from "App";
 import { EvalueContext } from "context/evalueVariables";
 import ApiFetcher from "components/ApiFetcher";
 import swal from 'sweetalert';
-import CircularProgress from "@mui/material/CircularProgress";
-// import { ContactSupportOutlined } from "@mui/icons-material";
-// import ApiFetcher from "components/ApiFetcher";
-// import { EvalueContext } from "context/evalueVariables";
-// import swal from 'sweetalert';
-// import CircularProgress from "@mui/material/CircularProgress";
-
-
-// const evalues = [
-//   { id: 1, year: 2022 },
-//   { id: 2, year: 2023 },
-// ];
 
 
 export default function MyEvalues({ evalus }) {
@@ -55,66 +42,8 @@ export default function MyEvalues({ evalus }) {
   const [error, setError] = useState(null);
 
 
-  // useEffect(() => {
-  //   setDirection(dispatch, "rtl");
-  //   return () => setDirection(dispatch, "ltr");
-  // }, []);
-
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items?.length);
 
-  // function calculateData(userId, year) {
-  //   ///data is the array i pass to the pdf file component
-  //   // let data = [{id:1, year:222}, {id:2,year:333}]
-  //   let data = {
-  //     questionnaireNum: 1,
-  //     userNum: 14,
-  //     roleGroup: 0,
-  //     filledOn: 1,
-  //     parts: [{
-  //       part: 0,
-  //       answerInsertDate: "14/4/2022",
-  //       quesGroup_Desc: "שירותיות",
-  //       questions: [
-  //         {
-  //           questionNum: 1,
-  //           questionContent: "הייי",
-  //           numericAnswer: 1,
-  //           verbalAnswer: "שלום"
-  //         },
-  //         {
-  //           questionNum: 2,
-  //           questionContent: "עדע",
-  //           numericAnswer: 1,
-  //           verbalAnswer: "יכגיג"
-  //         }
-  //       ]
-  //     }
-  //       ,
-
-  //     {
-  //       part: 1,
-  //       answerInsertDate: "19/4/2022",
-  //       quesGroup_Desc: "שירותיות",
-  //       questions: [
-  //         {
-  //           questionNum: 1,
-  //           questionContent: "הייי",
-  //           numericAnswer: 1,
-  //           verbalAnswer: "שלום"
-  //         },
-  //         {
-  //           questionNum: 2,
-  //           questionContent: "עדע",
-  //           numericAnswer: 1,
-  //           verbalAnswer: "יכגיג"
-  //         }
-  //       ]
-  //     }
-  //     ]
-
-  //   }
-  //   return data;
-  // }
 
 
   const updateData = async (id) => {
@@ -141,7 +70,6 @@ export default function MyEvalues({ evalus }) {
     });
   }
 
-  // console.log("fetch" + state);
   return (
     <Paper sx={{ boxShadow: "none", minWidth: 300, maxWidth: 900, margin: "auto" }}>
       <TableContainer component={Paper}>
@@ -168,14 +96,11 @@ export default function MyEvalues({ evalus }) {
                 sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
                 hover
               >
-                {/* {console.log(evalue)} */}
                 {/* {" "} */}
                 <TableCell align="left" >
-                  {/* {console.log(evalue.name)} */}
                   {evalue.year}-{evalue.id}
                 </TableCell>
                 <TableCell align="center" >
-                  {/* {console.log(evalue.name)} */}
                   <Button onClick={() => updateData(evalue.id)}>הורד קובץ כPFD</Button>
                   {dataFetched && (
                     <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה.pdf">

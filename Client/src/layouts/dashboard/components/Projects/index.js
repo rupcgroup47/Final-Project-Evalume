@@ -27,13 +27,6 @@ function Projects({dataTable}) {
       </MDBox>
       <MDBox>
         <FormDepData dataTable={dataTable}/>
-        {/* <DataTable
-          table={{ columns, rows }}
-          showTotalEntries={false}
-          isSorted={false}
-          noEndBorder
-          entriesPerPage={false}
-        /> */}
       </MDBox>
     </Card>
   );

@@ -9,11 +9,9 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import breakpoints from "assets/theme/base/breakpoints";
-import burceMars from "assets/images/bruce-mars.jpg";
 import avatar from "assets/images/avatar.png"
 import backgroundImage from "assets/images/packages.jpg";
 import OpenEvaluation from "./openEvaluation";
-import dayjs from 'dayjs';
 
 function Header({ children, questionnairesData  }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");

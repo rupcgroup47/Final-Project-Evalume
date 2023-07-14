@@ -17,10 +17,7 @@ import UsersTable from "./UsersTable";
 import { Container } from "@mui/material";
 import { useState, useContext, useEffect, useMemo } from "react";
 import { MainStateContext } from "App";
-// import { DepartmentStateContext } from "context/globalVariables";
 import { EvalueContext } from "context/evalueVariables";
-
-// import ApiFetcher from "components/ApiFetcher";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
@@ -29,7 +26,7 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [, dispatch] = useMaterialUIController();
   const { mainState, setMainState } = useContext(MainStateContext);
-  const { API, depState, setDepState } = useContext(EvalueContext);
+  const { API } = useContext(EvalueContext);
 
   // bring all the users using GET api
   useEffect(() => {
@@ -75,51 +72,6 @@ function Users() {
       }
     }
   }, []);
-
-  // useEffect(() => {
-  //   // Get importent details and set the main context
-  //   const abortController = new AbortController();
-  //   fetch(
-  //     API.apiDeprUrl,
-  //     {
-  //       method: "GET",
-  //       headers: new Headers({
-  //         "Content-Type": "application/json; charset=UTF-8",
-  //         Accept: "application/json; charset=UTF-8",
-  //       }),
-  //       signal: abortController.signal,
-  //     })
-  //     .then(async (response) => {
-  //       const data = await response.json();
-  //       console.log(response);
-
-  //       if (!response.ok) {
-  //         // get error message from body or default to response statusText
-  //         const error = (data && data.message) || response.statusText;
-  //         return Promise.reject(error);
-  //       }
-
-  //       return data;
-  //     })
-  //     .then(
-  //       (result) => {
-  //         console.log("success");
-  //         if (!localStorage.getItem("Department list")) {
-  //           localStorage.setItem("Department list", JSON.stringify(result));
-  //         }
-  //         setDepState(result.map((index) => (index.depName)));
-  //       },
-  //       (error) => {
-  //         if (error.name === "AbortError") return;
-  //         console.log("err get=", error);
-  //         throw error;
-  //       }
-  //     );
-  //   return () => {
-  //     abortController.abort();
-  //     // stop the query by aborting on the AbortController on unmount
-  //   };
-  // }, []);
 
   // Changing the direction to rtl
   useEffect(() => {

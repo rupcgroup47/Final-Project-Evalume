@@ -8,12 +8,10 @@ import {
   Select,
   TextField,
   FormControl,
-  // FormHelperText,
   InputLabel,
 } from "@mui/material";
 
-import { useEffect, useState, useContext } from "react";
-// import { QuestionsContext } from "context/globalVariables";
+import { useEffect, useState } from "react";
 
 export default function CreateQuestionsDialog({
   open,
@@ -24,34 +22,18 @@ export default function CreateQuestionsDialog({
   const [titles, setTitles] = useState([]); // Add all the sections of the questions!!
   const [title, setTitle] = useState("");
   const [content, setQuestion] = useState(""); // Need to insert question content
-  // const { globalQuestionArray, setGlobalQuestionsArray } = useContext(QuestionsContext); // Global variable
 
   const addQuestion = (event) => {
     event.preventDefault();
-    // const index = tempQuestionArray.findIndex((obj) => obj.QuesGroup_Desc === title);
     const newQuestion = {
       quesContent: content,
       quesGroup_Desc: title,
     };
     setPostQuestion(newQuestion);
-    // if (index !== -1) {
-
-    // }
-    // else {
-    // //   setGlobalQuestionsArray([
-    // //     ...tempQuestionArray,
-    // //     {
-    // //       questionNum: globalQuestionArray.length + 1,
-    // //       quesGroup_Desc: title,
-    // //       questions: [content],
-    //     },
-    //   ]);
-    // }
     setOpen((e) => !e);
   };
 
   useEffect(() => {
-    console.log("here");
     console.log(tempQuestionArray);
     if (tempQuestionArray !== null) {
       const titleArray = tempQuestionArray.map((item) => item.quesGroup_Desc);

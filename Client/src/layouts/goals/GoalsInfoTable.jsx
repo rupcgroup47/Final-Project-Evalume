@@ -16,21 +16,6 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import { EvalueContext } from "context/evalueVariables";
-import Checkbox from '@mui/material/Checkbox';
-
-// const _goals = [
-//   {
-//     goalNum: 1,
-//     goalName: "קורס אקסל",
-//     isActive:true
-//   },
-//   {
-//     goalNum: 2,
-//     goalName: "קורס פריוריטי",
-//     isActive:false
-//   }
-// ]
-
 
 
 export default function GoalsInfoTable() {
@@ -121,8 +106,6 @@ export default function GoalsInfoTable() {
   };
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
-  console.log(goals);
-  console.log(items);
 
   return (
     <Paper sx={{ boxShadow: "none" }}>
@@ -209,7 +192,6 @@ export default function GoalsInfoTable() {
         open={showCloseDialog}
         setOpen={setShowCloseDialog}
         onClick={() => {
-          //   onRemoveButtonClick(selectedGoal);
           setShowCloseDialog((e) => !e);
         }}
       />

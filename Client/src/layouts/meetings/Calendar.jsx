@@ -32,8 +32,6 @@ function MeetingCalendar({ fromAlert }) {
     setIsPopupOpen(false);
   };
 
-  console.log("meetings", meetings);
-
   const tileDisabled = ({ date, view }) => {
     // handle weekend and disable passed dates
     // Disable weekends
@@ -86,8 +84,6 @@ function MeetingCalendar({ fromAlert }) {
         const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
 
         const selectedDateObj = new Date(selectedDate); // Convert the selectedDate to a JavaScript Date object
-        console.log(selectedDateObj);
-        console.log(meetingDate);
 
         return (
           meetingDate.getFullYear() === selectedDateObj.getFullYear() &&

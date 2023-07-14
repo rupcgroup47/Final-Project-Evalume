@@ -1,8 +1,6 @@
-// import { useEffect, useState } from "react";
 
 const ApiFetcher = async (api, method, body) => {
     const abortController = new AbortController();
-    // console.log("body", body);
     //set up the timeout for aborting the fetch request
     const timeoutId = setTimeout(() => {
         abortController.abort();
@@ -26,7 +24,7 @@ const ApiFetcher = async (api, method, body) => {
         if (!response.ok) {
             // get error message from body or default to response statusText
             const error = (data && data.message) || response.statusText;
-            console.log("errrrrr", error);
+            console.log("err", error);
             return Promise.reject(error);
         }
 

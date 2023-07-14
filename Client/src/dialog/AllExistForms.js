@@ -95,8 +95,6 @@ export default function AllExistForms({ //shows all the forms group by role type
     }
   }, [selectedForm]);
 
-  // console.log(questionnairesData);
-
 
   return (
     <Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
@@ -181,9 +179,6 @@ export default function AllExistForms({ //shows all the forms group by role type
                       </AccordionDetails>
                     </Accordion>
                   ))}
-                  {/* <Button type={"submit"} label="סיים" style={{ fontSize: "large", position: "absolute", left: "50px" }}>
-                  סיום
-                </Button> */}
                 </Container>
               </Box>
             </Dialog>

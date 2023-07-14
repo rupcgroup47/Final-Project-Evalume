@@ -190,9 +190,6 @@ export default function App() {
     [openProcess]
   );
 
-  // console.log('show?', showAlert);
-  // console.log('pro?', openProcess)
-
   useEffect(() => {
     let isMounted = true;
 
@@ -235,7 +232,6 @@ export default function App() {
   };
 
   const handeleExtention = (newDate) => {
-    console.log(newDate);
     setShowAlert(false);
     setDateProcess(newDate);
     setFlag(1);

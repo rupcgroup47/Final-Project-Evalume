@@ -1,84 +1,21 @@
-import { Button, Dialog, MenuItem, Select, Typography } from "@mui/material";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  Button,
+  Dialog,
+  Typography,
   Grid,
-  MenuList,
   Box,
   Card
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
 registerLocale("he", he);
 import addNotification from "react-push-notification";
 import { Notifications } from "react-push-notification";
 import { EvalueContext } from "context/evalueVariables";
 import AllExistForms from "dialog/AllExistForms";
-const test = [
-  {
-    roleGrouptype: "משרדי",
-    roletype: "מנהל",
-    forms: [
-      {
-        id: 1,
-        year: 2023,
-      },
-      {
-        id: 2,
-        year: 2022,
-      },
-    ],
-  },
-  {
-    roleGrouptype: "משרדי",
-    roletype: "עובד",
-    forms: [
-      {
-        id: 4,
-        year: 2023,
-      },
-      {
-        id: 3,
-        year: 2042,
-      },
-    ],
-  },
-  {
-    roleGrouptype: "תפעולי",
-    roletype: "מנהל",
-    forms: [
-      {
-        id: 5,
-        year: 1990,
-      },
-      {
-        id: 6,
-        year: 2009,
-      },
-    ],
-  },
-  {
-    roleGrouptype: "תפעולי",
-    roletype: "עובד",
-    forms: [
-      {
-        id: 7,
-        year: 1777,
-      },
-      {
-        id: 31,
-        year: 4572,
-      },
-    ],
-  }
-];
 
 export default function CreateYearlyProcessDialog({
   open,
@@ -89,7 +26,6 @@ export default function CreateYearlyProcessDialog({
   const [openProcess, setOpenProcess] = useState({});
   const [finishDate, setfinishDate] = useState(new Date());
   const { API } = useContext(EvalueContext);
-  // const [testData, setTestData] = useState(test);
   const [selectedForms, setSelectedForms] = useState([]);//selected values for each select
   const [showOpenEvalueDialog, setShowOpenEvalueDialog] = useState(false);
 
@@ -123,7 +59,6 @@ export default function CreateYearlyProcessDialog({
   useEffect(() => {
     const abortController = new AbortController();
     if (openProcess.date !== undefined) {
-      console.log("here")
       console.log(openProcess);
       fetch(
         API.apiSetEvaluations,
@@ -178,7 +113,6 @@ export default function CreateYearlyProcessDialog({
     }
   }, [openProcess]);
 
-  // console.log(JSON.stringify(openProcess));
   return (
     <><Dialog fullWidth maxWidth="lg" onClose={() => setOpen((e) => !e)} open={open}>
       <Typography sx={{ fontFamily: "Rubik", fontSize: "40px", textAlign: "center", fontWeight: "bold" }}>
@@ -186,10 +120,7 @@ export default function CreateYearlyProcessDialog({
       </Typography>
       <Box
         display="inline"
-        // justifyContent="center"
-        // alignItems="center"
         margin="15px auto"
-        // textAlign="center"
         width="60%"
       >
         <Card
@@ -219,7 +150,7 @@ export default function CreateYearlyProcessDialog({
           ))}
           <Typography>בחירת תאריך סיום</Typography>
 
-          <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he"/>
+          <DatePicker selected={finishDate} onChange={(date) => setfinishDate(date)} locale="he" />
         </Card>
       </Box>
       <Box textAlign="center" marginBottom={3}>

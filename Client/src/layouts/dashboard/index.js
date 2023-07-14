@@ -175,7 +175,6 @@ function Dashboard() {
   useEffect(() => {
     // Find the selected item in the JSON array
     const selectedOption = avgQuestions?.find((option) => option.quesGroup_Desc === selectedValueGraph1);
-    console.log(selectedOption)
 
     // Generate the chart data based on the selected option
     const newChartData = {
@@ -189,7 +188,6 @@ function Dashboard() {
     };
 
     setChartData(newChartData);
-    console.log(newChartData)
   }, [selectedValueGraph1, avgQuestions]);
 
 

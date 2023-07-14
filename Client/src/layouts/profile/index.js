@@ -123,8 +123,7 @@ function Overview() {
           const fetchedData = await ApiFetcher(API.apiStatusMeeting + mainState.userNum, "GET", null);
           if (isMounted) {
             console.log("success");
-            console.log('meeting')
-            console.log(fetchedData)
+            console.log('meeting',fetchedData)
             setMeeting(fetchedData);
           }
         }

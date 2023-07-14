@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  // Box,
   Paper,
   Table,
   TableBody,
@@ -9,14 +8,11 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  // TableSortLabel,
 } from "@mui/material";
 const PersonalGoals = ({ goals }) => {///receive all user goals and their data
   const [selectedRow, setSelectedRow] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  // console.log(goals);
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - goals?.length);
 

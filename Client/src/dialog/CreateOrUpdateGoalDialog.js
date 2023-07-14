@@ -30,7 +30,6 @@ import {
 import { useForm } from "react-hook-form";
 import { useEffect, useState, useContext } from "react";
 import { EvalueContext } from "context/evalueVariables";
-// import { MainStateContext } from "App";
 
 export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal, initGoalName, condition, fromFeedback }) {
   const [newGoalName, setNewGoalName] = useState(initGoalName);
@@ -39,7 +38,6 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
   const goalStatusArr = [{ is_Active: 1, name: "פעיל" }, { is_Active: 0, name: "לא פעיל" }];
   const [selectedStatus, setSelectedStatus] = useState(1);
   const { API } = useContext(EvalueContext);
-  // const { mainState, setMainState } = useContext(MainStateContext);
   const [newGoal, setNewGoal] = useState();
 
   const {
@@ -102,8 +100,6 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
       setPost(true);
     }
 
-    // setOpen((e) => !e);
-    // reset();
     console.log(newGoal);
   };
 
@@ -112,7 +108,6 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
   useEffect(() => {
     const abortController = new AbortController();
     if (update !== false) {
-      console.log("here");
       fetch(
         API.apiUpdateGoal + newGoal.goalNum + "/goalActive/" + newGoal.is_Active, {
         method: "PUT",
@@ -188,7 +183,6 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
   useEffect(() => {
     const abortController = new AbortController();
     if (post !== false) {
-      console.log("here2");
       fetch(
         API.apiInsertNewGoal + newGoal.is_Active, {
         method: "POST",
@@ -266,8 +260,6 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
       };
     }
   }, [post]);
-
-  console.log(newGoal);
 
   return (
     <Dialog onClose={() => setOpen((e) => !e)} open={open}>

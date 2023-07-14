@@ -32,7 +32,6 @@ import {
 
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
-// import { DepartmentStateContext } from "context/globalVariables";
 import { EvalueContext } from "context/evalueVariables";
 import swal from 'sweetalert';
 
@@ -139,7 +138,6 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
           (result) => {
             console.log("success" + result);
             if (isUserUpdate) {
-              console.log("kan");
               const put = { userNum: user.userNum, ...putUser }
               console.log(put);
               setUser(put);

@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { Table, TableBody, TableCell, TableHead, TableRow, Dialog, DialogContent, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { EvalueContext } from "context/evalueVariables";
-import MDTypography from "components/MDTypography";
 import MeetingCalendar from "layouts/meetings/Calendar";
 
 const WaitingEvalues = ({ data, calender }) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
 // Material Dashboard 2 React examples
-import { Container, Typography, Fade, IconButton, InputBase, Tooltip } from "@mui/material";
+import { Container, IconButton, Tooltip } from "@mui/material";
 import FormBuilder from "./components/FormBuilder";
 import { Box } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add";
@@ -10,12 +10,10 @@ import { useMaterialUIController, setDirection } from "context";
 import HeaderFrom from "./components/header";
 import CreateQuestionsDialog from "dialog/CreateQuestionsDialog";
 import { QuestionsContext } from "context/globalVariables";
-// import { MainStateContext } from "App";
 import swal from "sweetalert";
 import { useLocation } from "react-router-dom";
 import FinishDialog from "./components/FinishDialog";
 import { EvalueContext } from "context/evalueVariables";
-// import {featchAPI} from "fetchAPI";
 
 export default function Evalues() {
   const [, dispatch] = useMaterialUIController();
@@ -233,7 +231,6 @@ export default function Evalues() {
         .then(
           (result) => {
             console.log("success");
-            // console.log(result);
             setExistForms(result);
           },
           (error) => {
@@ -277,7 +274,6 @@ export default function Evalues() {
         })
         .then(
           (result) => {
-            console.log("bani");
             console.log("success");
             if (result.questionnaireNum === myFormTypes.chosenForm) // make sure the correct questionnaire arrived
             {
@@ -326,9 +322,6 @@ export default function Evalues() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  console.log(globalQuestionArray);
-  console.log(JSON.stringify(myNewForm));
-
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <h1
@@ -358,8 +351,6 @@ export default function Evalues() {
       )}
 
       <QuestionsContext.Provider value={{ globalQuestionArray, setGlobalQuestionsArray }}>
-        {/* {console.log(isOldForms)} */}
-
         <CreateQuestionsDialog
           open={showCreateQuestionDialog}//Open the add question dialog
           setOpen={setShowCreateQuestionDialog}
@@ -370,13 +361,11 @@ export default function Evalues() {
         <HeaderFrom
           setMyObject={setMyObject}//receiving from the header roletype & rolegroup type 
           isOld={isOldForms}
-          // showAddQuestion={showAddQuestion}
           setShowAddQuestion={setShowAddQuestion}
           existForms={existForms}
           setSendExistForms={setSendExistForms}//An indication that you can receive questionnaires from the server that are adapted to the type of position and rank
           setChosenParameters={setChosenParameters}
         />
-        {/* {console.log(sendExistForms)} */}
         {showFormComponent && <FormBuilder setMyArray={setMyArray} />}
       </QuestionsContext.Provider>
       <FinishDialog

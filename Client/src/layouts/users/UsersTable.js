@@ -15,7 +15,6 @@ Finally, the component renders the table using Material-UI components, including
 */
 
 import {
-  // Box,
   Paper,
   Table,
   TableBody,
@@ -24,7 +23,6 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  // TableSortLabel,
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 // import { visuallyHidden } from "@mui/utils";

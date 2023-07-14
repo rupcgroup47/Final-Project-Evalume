@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
-import ApiFetcher from "components/ApiFetcher";
+import { useEffect } from "react";
 import dayjs from 'dayjs';
 import Swal from 'sweetalert2';
 
 export default function Alerts({ mainState, handleShowAlert, openProcess, handeleExtention, handleCloseProcess }) {
-    // const [showAlert, setShowAlert] = useState(true);
     const today = dayjs();
 
     useEffect(() => {

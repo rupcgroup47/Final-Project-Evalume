@@ -13,17 +13,12 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// react-routers components
-import { Link } from "react-router-dom";
-
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
 
 // @mui material components
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
-import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -67,11 +62,6 @@ function ProfileInfoCard({ title, info, action, shadow }) {
         <MDTypography variant="h4" fontWeight="medium" textTransform="capitalize">
           {title}
         </MDTypography>
-        {/* <MDTypography component={Link} to={action.route} variant="body2" color="secondary">
-          <Tooltip title={action.tooltip} placement="top">
-            <Icon>edit</Icon>
-          </Tooltip>
-        </MDTypography> */}
       </MDBox>
       <MDBox p={1}>
         <MDBox opacity={0.3}>

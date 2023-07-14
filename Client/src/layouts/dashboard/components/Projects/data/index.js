@@ -28,18 +28,15 @@ import {
 const columns = [
   { Header: "מחלקות", accessor: "depName", align: "left" },
   { Header: "כמות עובדים במחלקה", accessor: "depCount", align: "center" },
-  { Header: "טרם נכנס לשאלון", accessor: "level", align: "center" },
-  { Header: "הערכה עצמית", accessor: "level0", align: "center" },
-  { Header: "הערכת מנהל", accessor: "level1", align: "center" },
-  { Header: "הערכה משותפת", accessor: "level2", align: "center" },
-  // { Header: " התקדמות", accessor: "completion", align: "center" },
+  { Header: "הערכה עצמית", accessor: "level", align: "center" },
+  { Header: "הערכת מנהל", accessor: "level0", align: "center" },
+  { Header: "הערכה משותפת", accessor: "level1", align: "center" },
+  { Header: "סיימו תהליך הערכה", accessor: "level2", align: "center" },
 ]
 export default function FormDepData({ dataTable }) {
   const [selectedPart, setSelectedPart] = useState(null);
 
   const handlePartClick = (part) => {
-    console.log(part)
-    console.log(part.employees)
     setSelectedPart(part);
   };
   const handleDialogClose = () => {

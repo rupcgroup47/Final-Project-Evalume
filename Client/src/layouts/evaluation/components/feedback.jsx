@@ -10,7 +10,6 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   Tooltip,
   IconButton,
@@ -19,14 +18,12 @@ import {
   Button
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
 import DialogSurvey from "./DialogSurvey";
 import { EvalueContext } from "context/evalueVariables";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
-import GoalsInfoTable from "../../goals/GoalsInfoTable";
 
 registerLocale("he", he);
 
@@ -40,8 +37,6 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
   const [finishRouteMsg, setRouteMsg] = useState("");
   const [rows, setRows] = useState([]); //Format to display table
   const [goalName, setGoalName] = useState("");
-  // const [date, setDate] = useState();
-  // const [notFormattedDate, setNotFormattedData] = useState();
   const [managerOpinion, setManagerOpinion] = useState("");
   const [employeeOpinion, setEmployeeOpinion] = useState("");
   const [finalFeedbackForm, setFinalfeedbackForm] = useState(null);
@@ -107,9 +102,7 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
   // Post a new finished Evaluation process using Post api
   useEffect(() => {
     const abortController = new AbortController();
-    console.log("ze?" + JSON.stringify(finalFeedbackForm));
     if (finalFeedbackForm !== null) {
-      console.log("tbb");
       fetch(
         API.apiPostFinishAll,
         {
@@ -164,11 +157,6 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
     setGoalName(event.target.value);
   };
 
-  // const handleDateChange = (newValue) => {
-  //   const formattedDate = newValue.toISOString().slice(0, 10).replace(/-/g, "/");
-  //   setDate(formattedDate);
-  //   // setNotFormattedData(newValue)
-  // };
 
   const handleAddRow = () => {
     ///adding new goal to employee
@@ -176,7 +164,6 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
     setRows([...rows, { goalName: goalName }]); //Format to display table , date: date
     setAllGoals([...allGoals, { goalNum: selectedId }]); //Format to send to the server , date: date
     setGoalName("");
-    // setDate("");
   };
 
   function sendFeedbackToServer() {
@@ -251,7 +238,6 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
                     </Tooltip>
                   </Box>
                 </div>
-                {/* <DatePicker label="תאריך יעד" value={date} locale="he" onChange={handleDateChange} /> */}
                 <Button
                   variant="contained"
                   color="white"
@@ -266,7 +252,6 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
                   <TableHead sx={{ display: "table-header-group" }}>
                     <TableRow>
                       <TableCell style={{ display: "contents" }}>שם היעד</TableCell>
-                      {/* <TableCell>תאריך</TableCell> */}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -277,7 +262,6 @@ export default function Feedback({ userNum, evalu_Part_Type, questionnaireNum })
                       ) => (
                         <TableRow key={index}>
                           <TableCell style={{ display: "contents" }}>{row.goalName}</TableCell>
-                          {/* <TableCell style={{ width: "50%" }}>{row.date}</TableCell> */}
                         </TableRow>
                       )
                     )}

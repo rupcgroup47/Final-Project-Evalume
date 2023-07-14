@@ -3,18 +3,6 @@ import { Typography, Grid, Rating, Card } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
 const KPIRating = ({ selfKPI }) => {
-  const ratings = [//We need to validate who is the user
-    {
-      userNum: 14,
-      evalu_part_type: 0,
-      rounded_avg: 4,
-    },
-    {
-      userNum: 14,
-      evalu_part_type: 1,
-      rounded_avg: 3,
-    },
-  ];
 
   const selfRating = selfKPI?.find((rating) => rating.evalu_part_type === 0)?.rounded_avg || 0;
   const managerRating = selfKPI?.find((rating) => rating.evalu_part_type === 1)?.rounded_avg || 0;

@@ -9,7 +9,6 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState, useEffect, useContext } from "react";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -64,8 +63,6 @@ export default function GoalItem({
   // Function to save the updated status in the dialog
   const handleSaveStatus = (participantIndex) => {
     setTmpStatusIndex(participantIndex);
-    // handleUpdateStatus(participantIndex, selectedStatus);
-    // setSelectedStatus('');
   };
 
 
@@ -73,10 +70,6 @@ export default function GoalItem({
   useEffect(() => {
     const abortController = new AbortController();
     if (tmpStatusIndex > -1) {
-      console.log("here")
-      console.log(goal.employees[tmpStatusIndex]?.userNum);
-      console.log(goal.goalNum);
-      console.log(selectedStatus);
       fetch(
         API.apiUpdateGoalStatus + goal.employees[tmpStatusIndex].userNum + "/goalNum/" + goal.goalNum,
         {
@@ -171,7 +164,6 @@ export default function GoalItem({
             <EditRoundedIcon />
           </IconButton>
           <IconButton color="error" onClick={() => setShowCloseDialog((e) => !e)}>
-            {/* <DeleteRoundedIcon /> */}
           </IconButton>
         </TableCell>
       </TableRow>

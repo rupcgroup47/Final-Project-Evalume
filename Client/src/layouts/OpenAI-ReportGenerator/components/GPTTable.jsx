@@ -32,13 +32,10 @@ export default function GPTTable({ tableData, setTableData }) {
             show: true,
         };
     });
-    // console.log(tableHeadArr);
     const [tableHead, setTableHead] = useState(tableHeadArr);
     const [items, setItems] = useState([tableData]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const { API } = useContext(EvalueContext);
-    // console.log(items);
 
     useEffect(() => {
         // Update the users array
@@ -62,7 +59,7 @@ export default function GPTTable({ tableData, setTableData }) {
             <Tooltip title="Export to Excel">
                 <Button
                     variant="contained.base"
-                    style={{position: "absolute", fontSize: "xx-large"}}
+                    style={{ position: "absolute", fontSize: "xx-large" }}
                     startIcon={<CloudDownloadIcon />}
                     onClick={exportToExcel}
                 />

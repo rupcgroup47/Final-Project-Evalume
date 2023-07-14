@@ -180,14 +180,6 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     setMainState(data);
   }
 
-  // console.log(mainState);
-  // const update = mainState;
-  // update.self_Evalu = 0;
-  // console.log(update);
-  // setMainState(update);
-
-  // console.log("items", items);
-
   const onError = (errors, event) => {
     event.preventDefault();
     console.log(errors, event);

@@ -7,21 +7,17 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import PeopleIcon from '@mui/icons-material/People';
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import { Link } from "react-router-dom";
 import { Dialog, DialogContent, Button } from "@mui/material";
 import WaitingEvalues from "./ProfileTables/WaitingEvalues";
 import Card from "@mui/material/Card";
-import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
 
 export default function ProfileAlerts({ tmpResult, meeting }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [calenderOpen, setcalenderOpen] = useState(false);
-  const { API } = useContext(EvalueContext);
   const mainState = useContext(MainStateContext);
   const [tempResualt, setTempResualt] = useState([]);
   const [meetingState, setMeetingState] = useState([]);
-  // const [waitingToEvalue, setWaitingToEvalue] = useState(3);
   const [state, setState] = useState({
     selfEvalu: mainState.mainState.self_Evalu,
     employeeEvalu: 0,
@@ -39,10 +35,6 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
 
   useEffect(() => {
     if (tempResualt?.length !== 0) {
-      console.log("here");
-      // const tmp = state;
-      // tmp.employeeEvalu = tempResualt?.filter((item) => item.evalu_Part_Type === 0).length;
-      // tmp.employeeMeet = tempResualt?.filter((item) => item.evalu_Part_Type === 1).length;
       setState((prevState) => {
         return {
           ...prevState,
@@ -52,8 +44,6 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
       });
     };
     if (meetingState?.length !== 0) {
-      console.log("here");
-      console.log(meetingState);
       setState((prevState) => {
         return {
           ...prevState,
@@ -62,7 +52,6 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
       });
     };
   }, [tempResualt, meetingState])
-  // console.log(mainState);
 
   const [arrAlerts, setArrAlerts] = useState(
     [
@@ -123,52 +112,6 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
       setFilteredAlerts(alerts);
     }
   }, [alerts])
-
-  // // GET the employee status under a manager
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-  //   if (mainState.mainState.userNum) {
-  //     fetch(
-  //       API.apiGetEmployeeStatus + mainState.mainState.userNum,
-  //       {
-  //         method: "GET",
-  //         headers: new Headers({
-  //           "Content-Type": "application/json; charset=UTF-8",
-  //           Accept: "application/json; charset=UTF-8",
-  //         }),
-  //         signal: abortController.signal,
-  //       })
-  //       .then(async (response) => {
-  //         const data = await response.json();
-  //         console.log(response);
-
-  //         if (!response.ok) {
-  //           // get error message from body or default to response statusText
-  //           const error = (data && data.message) || response.statusText;
-  //           return Promise.reject(error);
-  //         }
-
-  //         return data;
-  //       })
-  //       .then(
-  //         (result) => {
-  //           console.log("success");
-  //           console.log(result);
-  //           setTempResualt(result);
-  //         },
-  //         (error) => {
-  //           console.log(error);
-  //           if (error.name === "AbortError") return;
-  //           console.log("err get=", error);
-  //           throw error;
-  //         }
-  //       );
-  //     return () => {
-  //       abortController.abort();
-  //       // stop the query by aborting on the AbortController on unmount
-  //     };
-  //   }
-  // }, [mainState.mainState.userNum]);
 
   const handleAlarmClick = () => {
     let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 0);

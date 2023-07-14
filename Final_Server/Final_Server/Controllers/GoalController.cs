@@ -49,20 +49,5 @@ namespace Final_Server.Controllers
         }
 
 
-        //[HttpPut("/goalNum/goalActive")]
-        //public IActionResult PutGoalActive(int goalNum, int goalActive) //Update Goal Active
-        //{
-        //    int numEffected = Goal.UpdateGoalActive(goalNum, goalActive);
-        //    if (numEffected != 0)
-        //    {
-        //        return Ok("Goal succesfully updated");
-        //    }
-        //    else
-        //    {
-        //        return NotFound("We couldnt update the Goal");
-        //    }
-        //}
-
-
     }
 }

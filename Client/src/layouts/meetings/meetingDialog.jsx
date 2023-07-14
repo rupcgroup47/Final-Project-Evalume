@@ -19,6 +19,7 @@ import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 import swal from 'sweetalert';
 import ApiFetcher from "components/ApiFetcher";
+import { eventWrapper } from "@testing-library/user-event/dist/utils";
 
 
 export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
@@ -35,14 +36,11 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
     const onSubmit = () => {
         let isMounted = true;
 
-        console.log(date);
         const sendObject = {
-            meetingDate: dayjs(date).format('DD/MM/YYYY HH:mm'),
+            meetingDate: dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
             meetingPlace: location,
             userNum: chosenEmployee.userNum
         }
-
-        console.log(JSON.stringify(sendObject));
 
         // Post a new meeting
         const setMeeting = async () => {
@@ -91,8 +89,6 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
 
     //in case of an error on the validations of the form sending the error to te console
     const onError = (errors, e) => console.log(errors, e);
-
-    console.log(dayjs(selectedDate).format('DD/MM/YYYY'));
 
     return (
         <form

@@ -2576,7 +2576,7 @@ public class DBservices
                     employeeName = (dataReader["employeeName"]).ToString(),
                     userManager = Convert.ToInt32(dataReader["userManager"]),
                     managerName = (dataReader["managerName"]).ToString(),
-                    date = ((DateTime)dataReader["meetingDate"]).ToLocalTime().ToShortDateString(),
+                    date = ((DateTime)dataReader["meetingDate"]).ToString("yyyy-MM-dd"),
                     time = ((DateTime)dataReader["meetingDate"]).ToShortTimeString(),
                     meetingPlace = (dataReader["meetingPlace"]).ToString()
                 });

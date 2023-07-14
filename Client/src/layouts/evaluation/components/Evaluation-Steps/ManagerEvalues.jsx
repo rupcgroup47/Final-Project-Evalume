@@ -82,7 +82,6 @@ function ManagerEvalues() {
   const location = useLocation();
   const currentStep = location.state;
   const userId = mainState.mainState.userNum;//The employee who is now connected to the system
-  // const userManagerId=mainState.mainState.userManagerNum;//The manager of the employee who is now connected to the system
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />

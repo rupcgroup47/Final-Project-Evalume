@@ -16,69 +16,6 @@ import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
 
 
-// const _goals = [
-//   {
-//     goalNum: 1,
-//     goalName: "קורס אקסל",
-//     employees: [
-//       {
-//         date: "2020-01-05",
-//         userNum: 1,
-//         userLName:"יעל",
-//         userFName:"פרקש",
-//         status: "חדש",
-//       },
-//       {
-//         date: "2020-01-02",
-//         userNum: 2,
-//         userLName:"ריקי",
-//         userFName:"פרקש",
-//         status: "חדש",
-//       },
-//     ],
-//   },
-//   {
-//     goalNum: 2,
-//     goalName: "קורס פריוריטי",
-//     employees: [
-//       {
-//         date: "2020-01-05",
-//         userNum: 4,
-//         userLName:"לי",
-//         userFName:"פרקש",
-//         status: "חדש",
-//       },
-//       {
-//         date: "2020-01-02",
-//         userNum: 5,
-//         userLName:"מאי",
-//         userFName:"פרקש",
-//         status: "חדש",
-//       },
-//     ],
-//   },
-//   {
-//     goalNum: 3,
-//     goalName: "קורס חשבשבת",
-//     employees: [
-//       {
-//         date: "2020-01-05",
-//         userNum: 14,
-//                 userLName:"נועה",
-//         userFName:"פרקש",
-//         status: "חדש",
-//       },
-//       {
-//         date: "2020-01-02",
-//         userNum: 13,
-//         userLName:"דני",
-//         userFName:"פרקש",
-//         status: "בוצע",
-//       },
-//     ],
-//   },
-// ];
-
 export default function GoalsTable() {
   const [, dispatch] = useMaterialUIController();
   const [tableHead, setTableHead] = useState(_tableHead);
@@ -140,19 +77,6 @@ export default function GoalsTable() {
       }
     }
   }, []);
-
-  // useEffect(() => {
-  //   // Update the goals array
-  //   const newArray = [...goals];
-  //   const newQuestion = {
-  //     quesContent: postQuestion.quesContent,
-  //     questionNum: result,
-  //     is_Active: true,
-  //   };
-  //   newArray[index].questions.push(newQuestion);
-  //   if (globalQuestionArray !== null) setGlobalQuestionsArray(newArray);
-  //   else settempQuestionArray(newArray);
-  // }, [goals]);
 
   //search goal 
   const [searchInput, setSearchInput] = useState("");

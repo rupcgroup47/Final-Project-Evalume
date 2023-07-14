@@ -14,7 +14,6 @@ import {
   IconButton,
   InputBase,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Dialog, DialogContent, Button } from "@mui/material";
@@ -25,11 +24,8 @@ import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import GoalsInfoTable from "./GoalsInfoTable";
 
 export default function TableToolbarGoal({
-  // Users
-  goals,
   setGoals,
   setItems,
-  // Search
   searchInput,
   setSearchInput,
   condition
@@ -58,7 +54,6 @@ export default function TableToolbarGoal({
           padding: "16px 16px  8px 16px",
         }}
       >
-        {/* {console.log(condition)} */}
         <div
           style={{
             position: "relative",
