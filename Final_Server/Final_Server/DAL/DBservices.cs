@@ -2654,7 +2654,7 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                FinalDate = ((DateTime)dataReader["QuesLimitDate"]).ToShortDateString();
+                FinalDate = ((DateTime)dataReader["QuesLimitDate"]).ToString("yyyy-MM-dd");
 
             }
             if (!dataReader.HasRows)
