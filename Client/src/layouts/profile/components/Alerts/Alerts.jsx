@@ -9,6 +9,8 @@ export default function Alerts({ mainState, handleShowAlert, openProcess, handel
         if (openProcess !== null) {
             if (mainState?.is_Admin) {
                 const diffInDays = openProcess.diff(today, 'day');
+                console.log("diffInDays", diffInDays);
+                console.log("openProcess", openProcess);
                 if (diffInDays < 3 && diffInDays >= 1) {
                     Swal.fire({
                         title: 'האם תרצה להעריך את מועד סיום תהליך ההערכה?',

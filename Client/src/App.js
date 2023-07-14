@@ -197,13 +197,14 @@ export default function App() {
       try {
         const fetchedData = await ApiFetcher(apiGetEndProcessDate, "GET", null);
         if (isMounted) {
-          console.log("success");
+          console.log("success", fetchedData);
+          console.log("success", dayjs(fetchedData, 'YYYY-MM-DD'));
 
           if (fetchedData == "empty") {
             setOpenProcess(null);
           }
           else
-            setOpenProcess(dayjs(fetchedData, 'DD/MM/YYYY'));
+            setOpenProcess(dayjs(fetchedData, 'YYYY-MM-DD'));
         }
       }
       catch (error) {
@@ -243,7 +244,7 @@ export default function App() {
     if (flag == 1) {
       const updateEnDate = async () => {
         try {
-          const fetchedData = await ApiFetcher(apiUpdateEndDate, "PUT", JSON.stringify(dayjs(dateProcess).format('DD/MM/YYYY')));
+          const fetchedData = await ApiFetcher(apiUpdateEndDate, "PUT", JSON.stringify(dayjs(dateProcess, 'YYYY-MM-DD')));
           if (isMounted) {
             console.log("success", fetchedData);
             setFlag(0);
