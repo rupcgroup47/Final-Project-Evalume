@@ -44,7 +44,7 @@ export default function EvalueContextProvider({ children }) {
     // apiInsertNewGoal: "https://localhost:7079/newGoal?goalActive=",
     apiInsertNewGoal: "https://proj.ruppin.ac.il/cgroup47/prod/newGoal?goalActive=",//server
     // apiUpdateGoal: "https://localhost:7079/UpdateGoal/goalNum/",
-    apiUpdateGoalName: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoal/goalNum/", //server
+    apiUpdateGoal: "https://proj.ruppin.ac.il/cgroup47/prod/UpdateGoal/goalNum/", //server
     // apiUpdateGoalStatus: "https://localhost:7079/userNum/",
     apiUpdateGoalStatus: "https://proj.ruppin.ac.il/cgroup47/prod/userNum/", //server
     // apiGetPDFdetails: "https://localhost:7079/userNum/questionnaireNum?userNum=",
