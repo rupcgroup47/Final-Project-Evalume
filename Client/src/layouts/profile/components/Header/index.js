@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useState, useEffect, useContext } from "react";
 import { MainStateContext, EndDateContext } from "App";
 // prop-types is a library for typechecking of props.
@@ -25,7 +27,7 @@ function Header({ children, questionnairesData  }) {
         : setTabsOrientation("horizontal");
     }
 
-    /** 
+    /**
      The event listener that's calling the handleTabsOrientation function when resizing the window.
     */
     window.addEventListener("resize", handleTabsOrientation);

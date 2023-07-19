@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as React from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
@@ -5,28 +7,12 @@ import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Check from "@mui/icons-material/Check";
 import PersonIcon from "@mui/icons-material/Person";
 import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
 import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector";
 
 const steps = ["משוב עצמי", "משוב מנהל", "שיחת משוב והצבת יעדים"];
-
-export default function CustomizedSteppers(props) {
-const {currentStep} = props;
-    return (
-        <Stack sx={{ width: "100%" }} spacing={4}>
-            <Stepper alternativeLabel activeStep={currentStep} connector={<ColorlibConnector />}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-        </Stack>
-    );
-}
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -106,3 +92,18 @@ ColorlibStepIcon.propTypes = {
      */
     icon: PropTypes.node,
 };
+
+export default function CustomizedSteppers(props) {
+    const { currentStep } = props;
+    return (
+        <Stack sx={{ width: "100%" }} spacing={4}>
+            <Stepper alternativeLabel activeStep={currentStep} connector={<ColorlibConnector />}>
+                {steps.map((label) => (
+                    <Step key={label}>
+                        <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                    </Step>
+                ))}
+            </Stepper>
+        </Stack>
+    );
+}

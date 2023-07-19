@@ -25,7 +25,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
 
-function ProfileInfoCard({ title, info, action, shadow }) {
+function ProfileInfoCard({ title, info, shadow }) {
   const labels = [];
   const values = [];
 

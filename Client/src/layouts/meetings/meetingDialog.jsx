@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
     Button,
     TextField,
@@ -8,16 +10,16 @@ import {
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { EvalueContext } from "context/evalueVariables";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
-import swal from 'sweetalert';
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
+import swal from "sweetalert";
 import ApiFetcher from "components/ApiFetcher";
 import { eventWrapper } from "@testing-library/user-event/dist/utils";
 
@@ -37,7 +39,7 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
         let isMounted = true;
 
         const sendObject = {
-            meetingDate: dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
+            meetingDate: dayjs(date).format("YYYY-MM-DD HH:mm:ss"),
             meetingPlace: location,
             userNum: chosenEmployee.userNum
         }
@@ -99,7 +101,7 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
             >
                 <Grid container direction="row" spacing={3}>
                     <Grid item xs={12}>
-                        <Stack direction="row" spacing={2} style={{ flexWrap: 'nowrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+                        <Stack direction="row" spacing={2} style={{ flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "center" }}>
                             <Typography>שם העובד: </Typography>
                             <TextField
                                 size="small"
@@ -108,14 +110,14 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
                                 InputProps={{
                                     style: { fontSize: 24, alignItems: "center" },
                                 }}
-                                value={chosenEmployee.userFName + ' ' + chosenEmployee.userLName}
+                                value={chosenEmployee.userFName + " " + chosenEmployee.userLName}
                                 readOnly
                                 sx={{ m: 0, width: "48%" }}
                             />
                         </Stack>
                     </Grid>
                     <Grid item xs={12}>
-                        <Stack direction="row" spacing={2} style={{ flexWrap: 'nowrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+                        <Stack direction="row" spacing={2} style={{ flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "center" }}>
                             <Typography>מועד הפגישה: </Typography>
                             <TextField
                                 size="small"
@@ -124,17 +126,17 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
                                 InputProps={{
                                     style: { fontSize: 24, alignItems: "center" },
                                 }}
-                                value={dayjs(selectedDate).format('dddd, MMMM D, YYYY')}
+                                value={dayjs(selectedDate).format("dddd, MMMM D, YYYY")}
                                 readOnly
                                 sx={{ m: 0, width: "48%" }}
                             />
                         </Stack>
                     </Grid>
                     <Grid item xs={12}>
-                        <Stack direction="row" spacing={2} style={{ flexWrap: 'nowrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+                        <Stack direction="row" spacing={2} style={{ flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "center" }}>
                             <Typography>שעת הפגישה: </Typography>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['TimePicker']}>
+                                <DemoContainer components={["TimePicker"]}>
                                     <TimePicker
                                         name="time"
                                         label="בחר שעה"
@@ -151,7 +153,7 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
                         </Stack>
                     </Grid>
                     <Grid item xs={12}>
-                        <Stack direction="row" spacing={2} style={{ flexWrap: 'nowrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+                        <Stack direction="row" spacing={2} style={{ flexWrap: "nowrap", justifyContent: "flex-start", alignItems: "center" }}>
                             <Typography>מיקום הפגישה: </Typography>
                             <TextField
                                 size="small"
@@ -166,7 +168,7 @@ export default function SetMeetingDialog({ chosenEmployee, selectedDate }) {
                             />
                         </Stack>
                     </Grid>
-                    <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
                         <Button type="submit">סיום</Button>
                     </Grid>
                 </Grid>

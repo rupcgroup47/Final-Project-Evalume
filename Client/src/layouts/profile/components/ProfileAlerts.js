@@ -1,16 +1,19 @@
+/* eslint-disable */
+
 import { useState, useEffect, useContext } from "react";
 import Divider from "@mui/material/Divider";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Subject from "@mui/icons-material/Subject";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import PeopleIcon from '@mui/icons-material/People';
+import PeopleIcon from "@mui/icons-material/People";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import { Dialog, DialogContent, Button } from "@mui/material";
-import WaitingEvalues from "./ProfileTables/WaitingEvalues";
 import Card from "@mui/material/Card";
 import { MainStateContext } from "App";
+import WaitingEvalues from "./ProfileTables/WaitingEvalues";
+
 
 export default function ProfileAlerts({ tmpResult, meeting }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -24,6 +27,11 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
     employeeMeet: 0,
     employeeCalender: 0,
   });
+  const [alerts, setAlerts] = useState([]);
+
+  const [filteredAlerts, setFilteredAlerts] = useState([]);
+
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     setTempResualt(tmpResult);
@@ -98,13 +106,8 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
     setAlerts(arrAlerts);
   }, [arrAlerts]);
 
-  const [alerts, setAlerts] = useState([]);
 
-  const [filteredAlerts, setFilteredAlerts] = useState([]);
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => { //filtered the alerts by type
+  useEffect(() => { //  filtered the alerts by type
     if (!mainState.mainState.userType) {
       setFilteredAlerts(alerts.filter(({ forManager }) => !forManager));
     }
@@ -114,7 +117,7 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
   }, [alerts])
 
   const handleAlarmClick = () => {
-    let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 0);
+    const tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 0);
     setData(tmp);
     if (tmp.length !== 0) {
       setIsPopupOpen(true);
@@ -123,7 +126,7 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
   };
 
   const handleMeetingClick = () => {
-    let tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 1);
+    const tmp = tempResualt?.filter((item) => item.evalu_Part_Type === 1);
     setData(tmp);
     if (tmp.length !== 0) {
       setIsPopupOpen(true);
@@ -132,7 +135,7 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
   };
 
   const handleCalendarClick = () => {
-    let tmp = meetingState;
+    const tmp = meetingState;
     setData(tmp);
     if (tmp.length !== 0) {
       setIsPopupOpen(true);

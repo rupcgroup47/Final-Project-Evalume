@@ -13,19 +13,20 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import UsersTable from "./UsersTable";
 import { Container } from "@mui/material";
-import { useState, useContext, useEffect, useMemo } from "react";
+import { useState, useContext, useEffect } from "react";
 import { MainStateContext } from "App";
 import { EvalueContext } from "context/evalueVariables";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
+import UsersTable from "./UsersTable";
+
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [, dispatch] = useMaterialUIController();
-  const { mainState, setMainState } = useContext(MainStateContext);
+  const { mainState } = useContext(MainStateContext);
   const { API } = useContext(EvalueContext);
 
   // bring all the users using GET api
@@ -61,15 +62,15 @@ function Users() {
             setUsers(result);
           },
           (error) => {
-            if (error.name === 'AbortError') return
+            if (error.name === "AbortError") return
             console.log("err get=", error);
             throw error
           }
         );
-      return () => {
-        abortController.abort()
-        // stop the query by aborting on the AbortController on unmount
-      }
+    }
+    return () => {
+      abortController.abort()
+      // stop the query by aborting on the AbortController on unmount
     }
   }, []);
 

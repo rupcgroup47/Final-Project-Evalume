@@ -1,6 +1,7 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useEffect, useState } from "react";
 import { Container, Typography } from "@mui/material";
-import { useEffect, useState, useContext } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -51,7 +52,7 @@ export default function HeaderFrom(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (chosenExistForm != undefined) {
+    if (chosenExistForm !== undefined) {
       //check if the questions arrive from exist form
       const newForm = {
         groupType: roleGroupType,
@@ -75,7 +76,7 @@ export default function HeaderFrom(props) {
         groupType: roleGroupType,
         roleType: roleType,
       };
-      setChosenParameters(selectedTypes);//pass data to index 
+      setChosenParameters(selectedTypes);//pass data to index
       setChosenTypes(selectedTypes);
       setShowSelect(true);
       setShowButton(true);

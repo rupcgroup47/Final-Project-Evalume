@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 
 This is a React functional component that defines a toolbar for a table of users. The toolbar includes a search bar, filter and sort options, and buttons to add a new user and select columns to display in the table.
@@ -14,9 +16,11 @@ import {
   IconButton,
   InputBase,
   Tooltip,
+  Dialog,
+  DialogContent,
+  Button
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Dialog, DialogContent, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";

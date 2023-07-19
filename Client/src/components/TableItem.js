@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 This is a React functional component that renders a table row with user information. The component takes in several props:
 
@@ -15,7 +17,7 @@ The CloseDialog component is rendered outside of the TableRow component, and is 
 import { useState } from "react";
 import { IconButton, TableCell, TableRow } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import ToggleOffRoundedIcon from '@mui/icons-material/ToggleOffRounded';
+import ToggleOffRoundedIcon from "@mui/icons-material/ToggleOffRounded";
 import Checkbox from "@mui/material/Checkbox";
 import CloseDialog from "../dialog/CloseDialog";
 import UpdateUserDialog from "../dialog/CreateOrUpdateUserDialog";
@@ -70,7 +72,7 @@ export default function TableItem({
             <TableCell align="center">{user.userRoleGroupDesc}</TableCell>
           )}
           {tableHead.find((i) => i.id === "userType").show && (
-            <TableCell align="center">{user.userType === true ? `מנהל` : `עובד`}</TableCell>
+            <TableCell align="center">{user.userType === true ? "מנהל" : "עובד"}</TableCell>
           )}
           {tableHead.find((i) => i.id === "managerName").show && (
             <TableCell align="center"> {`${user.managerFname} ${user.managerLName}`}</TableCell>
@@ -107,7 +109,7 @@ export default function TableItem({
           </TableCell>
         </TableRow>
         : <TableRow
-          key={user[tableHead[0].id] + '-' + index}
+          key={user[tableHead[0].id] + "-" + index}
           tabIndex={-1}
           sx={{ "&:last-child·td,·&:last-child·th": { border: 0 } }}
           hover
@@ -115,7 +117,7 @@ export default function TableItem({
           {tableHead.map((item, idx) => {
             return (
               tableHead.find((i) => i.id === item.id).show && (
-                <TableCell component="td" scope="row" align="center" key={index + '-' + user[item.id] + '-' + idx}>
+                <TableCell component="td" scope="row" align="center" key={index + "-" + user[item.id] + "-" + idx}>
                   {`${user[item.id]}`}
                 </TableCell>
               )

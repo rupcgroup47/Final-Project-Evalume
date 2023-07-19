@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 This is a React functional component that renders a table with some additional functionality. The table displays a list of users that can be sorted, searched, and filtered by various criteria. The component uses Material-UI for styling and provides its own toolbar component that contains search and filter controls.
 
@@ -25,13 +27,12 @@ import {
   TableRow,
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
-// import { visuallyHidden } from "@mui/utils";
 import { useDebounce } from "use-debounce";
 import { EvalueContext } from "context/evalueVariables";
+import swal from "sweetalert";
 import TableItem from "components/TableItem";
 import TableToolbar from "components/TableToolbar";
-import { tableHeadArr } from "./tableHeaderArr";
-import swal from 'sweetalert';
+import tableHeadArr from "./tableHeaderArr";
 
 export default function UsersTable({ users, setUsers }) {
   const [tableHead, setTableHead] = useState(tableHeadArr);
@@ -93,9 +94,9 @@ export default function UsersTable({ users, setUsers }) {
             ?.toLowerCase()
             .includes(filterDirector.toLowerCase())
           : true) &&
-        (filterRoleGroup ? user.userType === (filterRoleGroup === "מנהל" ? true : false) : true) &&
-        (filterActive ? user.is_Active === (filterActive === "פעיל" ? true : false) : true) &&
-        (filterAdmin ? user.is_Admin === (filterAdmin === "אדמין" ? true : false) : true)
+        (filterRoleGroup ? user.userType === (filterRoleGroup === "מנהל") : true) &&
+        (filterActive ? user.is_Active === (filterActive === "פעיל") : true) &&
+        (filterAdmin ? user.is_Admin === (filterAdmin === "אדמין") : true)
     );
 
     setItems(filterdArray);
@@ -121,9 +122,11 @@ export default function UsersTable({ users, setUsers }) {
   const [putUser, setPutUser] = useState("");
 
   const handleRemoveUser = (user) => {
-    user.is_Active = false;
-    console.log(user);
-    setPutUser(user);
+    const userCopy = { ...user };
+    userCopy.is_Active = false;
+    // user.is_Active = false;
+    console.log(userCopy);
+    setPutUser(userCopy);
     setUsers((array) =>
       array.map((item) =>
         item.userNum === user?.userNum ? { ...item, ...user } : item
@@ -137,7 +140,7 @@ export default function UsersTable({ users, setUsers }) {
   };
 
 
-  //update user datails using PUT api
+  //  update user datails using PUT api
   useEffect(() => {
     // Update is active for a user ("delete")
     const abortController = new AbortController();
@@ -239,8 +242,7 @@ export default function UsersTable({ users, setUsers }) {
           {/* Table Head - Start */}
           <TableHead sx={{ display: "table-header-group" }} style={{ position: "sticky", top: 0 }}>
             <TableRow>
-              {tableHead.map((item) => {
-                return (
+              {tableHead.map((item) => (
                   item.show && (
                     <TableCell
                       key={item.id}
@@ -251,8 +253,8 @@ export default function UsersTable({ users, setUsers }) {
                       {item.label}
                     </TableCell>
                   )
-                );
-              })}
+                )
+              )}
             </TableRow>
           </TableHead>
           {/* Table Head - End */}

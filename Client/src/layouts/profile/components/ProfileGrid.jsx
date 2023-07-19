@@ -1,4 +1,5 @@
-import PersonalGoals from "./ProfileTables/PersonalGoals";
+/* eslint-disable */
+
 import Card from "@mui/material/Card";
 import { useState } from "react";
 import { Dialog, DialogContent, Button } from "@mui/material";
@@ -6,11 +7,13 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MeetingCalendar from "layouts/meetings/Calendar";
 import MyEvalues from "./MyEvalues";
+import PersonalGoals from "./ProfileTables/PersonalGoals";
+
 
 
 function ProfileGrid({ title, description, type, evalus, goals }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
- 
+
 
   const handleTypographyClick = () => {
     setIsPopupOpen(true);

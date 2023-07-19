@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -22,12 +24,8 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
@@ -50,8 +48,8 @@ import createCache from "@emotion/cache";
 import routes from "routes";
 
 // Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
+import { useMaterialUIController, setMiniSidenav} from "context";
+// , setOpenConfigurator
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
@@ -60,8 +58,8 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import EvalueContextProvider from "context/evalueVariables";
 import Alerts from "layouts/profile/components/Alerts/Alerts";
 import ApiFetcher from "components/ApiFetcher";
-import dayjs from 'dayjs';
-import Swal from 'sweetalert2';
+import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export const MainStateContext = createContext();
 export const EndDateContext = createContext();
@@ -72,7 +70,7 @@ export default function App() {
     miniSidenav,
     direction,
     layout,
-    openConfigurator,
+    // openConfigurator,
     sidenavColor,
     transparentSidenav,
     whiteSidenav,
@@ -86,9 +84,9 @@ export default function App() {
   const [flag, setFlag] = useState(0);
   const [dateProcess, setDateProcess] = useState(null);
   const { pathname } = useLocation();
-  const apiGetEndProcessDate = "https://proj.ruppin.ac.il/cgroup47/prod/EvaluFinalDate"; //server
-  const apiUpdateEndDate = "https://proj.ruppin.ac.il/cgroup47/prod/quesLimitDate";//server
-  const apiFinishProcess = "https://proj.ruppin.ac.il/cgroup47/prod/EndOfEvalu"; //server
+  const apiGetEndProcessDate = "https://proj.ruppin.ac.il/cgroup47/prod/EvaluFinalDate";  //  server
+  const apiUpdateEndDate = "https://proj.ruppin.ac.il/cgroup47/prod/quesLimitDate"; //  server
+  const apiFinishProcess = "https://proj.ruppin.ac.il/cgroup47/prod/EndOfEvalu";  //  server
 
     useEffect(() => {
       // Get user details from Local Storage
@@ -100,7 +98,7 @@ export default function App() {
           setMainState(Employee);
         }
       }
-      if (mainState !== null && exisiting !== null && areObjectsEqual == false) {
+      if (mainState !== null && exisiting !== null && areObjectsEqual === false) {
         localStorage.setItem("Current User", JSON.stringify(mainState)); // Set Current User details in local storage
       }
     }, [mainState]);
@@ -132,7 +130,7 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  // const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -198,13 +196,13 @@ export default function App() {
         const fetchedData = await ApiFetcher(apiGetEndProcessDate, "GET", null);
         if (isMounted) {
           console.log("success", fetchedData);
-          console.log("success", dayjs(fetchedData, 'YYYY-MM-DD'));
+          console.log("success", dayjs(fetchedData, "YYYY-MM-DD"));
 
-          if (fetchedData == "empty") {
+          if (fetchedData === "empty") {
             setOpenProcess(null);
           }
           else
-            setOpenProcess(dayjs(fetchedData, 'YYYY-MM-DD'));
+            setOpenProcess(dayjs(fetchedData, "YYYY-MM-DD"));
         }
       }
       catch (error) {
@@ -241,17 +239,17 @@ export default function App() {
   useEffect(() => {
     let isMounted = true;
 
-    if (flag == 1) {
+    if (flag === 1) {
       const updateEnDate = async () => {
         try {
-          const fetchedData = await ApiFetcher(apiUpdateEndDate, "PUT", JSON.stringify(dayjs(dateProcess, 'YYYY-MM-DD')));
+          const fetchedData = await ApiFetcher(apiUpdateEndDate, "PUT", JSON.stringify(dayjs(dateProcess, "YYYY-MM-DD")));
           if (isMounted) {
             console.log("success", fetchedData);
             setFlag(0);
             Swal.fire({
-              icon: 'success',
-              title: 'תשובתך התקבלה',
-              text: `תאריך היעד השתנה והינו ${dayjs(dateProcess).format('DD/MM/YYYY')}`,
+              icon: "success",
+              title: "תשובתך התקבלה",
+              text: `תאריך היעד השתנה והינו ${dayjs(dateProcess).format("DD/MM/YYYY")}`,
             })
             setOpenProcess(dateProcess);
           }
@@ -271,7 +269,7 @@ export default function App() {
       }
       updateEnDate();
     }
-    else if (flag == 2) {
+    else if (flag === 2) {
       const updateEnDate = async () => {
         try {
           const fetchedData = await ApiFetcher(apiFinishProcess, "PUT", null);
@@ -279,9 +277,9 @@ export default function App() {
             console.log("success", fetchedData);
             setFlag(0);
             Swal.fire({
-              icon: 'success',
-              title: 'בקשתך התקבלה',
-              text: `תהליך ההערכה הסתיים בהצלחה, נפגש בשנה הבאה!`,
+              icon: "success",
+              title: "בקשתך התקבלה",
+              text: "תהליך ההערכה הסתיים בהצלחה, נפגש בשנה הבאה!",
             })
           }
         }

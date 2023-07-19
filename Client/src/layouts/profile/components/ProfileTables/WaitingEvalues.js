@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useState, useContext } from "react";
 import { Table, TableBody, TableCell, TableHead, TableRow, Dialog, DialogContent, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -5,10 +7,10 @@ import { EvalueContext } from "context/evalueVariables";
 import MeetingCalendar from "layouts/meetings/Calendar";
 
 const WaitingEvalues = ({ data, calender }) => {
-  //evaluations that are waiting for an administrator's feedback
+  //  evaluations that are waiting for an administrator's feedback
   const [selectedRow, setSelectedRow] = useState(null);
-  const adminStep = 1; //Awaiting admin feedback
-  const adminEmployeeStep = 2; //Awaiting manager and  employee  feedback
+  const adminStep = 1; // Awaiting admin feedback
+  const adminEmployeeStep = 2; // Awaiting manager and  employee  feedback
   const { setChosenEmployee } = useContext(EvalueContext);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -22,8 +24,8 @@ const WaitingEvalues = ({ data, calender }) => {
 
   const handleRowClick = (row) => {
     console.log(row);
-    setChosenEmployee(row); //send chosen employee data to the global context
-    setSelectedRow(row); //css
+    setChosenEmployee(row); //  send chosen employee data to the global context
+    setSelectedRow(row); // css
   };
 
   return (
@@ -33,11 +35,11 @@ const WaitingEvalues = ({ data, calender }) => {
           <TableCell>שם עובד</TableCell>
           {calender ? <TableCell>מייל העובד</TableCell> : <TableCell>תאריך סיום שאלון</TableCell>}
           <TableCell>שלב</TableCell>
-          <TableCell></TableCell>
+          <TableCell/>
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((row, index) => (
+        {data.map((row) => (
           <TableRow
             key={row.userNum}
             onClick={() => handleRowClick(row)}
@@ -47,7 +49,7 @@ const WaitingEvalues = ({ data, calender }) => {
             {calender ? <TableCell style={{ width: "25%" }}>{row.userEmail}</TableCell> : <TableCell style={{ width: "25%" }}>{row.answerInsertDate.slice(0, 10).replace(/-/g, "/")}</TableCell>}
             <TableCell style={{ width: "25%" }}>{row.evalu_Part_Type === 0 ? "ממתין למישוב מנהל" : "ממתין למישוב משותף"}</TableCell>
             <TableCell style={{ width: "25%" }}>
-              {row.evalu_Part_Type === 0 ? (//send current step according to which form i redirect to
+              {row.evalu_Part_Type === 0 ? ( //  send current step according to which form i redirect to
                 <Link to="/ManagerEvalues" state={adminStep}>
                   מעבר לשאלון
                 </Link>

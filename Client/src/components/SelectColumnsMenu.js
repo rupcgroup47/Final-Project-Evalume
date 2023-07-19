@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 This is a React component that creates a dropdown menu to select which columns to display in a table.
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
@@ -12,9 +14,10 @@ import Stack from "@mui/material/Stack";
 import { useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { EvalueContext } from "context/evalueVariables";
+import swal from "sweetalert";
 import DialogSurvey from "./DialogSurvey";
 import RadioButtons from "./survey-component/RadioButtons";
-import { EvalueContext } from "context/evalueVariables";
 
 export default function surveyForm({ userNum, employeesManager, evalu_Part_Type, questionsResp, questionnaireNum, showForm, mainState, setMainState }) {
   const [expanded, setExpanded] = useState(1);
@@ -25,7 +28,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
   const [finishRouteMsg, setRouteMsg] = useState("");
   const flatQuestions = questionsResp?.flatMap((group) => group.questions);
   const { API } = useContext(EvalueContext);
-  const totalQuestions = flatQuestions?.length;//Checking how many questions there are in the array to make sure all the questions were answered at the end
+  const totalQuestions = flatQuestions?.length;// Checking how many questions there are in the array to make sure all the questions were answered at the end
   const [finalSelfEvaluation, setFinalSelfEvaluation] = useState();
   const criterias = [
     "לא רלוונטי לתפקיד",
@@ -106,7 +109,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
     if (evalu_Part_Type === 0) {//If the input is self evaluation then the object that will be returned is that the employee filled in and evalue himself
       return { questionnaireNum, userNum, userNum, evalu_Part_Type, answers };
     } else if (evalu_Part_Type === 1) {
-      return { questionnaireNum, employeesManager, userNum, evalu_Part_Type, answers };// employees manager is the current user which evalue the employee id 
+      return { questionnaireNum, employeesManager, userNum, evalu_Part_Type, answers };// employees manager is the current user which evalue the employee id
 
     }
   }

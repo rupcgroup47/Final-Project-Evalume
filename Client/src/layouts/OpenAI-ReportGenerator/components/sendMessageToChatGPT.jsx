@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const apiUrl = "https://api.openai.com/v1/chat/completions";
 const model = "gpt-3.5-turbo";
 
@@ -32,6 +34,7 @@ const sendMessageToChatGPT = async (apiKey, orgID, messages) => {
         console.error("Error:", error);
         const errorResponse = await error.response.json();
         console.log("Error Response:", errorResponse);
+        throw error;
     }
 };
 

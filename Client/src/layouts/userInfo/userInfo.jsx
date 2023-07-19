@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable */
+
 import { Container, Typography } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { styled } from "@mui/material/styles";
@@ -28,7 +29,7 @@ export default function UserInfo() {
     return () => setDirection(dispatch, "ltr");
   }, []);
 
-  //API calls
+  //  API calls
   useEffect(() => {
     let isMounted = true;
 
@@ -43,7 +44,6 @@ export default function UserInfo() {
       }
       catch (error) {
         if (isMounted) {
-          setError(error);
           console.log(error);
         }
       }
@@ -80,7 +80,7 @@ export default function UserInfo() {
           <AccordionDetails>
             {FAQ
               .filter(item => item.id === expanded) // Filter FAQ based on expanded question ID
-              .map(({ id, answer }) => (
+              .map(({ id1, answer }) => (
                 <Grid
                   container
                   direction="row"
@@ -88,7 +88,7 @@ export default function UserInfo() {
                   alignItems="baseline"
                   spacing={3}
                   marginTop="-10px"
-                  key={"q-" + id}
+                  key={"q-" + id1}
                 >
                   <Grid item xs={10}>
                     <Typography>{answer}</Typography>

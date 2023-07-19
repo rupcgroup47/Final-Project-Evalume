@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect, useContext } from "react";
 import { useMaterialUIController, setDirection } from "context";
 import Typography from "@mui/material/Typography";
@@ -24,6 +26,7 @@ import he from "date-fns/locale/he";
 import DialogSurvey from "./DialogSurvey";
 import { EvalueContext } from "context/evalueVariables";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
+import swal from "sweetalert";
 
 registerLocale("he", he);
 

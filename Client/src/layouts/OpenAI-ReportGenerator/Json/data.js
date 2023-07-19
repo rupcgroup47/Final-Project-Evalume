@@ -155,12 +155,12 @@ SELECT A.UserNum, UserFName + ' ' + UserLName AS UserName,
 	FROM AnswerOn A JOIN Employee E ON A.UserNum = E.UserNum
 	WHERE YEAR(AnswerInsertDate)=YEAR(GETDATE())
 	GROUP BY A.UserNum, UserFName, UserLName, evalu_part_type
-	ORDER BY A.UserNum DESC
+	ORDER BY A.UserNum DESC
 2.this query show you all the employees that finished the self evaluation section:
 select 	A.UserNum, UserFName + ' ' + UserLName AS UserName,
-	case when  isnull(evalu_part_type,0)=0 then N'משוב עצמי' end from Employee e 
+	case when  isnull(evalu_part_type,0)=0 then N'משוב עצמי' end from Employee e
     join (
-    select UserNum, MAX(Evalu_Part_Type) as Evalu_Part_Type from AnswerOn where YEAR(AnswerInsertDate)=YEAR(GETDATE()) 
+    select UserNum, MAX(Evalu_Part_Type) as Evalu_Part_Type from AnswerOn where YEAR(AnswerInsertDate)=YEAR(GETDATE())
     group by UserNum) as a on e.UserNum= a.UserNum
     where Evalu_Part_Type=0
 `);

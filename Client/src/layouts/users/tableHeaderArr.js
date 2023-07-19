@@ -1,4 +1,4 @@
-export const tableHeadArr = [
+const tableHeadArr = [
     {
         id: "fullName",
         textAlign: "center",
@@ -92,3 +92,5 @@ export const tableHeadArr = [
         show: true,
     },
 ];
+
+export default tableHeadArr;

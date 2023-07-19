@@ -1,17 +1,15 @@
+/* eslint-disable */
 
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-// import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import VerticalBarChart from "examples/Charts/BarCharts/VerticalBarChart";
 import { useEffect, useState, useContext } from "react";
 import { useMaterialUIController, setDirection } from "context";
-import reportsGoalsData from "./data/reportsGoalsData";
 import { EvalueContext } from "context/evalueVariables";
-import { MainStateContext } from "App";
 import ApiFetcher from "components/ApiFetcher";
 
 
@@ -38,7 +36,7 @@ function Dashboard() {
     labels: [],
     datasets: [
       {
-        label: 'ציון ממוצע',
+        label: "ציון ממוצע",
         data: [],
       },
     ],
@@ -52,24 +50,22 @@ function Dashboard() {
   }, []);
   const [selectedValueGraph1, setselectedValueGraph1] = useState("שירותיות"); // Initialize the selected value state
   const { API } = useContext(EvalueContext);
-  const { mainState, setMainState } = useContext(MainStateContext);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [dataTable, setDataTable] = useState([]);//bottom table
-  const [error, setError] = useState(null);
-  const [goals, setGoals] = useState([]);//goals
-  const [totalAvg, setTotalAvg] = useState([]);//years - to be add once we add data to our database
-  const [avgQuestions, setAvgQuestions] = useState([]);//dep table
+  const [dataTable, setDataTable] = useState([]);// bottom table
+  const [goals, setGoals] = useState([]);// goals
+  const [totalAvg, setTotalAvg] = useState([]);// years - to be add once we add data to our database
+  const [avgQuestions, setAvgQuestions] = useState([]);// dep table
   const [yearsChartData, setYearsChartData] = useState({
     labels: [],
     datasets: [
       {
-        label: 'ציון ממוצע',
+        label: "ציון ממוצע",
         data: [],
       },
     ],
   })
 
-  //all API calls
+  //  all API calls
   useEffect(() => {
     let isMounted = true;
 
@@ -85,7 +81,6 @@ function Dashboard() {
       }
       catch (error) {
         if (isMounted) {
-          setError(error);
           console.log(error);
         }
       }
@@ -104,7 +99,6 @@ function Dashboard() {
       }
       catch (error) {
         if (isMounted) {
-          setError(error);
           console.log(error);
         }
       }
@@ -131,7 +125,6 @@ function Dashboard() {
       }
       catch (error) {
         if (isMounted) {
-          setError(error);
           console.log(error);
         }
       }
@@ -150,7 +143,6 @@ function Dashboard() {
       }
       catch (error) {
         if (isMounted) {
-          setError(error);
           console.log(error);
         }
       }
@@ -172,6 +164,16 @@ function Dashboard() {
     setselectedValueGraph1(event.target.value);
   }
 
+  const getBackgroundColor = (index) => {
+    const colors = [
+      "rgba(255, 99, 132, 0.5)",
+      "rgba(54, 162, 235, 0.5)",
+      "rgba(255, 206, 86, 0.5)",
+    ];
+    return colors[index % colors.length];
+  };
+
+
   useEffect(() => {
     // Find the selected item in the JSON array
     const selectedOption = avgQuestions?.find((option) => option.quesGroup_Desc === selectedValueGraph1);
@@ -191,7 +193,7 @@ function Dashboard() {
   }, [selectedValueGraph1, avgQuestions]);
 
 
-  useEffect(() => {///Arranging the data of the goals and inserting them into the chart table
+  useEffect(() => {//  Arranging the data of the goals and inserting them into the chart table
     const processedData = goals?.reduce((acc, curr, index) => {
       const { goalName, goalStatus, num_of_statuses_byGoal } = curr;
 
@@ -231,7 +233,6 @@ function Dashboard() {
     data = sortedIndices.map(index => data[index]);
 
 
-
     const yearsTempChartData = {
       labels: labels || [],
       datasets:
@@ -246,14 +247,6 @@ function Dashboard() {
 
   }, [goals]);
 
-  const getBackgroundColor = (index) => {
-    const colors = [
-      'rgba(255, 99, 132, 0.5)',
-      'rgba(54, 162, 235, 0.5)',
-      'rgba(255, 206, 86, 0.5)',
-    ];
-    return colors[index % colors.length];
-  };
 
 
   return (

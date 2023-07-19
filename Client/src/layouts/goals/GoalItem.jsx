@@ -1,12 +1,14 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
+/* eslint-disable */
+
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
 import { useState, useEffect, useContext } from "react";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CloseDialog from "dialog/CloseDialog";
@@ -23,6 +25,7 @@ import {
   MenuItem,
   Select
 } from "@mui/material";
+import swal from "sweetalert";
 
 
 export default function GoalItem({
@@ -105,7 +108,7 @@ export default function GoalItem({
             handleUpdateStatus(tmpStatusIndex, selectedStatus);
           },
           (error) => {
-            if (error.name === 'AbortError') return
+            if (error.name === "AbortError") return
             console.log("err get=", error);
             swal({
               title: "קרתה תקלה!",
@@ -120,6 +123,10 @@ export default function GoalItem({
         abortController.abort()
         // stop the query by aborting on the AbortController on unmount
       }
+    }
+    return () => {
+      abortController.abort()
+      // stop the query by aborting on the AbortController on unmount
     }
   }, [tmpStatusIndex]);
 

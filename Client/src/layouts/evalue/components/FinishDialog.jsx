@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 This is a React functional component that displays a dialog box with a confirmation message when the user tries to delete a user from a table. It receives three props: open, setOpen, and onClick.
 

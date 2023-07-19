@@ -1,20 +1,20 @@
 
 const ApiFetcher = async (api, method, body) => {
     const abortController = new AbortController();
-    //set up the timeout for aborting the fetch request
+    //  set up the timeout for aborting the fetch request
     const timeoutId = setTimeout(() => {
         abortController.abort();
-    }, 5000); //adjust the timeout duration as needed
+    }, 5000); //    adjust the timeout duration as needed
 
     try {
         const response = await fetch(api,
             {
-                method: method,
+                method,
                 headers: new Headers({
                     "Content-Type": "application/json; charset=UTF-8",
                     Accept: "application/json; charset=UTF-8",
                 }),
-                body: body,
+                body,
                 signal: abortController.signal,
             });
 
@@ -33,7 +33,7 @@ const ApiFetcher = async (api, method, body) => {
     }
 
     catch (error) {
-        if (error.name === 'AbortError') { return };
+        if (error.name === "AbortError") { throw error; };
         console.log("err=", error);
         clearTimeout(timeoutId);
         throw error;

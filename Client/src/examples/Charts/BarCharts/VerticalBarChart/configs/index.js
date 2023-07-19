@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -30,13 +32,13 @@ function configs(labels, datasets) {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false,         
+          display: false,
         },
         datalabels: {
           display: false,
           color: "white"
         }
-    
+
       },
       scales: {
         y: {

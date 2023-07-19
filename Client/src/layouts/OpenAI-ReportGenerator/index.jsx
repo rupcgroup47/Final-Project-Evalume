@@ -1,20 +1,19 @@
+/* eslint-disable */
+
 import { Container, TextField, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { useMaterialUIController, setDirection } from "context";
-import { MainStateContext } from "App";
 import { EvalueContext } from "context/evalueVariables";
 import ApiFetcher from "components/ApiFetcher";
+import Swal from "sweetalert2"
 import sendMessageToChatGPT from "./components/sendMessageToChatGPT";
 import data from "./Json/data";
 import GPTTable from "./components/GPTTable";
-import Swal from 'sweetalert2'
-import './custom.css';
+import "./custom.css";
 
 function ReportGenerator() {
     const [, dispatch] = useMaterialUIController();
-    const { mainState, setMainState } = useContext(MainStateContext);
     const { API } = useContext(EvalueContext);
-    const [error, setError] = useState(null);
     const [openAIdetails, setOpenAIdetails] = useState(null);
     const [messages, setMessages] = useState(null);
     const [response, setResponse] = useState("");
@@ -36,7 +35,6 @@ function ReportGenerator() {
             }
             catch (error) {
                 if (isMounted) {
-                    setError(error);
                     console.log(error);
                 }
             }
@@ -51,8 +49,9 @@ function ReportGenerator() {
 
     // send the query to the server and gets the data for the table
     useEffect(() => {
+        let isMounted = true;
+
         if (response !== "") {
-            let isMounted = true;
 
             // Get importent details and set the main context
             const getTabledetails = async () => {
@@ -80,7 +79,6 @@ function ReportGenerator() {
                 catch (error) {
                     if (isMounted) {
                         console.log(error);
-                        setError(error);
                         Swal.fire({
                             title: "קרתה תקלה!",
                             text: 'מצטערים, נראה כי קרתה תקלה ואנו מתקשים להביא עבורך את המידע שביקשת. \nאנא נסה שנית או פנה לגורם מקצוע',
@@ -97,11 +95,15 @@ function ReportGenerator() {
                 isMounted = false;
             }
         }
+        return () => {
+            isMounted = false;
+        }
     }, [response]);
 
     useEffect(() => {
+        let isMounted = true;
+
         if (openAIdetails !== null) {
-            let isMounted = true;
             setShowTable(false);
             const sendOpenAIdetails = async () => {
                 try {
@@ -113,7 +115,6 @@ function ReportGenerator() {
                 }
                 catch (error) {
                     if (isMounted) {
-                        setError(error);
                         console.log(error);
                     }
                 }
@@ -125,10 +126,14 @@ function ReportGenerator() {
                 isMounted = false;
             }
         }
+
+        return () => {
+            isMounted = false;
+        }
     }, [messages]);
 
     const sendQuery = () => {
-        var textFieldValue = document.getElementById("query").value;
+        let textFieldValue = document.getElementById("query").value;
         setMessages([
             { role: "system", content: data },
             { role: "user", content: textFieldValue },
@@ -155,7 +160,7 @@ function ReportGenerator() {
                     <Typography sx={{ m: 2 }}>מחולל הדוחות נועד לעזור לך לצפות בטבלאות מתוך מאגר הנתונים שלך בצורה דינמית ונוחה באמצעות שילוב של מערכת בינה מלאכותית chatGPT של חברת openAI.</Typography>
                     <Typography sx={{ m: 2 }}>כל שעליך לעשות הוא לרשום בצורה ברורה מה ברצונך לראות בתוך שדה הטקסט החופשי וללחוץ על כפתור שלח</Typography>
                     <Typography sx={{ m: 2 }}>במידה והשדות שהזנת תקינים, כעבור מספר שניות תוצג בפנייך הטבלה שביקשת!</Typography>
-                    <Typography sx={{ m: 2 }} style={{ whiteSpace: 'pre-line' }}>{'דוגמאות:\n"הבא לי רשימה של כל העובדים"\n"הצג לי את כל העובדים ושמות המחלקות שאליהם שייכים"\n"הצג לי את כל היעדים שמשויכים לעובד ואת שמות העובדים"'}</Typography>
+                    <Typography sx={{ m: 2 }} style={{ whiteSpace: "pre-line" }}>{'דוגמאות:\n"הבא לי רשימה של כל העובדים"\n"הצג לי את כל העובדים ושמות המחלקות שאליהם שייכים"\n"הצג לי את כל היעדים שמשויכים לעובד ואת שמות העובדים"'}</Typography>
                 </Stack>
                 <Stack
                     key="header"

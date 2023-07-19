@@ -1,12 +1,13 @@
+/* eslint-disable */
+
 import { useState, useEffect, useContext } from "react";
-import { useLocation, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
-import { MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box } from '@mui/material';
+import { MenuItem } from "@mui/material";
 import MDBox from "components/MDBox";
 import CreateOrUpdateUserDialog from "dialog/CreateOrUpdateUserDialog";
 import { MainStateContext } from "App";
@@ -23,12 +24,7 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
-import { makeStyles } from "@material-ui/core/styles";
-const useStyles = makeStyles({
-  iconButton: {
-    color: "red",
-  },
-});
+
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -51,8 +47,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
       setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
     }
 
-    /** 
-     The event listener that's calling the handleTransparentNavbar function when 
+    /**
+     The event listener that"s calling the handleTransparentNavbar function when
      scrolling the window.
     */
     window.addEventListener("scroll", handleTransparentNavbar);
@@ -69,8 +65,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const [openDialog, setOpenDialog] = useState(false);
-  // const storedUserInformation = JSON.parse(localStorage.getItem('Current User'));
-  // const [userInformation, setUserInformation] = useState(storedUserInformation || {});
   const [showUpdateUserDialog, setShowUpdateUserDialog] = useState(false);
 
   const handleUpdateUser = () => {
@@ -82,8 +76,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
     setOpenDialog(false);
   };
   const handleLogout = () => {
-    localStorage.removeItem('Current User');
-    window.location.href = '/authentication/sign-in';
+    localStorage.removeItem("Current User");
+    window.location.href = "/authentication/sign-in";
   };
   const renderProfileMenu = () => (
     <Menu
@@ -106,7 +100,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleSaveChanges = () => {
     setOpenDialog(false);
-    console.log('Updated details:');
+    console.log("Updated details:");
   };
 
 

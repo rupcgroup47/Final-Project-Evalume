@@ -1,20 +1,20 @@
+/* eslint-disable */
+
 import { useState, useEffect, useContext } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./calendar.css";
 import { Card, Typography, Grid, Stack, Button, IconButton, Dialog, DialogContent } from "@mui/material";
-// import { meetings } from "./meetingsData";
 import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import MeetingDialog from ".//meetingDialog"
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import MeetingDialog from "./meetingDialog"
 
 function MeetingCalendar({ fromAlert }) {
   const { meetings, chosenEmployee } = useContext(EvalueContext);
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const locale = "he-IL";
-  const calendarType = "Hebrew";
   const [filteredMeetings, setFilteredMeetings] = useState([]);
   const { mainState } = useContext(MainStateContext);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -53,8 +53,8 @@ function MeetingCalendar({ fromAlert }) {
 
     const hasMeeting = meetings?.some(
       (meeting) => {
-        const parts = meeting.date.split('/'); // Split the date string by '/'
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
+        const parts = meeting.date.split("/"); // Split the date string by "/"
+        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format "YYYY-MM-DD"
         const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
         return (
           meetingDate.getFullYear() === theDate.getFullYear() &&
@@ -79,8 +79,8 @@ function MeetingCalendar({ fromAlert }) {
 
       const inTheSameDayMeetings = meetings?.filter((meeting) => {//show all meetings schedule in the same day
         console.log(meeting);
-        const parts = meeting.date.split('/'); // Split the date string by '/'
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format 'YYYY-MM-DD'
+        const parts = meeting.date.split("/"); // Split the date string by "/"
+        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // Rearrange the parts in the format "YYYY-MM-DD"
         const meetingDate = new Date(formattedDate); // Convert the formatted string to a JavaScript Date object
 
         const selectedDateObj = new Date(selectedDate); // Convert the selectedDate to a JavaScript Date object
@@ -107,7 +107,6 @@ function MeetingCalendar({ fromAlert }) {
             value={date}
             tileDisabled={tileDisabled}
             locale={locale}
-            calendarType={calendarType}
             onClickDay={(date) => setSelectedDate(date)}
             tileClassName={meetingsInTheSameDayExist}
           />
@@ -140,9 +139,9 @@ function MeetingCalendar({ fromAlert }) {
                 }}
               >
                 <Typography sx={{ m: 2, fontSize: "1rem" }} key={meeting.id}>
-                  {' פגישה עם ' + (meeting.userNum !== mainState.userNum ? meeting.employeeName : meeting.managerName)} <br />
-                  {' בשעה: ' + meeting.time} <br />
-                  {' במיקום: ' + meeting.meetingPlace} <br />
+                  {" פגישה עם " + (meeting.userNum !== mainState.userNum ? meeting.employeeName : meeting.managerName)} <br />
+                  {" בשעה: " + meeting.time} <br />
+                  {" במיקום: " + meeting.meetingPlace} <br />
                 </Typography>
               </Card>
             </Grid>

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Button,
   Dialog,
@@ -7,15 +9,15 @@ import {
   Card
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale } from "react-datepicker";
 import he from "date-fns/locale/he";
-registerLocale("he", he);
-import addNotification from "react-push-notification";
-import { Notifications } from "react-push-notification";
+import addNotification, { Notifications } from "react-push-notification";
 import { EvalueContext } from "context/evalueVariables";
 import AllExistForms from "dialog/AllExistForms";
+import swal from "sweetalert";
+
+registerLocale("he", he);
 
 export default function CreateYearlyProcessDialog({
   open,
@@ -26,13 +28,13 @@ export default function CreateYearlyProcessDialog({
   const [openProcess, setOpenProcess] = useState({});
   const [finishDate, setfinishDate] = useState(new Date());
   const { API } = useContext(EvalueContext);
-  const [selectedForms, setSelectedForms] = useState([]);//selected values for each select
+  const [selectedForms, setSelectedForms] = useState([]);// selected values for each select
   const [showOpenEvalueDialog, setShowOpenEvalueDialog] = useState(false);
 
 
-  const handleChange = (event) => {//called every time a select element changes, and it will update the selectedForms array with the new selected value
+  const handleChange = (event) => {// called every time a select element changes, and it will update the selectedForms array with the new selected value
     const index = event.target.name;
-    const value = event.target.value;//form id
+    const value = event.target.value;// form id
     const newSelectedForms = [...selectedForms];
     newSelectedForms[index] = value;
     setSelectedForms(newSelectedForms);
@@ -41,7 +43,7 @@ export default function CreateYearlyProcessDialog({
   const handleFinish = () => {
     console.log(selectedForms)
 
-    if (selectedForms.length != questionnairesData?.length) {//Check that all questionnaires have been selected
+    if (selectedForms.length !== questionnairesData?.length) {// Check that all questionnaires have been selected
       addNotification({
         title: "אזהרה",
         subtitle: "לא בחרת בכל האפשרויות",
@@ -50,7 +52,7 @@ export default function CreateYearlyProcessDialog({
         closeButton: "X",
       });
     } else {
-      setOpenProcess((prevObject) => ({ ...prevObject, selectedForms, date: finishDate }));//Connecting the selected date and the set of questionnaires to one object
+      setOpenProcess((prevObject) => ({ ...prevObject, selectedForms, date: finishDate }));// Connecting the selected date and the set of questionnaires to one object
       console.log(openProcess);
     }
   };
@@ -85,7 +87,7 @@ export default function CreateYearlyProcessDialog({
         })
         .then(
           (result) => {
-            console.log("success");
+            console.log("success", result);
             swal({
               title: "הצלחנו!",
               text: "אתחול התהליך הושלם בהצלחה",
@@ -95,7 +97,7 @@ export default function CreateYearlyProcessDialog({
             setOpen(false);
           },
           (error) => {
-            if (error.name === 'AbortError') return
+            if (error.name === "AbortError") return
             console.log("err get=", error);
             swal({
               title: "קרתה תקלה!",
@@ -110,6 +112,10 @@ export default function CreateYearlyProcessDialog({
         abortController.abort()
         // stop the query by aborting on the AbortController on unmount
       }
+    }
+    return () => {
+      abortController.abort()
+      // stop the query by aborting on the AbortController on unmount
     }
   }, [openProcess]);
 
@@ -142,7 +148,7 @@ export default function CreateYearlyProcessDialog({
               <h4>{`${testObject.roleGrouptype} - ${testObject.roletype}`}</h4>
               <select key={index} name={index} onChange={handleChange} style={{ fontFamily: "rubik", fontSize: "large" }}>
                 <option value="">בחירת שאלון מתאים</option>
-                {testObject.forms.map((form) => ( //Go through all the questionnaires appropriate for role type & group type
+                {testObject.forms.map((form) => ( //  Go through all the questionnaires appropriate for role type & group type
                   <option key={form.id} value={form.id}>שאלון {form.year}-{form.id} </option>
                 ))}
               </select>

@@ -1,12 +1,14 @@
+/* eslint-disable */
+
 import { useMaterialUIController, setDirection } from "context";
 import React, { useState, useEffect, useContext } from "react";
-import { MainStateContext } from "App";
-import CustomizedSteppers from "../steper";
-import SurveyForm from "../surveyForm";
 import { useLocation } from "react-router-dom";
-import Feedback from "../feedback"
+import { MainStateContext } from "App";
 import { EvalueContext } from "context/evalueVariables";
 import { Card, Container, CardMedia, CardContent, Typography } from "@mui/material";
+import CustomizedSteppers from "../steper";
+import SurveyForm from "../surveyForm";
+import Feedback from "../feedback"
 
 function ManagerEvalues() {
   const [, dispatch] = useMaterialUIController();
@@ -16,6 +18,9 @@ function ManagerEvalues() {
   const [questionnaireNum, setQuestionnaireNum] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [finishState, setFinishState] = useState(false);
+  const location = useLocation();
+  const currentStep = location.state;
+  const userId = mainState.mainState.userNum;// The employee who is now connected to the system
 
   // Changing the direction to rtl
   useEffect(() => {
@@ -53,10 +58,10 @@ function ManagerEvalues() {
         .then(
           (result) => {
             console.log("success");
-            if (result.userNum == undefined && currentStep === 2) {
+            if (result.userNum === undefined && currentStep === 2) {
               setQuestionnaireNum(result.questionnaireNum);
             }
-            else if (result.userNum == undefined && currentStep === 1) { //once the list will be dynamic shouldn't be happened
+            else if (result.userNum === undefined && currentStep === 1) { //  once the list will be dynamic shouldn't be happened
               setFinishState(true);
             }
             else {
@@ -77,11 +82,13 @@ function ManagerEvalues() {
         // stop the query by aborting on the AbortController on unmount
       };
     }
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
   }, []);
 
-  const location = useLocation();
-  const currentStep = location.state;
-  const userId = mainState.mainState.userNum;//The employee who is now connected to the system
+
   return (
     <Container maxWidth="xl" sx={{ pt: 5, pb: 5 }}>
       <CustomizedSteppers currentStep={currentStep} />

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -13,7 +15,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-/** 
+/**
   All of the routes for the Material Dashboard 2 React are added here,
   You can add a new route, customize the routes and delete the routes here.
 
@@ -22,7 +24,7 @@ Coded by www.creative-tim.com
 
   For adding a new route you can follow the existing routes in the routes array.
   1. The `type` key with the `collapse` value is used for a route.
-  2. The `type` key with the `title` value is used for a title inside the Sidenav. 
+  2. The `type` key with the `title` value is used for a title inside the Sidenav.
   3. The `type` key with the `divider` value is used for a divider between Sidenav items.
   4. The `name` key is used for the name of the route on the Sidenav.
   5. The `key` key is used for the key of the route (It will help you with the key prop inside a loop).
@@ -38,13 +40,13 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Users from "layouts/users";
-import RTL from "layouts/rtl";
+// import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import Goals from "layouts/goals/Goals";
 import Evaluations from "layouts/evaluation";
 import EvalueForm from "layouts/evalue";
-import { Outlet } from "react-router-dom";
+// import { Outlet } from "react-router-dom";
 import MyEvalues from "layouts/profile/components/MyEvalues";
 import ReportGenerator from "layouts/OpenAI-ReportGenerator";
 // @mui icons
@@ -55,6 +57,7 @@ import Feedback from "layouts/evaluation/components/feedback";
 import BuildEvaluation from "layouts/evalue/buildEvaluation";
 import GoalsInfoTable from "layouts/goals/GoalsInfoTable";
 import UserInfo from "layouts/userInfo/userInfo";
+
 const routes = [
   {
     type: "collapse",
@@ -62,7 +65,7 @@ const routes = [
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
-    component: <Profile />,
+    component: <Profile />
   },
   {
     type: "collapse",
@@ -81,9 +84,7 @@ const routes = [
     route: "/check",
     icon: <Icon fontSize="small">explore</Icon>,
     component: <GoalsInfoTable />,
-    forAdmin: true,
-    // isHiddenFromSideNav: true
-
+    forAdmin: true
   },
   {
     type: "collapse",
@@ -92,7 +93,7 @@ const routes = [
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/users",
     component: <Users />,
-    forAdmin: true,
+    forAdmin: true
   },
   {
     type: "collapse",
@@ -101,9 +102,8 @@ const routes = [
     icon: <Icon fontSize="small">feed</Icon>,
     route: "/evalueMain",
     component: <BuildEvaluation />,
-    forAdmin: true,
+    forAdmin: true
   },
-  ,
   {
     type: "collapse",
     name: "הקמת טופס הערכה",
@@ -124,22 +124,13 @@ const routes = [
     component: <Feedback />,
     isHiddenFromSideNav: true
   },
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "RTL",
-  //   key: "rtl",
-  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-  //   route: "/rtl",
-  //   component: <RTL />,
-  // },
   {
     type: "collapse",
     name: "טופס הערכה שנתית",
     key: "evaluation",
     icon: <Icon fontSize="small">poll</Icon>,
     route: "/evaluation",
-    component: <Evaluations />,
+    component: <Evaluations />
   },
   {
     type: "collapse",
@@ -148,7 +139,7 @@ const routes = [
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/goals",
     component: <Goals />,
-    forManager: true,
+    forManager: true
   },
   {
     type: "collapse",
@@ -157,8 +148,7 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
-    forManager: true,
-    // isHiddenFromSideNav: true,
+    forManager: true
   },
   {
     type: "collapse",
@@ -167,8 +157,7 @@ const routes = [
     icon: <Icon fontSize="small">table_chart</Icon>,
     route: "/ReportGenerator",
     component: <ReportGenerator />,
-    forManager: true,
-    // isHiddenFromSideNav: true,
+    forManager: true
   },
   {
     type: "collapse",
@@ -177,7 +166,7 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
-    isHiddenFromSideNav: true,
+    isHiddenFromSideNav: true
   },
   {
     type: "collapse",
@@ -186,7 +175,7 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/myEvalues",
     component: <MyEvalues />,
-    isHiddenFromSideNav: true,
+    isHiddenFromSideNav: true
   },
   {
     type: "collapse",
@@ -195,7 +184,7 @@ const routes = [
     icon: <Icon fontSize="small">InsertDriveFile</Icon>,
     route: "/managerEvalues",
     component: <ManagerEvalues />,
-    isHiddenFromSideNav: true,
+    isHiddenFromSideNav: true
   },
   {
     type: "collapse",
@@ -204,8 +193,8 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/calendar",
     component: <MeetingCalendar />,
-    isHiddenFromSideNav: true,
-  },
+    isHiddenFromSideNav: true
+  }
 ];
 
 export default routes;

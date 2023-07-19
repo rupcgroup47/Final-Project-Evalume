@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -73,7 +75,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       setWhiteSidenav(dispatch, window.innerWidth < 1200 ? false : whiteSidenav);
     }
 
-    /** 
+    /**
      The event listener that's calling the handleMiniSidenav function when resizing the window.
     */
     window.addEventListener("resize", handleMiniSidenav);
@@ -196,11 +198,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       />
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
-        <LinkDom to="/userInfo"> 
+        <LinkDom to="/userInfo">
         <MDButton rel="noreferrer" variant="gradient" color={sidenavColor} fullWidth>
           מידע למשתמש
         </MDButton>
-        </LinkDom> 
+        </LinkDom>
       </MDBox>
     </SidenavRoot>
   );

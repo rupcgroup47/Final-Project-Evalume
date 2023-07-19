@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import { Container } from "@mui/material";
 import { useEffect } from "react";
-import GoalsTable from "./GoalsTable";
 import { useMaterialUIController, setDirection } from "context";
+import GoalsTable from "./GoalsTable";
 
 
 function Goals() {

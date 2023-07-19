@@ -1,7 +1,7 @@
+/* eslint-disable */
+
 import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
 import MDBox from "components/MDBox";
-import ProfileInfoCard from "./components/ProfileInfoCard";
 import Header from "layouts/profile/components/Header";
 import { useEffect, useState, useContext } from "react";
 import { MainStateContext } from "App";
@@ -16,7 +16,7 @@ import KPIRating from "./components/KPI";
 
 function Overview() {
   const [, dispatch] = useMaterialUIController();
-  const { mainState, setMainState } = useContext(MainStateContext);
+  const { mainState } = useContext(MainStateContext);
   const { API, setDepState, setMeetings } = useContext(EvalueContext);
   const [evalus, setEvalus] = useState([]);
   const [goals, setGoals] = useState([]);
@@ -24,9 +24,8 @@ function Overview() {
   const [meeting, setMeeting] = useState([]);
   const [questionnairesData, setQuestionnairesData] = useState([]);
   const [selfKPI, setSelfKPI] = useState([]);
-  const [error, setError] = useState(null);
 
-  //all API calls
+  //  all API calls
   useEffect(() => {
     let isMounted = true;
 
@@ -44,7 +43,6 @@ function Overview() {
       }
       catch (error) {
         if (isMounted) {
-          setError(error);
           console.log(error);
         }
       }
@@ -55,7 +53,7 @@ function Overview() {
     if (evalus.length === 0 && mainState.userNum) {
       const getEveluations = async () => {
         try {
-          const fetchedData = await ApiFetcher(API.apiGetEvaluations + "/" + mainState.userNum, "GET", null);
+          const fetchedData = await ApiFetcher(`${API.apiGetEvaluations}/${mainState.userNum}`, "GET", null);
           if (isMounted) {
             console.log("success");
             if (fetchedData[0].text !== undefined) {
@@ -68,7 +66,6 @@ function Overview() {
         }
         catch (error) {
           if (isMounted) {
-            setError(error);
             console.log(error);
           }
         }
@@ -88,7 +85,6 @@ function Overview() {
         }
         catch (error) {
           if (isMounted) {
-            setError(error);
             console.log(error);
           }
         }
@@ -108,7 +104,6 @@ function Overview() {
         }
         catch (error) {
           if (isMounted) {
-            setError(error);
             console.log(error);
           }
         }
@@ -123,13 +118,12 @@ function Overview() {
           const fetchedData = await ApiFetcher(API.apiStatusMeeting + mainState.userNum, "GET", null);
           if (isMounted) {
             console.log("success");
-            console.log('meeting',fetchedData)
+            console.log("meeting",fetchedData)
             setMeeting(fetchedData);
           }
         }
         catch (error) {
           if (isMounted) {
-            setError(error);
             console.log(error);
           }
         }
@@ -155,7 +149,6 @@ function Overview() {
         }
         catch (error) {
           if (isMounted) {
-            setError(error);
             console.log(error);
           }
         }
@@ -175,7 +168,6 @@ function Overview() {
         }
         catch (error) {
           if (isMounted) {
-            setError(error);
             console.log(error);
           }
         }
@@ -196,7 +188,6 @@ function Overview() {
         }
         catch (error) {
           if (isMounted) {
-            setError(error);
             console.log(error);
           }
         }

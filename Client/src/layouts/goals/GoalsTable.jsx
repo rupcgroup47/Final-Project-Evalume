@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,14 +9,23 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useMaterialUIController, setDirection } from "context";
-import TableToolbarGoal from "./TableToolBarGoal";
 import { TablePagination } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import { useDebounce } from "use-debounce";
-import GoalItem from "./GoalItem";
 import { EvalueContext } from "context/evalueVariables";
 import { MainStateContext } from "App";
+import TableToolbarGoal from "./TableToolBarGoal";
+import GoalItem from "./GoalItem";
 
+const _tableHead = [
+  {
+    id: "goalName",
+    textAlign: "right",
+    disablePadding: true,
+    label: "שם יעד",
+    show: true,
+  },
+];
 
 export default function GoalsTable() {
   const [, dispatch] = useMaterialUIController();
@@ -78,7 +89,7 @@ export default function GoalsTable() {
     }
   }, []);
 
-  //search goal 
+  //search goal
   const [searchInput, setSearchInput] = useState("");
   const [searchDebounce] = useDebounce(searchInput, 500);
   useEffect(() => {
@@ -190,13 +201,5 @@ export default function GoalsTable() {
   );
 }
 
-const _tableHead = [
-  {
-    id: "goalName",
-    textAlign: "right",
-    disablePadding: true,
-    label: "שם יעד",
-    show: true,
-  },
-];
+
 

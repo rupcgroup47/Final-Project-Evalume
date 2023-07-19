@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -34,7 +36,7 @@ const radio = {
         border: `${borderWidth[1]} solid ${borderColor}`,
         borderRadius: "50%",
       },
-
+      // eslint-disable-next-line
       "&:after": {
         transition: "opacity 250ms ease-in-out",
         content: `""`,

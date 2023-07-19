@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useState } from "react";
 import {
   Paper,
@@ -9,7 +11,8 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-const PersonalGoals = ({ goals }) => {///receive all user goals and their data
+
+const PersonalGoals = ({ goals }) => {//  receive all user goals and their data
   const [selectedRow, setSelectedRow] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);

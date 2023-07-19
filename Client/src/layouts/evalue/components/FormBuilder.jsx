@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useEffect, useState, useContext } from "react";
 import { Container, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";

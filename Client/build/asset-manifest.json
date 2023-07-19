@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/cgroup47/test2/tar5/static/css/main.4ffcc6d2.css",
+    "main.js": "/cgroup47/test2/tar5/static/js/main.426a3c5c.js",
+    "static/media/Thumbs-Up-cartoon-drawing.jpg": "/cgroup47/test2/tar5/static/media/Thumbs-Up-cartoon-drawing.9992d0f475c3ce61aa27.jpg",
+    "static/media/warehouse.jpg": "/cgroup47/test2/tar5/static/media/warehouse.16db7dcac162e5c1d7e9.jpg",
+    "static/media/packages.jpg": "/cgroup47/test2/tar5/static/media/packages.71ef4f31b6fd7c2dbb7b.jpg",
+    "static/media/rubik-all-400-normal.woff": "/cgroup47/test2/tar5/static/media/rubik-all-400-normal.61010147d313697844c0.woff",
+    "static/media/rubik-latin-400-normal.woff2": "/cgroup47/test2/tar5/static/media/rubik-latin-400-normal.65cfd3d83c8c52c45c77.woff2",
+    "static/media/avatar.png": "/cgroup47/test2/tar5/static/media/avatar.867978d9a80136f33711.png",
+    "static/media/rubik-latin-ext-400-normal.woff2": "/cgroup47/test2/tar5/static/media/rubik-latin-ext-400-normal.7e30dd8d0acbfec04ab8.woff2",
+    "static/media/rubik-cyrillic-400-normal.woff2": "/cgroup47/test2/tar5/static/media/rubik-cyrillic-400-normal.15565e39b272cbf5d02e.woff2",
+    "static/media/rubik-cyrillic-ext-400-normal.woff2": "/cgroup47/test2/tar5/static/media/rubik-cyrillic-ext-400-normal.ae191b14cc3cbf861d08.woff2",
+    "static/media/rubik-hebrew-400-normal.woff2": "/cgroup47/test2/tar5/static/media/rubik-hebrew-400-normal.5e6e7403617677002c27.woff2",
+    "index.html": "/cgroup47/test2/tar5/index.html",
+    "main.4ffcc6d2.css.map": "/cgroup47/test2/tar5/static/css/main.4ffcc6d2.css.map",
+    "main.426a3c5c.js.map": "/cgroup47/test2/tar5/static/js/main.426a3c5c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4ffcc6d2.css",
+    "static/js/main.426a3c5c.js"
+  ]
+}

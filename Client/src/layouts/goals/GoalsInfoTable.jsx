@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,15 +9,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useMaterialUIController, setDirection } from "context";
-import TableToolbarGoal from "./TableToolBarGoal";
 import { TablePagination } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import { useDebounce } from "use-debounce";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CloseDialog from "dialog/CloseDialog";
 import CreateOrUpdateGoalDialog from "dialog/CreateOrUpdateGoalDialog";
 import { EvalueContext } from "context/evalueVariables";
+import TableToolbarGoal from "./TableToolBarGoal";
 
 
 export default function GoalsInfoTable() {
@@ -84,15 +86,16 @@ export default function GoalsInfoTable() {
         // stop the query by aborting on the AbortController on unmount
       };
     }
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
   }, []);
 
   //search goal
   const [searchInput, setSearchInput] = useState("");
   const [searchDebounce] = useDebounce(searchInput, 500);
 
-  useEffect(() => {
-    handleSearch(searchDebounce);
-  }, [searchDebounce]);
 
   const handleSearch = (value) => {
     setSearchInput(value);
@@ -104,6 +107,10 @@ export default function GoalsInfoTable() {
     setItems(value?.length > 0 ? sx : goals);
 
   };
+  
+  useEffect(() => {
+    handleSearch(searchDebounce);
+  }, [searchDebounce]);
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - items.length);
 
@@ -134,7 +141,7 @@ export default function GoalsInfoTable() {
                 <TableRow key={index}>
                   <TableCell style={{ width: "33%" }}>{goal.goalName}</TableCell>
                   <TableCell style={{ width: "33%" }}>
-                    {goal.is_Active ? 'פעיל' : 'לא פעיל'}
+                    {goal.is_Active ? "פעיל" : "לא פעיל"}
                   </TableCell>
                   <TableCell style={{ width: "33%" }}>
                     <IconButton color="primary" onClick={() => handleEditClick(goal)}>

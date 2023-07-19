@@ -1,5 +1,6 @@
+/* eslint-disable */
+
 import {
-    // Box,
     Paper,
     Table,
     TableBody,
@@ -10,12 +11,9 @@ import {
     TableRow,
     Button,
     Tooltip
-    // TableSortLabel,
 } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import { useEffect, useState, useContext } from "react";
-// import { visuallyHidden } from "@mui/utils";
-import { EvalueContext } from "context/evalueVariables";
+import { useEffect, useState } from "react";
 import TableItem from "components/TableItem";
 import TableToolbar from "components/TableToolbar";
 import * as XLSX from "xlsx";
@@ -42,13 +40,13 @@ export default function GPTTable({ tableData, setTableData }) {
         setItems(tableData);
     }, [tableData]);
 
-    //Export the table to excel
+    //  Export the table to excel
     const exportToExcel = () => {
         const worksheet = XLSX.utils.json_to_sheet(tableData);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
-        XLSX.writeFile(workbook, 'data.xlsx');
+        XLSX.writeFile(workbook, "data.xlsx");
     };
 
     // show empty rows if the array / filted array is epmty or less then rowsPerPage

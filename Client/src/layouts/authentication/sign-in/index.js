@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -24,8 +26,8 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import { IconButton, InputAdornment } from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { IconButton, InputAdornment } from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
@@ -33,9 +35,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/warehouse.jpg";
 import { useEffect, useContext, useState } from "react";
-// import { Notifications } from 'react-push-notification';
-// import addNotification from 'react-push-notification';
-  
+
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setDirection } from "context";
 import { MainStateContext } from "App";
@@ -52,13 +52,13 @@ function Basic() {
     password: "",
   });
   const [userDetailsValidation, setUserDetailsValidation] = useState(false);
-  const {mainState,setMainState} = useContext(MainStateContext);
+  const { setMainState } = useContext(MainStateContext);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
   };
   useEffect(() => {
-    if (userDetailsValidation){
+    if (userDetailsValidation) {
       fetch(API.apiUserUrllogin + "userEmail=" + userData.email + "&userpassword=" + userData.password, {
         method: "GET",
         headers: new Headers({
@@ -73,9 +73,9 @@ function Basic() {
             // get error message from body or default to response statusText
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
-        }
+          }
 
-        return data;
+          return data;
         })
         .then(
           (result) => {
@@ -94,7 +94,7 @@ function Basic() {
           }
         );
     }
-   
+
   }, [userDetailsValidation]);
 
   const changeHandler = (e) => {
@@ -143,7 +143,7 @@ function Basic() {
             </MDBox>
             <MDBox mb={2}>
               <MDInput
-                type={passwordVisible ? 'text' : 'password'}
+                type={passwordVisible ? "text" : "password"}
                 name="password"
                 value={userData.password}
                 placeholder="סיסמה"
@@ -171,7 +171,7 @@ function Basic() {
               >
                 התחבר{" "}
               </MDButton>
-              <MDTypography variant="h4"  mt={1}>
+              <MDTypography variant="h4" mt={1}>
                 {validationsMsg}
               </MDTypography>
             </MDBox>
@@ -183,18 +183,3 @@ function Basic() {
 }
 
 export default Basic;
-
-  // const checkUser = () => {// Checking whether the user details exist and are appropriate, if they are appropriate, the user details go to the dashboard via navigate, if not, an error message pops up and the details must be re-entered
-  //   // const usercheck = users.find(
-  //   //   (user) => user.email === userData.email && user.password === userData.password
-  //   // );
-  //   if (usercheck) {
-  //     localStorage.setItem('Current User', JSON.stringify(userData)); // Set user details in local storage
-  //     console.log("Login successful");
-  //     setMsg("");
-  //     navigate("layouts/profile");
-  //   } else {
-  //     console.log("Wrong password or email");
-  //     setMsg("פרטים לא נכונים או משתמש לא קיים");
-  //   }
-  // };

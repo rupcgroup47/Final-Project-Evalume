@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /*
 This is a React component that creates a dialog box for creating a new user. The component uses Material UI library for its UI components.
 
@@ -30,6 +32,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useEffect, useState, useContext } from "react";
 import { EvalueContext } from "context/evalueVariables";
+import swal from "sweetalert";
 
 export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setItems, goal, initGoalName, condition, fromFeedback }) {
   const [newGoalName, setNewGoalName] = useState(initGoalName);
@@ -104,7 +107,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
   };
 
 
-  //update Goal using PUT api
+  //  update Goal using PUT api
   useEffect(() => {
     const abortController = new AbortController();
     if (update !== false) {
@@ -133,7 +136,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
         .then(
           (result) => {
             console.log("success" + result);
-            if (result == -1) {
+            if (result === -1) {
               swal({
                 title: "פעולה בוטלה!",
                 text: "נראה כי שם היעד כבר קיים במערכת",
@@ -177,6 +180,10 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
         // stop the query by aborting on the AbortController on unmount
       };
     }
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
   }, [update]);
 
   // Post new Goal
@@ -208,7 +215,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
         .then(
           (result) => {
             console.log("success" + result);
-            if (result == -1) {
+            if (result === -1) {
               swal({
                 title: "פעולה בוטלה!",
                 text: "נראה כי שם היעד כבר קיים במערכת",
@@ -222,11 +229,11 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
                 goalName: newGoalName,
                 is_Active: 1
               };
-              //Add new goal at the end of the array
-              if(fromFeedback){
+              //  Add new goal at the end of the array
+              if (fromFeedback) {
                 setGoals((oldArray) => [...oldArray, NewGoalRes]);
               }
-              else{
+              else {
                 setGoals((oldArray) => [...oldArray, NewGoalRes]);
                 setItems((oldArray) => [...oldArray, NewGoalRes]);
               }
@@ -259,6 +266,10 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
         // stop the query by aborting on the AbortController on unmount
       };
     }
+    return () => {
+      abortController.abort();
+      // stop the query by aborting on the AbortController on unmount
+    };
   }, [post]);
 
   return (

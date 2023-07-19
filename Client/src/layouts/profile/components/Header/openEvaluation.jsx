@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { React, useState } from "react";
 import CreateYearlyProcessDialog from "dialog/CreateYearlyProcessDialog";
 import { Button } from "@mui/material";

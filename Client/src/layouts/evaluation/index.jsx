@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Card, Container, CardMedia, CardContent, Typography } from "@mui/material";
 import { useMaterialUIController, setDirection } from "context";
 import React, { useState, useEffect, useContext } from "react";

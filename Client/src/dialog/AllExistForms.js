@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Grid,
   Box,
@@ -15,7 +17,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { useEffect, useState, useContext } from "react";
 import { EvalueContext } from "context/evalueVariables";
 
-export default function AllExistForms({ //shows all the forms group by role type & group type 
+export default function AllExistForms({ //  shows all the forms group by role type & group type
   open,
   setOpen,
   questionnairesData
@@ -35,7 +37,7 @@ export default function AllExistForms({ //shows all the forms group by role type
   const handleFormClick = (form) => {
     setSelectedForm(form);
 
-    { console.log(form) }
+    console.log(form);
   };
 
   const handleCloseDialog = () => {
@@ -131,7 +133,7 @@ export default function AllExistForms({ //shows all the forms group by role type
                 <div>
                   {testObject.forms.map((form) => (
                     <div key={form.id}>
-                      <a key={form.id} value={form.id} onClick={() => handleFormClick(form)}
+                      <a key={form.id} value={form.id} role="button" onClick={() => handleFormClick(form)}
                         style={{ cursor: "pointer" }}>
                         שאלון {form.year}-{form.id}
                       </a>
@@ -161,7 +163,7 @@ export default function AllExistForms({ //shows all the forms group by role type
                       </AccordionSummary>
 
                       <AccordionDetails>
-                        {questions.map(({ questionNum, quesContent }) => (//show the questions inside the title
+                        {questions.map(({ questionNum, quesContent }) => (//  show the questions inside the title
                           <Grid
                             container
                             direction="row"

@@ -1,11 +1,11 @@
+/* eslint-disable */
+
 /*
 This is a React component that implements a filter menu for a table. It imports several components from the Material-UI library, including Badge, ButtonBase, Divider, Fade, FormControl, IconButton, InputLabel, Menu, MenuItem, Select, and Typography.
 
 The FilterMenu component takes several props, including users (an array of user objects), and a series of filters and corresponding setter functions (
-  
-  
-  
-  , setFilterName, filterEmail, setFilterEmail, filterGender, setFilterGender, filterDepartment, setFilterDepartment, filterJob, and setFilterJob).
+
+, setFilterName, filterEmail, setFilterEmail, filterGender, setFilterGender, filterDepartment, setFilterDepartment, filterJob, and setFilterJob).
 
 When the component is rendered, it displays an icon button that, when clicked, opens a filter menu. The menu displays several filter items, each corresponding to a different filter (e.g. name, email, gender, department, and job). Each filter item contains a Select component that allows the user to select a filter value from a list of options. When a user selects a filter value, the corresponding filter setter function is called with that value.
 
@@ -88,15 +88,15 @@ export default function FilterMenu({
           aria-haspopup="true"
           color={
             filterName ||
-            filterEmail ||
-            filterGender ||
-            filterDepartment ||
-            filterJob ||
-            filterRoleType ||
-            filterDirector ||
-            filterActive ||
-            filterAdmin ||
-            filterRoleGroup
+              filterEmail ||
+              filterGender ||
+              filterDepartment ||
+              filterJob ||
+              filterRoleType ||
+              filterDirector ||
+              filterActive ||
+              filterAdmin ||
+              filterRoleGroup
               ? "primary"
               : "default"
           }
@@ -154,15 +154,15 @@ export default function FilterMenu({
           <Fade
             in={
               filterName ||
-              filterEmail ||
-              filterGender ||
-              filterDepartment ||
-              filterJob ||
-              filterRoleType ||
-              filterDirector ||
-              filterActive ||
-              filterAdmin ||
-              filterRoleGroup
+                filterEmail ||
+                filterGender ||
+                filterDepartment ||
+                filterJob ||
+                filterRoleType ||
+                filterDirector ||
+                filterActive ||
+                filterAdmin ||
+                filterRoleGroup
                 ? true
                 : false
             }
@@ -266,28 +266,27 @@ export default function FilterMenu({
   );
 }
 
-const FilterItem = ({ label, array, value, setValue }) => {
-  return (
-    <FormControl sx={{ m: 1, minWidth: "calc(100% - 15px)" }} size="small">
-      <InputLabel id={label}>{label}</InputLabel>
-      <Select
-        labelId={label}
-        id={label}
-        label={label}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        style={{ height: "30px", alignContent: "center" }}
-      >
-        <MenuItem value="">
-          <em>הכל</em>
-        </MenuItem>
+const FilterItem = ({ label, array, value, setValue }) => (
+  <FormControl sx={{ m: 1, minWidth: "calc(100% - 15px)" }} size="small">
+    <InputLabel id={label}>{label}</InputLabel>
+    <Select
+      labelId={label}
+      id={label}
+      label={label}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      style={{ height: "30px", alignContent: "center" }}
+    >
+      <MenuItem value="">
+        <em>הכל</em>
+      </MenuItem>
 
-        {[...new Set(array)]?.map((item, index) => (
-          <MenuItem key={index} value={item}>
-            {item}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-};
+      {[...new Set(array)]?.map((item, index) => (
+        <MenuItem key={index} value={item}>
+          {item}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+);
+

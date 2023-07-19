@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Paper,
   Table,
@@ -7,16 +9,16 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Button
 } from "@mui/material";
 import { useState, useContext } from "react";
 import { useMaterialUIController } from "context";
 import PDFFile from "layouts/evaluation/components/PDFFile";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Button } from "@mui/material";
 import { MainStateContext } from "App";
 import { EvalueContext } from "context/evalueVariables";
 import ApiFetcher from "components/ApiFetcher";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 
 export default function MyEvalues({ evalus }) {
@@ -30,9 +32,9 @@ export default function MyEvalues({ evalus }) {
   });
 
   const mainState = useContext(MainStateContext);
-  const userId = mainState.mainState.userNum; //The employee who is now connected to the system
+  const userId = mainState.mainState.userNum; //  The employee who is now connected to the system
   const [items, setItems] = useState(evalus);
-  const [, dispatch] = useMaterialUIController();
+  // const [, dispatch] = useMaterialUIController();
   const [data, setData] = useState([]);
   const [dataFetched, setdataFetched] = useState(false);
   const [page, setPage] = useState(0);
@@ -55,8 +57,8 @@ export default function MyEvalues({ evalus }) {
       setdataFetched(true);
       setLoading(false);
     }
-    catch (error) {
-      setError(error);
+    catch (err) {
+      setError(err);
       setLoading(false);
     }
   }
@@ -104,7 +106,7 @@ export default function MyEvalues({ evalus }) {
                   <Button onClick={() => updateData(evalue.id)}>הורד קובץ כPFD</Button>
                   {dataFetched && (
                     <PDFDownloadLink document={<PDFFile data={data} />} fileName="טופס הערכה.pdf">
-                      {({ loading }) => loading ? ('טוען מידע לפני הורדה...') : ( <Button id="pdf-download-link" > הורד</Button>)}
+                      {({ loading }) => loading ? ("טוען מידע לפני הורדה...") : (<Button id="pdf-download-link" > הורד</Button>)}
                     </PDFDownloadLink>
                   )}
                 </TableCell>

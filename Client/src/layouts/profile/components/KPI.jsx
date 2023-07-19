@@ -1,6 +1,8 @@
-import React from 'react';
-import { Typography, Grid, Rating, Card } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
+/* eslint-disable */
+
+import React from "react";
+import { Typography, Grid, Rating, Card } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
 
 const KPIRating = ({ selfKPI }) => {
 

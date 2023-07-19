@@ -1,28 +1,22 @@
+/* eslint-disable */
 
 // @mui material components
-import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDProgress from "components/MDProgress";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Typography,
-  Box,
-  Progress,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
-} from '@mui/material';
-import {
   TableContainer,
   Table,
   TableHead,
   TableBody,
   TableRow,
-  TableCell,
-} from '@mui/material';
+  TableCell
+} from "@mui/material";
 
 
 const columns = [
@@ -64,7 +58,7 @@ export default function FormDepData({ dataTable }) {
               color="text"
               fontWeight="medium"
               onClick={() => handlePartClick(part)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               {part.levelCount}
             </MDTypography>
@@ -83,7 +77,7 @@ export default function FormDepData({ dataTable }) {
               color="text"
               fontWeight="medium"
               onClick={() => handlePartClick(part)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               {part.levelCount}
             </MDTypography>
@@ -102,7 +96,7 @@ export default function FormDepData({ dataTable }) {
               color="text"
               fontWeight="medium"
               onClick={() => handlePartClick(part)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               {part.levelCount}
             </MDTypography>
@@ -121,7 +115,7 @@ export default function FormDepData({ dataTable }) {
               color="text"
               fontWeight="medium"
               onClick={() => handlePartClick(part)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               {part.levelCount}
             </MDTypography>
@@ -137,7 +131,7 @@ export default function FormDepData({ dataTable }) {
   return (
     <TableContainer>
       <Table>
-        <TableHead style={{ display: 'table-row-group' }}>
+        <TableHead style={{ display: "table-row-group" }}>
           <TableRow>
             {columns.map((column) => (
               <TableCell key={column.Header} align={column.align} style={{ width: "16.66%" }}>

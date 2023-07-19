@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 import { useEffect } from "react";
-import dayjs from 'dayjs';
-import Swal from 'sweetalert2';
+import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export default function Alerts({ mainState, handleShowAlert, openProcess, handeleExtention, handleCloseProcess }) {
     const today = dayjs();
@@ -8,25 +10,25 @@ export default function Alerts({ mainState, handleShowAlert, openProcess, handel
     useEffect(() => {
         if (openProcess !== null) {
             if (mainState?.is_Admin) {
-                const diffInDays = openProcess.diff(today, 'day');
+                const diffInDays = openProcess.diff(today, "day");
                 console.log("diffInDays", diffInDays);
                 console.log("openProcess", openProcess);
                 if (diffInDays < 3 && diffInDays >= 1) {
                     Swal.fire({
-                        title: 'האם תרצה להעריך את מועד סיום תהליך ההערכה?',
-                        icon: 'question',
+                        title: "האם תרצה להעריך את מועד סיום תהליך ההערכה?",
+                        icon: "question",
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'כן, אשמח להאריך',
-                        cancelButtonText: 'איני מעוניין להאריך'
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "כן, אשמח להאריך",
+                        cancelButtonText: "איני מעוניין להאריך"
                     }).then(async (result) => {
                         if (result.isConfirmed) {
                             const { value: days } = await Swal.fire({
-                                title: 'בכמה ימים תרצה להאריך?',
-                                icon: 'question',
-                                input: 'range',
-                                inputLabel: 'מספר ימים',
+                                title: "בכמה ימים תרצה להאריך?",
+                                icon: "question",
+                                input: "range",
+                                inputLabel: "מספר ימים",
                                 inputAttributes: {
                                     min: 0,
                                     max: 30,
@@ -35,43 +37,43 @@ export default function Alerts({ mainState, handleShowAlert, openProcess, handel
                                 inputValue: 2
                             })
                             if (days) {
-                                handeleExtention(openProcess.add(days, 'day'));
+                                handeleExtention(openProcess.add(days, "day"));
                             }
                         }
                         else if (result.isDismissed) {
                             Swal.fire({
-                                icon: 'success',
-                                title: 'תשובתך התקבלה',
-                                text: `תאריך היעד איננו השתנה והינו ${dayjs(openProcess).format('DD/MM/YYYY')}`,
+                                icon: "success",
+                                title: "תשובתך התקבלה",
+                                text: `תאריך היעד איננו השתנה והינו ${dayjs(openProcess).format("DD/MM/YYYY")}`,
                             })
                             handleShowAlert(false);
                         }
                     })
                 }
-                else if (diffInDays == 0 || openProcess.isSame(today)) {
+                else if (diffInDays === 0 || openProcess.isSame(today)) {
                     Swal.fire({
-                        title: 'האם תרצה לסיים את תהליך ההערכה?',
-                        icon: 'question',
+                        title: "האם תרצה לסיים את תהליך ההערכה?",
+                        icon: "question",
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'כן',
-                        cancelButtonText: 'לא, ברצוני להאריך'
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "כן",
+                        cancelButtonText: "לא, ברצוני להאריך"
                     }).then(async (result) => {
                         if (result.isConfirmed) {
                             Swal.fire({
-                                icon: 'info',
-                                title: 'תשובתך התקבלה',
-                                text: `סגירת תהליך ההערכה מתבצע`,
+                                icon: "info",
+                                title: "תשובתך התקבלה",
+                                text: "סגירת תהליך ההערכה מתבצע",
                             })
                             handleCloseProcess(true);
                         }
                         else if (result.isDismissed) {
                             const { value: days } = await Swal.fire({
-                                title: 'בכמה ימים תרצה להאריך?',
-                                icon: 'question',
-                                input: 'range',
-                                inputLabel: 'מספר ימים',
+                                title: "בכמה ימים תרצה להאריך?",
+                                icon: "question",
+                                input: "range",
+                                inputLabel: "מספר ימים",
                                 inputAttributes: {
                                     min: 0,
                                     max: 30,
@@ -80,17 +82,17 @@ export default function Alerts({ mainState, handleShowAlert, openProcess, handel
                                 inputValue: 2
                             })
                             if (days) {
-                                handeleExtention(openProcess.add(days, 'day'));
+                                handeleExtention(openProcess.add(days, "day"));
                             }
                         }
                     })
                 }
             }
-            if (mainState?.self_Evalu == 1) {
+            if (mainState?.self_Evalu === 1) {
                 Swal.fire({
-                    icon: 'info',
-                    title: 'תהליך הערכה פתוח',
-                    text: `נדמה כי עדיין לא סיימת למלא את שלב השאלון העצמי, אל תשכח לעשות זאת!`,
+                    icon: "info",
+                    title: "תהליך הערכה פתוח",
+                    text: "נדמה כי עדיין לא סיימת למלא את שלב השאלון העצמי, אל תשכח לעשות זאת!",
                 })
                 handleShowAlert(false);
             }
