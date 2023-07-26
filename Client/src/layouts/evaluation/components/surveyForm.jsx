@@ -88,6 +88,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
   }
 
   const { handleSubmit } = useForm();
+
   const onSubmit = (data, event) => {
     event.preventDefault();
 
@@ -117,6 +118,7 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
   // Post a new finished Evaluation using Post api
   useEffect(() => {
     const abortController = new AbortController();
+    let err = 0;
     if (finalSelfEvaluation !== undefined) {
       fetch(
         API.apiEvaluationQues,
@@ -132,6 +134,15 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
         .then(async response => {
           const data = await response.json();
           console.log(response);
+          if (response.status === 400) {
+            swal({
+              title: "קרתה תקלה!",
+              text: "נראה ששכחת למלא חלק משדות ההערכה הפתוחה",
+              icon: "error",
+              button: "סגור"
+            });
+            err = 1;
+          }
 
           if (!response.ok) {
             // get error message from body or default to response statusText
@@ -159,12 +170,14 @@ export default function surveyForm({ userNum, employeesManager, evalu_Part_Type,
           (error) => {
             if (error.name === 'AbortError') return;
             console.log("err get=", error);
-            swal({
-              title: "קרתה תקלה!",
-              text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
-              icon: "error",
-              button: "סגור"
-            });
+            if (err !== 1) {
+              swal({
+                title: "קרתה תקלה!",
+                text: "אנא נסה שנית או פנה לעזרה מגורם מקצוע",
+                icon: "error",
+                button: "סגור"
+              });
+            }
             throw error;
           }
         );

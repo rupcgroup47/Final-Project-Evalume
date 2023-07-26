@@ -48,7 +48,7 @@ import createCache from "@emotion/cache";
 import routes from "routes";
 
 // Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav} from "context";
+import { useMaterialUIController, setMiniSidenav } from "context";
 // , setOpenConfigurator
 // Images
 import brandWhite from "assets/images/logo-ct.png";
@@ -70,7 +70,6 @@ export default function App() {
     miniSidenav,
     direction,
     layout,
-    // openConfigurator,
     sidenavColor,
     transparentSidenav,
     whiteSidenav,
@@ -88,20 +87,20 @@ export default function App() {
   const apiUpdateEndDate = "https://proj.ruppin.ac.il/cgroup47/prod/quesLimitDate"; //  server
   const apiFinishProcess = "https://proj.ruppin.ac.il/cgroup47/prod/EndOfEvalu";  //  server
 
-    useEffect(() => {
-      // Get user details from Local Storage
-      const exisiting = localStorage.getItem("Current User");
-      const areObjectsEqual = isEqual(mainState, JSON.parse(exisiting));
-      if (!mainState) {
-        const Employee = JSON.parse(exisiting);
-        if (Employee) {
-          setMainState(Employee);
-        }
+  useEffect(() => {
+    // Get user details from Local Storage
+    const exisiting = localStorage.getItem("Current User");
+    const areObjectsEqual = isEqual(mainState, JSON.parse(exisiting));
+    if (!mainState) {
+      const Employee = JSON.parse(exisiting);
+      if (Employee) {
+        setMainState(Employee);
       }
-      if (mainState !== null && exisiting !== null && areObjectsEqual === false) {
-        localStorage.setItem("Current User", JSON.stringify(mainState)); // Set Current User details in local storage
-      }
-    }, [mainState]);
+    }
+    if (mainState !== null && exisiting !== null && areObjectsEqual === false) {
+      localStorage.setItem("Current User", JSON.stringify(mainState)); // Set Current User details in local storage
+    }
+  }, [mainState]);
 
   // Cache for the rtl
   useMemo(() => {

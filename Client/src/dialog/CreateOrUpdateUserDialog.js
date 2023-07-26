@@ -36,6 +36,8 @@ import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import { EvalueContext } from "context/evalueVariables";
 import swal from "sweetalert";
+import { position } from "stylis";
+import { Directions } from "@material-ui/icons";
 
 export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setItems, user, setUser, isUserUpdate }) {
   const {
@@ -263,7 +265,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
       userType: (data?.roleType === "מנהל" ? true : false),
       userRole: data?.job,
       userDepartment: data?.department,
-      userPhoneNum: parseInt( data?.phone),
+      userPhoneNum: parseInt(data?.phone),
       managerFname: data?.managerFname,
       managerLName: data?.managerLName,
       managerEmail: data?.managerEmail,
@@ -370,22 +372,34 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
             })}
             sx={{ m: 0, width: "100%" }}
           />
-          <TextField
-            size="small"
-            id="phone"
-            label="מספר טלפון"
-            type="phone"
-            error={errors.phone}
-            helperText={errors.phone && "מספר טלפון הוא שדה חובה"}
-            {...register("phone", {
-              required: true,
-              pattern: {
-                value: /^[0-9]{9,9}$/,
-                message: "מספר טלפון אינו תקין",
-              },
-            })}
-            sx={{ m: 0, width: "100%" }}
-          />
+          <div style={{ display: "inline-flex", flexDirection: "row-reverse", justifyContent: "space-between" }}>
+            <TextField
+              size="small"
+              id="kidomet"
+              label="קידומת טלפון"
+              type="phone"
+              value={"+972"}
+              sx={{ ml: "15px", width: "fit-content" }}
+              style={{ direction: "ltr" }}
+              disabled
+            />
+            <TextField
+              size="small"
+              id="phone"
+              label="מספר טלפון"
+              type="phone"
+              error={errors.phone}
+              helperText={errors.phone && "מספר טלפון הוא שדה חובה"}
+              {...register("phone", {
+                required: true,
+                pattern: {
+                  value: /^[0-9]{9,9}$/,
+                  message: "מספר טלפון אינו תקין",
+                },
+              })}
+              sx={{ mr: 0, width: "100%" }}
+            />
+          </div>
           <FormControl
             size="small"
             error={errors.gender}

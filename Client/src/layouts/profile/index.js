@@ -260,7 +260,6 @@ function Overview() {
             <Grid container spacing={5} direction="column" style={{ maxWidth: "100%", alignContent: "center", margin: "auto" }}>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "inherit" }}>
                 <ProfileAlerts title="conversations" tmpResult={tmpResult} meeting={meeting} />
-                {/* alerts={alerts} */}
               </Grid>
               <Grid item xs={12} md={6} xl={4} style={{ margin: "8px", maxWidth: "inherit", paddingRight: "inherit", paddingTop: "inherit" }}>
                 <KPIRating selfKPI={selfKPI} />
@@ -269,9 +268,6 @@ function Overview() {
           </Grid>
         </Grid>
       </MDBox>
-      {/* <MDBox p={2}>
-
-      </MDBox> */}
     </Header>
   );
 }

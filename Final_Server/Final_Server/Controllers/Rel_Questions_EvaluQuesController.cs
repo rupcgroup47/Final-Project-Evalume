@@ -227,6 +227,10 @@ namespace Final_Server.Controllers
                     return NotFound("Error in insert this Answers");
                 }
             }
+            catch (KeyNotFoundException)
+            {
+                return BadRequest("missing verbale");
+            }
             catch (Exception)
             {
                 throw;

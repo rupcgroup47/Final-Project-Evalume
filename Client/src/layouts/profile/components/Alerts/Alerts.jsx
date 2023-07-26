@@ -15,7 +15,7 @@ export default function Alerts({ mainState, handleShowAlert, openProcess, handel
                 console.log("openProcess", openProcess);
                 if (diffInDays < 3 && diffInDays >= 1) {
                     Swal.fire({
-                        title: "האם תרצה להעריך את מועד סיום תהליך ההערכה?",
+                        title: "האם תרצה להאריך את מועד סיום תהליך ההערכה?",
                         icon: "question",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",

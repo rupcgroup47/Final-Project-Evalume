@@ -1076,7 +1076,8 @@ public class DBservices
                 {
                     id = Convert.ToInt32(dataReader["GoalNum"]),
                     name = dataReader["GoalName"].ToString(),
-                    date = dataReader["GoalCreateDate"].ToString(),
+                    //date = dataReader["GoalCreateDate"].ToString(),
+                    date = ((DateTime)dataReader["GoalCreateDate"]).ToString("yyyy-MM-dd"),
                     isDone = dataReader["GoalStatus"].ToString(),
                 });
 

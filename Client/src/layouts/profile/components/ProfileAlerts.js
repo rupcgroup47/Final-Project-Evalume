@@ -60,7 +60,7 @@ export default function ProfileAlerts({ tmpResult, meeting }) {
       });
     };
   }, [tempResualt, meetingState])
-
+  
   const [arrAlerts, setArrAlerts] = useState(
     [
       {

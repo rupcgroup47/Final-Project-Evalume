@@ -311,7 +311,7 @@ export default function CreateOrUpdateGoalDialog({ open, setOpen, setGoals, setI
                 error={errors.goalName}
 
                 helperText={errors.goalName && "שם יעד הוא שדה חובה"}
-                {...register("goalName", { required: true, maxLength: 20 })}
+                {...register("goalName", { required: true, maxLength: 40 })}
                 onChange={changeHandler}
                 sx={{ m: 0, width: "100%" }} />
                 <Select
