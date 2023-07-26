@@ -190,7 +190,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   useEffect(() => {
     // Update details
     const abortController = new AbortController();
-
+    console.log(postUser);
     if (postUser !== "") {
       fetch(
         API.apiUserUrl,
@@ -254,7 +254,7 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
   const onSubmit = (data) => {
     const newUser = {
       userEmail: data?.email,
-      userId: parseInt("42",data?.id),
+      userId: parseInt(data?.id),
       userFName: data?.firstName,
       userLName: data?.lastName,
       userGender: data?.gender,
@@ -263,12 +263,13 @@ export default function CreateOrUpdateUserDialog({ open, setOpen, setUsers, setI
       userType: (data?.roleType === "מנהל" ? true : false),
       userRole: data?.job,
       userDepartment: data?.department,
-      userPhoneNum: parseInt("42", data?.phone),
+      userPhoneNum: parseInt( data?.phone),
       managerFname: data?.managerFname,
       managerLName: data?.managerLName,
       managerEmail: data?.managerEmail,
       userRoleGroupDesc: data?.roleGroup,
     };
+    console.log(newUser);
 
     if (user) {
       // Update a user
