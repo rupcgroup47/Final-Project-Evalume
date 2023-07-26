@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/cgroup47/test2/tar5/static/css/main.4ffcc6d2.css",
-    "main.js": "/cgroup47/test2/tar5/static/js/main.426a3c5c.js",
+    "main.js": "/cgroup47/test2/tar5/static/js/main.ae95ad42.js",
     "static/media/Thumbs-Up-cartoon-drawing.jpg": "/cgroup47/test2/tar5/static/media/Thumbs-Up-cartoon-drawing.9992d0f475c3ce61aa27.jpg",
     "static/media/warehouse.jpg": "/cgroup47/test2/tar5/static/media/warehouse.16db7dcac162e5c1d7e9.jpg",
     "static/media/packages.jpg": "/cgroup47/test2/tar5/static/media/packages.71ef4f31b6fd7c2dbb7b.jpg",
@@ -14,10 +14,10 @@
     "static/media/rubik-hebrew-400-normal.woff2": "/cgroup47/test2/tar5/static/media/rubik-hebrew-400-normal.5e6e7403617677002c27.woff2",
     "index.html": "/cgroup47/test2/tar5/index.html",
     "main.4ffcc6d2.css.map": "/cgroup47/test2/tar5/static/css/main.4ffcc6d2.css.map",
-    "main.426a3c5c.js.map": "/cgroup47/test2/tar5/static/js/main.426a3c5c.js.map"
+    "main.ae95ad42.js.map": "/cgroup47/test2/tar5/static/js/main.ae95ad42.js.map"
   },
   "entrypoints": [
     "static/css/main.4ffcc6d2.css",
-    "static/js/main.426a3c5c.js"
+    "static/js/main.ae95ad42.js"
   ]
 }
